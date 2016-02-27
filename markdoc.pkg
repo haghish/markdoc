@@ -1,0 +1,39 @@
+d 'MARKDOC': module for literate programming
+d
+d  MarkDoc is a general-purpose literate programming package for Stata that produces
+d dynamic analysis documents or package documentation in various formats (pdf,
+d docx, html, odt, epub, markdown), dynamic presentation slides (pdf, slidy,
+d dzslide), as well as dynamic Stata help files (sthlp, smcl).
+d 
+d KW: Markdown
+d KW: smcl
+d KW: sthlp
+d KW: docx
+d KW: pdf  
+d KW: html
+d KW: odt
+d KW: epub
+d KW: slide
+d KW: slidy
+d KW: dzslide
+d KW: translator
+d KW: convertor
+d KW: literate programming
+d KW: dynamic documents
+d KW: reproducible research
+d
+d Requires: Stata version 11 and weaver from SSC (q.v.)
+d
+d Distribution-Date: 20160227
+d
+d Author: E.F. Haghish, University of Freiburg
+d Support: email haghish@@imbi.uni-freiburg.de
+d
+f markdoc.ado
+f markdoccheck.ado
+f markdocversion.ado
+f markdocpandoc.ado
+f markdocwkhtmltopdf.ado
+f markdoc.sthlp
+F markdoc_stata.docx
+F markdoc_simple.docx
