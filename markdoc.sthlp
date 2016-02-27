@@ -2,7 +2,7 @@
 {* *! MarkDoc 3.4  04Oct2015}{...}
 {* *! MarkDoc 3.5  09Oct2015}{...}
 {* *! MarkDoc 3.6  3Jan2016}{...}
-{right:version 3.6.7 February, 2016}
+{right:version 3.6.8 February, 2016}
 {title:Title}
 
 {phang}
@@ -81,13 +81,25 @@ if you think others may have similar questions
 
 {title:Instalation} 
 
-{phang}
+{p 4 4 2}
+{cmd:MarkDoc} can be installed using the SSC server, which hosts the latest stable release of MarkDoc. The SSC installation is as follows:
+
+{p 8 8 2}
+. {bf:ssc install markdoc}{break}
+
+{p 4 4 2}
+Alternatively, advanced users may wish for the current developing version (pre-release) which can be downloaded from {browse "http://github.com/haghish/MarkDoc":GitHub}:
+
+{p 8 8 2}
+. {bf:net install markdoc, force  from(https://raw.githubusercontent.com/haghish/markdoc/master/)}{break}
+
+{p 4 4 2}
 After installing MarkDoc, install {help Weaver} and {help Statax} as follows. If the {cmd:install}
 option is specified, MarkDoc checkes for the required packages and installs them automatically, if they're not already installed. 
 
 {p 8 8 2}
-. ssc install weaver{break}
-. ssc install statax{break}
+. {bf:ssc install weaver}{break}
+. {bf:ssc install statax}{break}
 	
 
 {title:Syntax}

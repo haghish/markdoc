@@ -22,7 +22,7 @@
 	----------------
 	
 	1.0.0  July,     2014 
-	3.6.7  February, 2016
+	3.6.8  February, 2016
 */
 
 
@@ -34,7 +34,7 @@ program define markdocversion
 		cap qui do "http://www.haghish.com/packages/update.do"
 	//}
 		
-	global markdocversion 3.67
+	global markdocversion 3.68
 	
 	if "$thenewestmarkdocversion" > "$markdocversion" {	
 		di _n(2)
