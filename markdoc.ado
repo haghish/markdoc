@@ -53,9 +53,29 @@
 */
 
 
-
 program markdoc
-	version 11
+	
+	// -------------------------------------------------------------------------
+	// NOTE:
+	// Stata 14 introduces ustrltrim() function for removing Unicode whitespace 
+	// characters and blanks. The previous trim() function cannot remove unicode 
+	// whitespace. The program is updated to function for all versions of Stata, 
+	// but yet, there is a slight chance of "unreliable" behavior from MarkDoc 
+	// in older versions of Stata, if the string has a unicode whitespace. This 
+	// can be fixed by finding a solution to avoid "ustrltrim()". Yet, most of 
+	// the torture tests have been positive. 
+	// =========================================================================
+	local version = int(`c(stata_version)')
+	if `version' <= 13 {
+		local trim trim
+		local version 11
+	}
+	if `version' > 13 {
+		local trim ustrltrim
+		local version 14
+	}
+	version `version'
+	
 		
 	syntax [anything(name=smclfile id="The smcl file name is")]  				/// 
 	[, 				 ///
@@ -129,6 +149,16 @@ program markdoc
 	
 	capture weaversetup							  //it might not be yet created
 	
+	****************************************************************************
+	*DO NOT PRINT ANYTHING ON THE LOG
+	****************************************************************************
+	quietly log query    
+	if `"`r(filename)'"' != "" {
+		if `"`r(status)'"' == "on" {
+			local status `"`r(status)'"'		// status of the log
+			qui log off
+		}	
+	}
 	
 	****************************************************************************
 	*DEFAULTS
@@ -591,9 +621,12 @@ program markdoc
 				// -------------------------------------------------------------
 				if substr(trim(`"`macval(preline)'"'),1,9) == "qui log c" |		///
 				substr(trim(`"`macval(preline)'"'),1,11) == "qui log off" |		///
-				substr(trim(`"`macval(preline)'"'),1,10) == "qui log on"  {
+				substr(trim(`"`macval(preline)'"'),1,10) == "qui log on"  |		///
+				substr(trim(`"`macval(preline)'"'),1,11) == "qui markdoc" |		///
+				substr(trim(`"`macval(preline)'"'),1,8)  == "markdoc " {
 					local jump 1
 				}
+				
 				
 				// Hiding comments
 				// -------------------------------------------------------------
@@ -650,7 +683,9 @@ program markdoc
 				
 				if substr(trim(`"`macval(preline)'"'),1,9) == "qui log c" |		///
 				substr(trim(`"`macval(preline)'"'),1,11) == "qui log off" |		///
-				substr(trim(`"`macval(preline)'"'),1,10) == "qui log on"  {
+				substr(trim(`"`macval(preline)'"'),1,10) == "qui log on"  |		///
+				substr(trim(`"`macval(preline)'"'),1,11) == "qui markdoc" |		///
+				substr(trim(`"`macval(preline)'"'),1,8)  == "markdoc " {
 					local jump 1
 				}
 				
@@ -2604,6 +2639,15 @@ program markdoc
 	
 	// check for MarkDoc updates
 	markdocversion
+	
+	
+	****************************************************************************
+	*REOPEN THE LOG
+	****************************************************************************
+	quietly log query    
+	if !missing("`status'")  {
+		qui log on	
+	}
 		
 end
 
