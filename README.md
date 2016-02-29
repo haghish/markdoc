@@ -1,12 +1,21 @@
 # MarkDoc : a general-purpose literate programming package for Stata
 
+A general-purpose literate programming package for Stata that produces dynamic analysis
+documents or package documentation in various formats (pdf, docx, html, odt, epub, markdown),
+dynamic presentation slides (pdf, slidy, dzslide), as well as dynamic Stata help files (sthlp, 
+smcl). __MarkDoc__ is very simple and intuitive to use and can be simply applied even in introductory 
+statistics courses and workshops. This is a useful tool for teaching statistics, practicing statistics, 
+data analysis, and also developing new packages. 
+
+        
 Author
 ------
-  E. F. Haghish  
-  Center for Medical Biometry and Medical Informatics  
-  University of Freiburg, Germany   
-  haghish@imbi.uni-freiburg.de  
-  http://www.haghish.com/markdoc  
+  **E. F. Haghish**  
+  Center for Medical Biometry and Medical Informatics
+  University of Freiburg, Germany      
+  _haghish@imbi.uni-freiburg.de_     
+  _http://www.haghish.com/markdoc_  
+  _[@Haghish](https://twitter.com/Haghish)_   
   
 Installation
 ------------
@@ -36,13 +45,6 @@ __MarkDoc__ requires 3 other script files from Weaver package which are __`img`_
 required for dynamically inserting image, writing dynamic text/markup, and creating dynamic tables. For updating these
 files see the Weaver package
 
-Description
------------
-
-A general-purpose literate programming package for Stata that produces dynamic analysis
-        documents or package documentation in various formats (pdf, docx, html, odt, epub, markdown),
-        dynamic presentation slides (pdf, slidy, dzslide), as well as dynamic Stata help files (sthlp, 
-        smcl)
 
 Package Structure
 -----------------
