@@ -2232,10 +2232,10 @@ program markdoc
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 					
-						if "`verbose'" == "verbose" di `"Running "$setpath" --footer-center [page] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript  "`html'" "`convert'""'
+						if "`verbose'" == "verbose" di `"Running "$setpath" --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript  "`html'" "`convert'""'
 					
 						shell "$setpath" 										///
-						--footer-center [page] --footer-font-size 10 			///
+						--footer-center \[page\] --footer-font-size 10 			///
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
 						--margin-top 35mm										///
@@ -2255,10 +2255,10 @@ program markdoc
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 					
-						if "`verbose'" == "verbose" di `"Running "$setpath"  --footer-center [page] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`html'" "`convert'""'
+						if "`verbose'" == "verbose" di `"Running "$setpath"  --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`html'" "`convert'""'
 						
 						shell "$setpath" 										///
-						--footer-center [page] --footer-font-size 10 			///
+						--footer-center \[page\] --footer-font-size 10 			///
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
 						--margin-top 35mm										///
