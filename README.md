@@ -7,11 +7,32 @@ Author
   University of Freiburg, Germany   
   haghish@imbi.uni-freiburg.de  
   http://www.haghish.com/markdoc  
+  
+Installation
+------------
+
+The __MarkDoc__ releases are also hosted on SSC server. So you can download the latest release as follows:
+
+    ssc install markdoc
+    
+You can also directly download __MarkDoc__ from GitHub which includes the latest beta version (unreleased). The `force` 
+option ensures that you _reinstall_ the package, even if the release date is not yet changed, and thus, must be specified. 
+  
+    net install markdoc, force  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+    
+__MarkDoc__ also requires two additional Stata packages which are __`weaver`__ and __`statax`__, both hosted on SSC.
+
+    ssc install weaver
+    ssc install statax
+    
+Finally, in order to use a document conversion (i.e. exporting Microsoft Word, PDF, HTML, LaTeX, ePub, etc,...) __MarkDoc__ requires two additional third-party software which are [Pandoc](http://pandoc.org/) and [wkhtmltopdf](http://wkhtmltopdf.org/). Furthermore, for Typesetting LaTeX documents, a [complete distribution of LaTeX](https://latex-project.org/ftp.html) is required. The complete guide for installing them is provided in the MarkDoc help file and also, 
+[__MarkDoc Homepage__ ](http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php)
+    
 
 Additional script files
 -----------------------
 
-__MarkDoc__ requires 3 other script files from Weaver package which are __img__, __txt__, and __tbl__. These files are 
+__MarkDoc__ requires 3 other script files from Weaver package which are __`img`__, __`txt`__, and __`tbl`__. These files are 
 required for dynamically inserting image, writing dynamic text/markup, and creating dynamic tables. For updating these
 files see the Weaver package
 
