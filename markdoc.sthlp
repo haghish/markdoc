@@ -113,7 +113,7 @@ Convert {it:smclfile} to any document format
 {opt e:xport(name)} {opt mark:up(name)} {opt no:number} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
 {opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
-{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt math:jax}
+{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt math:jax} {opt verbose}
 ]
 
 
@@ -188,7 +188,8 @@ This option create a "main" file in LaTeX to allow compiling the document.{p_end
 documents using {help Statax}, which is a JavaScript syntax highlighter engine for Stata{p_end}
 
 {synopt:{opt mathjax}}renders mathematical notations in the HTML and PDF document{p_end}
- 
+
+{synopt:{opt verbose}}enables extended logging{p_end} 
 
 {synoptline}
 {p2colreset}{...}

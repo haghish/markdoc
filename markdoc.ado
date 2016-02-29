@@ -100,6 +100,7 @@ program markdoc
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
 	MATHjax 		 /// Interprets mathematics using MathJax
 	toc				 /// Creates table of content
+	verbose			 /// extended logging to console
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
@@ -339,13 +340,13 @@ program markdoc
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
 		affiliation(Medical Biometry and Medical Informatics, University of Freiburg) ///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
-		printer("`printer'")
+		printer("`printer'") `verbose'
 		
 		markdoc example, export(pdf) statax linesize(120) replace 				///
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
 		affiliation(Center for Medical Biometry and Medical Informatics, University of Freiburg) ///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
-		printer("`printer'")
+		printer("`printer'") `verbose'
 		
 		
 		cap quietly findfile "example.html"
@@ -1733,8 +1734,9 @@ program markdoc
 		}	
 					
 		if "`markup'" ==  "html"   {
-			cap shell "$pandoc" "`tmp1'" -o "`convert'"
-			quietly  copy `"`convert'"' `"`tmp'"', replace
+			if "`verbose'" == "verbose" di `"Running "$pandoc" "`tmp1'" -o "`tmp'""'
+			cap shell "$pandoc" "`tmp1'" -o "`tmp'"
+			quietly  copy `"`tmp'"' `"`convert'"', replace
 			//copy "`tmp'" 0troubleshoot.html	, replace
 		}		
 		
@@ -2133,8 +2135,13 @@ program markdoc
 							
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
-					shell "$pandoc" "`md'" -o "`convert'"
-					quietly  copy "`convert'" `"`html'"', replace
+					tempfile out
+					tempfile in
+					quietly copy "`md'" "`in'"
+					if "`verbose'" == "verbose" di `"Running "$pandoc" "`in'" -o "`out'""'
+					shell "$pandoc" "`in'" -o "`out'"
+					quietly  copy "`out'" `"`html'"', replace
+					quietly  copy "`out'" `"`convert'"', replace
 					//copy "`convert'" "0pdfhtml.html", replace
 				}
 			}
@@ -2187,7 +2194,21 @@ program markdoc
 				if "`c(os)'"=="Windows" {
 	
 					// wkhtmltopdf
-					if "$printername" == "wkhtmltopdf" | "$printername" == "" {	
+					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
+						
+						
+						// Use temporary files to prevent problems with UNC directories on
+						// Windows
+						// (See: https://support.microsoft.com/en-us/kb/156276)
+						
+						tempfile in
+						tempfile out
+						// The in file needs to have .html suffix. Erase any existing temp file
+						cap erase "`in'.html"
+						quietly copy "`html'" "`in'.html"
+
+						if "`verbose'" == "verbose" di `"Running "$setpath" --footer-center [page] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`in'" "`out'"'
+	
 						shell "$setpath" 										///
 						--footer-center [page] --footer-font-size 10 			///
 						--margin-right 30mm 									///
@@ -2197,7 +2218,10 @@ program markdoc
 						--enable-javascript  									///
 						`toc'													///
 						--debug-javascript 										///
-						"`html'" "`convert'"
+						"`in'.html" "`out'"
+						
+						quietly erase "`in'.html"
+						quietly copy "`out'" "`convert'", replace
 					}		
 				}	
 							
@@ -2207,6 +2231,9 @@ program markdoc
 
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
+					
+						if "`verbose'" == "verbose" di `"Running "$setpath" --footer-center [page] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript  "`html'" "`convert'""'
+					
 						shell "$setpath" 										///
 						--footer-center [page] --footer-font-size 10 			///
 						--margin-right 30mm 									///
@@ -2227,6 +2254,9 @@ program markdoc
 							
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
+					
+						if "`verbose'" == "verbose" di `"Running "$setpath"  --footer-center [page] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`html'" "`convert'""'
+						
 						shell "$setpath" 										///
 						--footer-center [page] --footer-font-size 10 			///
 						--margin-right 30mm 									///
@@ -2290,22 +2320,44 @@ program markdoc
 						file write `knot' "\makeatother" _n
 						file close `knot'
 					}
+
+					// Use temporary files to prevent problems with UNC directories on
+					// Windows
+					// (See: https://support.microsoft.com/en-us/kb/156276)
+						
+					tempfile in
+					tempfile out
+					quietly copy "`md'" "`in'"
 			
-					shell "$pandoc" `toc' -t beamer "`md'" `latexEngine' 		///
-					--include-in-header="`template'" -o "`convert'"
+					if "`verbose'" == "verbose" di `"Running "$pandoc" `toc' -t beamer "`in'" `latexEngine' --include-in-header="`template'" -o "`out'""'
+
+					shell "$pandoc" `toc' -t beamer "`in'" `latexEngine' 		///
+					--include-in-header="`template'" -o "`out'"
+
+					quietly copy "`out'" "`convert'", replace
 				
 					*shell "$pandoc" -t beamer "`md'" -V theme:Boadilla -V 		///
 					*colortheme:lily `fontsize' -o "`convert'"		
 				}				
 				else {
-					
+
 					local mathjax --mathjax
 					
 					if "`export'" == "dzslide" local mathjax -s --mathjax -i -t dzslides
 					if "`export'" == "slidy" local mathjax -s --mathjax -i -t slidy
 
+					tempfile in
+					tempfile out
+					quietly copy "`md'" "`in'"
+
+					if "`verbose'" == "verbose" di `"Running "$pandoc" `mathjax' `toc' `reference' "`in'" -o "`out'""'
+
 					shell "$pandoc" `mathjax' `toc' 		///
-					`reference' "`md'" -o "`convert'"		
+					`reference' "`in'" -o "`out'"		
+					
+					
+					quietly copy "`out'" "`convert'", replace
+
 				}	
 			}
 			
@@ -2535,18 +2587,22 @@ program markdoc
 			
 			if !missing("`pdftex'") & "`export'" != "slide" {
 				if "`printer'" != "" {
+					if "`verbose'" == "verbose" di `"Running "`printer'" -jobname "`name'" "`tex2pdf'""'
 					capture shell "`printer'" -jobname "`name'" "`tex2pdf'" 
 				}
-				else shell "$printername" -jobname "`name'" "`tex2pdf'"	
+				else {
+					if "`verbose'" == "verbose" di `"Running "$printername" -jobname "`name'" "`tex2pdf'""'
+					shell "$printername" -jobname "`name'" "`tex2pdf'"	
+				}
 			}
 			
 			
 			****************************************************
 			*PRINTING THE OUTPUT NOTIFICATION
 			****************************************************
-			cap quietly findfile "`convert'"
+			cap confirm file "`convert'"
 			
-			if "`r(fn)'" != "" {
+			if ! _rc {
 				di as txt "{p}(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
 				if "`export'" ~= "md" cap qui erase "`md'"
 			}
@@ -2554,9 +2610,9 @@ program markdoc
 		}
 		
 		if "`export'" == "" {
-			
-			cap quietly findfile "`md'"
-			if "`r(fn)'" != "" {
+
+			cap confirm file "`md'"
+			if ! _rc {
 				//di _n(2)
 				//di as txt "   __  __            _    ____             " 
 				//di as txt "  |  \/  | __ _ _ __| | _|  _ \  ___   ___ " 
