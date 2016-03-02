@@ -113,7 +113,7 @@ Convert {it:smclfile} to any document format
 {opt e:xport(name)} {opt mark:up(name)} {opt no:number} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
 {opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
-{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt math:jax} {opt verbose}
+{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt math:jax} {opt noi:sily}
 ]
 
 
@@ -189,7 +189,7 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {synopt:{opt mathjax}}renders mathematical notations in the HTML and PDF document{p_end}
 
-{synopt:{opt verbose}}enables extended logging{p_end} 
+{synopt:{opt noi:sily}}enables extended log for debugging Pandoc and wkhtmltopdf{p_end} 
 
 {synoptline}
 {p2colreset}{...}

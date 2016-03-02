@@ -100,7 +100,7 @@ program markdoc
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
 	MATHjax 		 /// Interprets mathematics using MathJax
 	toc				 /// Creates table of content
-	verbose			 /// extended logging to console
+	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
@@ -111,7 +111,7 @@ program markdoc
 
 	
 	****************************************************************************
-	*Check for Default paths
+	*Check for Required Packages
 	****************************************************************************
 	capture findfile weave.ado
 	if _rc != 0 {
@@ -149,17 +149,6 @@ program markdoc
 	}
 	
 	capture weaversetup							  //it might not be yet created
-	
-	****************************************************************************
-	*DO NOT PRINT ANYTHING ON THE LOG
-	****************************************************************************
-	quietly log query    
-	if `"`r(filename)'"' != "" {
-		if `"`r(status)'"' == "on" {
-			local status `"`r(status)'"'		// status of the log
-			qui log off
-		}	
-	}
 	
 	****************************************************************************
 	*DEFAULTS
@@ -202,7 +191,10 @@ program markdoc
 		if missing("`export'") local export tex
 	}
 // -----------------------------------------------------------------------------
-
+	
+	if missing("`noisily'") {
+		local cap cap
+	}
 
 	// The printer is used for creating PDF documents in MarkDoc. In general,
 	// there are 2 printers available which are "wkhtmltopdf" & "pdflatex."
@@ -338,15 +330,17 @@ program markdoc
 		
 		markdoc example, export(html) statax linesize(120) replace 				///
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
-		affiliation(Medical Biometry and Medical Informatics, University of Freiburg) ///
+		affiliation("Medical Biometry and Medical Informatics, "				///
+		"University of Freiburg") 												///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
-		printer("`printer'") `verbose'
+		printer("`printer'") `noisily'
 		
 		markdoc example, export(pdf) statax linesize(120) replace 				///
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
-		affiliation(Center for Medical Biometry and Medical Informatics, University of Freiburg) ///
+		affiliation("Medical Biometry and Medical Informatics, "				///
+		"University of Freiburg") 												///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
-		printer("`printer'") `verbose'
+		printer("`printer'") `noisily'
 		
 		
 		cap quietly findfile "example.html"
@@ -523,9 +517,21 @@ program markdoc
 			exit 198
 		}
 	
-	// -----------------------------------------------------------------------------
+	
+	****************************************************************************
+	*DO NOT PRINT ANYTHING ON THE LOG
+	****************************************************************************
+	//quietly log query    
+	//if `"`r(filename)'"' != "" {
+	//	if `"`r(status)'"' == "on" {
+	//		local status `"`r(status)'"'		// status of the log
+	//		qui log off
+	//	}	
+	//}
+	
+	// -------------------------------------------------------------------------
 	// RUN THE ENGINE FOR LOG FILES
-	// =============================================================================
+	// =========================================================================
 	if missing("`scriptfile'") {
 	
 		************************************************************************	
@@ -1721,7 +1727,7 @@ program markdoc
 		
 		if missing("`export'") {
 			if "`markup'" == "markdown" | "`markup'" == ""  {
-				cap shell "$pandoc" "`tmp1'" -o "`md'"
+				`cap' shell "$pandoc" "`tmp1'" -o "`md'"
 				quietly  copy `"`md'"' `"`tmp'"', replace
 				*copy "`tmp1'" 0process11.md	, replace
 			}
@@ -1734,18 +1740,19 @@ program markdoc
 		}	
 					
 		if "`markup'" ==  "html"   {
-			if "`verbose'" == "verbose" di `"Running "$pandoc" "`tmp1'" -o "`tmp'""'
-			cap shell "$pandoc" "`tmp1'" -o "`tmp'"
+			if !missing("`noisily'") di "{ul:{bf:Creating Temp file}}" _n(2) 	///
+			`"{p}$pandoc `tmp1' -o `tmp'"'
+			`cap' shell "$pandoc" "`tmp1'" -o "`tmp'"
 			quietly  copy `"`tmp'"' `"`convert'"', replace
 			//copy "`tmp'" 0troubleshoot.html	, replace
 		}		
 		
 		if "`markup'" == "latex" & "`export'" == "tex" {
-			cap quietly copy "`tmp1'" "`convert'", replace
+			`cap' quietly copy "`tmp1'" "`convert'", replace
 		}
 		
 		if "`markup'" == "latex" & "`export'" == "pdf" {
-			cap quietly copy "`tmp1'" "`tex2pdf'", replace
+			`cap' quietly copy "`tmp1'" "`tex2pdf'", replace
 		}
 		
 				
@@ -2130,18 +2137,27 @@ program markdoc
 		*	REPLACE THE HTML FILE
 		********************************************************************	
 		if "`export'" == "html" & "`style'" ~= "" {
+			
 			if "`markup'" == "markdown" | "`markup'" == ""  {
 				quietly  copy `"`tmp1'"' `"`md'"', replace
 							
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
+					
 					tempfile out
 					tempfile in
 					quietly copy "`md'" "`in'"
-					if "`verbose'" == "verbose" di `"Running "$pandoc" "`in'" -o "`out'""'
+					
+					//if !missing("`noisily'") di `"Running "$pandoc" "`in'" -o "`out'""'
+					if !missing("`noisily'") di "{ul:{bf:Creating Temp file}}"  ///
+					_n(2) `"{p}$pandoc `md' -o `convert'"'
+					
 					shell "$pandoc" "`in'" -o "`out'"
 					quietly  copy "`out'" `"`html'"', replace
 					quietly  copy "`out'" `"`convert'"', replace
+					
+					*shell "$pandoc" "`md'" -o "`convert'"
+					*quietly  copy "`convert'" `"`html'"', replace
 					//copy "`convert'" "0pdfhtml.html", replace
 				}
 			}
@@ -2150,7 +2166,7 @@ program markdoc
 				quietly  copy `"`tmp1'"' `"`convert'"', replace
 				
 				// If the export was "pdf", then copy the file to "`html'"
-				if "`pdfhtml'" == "pdfhtml" {
+				if !missing("`pdfhtml'") {
 					quietly  copy `"`tmp1'"' `"`html'"', replace
 				}	
 			}	
@@ -2193,21 +2209,27 @@ program markdoc
 				// ===========================================
 				if "`c(os)'"=="Windows" {
 	
+					// ---------------------------------------------------------
 					// wkhtmltopdf
+					// ===========
+					//
+					// Use temporary files to prevent problems with UNC 
+					// directories on Windows. For more information, See
+					// https://support.microsoft.com/en-us/kb/156276
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
-						
-						
-						// Use temporary files to prevent problems with UNC directories on
-						// Windows
-						// (See: https://support.microsoft.com/en-us/kb/156276)
 						
 						tempfile in
 						tempfile out
 						// The in file needs to have .html suffix. Erase any existing temp file
 						cap erase "`in'.html"
-						quietly copy "`html'" "`in'.html"
+						cap copy "`html'" "`in'.html", replace 
 
-						if "`verbose'" == "verbose" di `"Running "$setpath" --footer-center [page] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`in'" "`out'"'
+						if !missing("`noisily'") di _n "$setpath" 				///
+						" --footer-center [page] --footer-font-size 10 "		///
+						"--margin-right 30mm --margin-left 30mm --margin-top "	///
+						"35mm --no-stop-slow-scripts --javascript-delay 1000 "	///
+						"--enable-javascript `toc' --debug-javascript "			///
+						`"`in'" "`out'"'
 	
 						shell "$setpath" 										///
 						--footer-center [page] --footer-font-size 10 			///
@@ -2220,8 +2242,8 @@ program markdoc
 						--debug-javascript 										///
 						"`in'.html" "`out'"
 						
-						quietly erase "`in'.html"
-						quietly copy "`out'" "`convert'", replace
+						cap erase "`in'.html"
+						cap copy "`out'" "`convert'", replace
 					}		
 				}	
 							
@@ -2232,7 +2254,7 @@ program markdoc
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 					
-						if "`verbose'" == "verbose" di `"Running "$setpath" --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript  "`html'" "`convert'""'
+						if "`noisily'" == "noisily" di `"Running "$setpath" --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript  "`html'" "`convert'""'
 					
 						shell "$setpath" 										///
 						--footer-center \[page\] --footer-font-size 10 			///
@@ -2255,7 +2277,7 @@ program markdoc
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 					
-						if "`verbose'" == "verbose" di `"Running "$setpath"  --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`html'" "`convert'""'
+						if "`noisily'" == "noisily" di `"Running "$setpath"  --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`html'" "`convert'""'
 						
 						shell "$setpath" 										///
 						--footer-center \[page\] --footer-font-size 10 			///
@@ -2329,7 +2351,7 @@ program markdoc
 					tempfile out
 					quietly copy "`md'" "`in'"
 			
-					if "`verbose'" == "verbose" di `"Running "$pandoc" `toc' -t beamer "`in'" `latexEngine' --include-in-header="`template'" -o "`out'""'
+					if "`noisily'" == "noisily" di `"Running "$pandoc" `toc' -t beamer "`in'" `latexEngine' --include-in-header="`template'" -o "`out'""'
 
 					shell "$pandoc" `toc' -t beamer "`in'" `latexEngine' 		///
 					--include-in-header="`template'" -o "`out'"
@@ -2350,7 +2372,7 @@ program markdoc
 					tempfile out
 					quietly copy "`md'" "`in'"
 
-					if "`verbose'" == "verbose" di `"Running "$pandoc" `mathjax' `toc' `reference' "`in'" -o "`out'""'
+					if "`noisily'" == "noisily" di `"Running "$pandoc" `mathjax' `toc' `reference' "`in'" -o "`out'""'
 
 					shell "$pandoc" `mathjax' `toc' 		///
 					`reference' "`in'" -o "`out'"		
@@ -2507,7 +2529,8 @@ program markdoc
 						"\clearpage" _n(2)		
 					}
 					file write `knot' "\inserttype[st0001]{article}" _n
-					file write `knot' "\author{Short article author list}{`author' `affiliation' `address' `date' \and}" _n
+					file write `knot' "\author{Short article author list}"		///
+					"{`author' `affiliation' `address' `date' \and}" _n
 					file write `knot' "\title[Short toc article title]{`title'}" _n
 					//if "`date'" ~= "" file write `knot' "\date{\today}" _n
 					file write `knot' "\maketitle" _n(2)
@@ -2587,11 +2610,11 @@ program markdoc
 			
 			if !missing("`pdftex'") & "`export'" != "slide" {
 				if "`printer'" != "" {
-					if "`verbose'" == "verbose" di `"Running "`printer'" -jobname "`name'" "`tex2pdf'""'
-					capture shell "`printer'" -jobname "`name'" "`tex2pdf'" 
+					if "`noisily'" == "noisily" di `"Running "`printer'" -jobname "`name'" "`tex2pdf'""'
+					`cap'< shell "`printer'" -jobname "`name'" "`tex2pdf'" 
 				}
 				else {
-					if "`verbose'" == "verbose" di `"Running "$printername" -jobname "`name'" "`tex2pdf'""'
+					if "`noisily'" == "noisily" di `"Running "$printername" -jobname "`name'" "`tex2pdf'""'
 					shell "$printername" -jobname "`name'" "`tex2pdf'"	
 				}
 			}
@@ -2700,10 +2723,10 @@ program markdoc
 	****************************************************************************
 	*REOPEN THE LOG
 	****************************************************************************
-	quietly log query    
-	if !missing("`status'")  {
-		qui log on	
-	}
+	//quietly log query    
+	//if !missing("`status'")  {
+	//	qui log on	
+	//}
 		
 end
 
