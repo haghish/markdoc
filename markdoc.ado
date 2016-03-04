@@ -392,12 +392,11 @@ program markdoc
 	}
 	*/
 				
-	//The texmaster option should only be specified when exporting to LaTeX format
-	//if "`texmaster'" ~= "" & "`export'" ~= "tex" {
-	//	di as err "{p}The {ul:{bf:texmaster}} option should only be " 			///
-	//	"specified while exporting to {bf:tex} format. " _n
-	//	error 198
-	//}
+	if "`texmaster'" ~= "" & "`export'" ~= "tex" {
+		di as err "{p}The {ul:{bf:texmaster}} option should only be " 			///
+		"specified while exporting to {bf:tex} format. " _n
+		error 198
+	}
 		
 	//Styles should be "simple" or "stata"
 	if "`style'" ~= "" & "`style'" ~= "stata" & "`style'" ~= "simple" 			///
@@ -2352,12 +2351,16 @@ program markdoc
 					quietly copy "`md'" "`in'"
 			
 					if "`noisily'" == "noisily" di `"Running "$pandoc" `toc' -t beamer "`in'" `latexEngine' --include-in-header="`template'" -o "`out'""'
-
+					
+					//It seems that Pandoc will need a ".pdf" extension to 
+					//produce PDF slides
+					
 					shell "$pandoc" `toc' -t beamer "`in'" `latexEngine' 		///
-					--include-in-header="`template'" -o "`out'"
+					--include-in-header="`template'" -o "`out'.pdf"
 
-					quietly copy "`out'" "`convert'", replace
-				
+					quietly copy "`out'.pdf" "`convert'", replace
+					capture erase "`out'.pdf"
+					
 					*shell "$pandoc" -t beamer "`md'" -V theme:Boadilla -V 		///
 					*colortheme:lily `fontsize' -o "`convert'"		
 				}				
