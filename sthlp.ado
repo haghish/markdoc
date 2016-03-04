@@ -658,8 +658,9 @@ program define sthlp
 	
 	file close `knot'
 
-	capture copy "`tmp'" "`convert'", `replace'	
-	capture copy "`tmp'" "$localfile", `replace'	
+	quietly copy "`tmp'" "`convert'", `replace'	
+	//quietly copy "`tmp'" "$localfile", `replace'	
+	capture macro drop localfile
 	
 	// -----------------------------------------------------------------
 	// Print the output 
