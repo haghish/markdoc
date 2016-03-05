@@ -19,7 +19,6 @@
 	3.6.7  February,  2016
 */
 
-
 program define sthlp
 
 	// NOTE:
@@ -665,8 +664,8 @@ program define sthlp
 	// -----------------------------------------------------------------
 	// Print the output 
 	// ================================================================= 
-	cap quietly findfile "`convert'"
-	if "`r(fn)'" != "" {
+	confirm file "`convert'"
+	if _rc == 0 {
 		di as txt "{p}(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
 	}
 	else display as err "MarkDoc could not produce `convert'" _n

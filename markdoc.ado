@@ -52,7 +52,6 @@
 	3.6.7  February,  2016
 */
 
-
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -404,7 +403,14 @@ program markdoc
 		di as err "{p}{bf:style} option not recognized."
 		error 198
 	}
-		
+	
+	
+	// make sure no problem happenes if the file has double quotation sign
+	capture local fname : display `smclfile'
+	if _rc == 0 {
+		local smclfile `fname'
+	}
+	
 	//If there is NO SMCL FILE and INSTALL or TEST options are not given, 
 	//RETURN AN ERROR that the SMCL FILE IS NEEDED
 		
@@ -2628,7 +2634,7 @@ program markdoc
 			****************************************************
 			cap confirm file "`convert'"
 			
-			if ! _rc {
+			if _rc == 0 {
 				di as txt "{p}(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
 				if "`export'" ~= "md" cap qui erase "`md'"
 			}
