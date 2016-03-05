@@ -2,14 +2,15 @@
 {* *! MarkDoc 3.4  04Oct2015}{...}
 {* *! MarkDoc 3.5  09Oct2015}{...}
 {* *! MarkDoc 3.6  3Jan2016}{...}
-{right:version 3.6.8 February, 2016}
+{right:version 3.6.8 March, 2016}
 {title:Title}
 
 {phang}
 {bf:markdoc} {hline 2} A general-purpose literate programming package for Stata that 
 produces dynamic analysis documents or package documentation in various formats 
-({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), dynamic 
-presentation slides ({bf:pdf}, {bf:slidy}, {bf:dzslide}), as well as dynamic 
+({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
+PDF or JavaScripts-based dynamic presentation slides ({bf:slide}, {bf:slidy}, 
+{bf:dzslide}), as well as dynamic 
 Stata help files ({bf:sthlp}, {bf:{help smcl}}). 
 
 {p 8 8 2}
@@ -19,6 +20,7 @@ help files or package documentation, MarkDoc requires a Stata script-file
 (do, ado, mata) as input and exports the documentations written within the source. 
 Visit MarkDoc homepage for documentation about generating 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#sthlp":{bf:dynamic Stata help files and documentations}}. 
+
 
 {p 8 8 2}
 MarkDoc supports 
@@ -48,7 +50,7 @@ source files using a special notations that are seperated from regular
 comments. Weaving the dynamic document or dynamic slides 
 can take place at any point without 
 requiring closing the log-file, which provides live-preview of the document. This 
-is the biggest advantage of MarkDoc and {help:Weaver} to other classic literate 
+is the biggest advantage of MarkDoc and {help Weaver} packages to other classic literate 
 programming packages which cannot provide live-preview of the document in an 
 interactive analysis session. 
 
@@ -125,7 +127,22 @@ Write dynamic text using any of the supported markup languages
 
 
 {phang}
-Create a dynamic table in Markdown documents (Not supported in HTML and LaTeX)
+Insert an image to the log manually or automatically.
+if {it:filename} is missing, {cmd:img} attempts to save and import the current 
+graph automatically. For more details and examples see 
+{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/weaver.php#img":Weaver documentation}
+
+{p 8 13 2}
+{bf:{help img}} [{it:{help filename}}] 
+[{cmd:,} {opt tit:le(str)} {opt w:idth(int)} {opt h:eight(int)} 
+{opt m:arkup(str)} {opt left center} ]
+
+
+{phang}
+Create a dynamic table in Markdown documents (Not supported in HTML and LaTeX). This 
+command has several directives for styling the table, creating nested tables, and 
+aligning the content of each column. For details see 
+{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/weaver.php#tbl":Weaver documentation}
 
 {p 8 13 2}
 {bf:{help tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
@@ -189,7 +206,11 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {synopt:{opt mathjax}}renders mathematical notations in the HTML and PDF document{p_end}
 
+<<<<<<< HEAD
 {synopt:{opt noi:sily}}enables extended log for debugging Pandoc and wkhtmltopdf{p_end} 
+=======
+{synopt:{opt noi:sily}}enables extended logging{p_end} 
+>>>>>>> master
 
 {synoptline}
 {p2colreset}{...}
@@ -199,7 +220,15 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {pstd}
 Any of the supported markup languages can be used to insert a figure in the 
-document. In general, there are two ways for inserting an image in the document. First, you can use Markdown, HTML, or LaTeX syntax for inserting an image {hline 2} that is already saved in your hard drive {hline 2} in the document. The other solution is using {help img} command. {cmd img} command can take the {help filename} of exsisting image on the hard drive and print the markup code (Markdown, HTML, or LaTeX. the default is Markdown) int he document. {cmd img} command can also auto-export the current graph and import it in the document. For more information in this regard see the {help img:img help file} and also {ul:{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#img":Examples and explanations on MarkDoc homepage}}
+document. In general, there are two ways for inserting an image in the document. 
+First, you can use Markdown, HTML, or LaTeX syntax for inserting an image {hline 2} 
+that is already saved in your hard drive {hline 2} in the document. The other solution is using {help img} command. 
+{cmd:img} command can take the {help filename} of exsisting image on the hard 
+drive and print the markup code (Markdown, HTML, or LaTeX. the default is 
+Markdown) int he document. {cmd:img} command can also auto-export the current 
+graph and import it in the document. For more information in this regard see 
+the {help img:img help file} and also 
+{ul:{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#img":Examples and explanations on MarkDoc homepage}}
 
 
 {title:Writing dynamic text}
