@@ -206,7 +206,11 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {synopt:{opt mathjax}}renders mathematical notations in the HTML and PDF document{p_end}
 
+<<<<<<< HEAD
+{synopt:{opt noi:sily}}enables extended log for debugging Pandoc and wkhtmltopdf{p_end} 
+=======
 {synopt:{opt noi:sily}}enables extended logging{p_end} 
+>>>>>>> master
 
 {synoptline}
 {p2colreset}{...}
