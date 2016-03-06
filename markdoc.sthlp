@@ -580,5 +580,3 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 {psee}
 {space 0}{bf:{help Synlight}}: HTML-based syntax highlighter for Stata
 
-
-

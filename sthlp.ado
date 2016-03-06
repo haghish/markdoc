@@ -16,7 +16,7 @@
 	This program is a part of MarkDoc package and generates dynamic Stata help 
 	files within source code, in ".sthlp" file format. 
  
-	3.6.7  February,  2016
+	3.6.8  March,  2016
 */
 
 program define sthlp
@@ -135,7 +135,7 @@ program define sthlp
 		"Intro Description" _n													///
 		"=================" _n(2)												///
 		"packagename -- A new module for ... "	_n(3)							/// 
-		"Author(s) section" _n													///
+		"Author(s)" _n															///
 		"=================" _n(2)												///
 		"Author name ..." _n													///
 		"Author affiliation ..." _n												///
@@ -243,12 +243,12 @@ program define sthlp
 					file read `hitch' line
 				}
 				
-				while missing("`line'") {
+				while missing(`"`macval(line)'"') {
 					file read `hitch' line
 				}
 				
-				while substr(`trim'(`"`macval(line)'"'),1,17) 					///
-				!= "Author(s) section" & r(eof) == 0 {
+				while substr(`trim'(`"`macval(line)'"'),1,6) 					///
+				!= "Author" & r(eof) == 0 {
 					local line2 = `trim'(`"`macval(line)'"')
 					local description "`description' `line2'"
 					file read `hitch' line
@@ -282,7 +282,7 @@ program define sthlp
 			}
 			
 			//Authors
-			if substr(`trim'(`"`macval(line)'"'),1,17) == "Author(s) section" {
+			if substr(`trim'(`"`macval(line)'"'),1,6) == "Author" {
 				file read `hitch' line
 				if substr(`"`macval(line)'"',1,3) == "===" {
 					file read `hitch' line
@@ -333,7 +333,7 @@ program define sthlp
 				if substr(`"`macval(line)'"',1,3) == "===" {
 					file read `hitch' line
 				}
-				while missing("`line'") {
+				while missing(`"`macval(line)'"') {
 					file read `hitch' line
 				}
 				
@@ -365,7 +365,7 @@ program define sthlp
 		}
 		else file write `knot' "{right:`version'}" _n
 		
-		if !missing("`description'") {
+		if !missing(`"`macval(description)'"') {
 			file write `knot' "{title:Title}" _n(2) "{phang}" _n				///
 			`"`macval(description)'"'
 		}
