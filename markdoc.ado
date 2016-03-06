@@ -411,6 +411,11 @@ program markdoc
 		local smclfile `fname'
 	}
 	
+	capture abspath "`smclfile'"
+	if _rc == 0 {
+		local smclfile `r(path)'
+	}
+	
 	//If there is NO SMCL FILE and INSTALL or TEST options are not given, 
 	//RETURN AN ERROR that the SMCL FILE IS NEEDED
 		
