@@ -34,6 +34,9 @@ f markdoccheck.ado
 f markdocversion.ado
 f markdocpandoc.ado
 f markdocwkhtmltopdf.ado
+f markdown.ado
+f markup.ado
+f sthlp.ado
 f markdoc.sthlp
 F markdoc_stata.docx
 F markdoc_simple.docx
