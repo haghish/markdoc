@@ -35,6 +35,8 @@ Mata Syntax
 
 program abspath, rclass
 	
+	
+	
 	// get the current path and save it
 	// --------------------------------------------------------------------
 	local wd : pwd
@@ -44,6 +46,8 @@ program abspath, rclass
 	if _rc == 0 {
 		local 0 `fname'
 	}
+	
+	confirm file "`0'"
 	
 	// get the path defined in the input and navigate to it
 	// --------------------------------------------------------------------
@@ -55,7 +59,7 @@ program abspath, rclass
 	
 	while !missing("`1'") {
 		if !missing("`3'") local p = "`p'" + "`1'"	//avoid the last 2 
-		if missing("`3'") local n = "`n'" + "`1'"	//get the last 2 
+		//if missing("`3'") local n = "`n'" + "`1'"	//get the last 2 
 		if missing("`2'") local filename = "`filename'" + "`1'"	
 		macro shift
 	} 
@@ -66,7 +70,8 @@ program abspath, rclass
 	// --------------------------------------------------------------------
 	local path : pwd
 	
-	local abspath = "`path'" + "`n'"
+	if "`c(os)'" == "Windows" local abspath = "`path'" + "\" + "`filename'"
+	else local abspath = "`path'" + "/" + "`filename'"
 	
 	if "`c(os)'" == "Windows" {
 		local path : subinstr local abspath "/" "\", all		
