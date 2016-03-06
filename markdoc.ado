@@ -1780,7 +1780,9 @@ program markdoc
 
 			file write `knot' "<!doctype html>" _n								///
 			"<html>" _n															/// 
-			"<head>" _n(3) 														
+			"<head>" _n 														///
+			`"<meta http-equiv="Content-Type" "'								///
+			`"content="text/html; charset=utf-8" />"' _n
 			
 			if !missing("`mathjax'") {
 				file write `knot' `"<script type="text/javascript" async "' _n 	///
