@@ -52,6 +52,7 @@
 	3.6.7  February,  2016
 */
 
+
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -404,18 +405,17 @@ program markdoc
 		error 198
 	}
 	
-	
 	// make sure no problem happenes if the file has double quotation sign
 	capture local fname : display `smclfile'
 	if _rc == 0 {
 		local smclfile `fname'
 	}
-	
+
 	capture abspath "`smclfile'"
 	if _rc == 0 {
-		local smclfile `r(path)'
+		local smclfile `r(abspath)'
 	}
-	
+
 	//If there is NO SMCL FILE and INSTALL or TEST options are not given, 
 	//RETURN AN ERROR that the SMCL FILE IS NEEDED
 		
@@ -438,7 +438,7 @@ program markdoc
 	//HOWEVER, IF THE USER WISHES TO RUN MARKDOC AND INSTALL IT AT THE SAME
 	//TIME, THERE WOULD BE NO CONFLICT AT ALL.
 
-		
+	
 	if "`smclfile'" ~= "" & "`test'" == "" & "`export'" != "sthlp" & 			///
 	"`export'" != "smcl" {
 
@@ -2720,7 +2720,7 @@ program markdoc
 	
 	if "`smclfile'" ~= "" & "`test'" == "" & "`export'" == "sthlp" | 			///
 	"`smclfile'" ~= "" & "`test'" == "" & "`export'" == "smcl" {
-		
+
 		sthlp `smclfile', export("`export'") template("`template'")				///
 		`replace' `date' title("`title'") summary("`summary'") 					///
 		author("`author'") affiliation("`affiliation'") address("`address'")  
