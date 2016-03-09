@@ -101,6 +101,7 @@ program markdoc
 	MATHjax 		 /// Interprets mathematics using MathJax
 	toc				 /// Creates table of content
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
+	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
@@ -411,10 +412,10 @@ program markdoc
 		local smclfile `fname'
 	}
 
-	capture abspath "`smclfile'"
-	if _rc == 0 {
-		local smclfile `r(abspath)'
-	}
+	//capture abspath "`smclfile'"
+	//if _rc == 0 {
+	//	local smclfile `r(abspath)'
+	//}
 
 	//If there is NO SMCL FILE and INSTALL or TEST options are not given, 
 	//RETURN AN ERROR that the SMCL FILE IS NEEDED
@@ -2723,7 +2724,8 @@ program markdoc
 
 		sthlp `smclfile', export("`export'") template("`template'")				///
 		`replace' `date' title("`title'") summary("`summary'") 					///
-		author("`author'") affiliation("`affiliation'") address("`address'")  
+		author("`author'") affiliation("`affiliation'") address("`address'") 	///
+		`asciitable'
 	}	
 	
 	

@@ -19,6 +19,8 @@
 	3.6.8  March,  2016
 */
 
+cap program drop sthlp
+
 program define sthlp
 
 	// NOTE:
@@ -47,6 +49,7 @@ program define sthlp
 	replace 	 	 /// replaces the current sthlp file, if it already exists
 	TEMPlate(str)	 /// If template(empty), avoid appending the template
 	Export(name) 	 /// specifies the exported format 
+	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	TITle(str)   	 /// specifies the title of the document (for styling)
 	AUthor(str)  	 /// specifies the author of mthe document (for styling)
 	AFFiliation(str) /// specifies author affiliation (for styling)
@@ -421,9 +424,13 @@ program define sthlp
 		}
 	}
 	
-	// -----------------------------------------------------------------
-	// EXTRACT NOTATIONS 
-	// ================================================================= 
+	
+	
+	
+	
+	// -------------------------------------------------------------------------
+	// Part 3: Prepare ASCII to SMCL table conversion
+	// =========================================================================
 	
 	while r(eof) == 0 {	
 		
@@ -457,12 +464,18 @@ program define sthlp
 					}
 				}
 				
-					
+				////////////////////////////////////////////////////////////////
+				// -------------------------------------------------------------
 				
-
-				//Interpret 2 lines at the time, for Markdown headings
+				
+				//Interpret 3 lines at the time, for Markdown headings
+				*local prepreline `"`macval(preline)'"'
 				local preline `"`macval(line)'"'
 				file read `hitch' line
+				//local currentline `"`macval(line)'"'
+				//file read `hitch' line
+				//local postline `"`macval(line)'"'
+				//local line `"`macval(currentline)'"' //stay on the current line
 				
 				
 				if _rc == 0 & missing(trim("`m'")) {
@@ -479,8 +492,7 @@ program define sthlp
 				// -------------------------------------------------------------
 				// IF MARKDOWN HEADING IS FOUND 
 				// -------------------------------------------------------------
-				if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |			///
-				substr(`trim'(`"`macval(line)'"'),1,3) == "---" {
+				if substr(`trim'(`"`macval(line)'"'),1,3) == "===" {
 					file write `knot' _n `"{title:`macval(preline)'}"' _n 
 				}
 				
@@ -492,8 +504,7 @@ program define sthlp
 					// check for Markdown paragraph syntax 
 					// ---------------------------------------------------------
 					if substr(`trim'(`"`macval(preline)'"'),1,4) != "***/" &	///
-					substr(`trim'(`"`macval(preline)'"'),1,3) != "===" &		///
-					substr(`trim'(`"`macval(preline)'"'),1,3) != "---" {
+					substr(`trim'(`"`macval(preline)'"'),1,3) != "===" {
 						
 						//Check for Paragraph code
 						if substr(`trim'(`"`macval(preline)'"'),1,1) == ":" 	///
@@ -568,35 +579,272 @@ program define sthlp
 						// this part is independent of the Marjdown engine
 						// Create Markdown Horizontal line
 						// =====================================================
+						
+						// CREATING THE ASCIITABLE, start with line
+						
+						//di as err "pre:`preline'"
+						//di  `"cur:`line'"'
+						//di  `"cur:`postline'"'
+						
+						*di as err "p :: `preline'"
+						*di as err "  :: `line'"
+						
+						*di as err  "ppp:: `preprepreline'"
+						*di as err "pp :: `prepreline'"
+						*di as err "p  :: `preline'"
+						*di as err "   :: `line'"
+						local n = `c(linesize)' + 80
+						
+						while `n' > 0 & !missing("`asciitable'") {
 							
-						foreach l in preline line {
-							
-							// Create SMCL Tab
-							// -----------------------------------------------------
-							if `trim'(`"`macval(`l')'"') != "- - -" &			///
-								substr(`trim'(`"`macval(`l')'"'),1,5) == "- - -" {
-								local `l' : subinstr local `l' "- - -" "{dlgtab:" 
-								local `l' = `"`macval(`l')' "' + "}"
+							// Handling + in the line
+							// =================================================
+							if substr(`"`preline'"',`n',3) == "-+-" {
+								// full + connected from above and below
+								if substr(`"`line'"',`n'+1,1) == "|" &			///
+								substr(`"`prepreline'"',`n'+1,1) == "|" {
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "-+-" "-{c +}-"
+									local preline2 : subinstr local preline2 "-+-" "-|-"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}
+								* -|- -+- 
+								
+								// + connected above
+								if substr(`"`prepreline'"',`n'+1,1) == "|" &			///
+								substr(`"`line'"',`n'+1,1) != "|" {
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "-+-" "-{c BT}-"
+									local preline2 : subinstr local preline2 "-+-" "-B-"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}
+								* -B- -{c BT}- 
+								
+								
+								// + connected below
+								if substr(`"`line'"',`n'+1,1) == "|" &			///
+								substr(`"`prepreline'"',`n'+1,1) != "|" {
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "-+-" "-{c TT}-"
+									local preline2 : subinstr local preline2 "-+-" "-T-"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}
+								* -T- -{c TT}- 
 							}
 							
-							// Create Markdown Horizontal line
-							// -----------------------------------------------------
-							if substr(`trim'(`"`macval(`l')'"'),1,5) == "- - -" ///
-							& `trim'(`"`macval(`l')'"') == "- - -" {
-							local `l' : subinstr local `l' "- - -" "    {hline}" 
+							
+							
+							// Handling + in the corners
+							// =================================================
+							if substr(`"`preline'"',`n',2) == "-+"  &			///
+							substr(`"`preline'"',`n',3) != "-+-"{
+							
+								
+								if substr(`"`line'"',`n'+1,1) == "|" &			///
+								substr(`"`prepreline'"',`n'+1,1) == "|" {
+								
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "-+" "-{c RT}"
+									local preline2 : subinstr local preline2 "-+" "-!"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}
+								* -! -{c RT} 
+								
+								
+								// + connected above
+								if substr(`"`prepreline'"',`n'+1,1) == "|" &			///
+								substr(`"`line'"',`n'+1,1) != "|" {
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "-+" "-{c BRC}"
+									local preline2 : subinstr local preline2 "-+" "-;"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}
+								* -2 -{c BRC} 
+								
+								
+								// + connected below
+								if substr(`"`line'"',`n'+1,1) == "|" &			///
+								substr(`"`prepreline'"',`n'+1,1) != "|" {
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "-+" "-{c TRC}"
+									local preline2 : subinstr local preline2 "-+" "-]"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+									* -3 -{c TRC} 
+								}
+								
+								
 							}
+							
+							if substr(`"`preline'"',`n',2) == "+-" &			///
+							substr(`"`preline'"',`n'-1,3) != "-+-"{
+								
+								// BOTH CONNECTIONS
+								
+								if substr(`"`line'"',`n',1) == "|" &			///
+								substr(`"`prepreline'"',`n',1) == "|" {
+								
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "+" "{c LT}"
+									local preline2 : subinstr local preline2 "+" "!"
+									
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+									* ! {c LT}
+								}
+								
+								
+								
+								// + connected above
+								if substr(`"`prepreline'"',`n',1) == "|" &			///
+								substr(`"`line'"',`n',1) != "|" {
+								
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "+-" "{c BLC}-"
+									local preline2 : subinstr local preline2 "+-" ":-"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}
+								
+								// + connected below
+								if substr(`"`line'"',`n',1) == "|" &			///
+								substr(`"`prepreline'"',`n',1) != "|" {
+									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+									local preline2 = substr(`"`macval(preline)'"',`n', .)
+									//local preline2 : subinstr local preline2 "+-" "{c TLC}-"
+									local preline2 : subinstr local preline2 "+-" "[-"
+									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+								}							
+							}
+							
+							// Handling + in the corners
+							// =================================================
+							if substr(`"`line'"',`n'-1,3) == " | " &			///
+							substr(`"`preline'"',`n'-1,3) == "---" {
+								local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
+								local preline2 = substr(`"`macval(preline)'"',`n', .)
+								local preline2 : subinstr local preline2 "-" "T"
+								local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
+							}
+							
+							if substr(`"`preline'"',`n'-1,3) == " | " &			///
+							substr(`"`line'"',`n'-1,3) == "---" {
+								local line1 = substr(`"`macval(line)'"',1,`n'-1)
+								local line2 = substr(`"`macval(line)'"',`n', .)
+								local line2 : subinstr local line2 "-" "B"
+								local line : di `"`macval(line1)'"' `"`macval(line2)'"'
+							}
+							
+							
+				
+							
+							local n `--n'
+						}
+						
+						
+						file write `knot' `"`macval(preline)'"' _n
+					}
+					
+				
+					if substr(`trim'(`"`macval(line)'"'),1,4) != "***/"  {
+						
+						local preprepreline `"`macval(prepreline)'"'
+						local prepreline `"`macval(preline)'"'
+						local preline `"`macval(line)'"'
+						
+						
+						
+*						file write `knot' `"`macval(line)'"' _n
+						*file read `hitch' line
+						
+						//remove white space in old-fashion way!
+						cap local m : display "`line'"
+						if _rc == 0 & missing(trim("`m'")) {
+							local line ""
+						}
+						
+					}	
+				}
+			
+			*local preprepreline `"`macval(prepreline)'"'
+			*local prepreline `"`macval(preline)'"'
+			
+			}
+		}
+		
+		// code line 
+		
+		file read `hitch' line
+		
+	}
+	file close `knot'
+	
+	
+	tempfile tmp1
+	quietly copy "`tmp'" "`tmp1'", replace
+	quietly copy "`tmp'" me.txt, replace
+	
+	
+	
+	// -----------------------------------------------------------------
+	// Create the ASCII tables
+	// ================================================================= 
+	tempname hitch knot 
+	qui file open `hitch' using `"`tmp1'"', read
+	qui file open `knot' using `"`tmp'"', write replace
+	file read `hitch' line
+	while r(eof) == 0 {	
+		
+		if !missing("`asciitable'") {
+			local line : subinstr local line "-|-" "-{c +}-"
+			local line : subinstr local line "-B-" "-{c BT}-"
+			local line : subinstr local line "-T-" "-{c TT}-", all
+			local line : subinstr local line  "!-" "{c LT}-", all
+			local line : subinstr local line "-!" "-{c RT}", all 
+			local line : subinstr local line ":-" "{c BLC}-", all
+			local line : subinstr local line "-;" "-{c BRC}", all
+			local line : subinstr local line "[-" "{c TLC}-", all
+			local line : subinstr local line  "-]" "-{c TRC}", all
+			
+			local line : subinstr local line "-| " "-{c RT} ", all
+			local line : subinstr local line " |-" " {c LT}-", all
+			local line : subinstr local line "|" "{c |}", all
+		}
+		
+		foreach l in line {
+							
+			// Create SMCL Tab
+			// -----------------------------------------------------
+			if `trim'(`"`macval(`l')'"') != "- - -" &			///
+				substr(`trim'(`"`macval(`l')'"'),1,5) == "- - -" {
+				local `l' : subinstr local `l' "- - -" "{dlgtab:" 
+				local `l' = `"`macval(`l')'"' + "}"
+			}
+							
+			// Create Markdown Horizontal line
+			// -----------------------------------------------------
+			if substr(`trim'(`"`macval(`l')'"'),1,5) == "- - -" ///
+			& `trim'(`"`macval(`l')'"') == "- - -" {
+				local `l' : subinstr local `l' "- - -" "    {hline}" 
+			}
 						
 							
-							// Secondary syntax for headers
-							// -----------------------------------------------------
-							cap if substr(`trim'(`"`macval(`l')'"'),1,2) == "# " {
-								local `l' : subinstr local `l' "# " "", all
-								local `l'  "{title:`l'}"
-							}
-							else if substr(`trim'(`"`macval(`l')'"'),1,3) == "## " {
-								local `l' : subinstr local `l' "## " "", all
-								local `l'  "{title:`l'}"
-							}
+			// Secondary syntax for headers
+			// -----------------------------------------------------
+			cap if substr(`trim'(`"`macval(`l')'"'),1,2) == "# " {
+				local `l' : subinstr local `l' "# " "", all
+				local `l'  "{title:`l'}"
+			}
+			else if substr(`trim'(`"`macval(`l')'"'),1,3) == "## " {
+				local `l' : subinstr local `l' "## " "", all
+				local `l'  "{title:`l'}"
+			}
 							
 							
 							// Markdown styling syntax
@@ -613,50 +861,38 @@ program define sthlp
 									local `l' : subinstr local `l' "_" "}"
 								}
 							
-							local `l' : subinstr local `l' "|" "{c |}", all
-							local `l' : subinstr local `l' "-+-" "-{c +}-", all
-							local `l' : subinstr local `l' "+-" "{c TLC}-", all 
-							local `l' : subinstr local `l' "-+" "-{c TRC}", all 
+							//local `l' : subinstr local `l' "|" "{c |}", all
+							//local `l' : subinstr local `l' "-+-" "-{c +}-", all
+							//local `l' : subinstr local `l' "+-" "{c TLC}-", all 
+							//local `l' : subinstr local `l' "-+" "-{c TRC}", all 
 							*local `l' : subinstr local `l' "-" "{c -}", all
 							
+							
 							//Make it nicer
-							local i 80
+							local i 90
 							while `i' > 1 {
 								local j : display _dup(`i') "-"
-								local `l' : subinstr local `l' "`j'" "{hline `i'}"
+								local `l' : subinstr local `l' "`j'" "{hline `i'}", all
 								local i `--i'
 							}
 							
-						}
-						*di as txt "p3: {bf:`preline'}"
-						
-						
-						file write `knot' `"`macval(preline)'"' _n
-					}	
-				
-					if substr(`trim'(`"`macval(line)'"'),1,4) != "***/"  {
-						
-						file write `knot' `"`macval(line)'"' _n
-						file read `hitch' line
-						
-						//remove white space in old-fashion way!
-						cap local m : display "`line'"
-						if _rc == 0 & missing(trim("`m'")) {
-							local line ""
-						}
-						
-					}	
-				}
-			}
-		}
-		
-		// code line 
+					}		
+							
+		file write `knot' `"`macval(line)'"' _n
 		file read `hitch' line
-		
 	}
-	
 	file close `knot'
-
+	quietly copy "`tmp'" "`tmp1'", replace
+	quietly copy "`tmp'" me2.txt, replace
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	quietly copy "`tmp'" "`convert'", `replace'	
 	//quietly copy "`tmp'" "$localfile", `replace'	
 	capture macro drop localfile
@@ -671,3 +907,6 @@ program define sthlp
 	else display as err "MarkDoc could not produce `convert'" _n
 		
 end
+
+
+markdoc figure.ado, replace export(sthlp) template(empty) asciitable
