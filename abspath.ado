@@ -33,6 +33,7 @@ Mata Syntax
 {opt abspath}{bf:(}{it:"{help filename:filename}"}{bf:)}
 ***/
 
+
 program abspath, rclass
 	
 	
@@ -63,8 +64,8 @@ program abspath, rclass
 		if missing("`2'") local filename = "`filename'" + "`1'"	
 		macro shift
 	} 
-	
-	quietly cd "`p'"
+
+	if !missing("`p'") quietly cd "`p'"				//make sure it's not missing
 	
 	// get the current path
 	// --------------------------------------------------------------------
@@ -83,7 +84,7 @@ program abspath, rclass
 	// --------------------------------------------------------------------
 	quietly cd "`wd'"
 	
-	//display "`abspath'"
+	display "`abspath'"
 	return local path `path'
 	return local abspath `abspath'
 	return local fname `filename'
