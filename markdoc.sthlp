@@ -112,10 +112,11 @@ Convert {it:smclfile} to any document format
 {p 8 13 2}
 {cmdab:markdoc} {it:smclfile} [{cmd:,} 
 {opt pan:doc(str)} {opt print:er(str)} {opt instal:l} {opt t:est} {opt replace} 
-{opt e:xport(name)} {opt mark:up(name)} {opt no:number} {opt sty:le(name)} 
+{opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
 {opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
 {opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt math:jax} {opt noi:sily}
+{opt ascii:table}
 ]
 
 
@@ -167,7 +168,7 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt mark:up(name)}}specify the markup language used for writing the document and the default is Markdown{p_end}
 
-{synopt:{opt no:number}}turns the command numbering system off. by default, MarkDoc numbers the commands in the document.{p_end}
+{synopt:{opt num:bered}}numbers Stata commands in the dynamic document.{p_end}
 
 {synopt:{opt linesize(int)}}change the {help linesize} for the {help log}, which can range from 80 to 255{p_end}
 
@@ -206,11 +207,10 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {synopt:{opt mathjax}}renders mathematical notations in the HTML and PDF document{p_end}
 
-<<<<<<< HEAD
 {synopt:{opt noi:sily}}enables extended log for debugging Pandoc and wkhtmltopdf{p_end} 
-=======
-{synopt:{opt noi:sily}}enables extended logging{p_end} 
->>>>>>> master
+
+{synopt:{opt ascii:table}}converts ascii and figures tables to smcl. This feature 
+can be used for adding ascii models of a program or tables in Stata help file.
 
 {synoptline}
 {p2colreset}{...}
@@ -566,7 +566,7 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
     {bf:         ***/}
 	
 	{bf:  qui log c}
-	{bf:  markdoc example, replace export(slide) install printer("/usr/texbin/pdflatex") nonumber}
+	{bf:  markdoc example, replace export(slide) install printer("/usr/texbin/pdflatex") }
 	
 
 {title:Also see}

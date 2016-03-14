@@ -86,7 +86,7 @@ program markdoc
 	Test 		 	 /// tests the required software to make sure they're running correctly 
 	PANdoc(str)  	 /// specifies the path to Pandoc software on the machine
 	PRINTer(str)     /// the path to the PDF printer on the machine
-	NOnumber 	 	 /// avoids command number in the document
+	NUMbered 	 	 /// number Stata commands
 	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
 	statax			 /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
@@ -411,11 +411,18 @@ program markdoc
 	if _rc == 0 {
 		local smclfile `fname'
 	}
+	
+	
+	// Use Absolute Path for UNC working directory
+	if c(os) == "Windows" & substr(c(pwd),1,2) =="\\" {
+		quietly abspath "`smclfile'"
+		if _rc == 0 {
+			local smclfile `r(abspath)'
+		}
+	}
+	
 
-	//capture abspath "`smclfile'"
-	//if _rc == 0 {
-	//	local smclfile `r(abspath)'
-	//}
+	
 
 	//If there is NO SMCL FILE and INSTALL or TEST options are not given, 
 	//RETURN AN ERROR that the SMCL FILE IS NEEDED
@@ -610,7 +617,7 @@ program markdoc
 				local preline = substr(`"`macval(preline)'"',15,.)
 				
 				//remove numbering system
-				if !missing("`nonumber'") {
+				if missing("`numbered'") {
 					*local line `"{txt}   {com}. `macval(preline)'"'
 					local line = substr(`"`macval(line)'"',9,.)
 				}
@@ -1408,12 +1415,16 @@ program markdoc
 		
 		if  missing("`scriptfile'") translator set smcl2txt lmargin 6
 		if !missing("`scriptfile'") translator set smcl2txt lmargin 0
-
-		if "`nonumber'" == "nonumber" {
-			if "`r(cmdnumber)'" == "on" {
+		
+		if "`numbered'" == "numbered" {
+			if "`r(cmdnumber)'" == "off" {
+				local savecmdnumber off
+				translator set smcl2txt cmdnumber on
+			}
+		} 
+		else if "`r(cmdnumber)'" == "on" {
 				local savecmdnumber on
 				translator set smcl2txt cmdnumber off
-			}
 		}
 				
 		if "`r(logo)'" == "on" {
@@ -1433,7 +1444,7 @@ program markdoc
 		}	
 		
 		*reset the users' default setting of the translator
-		if "`savecmdnumber'" == "on" translator set smcl2txt cmdnumber on
+		if !missing("`savecmdnumber'") translator set smcl2txt cmdnumber `savecmdnumber'
 		if "`savelogo'" == "on" translator set smcl2txt logo on
 		
 		*RESTORE THE DEFAULT LINESIZE OF THE TRANSLATOR
@@ -1570,7 +1581,7 @@ program markdoc
 			// =================================================================
 
 			// OUTPUTS 
-			while substr(`"`macval(line)'"',1,6) == "      " & 				/// 
+			capture while substr(`"`macval(line)'"',1,6) == "      " & 				/// 
 			substr(`"`macval(line)'"',10,1) ~= "." & 							///
 			`"`macval(line)'"' ~= "      " & 									///
 			substr(`"`macval(line)'"',1,7) != "      >" {
