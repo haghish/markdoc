@@ -51,7 +51,7 @@
 	1.0.0	   July,  2014 
 	3.6.7  February,  2016
 */
-
+//cap prog drop markdoc
 
 program markdoc
 	
@@ -407,14 +407,17 @@ program markdoc
 	}
 	
 	// make sure no problem happenes if the file has double quotation sign
-	capture local fname : display `smclfile'
-	if _rc == 0 {
-		local smclfile `fname'
-	}
+	capture local fname : display "`smclfile'"
+	if _rc != 0 {
+		capture local fname : display `smclfile'
+		if _rc == 0 {
+			local smclfile `fname'
+		}
+	} 
 	
 	
 	// Use Absolute Path for UNC working directory
-	if c(os) == "Windows" & substr(c(pwd),1,2) =="\\" {
+	if c(os) == "Windows" & substr(c(pwd),1,2) =="\\\\" {
 		quietly abspath "`smclfile'"
 		if _rc == 0 {
 			local smclfile `r(abspath)'
@@ -621,14 +624,47 @@ program markdoc
 					*local line `"{txt}   {com}. `macval(preline)'"'
 					local line = substr(`"`macval(line)'"',9,.)
 				}
-			
+				
+				// Figure Interpretation
+				// -------------------------------------------------------------
+				if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" & 		///
+				"`export'" == "html" {
+					
+					local figure 1						// indicator
+					
+					file write `knot' _n
+					
+					if substr(trim(`"`macval(preline)'"'),1,6) == "/***$$" {
+						file write `knot' "//FIGURENEW" 
+						local preline : subinstr local preline "/***$$" "/***"
+					}
+					else if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" {
+						file write `knot' "//FIGURECONTINUE" 
+						local preline : subinstr local preline "/***$" "/***"
+					}
+					
+				}
+				if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" & 		///
+				"`export'" != "html" {
+					
+					file write `knot' _n
+					
+					if substr(trim(`"`macval(preline)'"'),1,6) == "/***$$" {
+						local preline : subinstr local preline "/***$$" "/*"
+					}
+					else if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" {
+						local preline : subinstr local preline "/***$" "/*"
+					}
+				}
+				
+				
 				// Text Interpretation
 				// -------------------------------------------------------------
 				if substr(trim(`"`macval(preline)'"'),1,4) == "/***"   &		///
 				 substr(trim(`"`macval(preline)'"'),1,5)   != "/***/"  &		///
-				 substr(trim(`"`macval(preline)'"'),1,5)   != "/****" {
+				 substr(trim(`"`macval(preline)'"'),1,5)   != "/****"  {
 					
-					file write `knot' _n 
+					file write `knot' _n
 					file read `hitch' line
 			
 					while substr(`"`macval(line)'"',1,1) == ">" {
@@ -675,11 +711,73 @@ program markdoc
 					local preline : subinstr local preline ":" ""
 				}	
 				
+				
+				
+				// Figure Interpretation
+				// -------------------------------------------------------------
+				if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" & 		///
+				"`export'" == "html" {
+					
+					
+					file write `knot' _n
+					
+					
+					if substr(trim(`"`macval(preline)'"'),1,6) == "/***$$" {
+						capture file close `fig'
+						local figure = `figure' + 1		// indicator
+						tempfile f`figure'
+						tempname fig 
+						file write `knot' "//FIGURENEW" 
+						file read `hitch' line
+						
+						qui file open `fig' using "`f`figure''", write replace
+						
+						while substr(`"`macval(line)'"',1,1) == ">" {
+							local preline `"`macval(line)'"'
+							local preline : subinstr local preline ">" ""
+							local preline = trim(`"`macval(preline)'"')
+							if substr(`"`macval(preline)'"',1,4) != "***/" {
+								file write `fig' `"`macval(preline)'"' _n 
+							}	
+							file read `hitch' line
+						}
+						
+					}
+					else if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" {
+						
+						file read `hitch' line
+						
+						while substr(`"`macval(line)'"',1,1) == ">" {
+							local preline `"`macval(line)'"'
+							local preline : subinstr local preline ">" ""
+							local preline = trim(`"`macval(preline)'"')
+							if substr(`"`macval(preline)'"',1,4) != "***/" {
+								file write `fig' `"`macval(preline)'"' _n 
+							}	
+							file read `hitch' line
+						}
+					}
+				}
+				
+				// If export is not HTML, hide them
+				if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" & 		///
+				"`export'" != "html" {
+					
+					file write `knot' _n
+					
+					if substr(trim(`"`macval(preline)'"'),1,6) == "/***$$" {
+						local preline : subinstr local preline "/***$$" "/*"
+					}
+					else if substr(trim(`"`macval(preline)'"'),1,5) == "/***$" {
+						local preline : subinstr local preline "/***$" "/*"
+					}
+				}
+				
 				// Text Interpretation
 				// -------------------------------------------------------------
 				if substr(trim(`"`macval(preline)'"'),1,4) == "/***"   &		///
 				 substr(trim(`"`macval(preline)'"'),1,5)   != "/***/"  &		///
-				 substr(trim(`"`macval(preline)'"'),1,5)   != "/****" {
+				 substr(trim(`"`macval(preline)'"'),1,5)   != "/****"  {
 					
 					file write `knot' _n 
 					file read `hitch' line
@@ -746,8 +844,13 @@ program markdoc
 		}
 								
 		file close `knot'
+		capture file close `fig'
 		*copy "`tmp'" 0process1.smcl	, replace		//For debugging
-			
+		
+		
+		//copy "`f1'" fig1.txt, replace	
+		//copy "`f`figure''" fig2.txt, replace
+		
 		
 		
 		********************************************************************
@@ -1121,7 +1224,7 @@ program markdoc
 		}
 
 		file close `knot'		
-		// copy "`tmp1'" 0process2.smcl	, replace			//For debugging
+		*copy "`tmp1'" 0process2.smcl	, replace			//For debugging
 			
 		
 		
@@ -1395,6 +1498,65 @@ program markdoc
 		}	
 		
 
+		// ---------------------------------------------------------------------
+		// FIGURE PROCESSING
+		// =====================================================================
+		
+		*copy "`tmp1'" 0process6.smcl	, replace	
+		
+		if !missing("`figure'") { 							
+			quietly  copy `"`tmp1'"' `"`tmp'"', replace
+			tempfile tmp1
+			
+			tempname hitch knot 
+			qui file open `hitch' using "`tmp'", read
+			qui file open `knot' using `"`tmp1'"', write replace
+			file write `knot' _newline 
+			file read `hitch' line
+			local figure
+			while r(eof) == 0 {	
+					
+				
+				if substr(`"`macval(line)'"',1,11) == "//FIGURENEW" {
+					local figure = `figure' + 1		
+					
+					qui file open `fig' using "`f`figure''", read 
+					
+					file write `knot' "><script>" _n							///
+					">document.body.innerHTML += Viz("  _n						///
+					//"'digraph { ' +" _n										///
+					
+					file read `fig' figline
+					
+					while r(eof) == 0 {
+						if !missing(`trim'(`"`macval(figline)'"')) {
+							file write `knot' "'" `"`macval(figline)'"' "'"
+						}	
+						
+						file read `fig' figline
+						
+						if !missing(`trim'(`"`macval(figline)'"')) {
+							file write `knot' " +" _n
+						}	
+						
+					}
+					file write `knot' _n /// ">'} '" _n									///
+					`">);"' _n													///
+					"></script>" _n
+					
+					file close `fig'
+				}
+				
+				else file write `knot' `"`macval(line)'"' _n
+				
+				file read `hitch' line
+			}
+			file close `knot'
+			file close `hitch'
+			
+		}	
+
+		*copy "`tmp1'" 0process6B.smcl	, replace
 		
 		********************************************************************
 		*PART 3A- TRANSLATING SMCL TO TXT
@@ -1796,6 +1958,7 @@ program markdoc
 			`"<meta http-equiv="Content-Type" "'								///
 			`"content="text/html; charset=utf-8" />"' _n
 			
+			
 			if !missing("`mathjax'") {
 				file write `knot' `"<script type="text/javascript" async "' _n 	///
 				`"src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?"'		///
@@ -1803,8 +1966,13 @@ program markdoc
 				`"</script>"' _n(3)
 			}
 			
+			if !missing("`figure'") 											///
+			file write `knot' _n `"<script type="text/javascript" "' _n 		///
+			`"src="http://www.haghish.com/software/viz.js">"' _n				///							///
+			`"</script>"' _n(3)
+				
 			
-			file write `knot' "<!-- SYNTAX HIGHLIGHTING CLASSES  -->" _n(2) 	///
+			file write `knot' _n "<!-- SYNTAX HIGHLIGHTING CLASSES  -->" _n(2) 	///
 			`"<style type="text/css">"' _n	
 			
 			
@@ -2152,7 +2320,7 @@ program markdoc
 				
 			file close `knot'
 			file close `hitch'
-			*cap quietly copy "`tmp1'" "analysis.txt", replace			
+			*cap quietly copy "`tmp1'" "html.txt", replace			
 		
 	}
 			
