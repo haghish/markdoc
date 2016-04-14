@@ -16,10 +16,8 @@
 	This program is a part of MarkDoc package and generates dynamic Stata help 
 	files within source code, in ".sthlp" file format. 
  
-	3.6.8  March,  2016
+	3.6.9  April,  2016
 */
-
-cap program drop sthlp
 
 program define sthlp
 
@@ -909,4 +907,4 @@ program define sthlp
 end
 
 
-markdoc figure.ado, replace export(sthlp) template(empty) asciitable
+//markdoc figure.ado, replace export(sthlp) template(empty) asciitable

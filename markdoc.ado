@@ -49,9 +49,10 @@
 	MarkDoc Versions
 	----------------
 	1.0.0	   July,  2014 
-	3.6.7  February,  2016
+	3.6.9     April,  2016
 */
-//cap prog drop markdoc
+
+cap prog drop markdoc 
 
 program markdoc
 	
@@ -171,7 +172,7 @@ program markdoc
 	//format is not specified, alter the default if the "markup" is specified
 
 
-	
+// FEATURE REQUEST ???	
 // ??? -------------------------------------------------------------------------	
 // PROGRAM IT IN A WAY THAT HTML AND LATEX CAN ALSO BE CONVERTED TO OTHER FORMAT	
 	if "`markup'" == "html" {
@@ -200,7 +201,7 @@ program markdoc
 	// The printer is used for creating PDF documents in MarkDoc. In general,
 	// there are 2 printers available which are "wkhtmltopdf" & "pdflatex."
 	// The default is "wkhtmltopdf" 
-	if "`export'" == "pdf" &  "`markup'" ~= "latex" {
+	if "`export'" == "pdf" &  "`markup'" != "latex" {
 		global printername "wkhtmltopdf" 		//printer for HTML and Markdown
 		
 		if missing("`printer'") & !missing("$pathWkhtmltopdf") {
@@ -237,7 +238,7 @@ program markdoc
 		
 				cap quietly findfile pdflatex.exe, 								///
 				path("C:\Program Files\MiKTeX 2.9\miktex\bin\x64\")
-				if "`r(fn)'" ~= "" {
+				if "`r(fn)'" != "" {
 					local printer "C:\Program Files\MiKTeX 2.9\miktex\bin\x64\pdflatex.exe"
 				}
 			}
@@ -246,7 +247,7 @@ program markdoc
 			// =========
 			if "`c(os)'" == "MacOSX" {
 				cap quietly findfile pdflatex, path("/usr/texbin/")
-				if "`r(fn)'" ~= "" {
+				if "`r(fn)'" != "" {
 					local printer "/usr/texbin/pdflatex"
 				}
 			}
@@ -291,7 +292,7 @@ program markdoc
 	*CHECK FOR REQUIRED SOFTWARE
 	************************************************************************
 	//If PDF format is specified and pdf path is not empty, make sure file exists
-	if "`printer'" ~= "" {
+	if "`printer'" != "" {
 		confirm file "`printer'"
 	}
 
@@ -372,7 +373,7 @@ program markdoc
 	// ==============
 	// Create a local for processing the PDF. Then change the export to HTML
 	// and later, change it to PDF using the "pdfhtml" local
-	if "`export'" == "pdf" & "`markup'" ~= "latex" {
+	if "`export'" == "pdf" & "`markup'" != "latex" {
 		local pdfhtml "pdfhtml" 
 		local export "html"
 	}
@@ -393,15 +394,15 @@ program markdoc
 	}
 	*/
 				
-	if "`texmaster'" ~= "" & "`export'" ~= "tex" {
+	if "`texmaster'" != "" & "`export'" != "tex" & "`export'" != "pdf" {
 		di as err "{p}The {ul:{bf:texmaster}} option should only be " 			///
 		"specified while exporting to {bf:tex} format. " _n
 		error 198
 	}
 		
 	//Styles should be "simple" or "stata"
-	if "`style'" ~= "" & "`style'" ~= "stata" & "`style'" ~= "simple" 			///
-		& "`style'" ~= "empty" {
+	if "`style'" != "" & "`style'" != "stata" & "`style'" != "simple" 			///
+		& "`style'" != "empty" {
 		di as err "{p}{bf:style} option not recognized."
 		error 198
 	}
@@ -450,18 +451,32 @@ program markdoc
 	//TIME, THERE WOULD BE NO CONFLICT AT ALL.
 
 	
-	if "`smclfile'" ~= "" & "`test'" == "" & "`export'" != "sthlp" & 			///
+	if "`smclfile'" != "" & "`test'" == "" & "`export'" != "sthlp" & 			///
 	"`export'" != "smcl" {
-
+		
+		// Create an "output" file that is exported from Pandoc
+		// --------------------------------------------------------------
+		tempfile output 
+		tempfile md
+		local md  "`md'.md"
+		
 		local input `smclfile'	
 		
 		if (index(lower("`input'"),".smcl")) {
 			local input : subinstr local input ".smcl" ""
-			if "`export'" == "slide" local convert "`input'.pdf"
-			else if "`export'" == "dzslide" local convert "`input'.html"
-			else if "`export'" == "slidy" local convert "`input'.html"
-			else local convert "`input'.`export'"
-			local md  "`input'.md"
+			if "`export'" == "slide" {
+				local convert "`input'.pdf"
+				local output "`output'.pdf"
+			}	
+			else if "`export'" == "dzslide" | "`export'" == "slidy" {
+				local convert "`input'.html"
+				local output "`output'.html"
+			}
+			else {
+				local convert "`input'.`export'"
+				local output "`output'.`export'"
+			}	
+			
 			local html "_`input'.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
@@ -507,10 +522,18 @@ program markdoc
 			local scriptfile 1						//define a scriptfile
 		}
 		else if (!index(lower("`input'"),".smcl")) {
-			if "`export'" == "slide" local convert "`input'.pdf"
-			else if "`export'" == "dzslide" local convert "`input'.html"
-			else if "`export'" == "slidy" local convert "`input'.html"
-			else local convert "`input'.`export'"
+			if "`export'" == "slide" {
+				local convert "`input'.pdf"
+				local output "`output'.pdf"
+			}	
+			else if "`export'" == "dzslide" | "`export'" == "slidy" {
+				local convert "`input'.html"
+				local output "`output'.html"
+			}
+			else {
+				local convert "`input'.`export'"
+				local output "`output'.`export'"
+			}	
 			local md  "`input'.md"
 			local html "_`input'.html"
 			local pdf "`input'.pdf"
@@ -532,7 +555,7 @@ program markdoc
 		
 		*Check if the exported document already exists
 		capture quietly findfile "`convert'"
-		if "`r(fn)'" ~= "" & "`replace'" == "" {
+		if "`r(fn)'" != "" & "`replace'" == "" {
 			di as err "{p}{bf:`convert'} file already exists. " 				///
 			"Use the {bf:replace} option to replace the existing file." 					
 			exit 198
@@ -1315,7 +1338,7 @@ program markdoc
 						file write `knot' `"`macval(line)'"' _n
 						file read `hitch' line							
 						local word1 : word 1 of `"`macval(line)'"'
-						while substr(`"`macval(word1)'"',-5,.) ~= ". end" 		///
+						while substr(`"`macval(word1)'"',-5,.) != ". end" 		///
 						& r(eof) == 0 {
 								
 							//BREAK FOR COMMENTS
@@ -1377,7 +1400,7 @@ program markdoc
 						file write `knot' `"`macval(line)'"' _n
 						file read `hitch' line							
 						local word1 : word 1 of `"`macval(line)'"'			
-						while substr(`"`macval(word1)'"',-12,.) ~= 				///
+						while substr(`"`macval(word1)'"',-12,.) != 				///
 						"{txt}{hline}" & r(eof) == 0 {
 								
 							//BREAK FOR COMMENTS
@@ -1612,7 +1635,7 @@ program markdoc
 		*RESTORE THE DEFAULT LINESIZE OF THE TRANSLATOR
 		translator set smcl2txt linesize `savelinesize'
 		translator set smcl2txt lmargin  `savemargin'
-		*copy "`tmp1'" 0process7.txt	, replace	 //for debugging
+		//copy "`tmp1'" 0process7.txt	, replace	 //for debugging
 		
 		
 		********************************************************************
@@ -1658,18 +1681,17 @@ program markdoc
 		}
 		
 		//Add the title page in Markdown
-		if "`export'" ~= "tex" & "`export'" ~= "pdf" & "`export'" ~= "html" {
+		if "`export'" != "tex" & "`export'" != "pdf" & "`export'" != "html" {
 			if "`markup'" == "markdown" | "`markup'" == "" {		
 				tempfile tmp1
 				tempname hitch knot 
 				qui file open `hitch' using "`tmp'", read 
 				qui cap file open `knot' using "`tmp1'", write replace
-				*file write `knot'  _newline
 				file read `hitch' line	
 				
 				//REMOVE THE EMPTY LINES IN THE HEADER
 				*while missing(ustrltrim(`"`macval(line)'"')) & r(eof) == 0 {
-				while missing(trim(`"`macval(line)'"')) & r(eof) == 0 {
+				while missing(`trim'(`"`macval(line)'"')) & r(eof) == 0 {
 					file read `hitch' line
 				}
 		
@@ -1706,22 +1728,22 @@ program markdoc
 				
 				if "`export'" != "docx" & "`export'" != "odt" {
 				
-					if "`title'" ~= "" file write `knot'  						///
+					if "`title'" != "" file write `knot'  						///
 					"  `title'" _n 												///
 					"=======" _n(2)
 
-					if "`author'" ~= "" file write `knot'  "`author'   " _n(2) 
-					if "`affiliation'" ~= "" file write `knot'  				///
+					if "`author'" != "" file write `knot'  "`author'   " _n(2) 
+					if "`affiliation'" != "" file write `knot'  				///
 					"`affiliation'    " _n(2) 
-					if "`date'" ~= "" file write `knot'  						///
+					if "`date'" != "" file write `knot'  						///
 					"`c(current_date)'    " _n(2)  
 				}
 				
 				if "`export'" != "docx" {
-					if "`summary'" ~= "" file write `knot'  "`summary'    " _n(2)
+					if "`summary'" != "" file write `knot'  "`summary'    " _n(2)
 				}
 				
-				if "`address'" ~= "" file write `knot'  "_`address'_    " _n(2) 
+				if "`address'" != "" file write `knot'  "_`address'_    " _n(2) 
 			}
 		}
 		
@@ -1744,8 +1766,8 @@ program markdoc
 
 			// OUTPUTS 
 			capture while substr(`"`macval(line)'"',1,6) == "      " & 				/// 
-			substr(`"`macval(line)'"',10,1) ~= "." & 							///
-			`"`macval(line)'"' ~= "      " & 									///
+			substr(`"`macval(line)'"',10,1) != "." & 							///
+			`"`macval(line)'"' != "      " & 									///
 			substr(`"`macval(line)'"',1,7) != "      >" {
 			
 				local host `"`macval(line)'"'
@@ -1911,6 +1933,12 @@ program markdoc
 		
 		if missing("`export'") {
 			if "`markup'" == "markdown" | "`markup'" == ""  {
+				
+				if !missing("`noisily'") {
+					di _n(2) "{title:Creating Temp file}" _n 					///
+					`"{p}$pandoc `tmp1' -o `tmp'"'
+				}
+			
 				`cap' shell "$pandoc" "`tmp1'" -o "`md'"
 				quietly  copy `"`md'"' `"`tmp'"', replace
 				*copy "`tmp1'" 0process11.md	, replace
@@ -1924,8 +1952,11 @@ program markdoc
 		}	
 					
 		if "`markup'" ==  "html"   {
-			if !missing("`noisily'") di "{ul:{bf:Creating Temp file}}" _n(2) 	///
-			`"{p}$pandoc `tmp1' -o `tmp'"'
+			if !missing("`noisily'") {
+				di _n(2) "{title:Creating Temp file}" _n 						///
+				`"{p}$pandoc `tmp1' -o `tmp'"'
+			}	
+			
 			`cap' shell "$pandoc" "`tmp1'" -o "`tmp'"
 			quietly  copy `"`tmp'"' `"`convert'"', replace
 			//copy "`tmp'" 0troubleshoot.html	, replace
@@ -1939,6 +1970,7 @@ program markdoc
 			`cap' quietly copy "`tmp1'" "`tex2pdf'", replace
 		}
 		
+		// copy "`tmp1'" 0process11.md	, replace		//for debugging
 				
 		********************************************************************
 		*	STYLING THE HTML FILE
@@ -2256,29 +2288,29 @@ program markdoc
 		file write `knot' "</head>" _n ///
 
 			*writing the header
-			if "`title'" ~= "" {
+			if "`title'" != "" {
 				file write `knot' `"<header>`title'</header>"' _n
 			}
 		
 			file write `knot' "<body>" _n 
 				
-			if "`author'" ~= "" {
+			if "`author'" != "" {
 				file write `knot' `"<span class="author">`author'</span>"' _n
 			}		
 				
-			if "`affiliation'" ~= "" {
+			if "`affiliation'" != "" {
 				file write `knot' `"<span class="author">`affiliation'</span>"' _n
 			}
 		
-			if "`address'" ~= "" {
+			if "`address'" != "" {
 				file write `knot' `"<span class="author">`address'</span>"' _n
 			}	
 				
-			if "`date'" ~= "" {
+			if "`date'" != "" {
 				file write `knot' `"<span class="date">`c(current_date)'</span>"' _n
 			}	
 				
-			if "`summary'" ~= "" {
+			if "`summary'" != "" {
 				file write `knot' 												///
 				`"<p style="padding-right:15%; "' 								///
 				`"padding-left:15%;padding-top:100px;"'							///
@@ -2328,7 +2360,7 @@ program markdoc
 		********************************************************************
 		*	REPLACE THE HTML FILE
 		********************************************************************	
-		if "`export'" == "html" & "`style'" ~= "" {
+		if "`export'" == "html" & "`style'" != "" {
 			
 			if "`markup'" == "markdown" | "`markup'" == ""  {
 				quietly  copy `"`tmp1'"' `"`md'"', replace
@@ -2336,17 +2368,14 @@ program markdoc
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
 					
-					tempfile out
-					tempfile in
-					quietly copy "`md'" "`in'"
+					if !missing("`noisily'") {
+						di _n(2) "{title:Creating Temp file}" _n 				///
+						`"{p}$pandoc `md' -o `convert'"'
+					}	
 					
-					//if !missing("`noisily'") di `"Running "$pandoc" "`in'" -o "`out'""'
-					if !missing("`noisily'") di "{ul:{bf:Creating Temp file}}"  ///
-					_n(2) `"{p}$pandoc `md' -o `convert'"'
-					
-					shell "$pandoc" "`in'" -o "`out'"
-					quietly  copy "`out'" `"`html'"', replace
-					quietly  copy "`out'" `"`convert'"', replace
+					shell "$pandoc" "`md'" -o "`output'"
+					quietly  copy "`output'" `"`html'"', replace
+					quietly  copy "`output'" `"`convert'"', replace
 					
 					*shell "$pandoc" "`md'" -o "`convert'"
 					*quietly  copy "`convert'" `"`html'"', replace
@@ -2371,7 +2400,7 @@ program markdoc
 		********************************************************************
 		*EXPORT MARKDOWN FILE TO OTHER FORMATS
 		********************************************************************
-		if "`export'" ~= "" {
+		if "`export'" != "" {
 			
 			// DEFINE LATEX ENGINE PATH
 			// ------------------------
@@ -2411,18 +2440,21 @@ program markdoc
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 						
 						tempfile in
-						tempfile out
+						//tempfile out
 						// The in file needs to have .html suffix. Erase any existing temp file
 						cap erase "`in'.html"
 						cap copy "`html'" "`in'.html", replace 
 
-						if !missing("`noisily'") di _n "$setpath" 				///
-						" --footer-center [page] --footer-font-size 10 "		///
-						"--margin-right 30mm --margin-left 30mm --margin-top "	///
-						"35mm --no-stop-slow-scripts --javascript-delay 1000 "	///
-						"--enable-javascript `toc' --debug-javascript "			///
-						`"`in'" "`out'"'
-	
+						if !missing("`noisily'") {
+							di _n(2) "{title:Print the HTML to PDF}" _n			///
+							"$setpath --footer-center [page] " 					///
+							" --footer-font-size 10 --margin-right 30mm "		///
+							"--margin-left 30mm --margin-top 35mm "				///
+							"--no-stop-slow-scripts --javascript-delay 1000 "	///
+							"--enable-javascript `toc' --debug-javascript "		///
+							`"`in'" "`output'"' 
+						}
+						
 						shell "$setpath" 										///
 						--footer-center [page] --footer-font-size 10 			///
 						--margin-right 30mm 									///
@@ -2432,10 +2464,10 @@ program markdoc
 						--enable-javascript  									///
 						`toc'													///
 						--debug-javascript 										///
-						"`in'.html" "`out'"
+						"`in'.html" "`output'"
 						
 						cap erase "`in'.html"
-						cap copy "`out'" "`convert'", replace
+						cap copy "`output'" "`convert'", replace
 					}		
 				}	
 							
@@ -2445,8 +2477,16 @@ program markdoc
 
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
-					
-						if "`noisily'" == "noisily" di `"Running "$setpath" --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript  "`html'" "`convert'""'
+						
+						if !missing("`noisily'") {
+							di _n(2) "{title:Print the HTML to PDF}" _n			///
+							"$setpath --footer-center \[page\] " 				///
+							" --footer-font-size 10 --margin-right 30mm "		///
+							"--margin-left 30mm --margin-top 35mm "				///
+							"--no-stop-slow-scripts --javascript-delay 1000 "	///
+							"--enable-javascript `toc' --debug-javascript "		///
+							`"`html'" "`convert'"' 
+						}
 					
 						shell "$setpath" 										///
 						--footer-center \[page\] --footer-font-size 10 			///
@@ -2468,8 +2508,16 @@ program markdoc
 							
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
-					
-						if "`noisily'" == "noisily" di `"Running "$setpath"  --footer-center \[page\] --footer-font-size 10 --margin-right 30mm --margin-left 30mm --margin-top 35mm --no-stop-slow-scripts --javascript-delay 1000 --enable-javascript `toc' --debug-javascript "`html'" "`convert'""'
+						
+						if !missing("`noisily'") {
+							di _n(2) "{title:Print the HTML to PDF}" _n			///
+							"$setpath --footer-center \[page\] " 				///
+							" --footer-font-size 10 --margin-right 30mm "		///
+							"--margin-left 30mm --margin-top 35mm "				///
+							"--no-stop-slow-scripts --javascript-delay 1000 "	///
+							"--enable-javascript `toc' --debug-javascript "		///
+							`"`html'" "`convert'"' 
+						}
 						
 						shell "$setpath" 										///
 						--footer-center \[page\] --footer-font-size 10 			///
@@ -2503,17 +2551,18 @@ program markdoc
 				
 				if missing("`template'") & "`export'" == "docx" {
 					if "`style'" == "stata" {
-						capture findfile markdoc_stata.docx
+						findfile markdoc_stata.docx
 					}	
 					if "`style'" == "simple" {
-						capture findfile markdoc_simple.docx
+						findfile markdoc_simple.docx
 					}
 					
 					if !missing("`r(fn)'") {
 						local d : pwd
 						cap qui cd "`c(sysdir_plus)'/m"
 						local tempPath : pwd
-						local template "`tempPath'/markdoc_`style'.docx"					
+						local template "`tempPath'/markdoc_`style'.docx"	
+						confirm file "`template'"
 						cap qui cd "`d'"
 						if "`c(os)'" == "Windows" {
 							local template : subinstr local template "/" "\", all
@@ -2522,6 +2571,9 @@ program markdoc
 					}		
 				}
 				
+				// ======================================================
+				// RUNNING PANDOC
+				// ------------------------------------------------------
 				if "`export'" == "slide" {
 					
 					// LaTeX Beamer Default
@@ -2538,21 +2590,20 @@ program markdoc
 					// Use temporary files to prevent problems with UNC directories on
 					// Windows
 					// (See: https://support.microsoft.com/en-us/kb/156276)
-						
-					tempfile in
-					tempfile out
-					quietly copy "`md'" "`in'"
 			
-					if "`noisily'" == "noisily" di `"Running "$pandoc" `toc' -t beamer "`in'" `latexEngine' --include-in-header="`template'" -o "`out'""'
-					
+					if "`noisily'" == "noisily" {
+						di _n(2) "{title:Executing Pandoc Command}"	_n			///
+						`""$pandoc" `toc' -t beamer "`md'" "'					///
+						`"`latexEngine' --include-in-header="`template'" -o "`output'""'
+					}
 					//It seems that Pandoc will need a ".pdf" extension to 
 					//produce PDF slides
 					
-					shell "$pandoc" `toc' -t beamer "`in'" `latexEngine' 		///
-					--include-in-header="`template'" -o "`out'.pdf"
+					shell "$pandoc" `toc' -t beamer "`md'" `latexEngine' 		///
+					--include-in-header="`template'" -o "`output'" //"`out'.pdf"
 
-					quietly copy "`out'.pdf" "`convert'", replace
-					capture erase "`out'.pdf"
+					quietly copy "`output'" "`convert'", replace
+					capture erase "`output'"
 					
 					*shell "$pandoc" -t beamer "`md'" -V theme:Boadilla -V 		///
 					*colortheme:lily `fontsize' -o "`convert'"		
@@ -2564,24 +2615,23 @@ program markdoc
 					if "`export'" == "dzslide" local mathjax -s --mathjax -i -t dzslides
 					if "`export'" == "slidy" local mathjax -s --mathjax -i -t slidy
 
-					tempfile in
-					tempfile out
-					quietly copy "`md'" "`in'"
-
-					if "`noisily'" == "noisily" di `"Running "$pandoc" `mathjax' `toc' `reference' "`in'" -o "`out'""'
-
+					if "`noisily'" == "noisily" {
+						di _n(2) "{title:Executing Pandoc Command}" _n
+						di `""$pandoc" `mathjax' `toc' "'				///
+						`"`reference' "`md'" -o "`output'""'
+					}
+					
 					shell "$pandoc" `mathjax' `toc' 		///
-					`reference' "`in'" -o "`out'"		
+					`reference' "`md'" -o "`output'"		
 					
-					
-					quietly copy "`out'" "`convert'", replace
+					quietly copy "`output'" "`convert'", replace
 
 				}	
 			}
 			
 			
 			****************************************************
-			*CREATING THE TEXMASTER FILR
+			*CREATING THE TEXMASTER FILE
 			****************************************************
 			//When exporting to LaTeX, the document is not ready 
 			//	to be compiled by LaTeX compilers because it 
@@ -2674,7 +2724,7 @@ program markdoc
 						file write `knot' "\maketitle" _n	
 					}	
 						
-					if "`summary'" ~= "" {
+					if "`summary'" != "" {
 						file write `knot' "\begin{abstract}" _n
 						file write `knot' "`summary'" _n
 						file write `knot' "\end{abstract}" _n(2)
@@ -2688,9 +2738,9 @@ program markdoc
 				*************
 				if !missing("`texmaster'") & "`style'" == "stata" {
 					//change style for affiliation and address
-					if "`affiliation'" ~= "" local affiliation "\\\`affiliation'" //one additional "\" 
-					if "`address'"     ~= "" local address "\\\`address'"
-					if "`date'" ~= "" local date "\\\`c(current_date)'"
+					if "`affiliation'" != "" local affiliation "\\\`affiliation'" //one additional "\" 
+					if "`address'"     != "" local address "\\\`address'"
+					if "`date'" != "" local date "\\\`c(current_date)'"
 						
 					file write `knot' 											///
 					"\documentclass{article}" _n								///
@@ -2728,10 +2778,10 @@ program markdoc
 					file write `knot' "\author{Short article author list}"		///
 					"{`author' `affiliation' `address' `date' \and}" _n
 					file write `knot' "\title[Short toc article title]{`title'}" _n
-					//if "`date'" ~= "" file write `knot' "\date{\today}" _n
+					//if "`date'" != "" file write `knot' "\date{\today}" _n
 					file write `knot' "\maketitle" _n(2)
 						
-					if "`summary'" ~= "" {
+					if "`summary'" != "" {
 						file write `knot' "\begin{abstract}" _n					///
 						"`summary'" _n											///
 						"%\keywords{\inserttag, command name(s), "				///
@@ -2803,14 +2853,19 @@ program markdoc
 			****************************************************
 			*CREATING THE PDF FROM TEX
 			****************************************************	
-			
 			if !missing("`pdftex'") & "`export'" != "slide" {
 				if "`printer'" != "" {
-					if "`noisily'" == "noisily" di `"Running "`printer'" -jobname "`name'" "`tex2pdf'""'
-					`cap'< shell "`printer'" -jobname "`name'" "`tex2pdf'" 
+					if "`noisily'" == "noisily" {
+						di _n(2) "{title:Compiling LaTeX to PDF}" _n			///
+						`""`printer'" -jobname "`name'" "`tex2pdf'""'
+					}	
+					`cap' shell "`printer'" -jobname "`name'" "`tex2pdf'" 
 				}
 				else {
-					if "`noisily'" == "noisily" di `"Running "$printername" -jobname "`name'" "`tex2pdf'""'
+					if "`noisily'" == "noisily" {
+						di _n(2) "{title:Compiling LaTeX to PDF}" _n			///
+						`""$printername" -jobname "`name'" "`tex2pdf'""'
+					}	
 					shell "$printername" -jobname "`name'" "`tex2pdf'"	
 				}
 			}
@@ -2823,7 +2878,7 @@ program markdoc
 			
 			if _rc == 0 {
 				di as txt "{p}(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
-				if "`export'" ~= "md" cap qui erase "`md'"
+				if "`export'" != "md" cap qui erase "`md'"
 			}
 			else display as err "MarkDoc could not produce `convert'" _n
 		}
@@ -2832,17 +2887,10 @@ program markdoc
 
 			cap confirm file "`md'"
 			if ! _rc {
-				//di _n(2)
-				//di as txt "   __  __            _    ____             " 
-				//di as txt "  |  \/  | __ _ _ __| | _|  _ \  ___   ___ " 
-				//di as txt "  | |\/| |/ _' | '__| |/ / | | |/ _ \ / __|" 
-				//di as txt "  | |  | | (_| | |  |   <| |_| | (_) | (__ " 
-				//di as txt "  |_|  |_|\__,_|_|  |_|\_\____/ \___/ \___| "		///
-				//`"created  {bf:{browse "`md'"}} "' _n
 				di as txt "{p}(MarkDoc created "`"{bf:{browse "`md'"}})"' _n
 			}
 		
-			*IF THERE WAS NO PANDOC AND NO MARKDOWN FILE...
+			// IF THERE WAS NO PANDOC AND NO MARKDOWN FILE...
 			else di as err "MarkDoc could not access Pandoc..." _n		
 		}
 			
@@ -2866,7 +2914,7 @@ program markdoc
 			if "`c(os)'" == "Windows" cap quietly findfile sj.sty, 				///
 			path("`c(sysdir_plus)'Weaver\supplementary\stata")
 				
-			if "`r(fn)'" ~= "" {
+			if "`r(fn)'" != "" {
 						
 				// Create a list of files that should be copied 	
 				local listname doit.bat doit.sh pagedims.sty sj.bib 			///
@@ -2898,8 +2946,8 @@ program markdoc
 		}
 	}
 	
-	if "`smclfile'" ~= "" & "`test'" == "" & "`export'" == "sthlp" | 			///
-	"`smclfile'" ~= "" & "`test'" == "" & "`export'" == "smcl" {
+	if "`smclfile'" != "" & "`test'" == "" & "`export'" == "sthlp" | 			///
+	"`smclfile'" != "" & "`test'" == "" & "`export'" == "smcl" {
 
 		sthlp `smclfile', export("`export'") template("`template'")				///
 		`replace' `date' title("`title'") summary("`summary'") 					///
