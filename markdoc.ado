@@ -821,6 +821,7 @@ program markdoc
 				if substr(trim(`"`macval(preline)'"'),1,5) == "/***/" |			///
 				substr(trim(`"`macval(preline)'"'),1,4) ==    "/**/"  |			///
 				substr(trim(`"`macval(preline)'"'),1,4) ==    "//ON"  |			///
+				substr(`trim'(`"`macval(preline)'"'),1,8) ==    "//IMPORT"  |	///
 				substr(trim(`"`macval(preline)'"'),1,5) ==    "//OFF" {		
 			
 					local preline = trim(`"`macval(preline)'"')
@@ -839,7 +840,8 @@ program markdoc
 				// -------------------------------------------------------------
 				if substr(trim(`"`macval(preline)'"'),1,2) == "//" &			///
 				substr(trim(`"`macval(preline)'"'),1,5) != "//OFF" &			///
-				substr(trim(`"`macval(preline)'"'),1,4) !=  "//ON" {				
+				substr(trim(`"`macval(preline)'"'),1,4) !=  "//ON" &			///
+				substr(`trim'(`"`macval(preline)'"'),1,8) !=  "//IMPORT" {				
 					local jump 1
 				}
 				
@@ -868,7 +870,7 @@ program markdoc
 								
 		file close `knot'
 		capture file close `fig'
-		*copy "`tmp'" 0process1.smcl	, replace		//For debugging
+		//copy "`tmp'" 0process1.smcl	, replace		//For debugging
 		
 		
 		//copy "`f1'" fig1.txt, replace	
@@ -994,7 +996,8 @@ program markdoc
 			substr(`"`macval(word1)'"',1,11) == "{com}. /**/" {	
 			
 				if substr(`"`macval(word1)'"',1,12) != "{com}. //OFF" & 		///
-				substr(`"`macval(word1)'"',1,11) != "{com}. //ON" {
+				substr(`"`macval(word1)'"',1,11) != "{com}. //ON" &				///
+				substr(`"`macval(word1)'"',1,15) != "{com}. //IMPORT" {
 					//Read the next line! and make sure it does not start with  
 					//">" Otherwise read another line
 					file read `hitch' line
@@ -1247,7 +1250,7 @@ program markdoc
 		}
 
 		file close `knot'		
-		*copy "`tmp1'" 0process2.smcl	, replace			//For debugging
+		//copy "`tmp1'" 0process2.smcl	, replace			//For debugging
 			
 		
 		
@@ -1497,7 +1500,7 @@ program markdoc
 			file close `knot'
 			file close `hitch'
 		
-			//copy "`tmp1'" 0process5B.smcl	, replace	
+			//copy "`tmp1'" 0process2C.smcl	, replace	
 		}
 			
 
@@ -1525,7 +1528,7 @@ program markdoc
 		// FIGURE PROCESSING
 		// =====================================================================
 		
-		*copy "`tmp1'" 0process6.smcl	, replace	
+		//copy "`tmp1'" 0process2D.smcl	, replace	
 		
 		if !missing("`figure'") { 							
 			quietly  copy `"`tmp1'"' `"`tmp'"', replace
@@ -1579,7 +1582,7 @@ program markdoc
 			
 		}	
 
-		*copy "`tmp1'" 0process6B.smcl	, replace
+		//copy "`tmp1'" 0process3.smcl, replace
 		
 		********************************************************************
 		*PART 3A- TRANSLATING SMCL TO TXT
@@ -1635,7 +1638,7 @@ program markdoc
 		*RESTORE THE DEFAULT LINESIZE OF THE TRANSLATOR
 		translator set smcl2txt linesize `savelinesize'
 		translator set smcl2txt lmargin  `savemargin'
-		//copy "`tmp1'" 0process7.txt	, replace	 //for debugging
+		//copy "`tmp1'" 0process4.txt	, replace	 //for debugging
 		
 		
 		********************************************************************
@@ -1757,6 +1760,26 @@ program markdoc
 			
 			*local word1 : word 1 of `"`macval(line)'"'
 			
+			// =================================================================
+			// IMPORT files
+			// -----------------------------------------------------------------
+			capture if substr(`"`macval(line)'"',1,17) == "      . //IMPORT " {
+				local line : subinstr local line "      . //IMPORT " "" , all
+				local importedFile = `trim'("`line'")
+				capture file "`importedFile'"
+				local line ""
+				
+				//Open and append the file
+				//------------------------
+				tempname read 
+				qui file open `read' using "`importedFile'", read 
+				while r(eof) == 0 {
+					file write `knot' `"`macval(line)'"' _n
+					file read `read' line
+				}
+				file close `read'
+			}
+			
 			
 			// -----------------------------------------------------------------
 			// APPENDING COMMAND LINES AND BRACES
@@ -1817,7 +1840,7 @@ program markdoc
 				
 		file close `knot'
 		file close `hitch'
-		*copy "`tmp1'" 0process8.txt	, replace
+		//copy "`tmp1'" 0process5.txt	, replace
 			
 		
 		
@@ -1915,7 +1938,7 @@ program markdoc
 			file close `knot'
 			file close `hitch'
 			
-		* copy "`tmp1'" 3C.txt	, replace
+		* copy "`tmp1'" 5B.txt	, replace
 		}	
 		
 		
@@ -1941,14 +1964,14 @@ program markdoc
 			
 				`cap' shell "$pandoc" "`tmp1'" -o "`md'"
 				quietly  copy `"`md'"' `"`tmp'"', replace
-				*copy "`tmp1'" 0process11.md	, replace
+				*copy "`tmp1'" 0process6.md	, replace
 			}
 		}
 		
 		if !missing("`export'") {
 			qui copy `"`tmp1'"' `"`tmp'"', replace
 			qui copy `"`tmp1'"' `"`md'"', replace
-			*copy "`tmp1'" 0process11.md	, replace
+			*copy "`tmp1'" 0process6.md	, replace
 		}	
 					
 		if "`markup'" ==  "html"   {
@@ -1959,7 +1982,7 @@ program markdoc
 			
 			`cap' shell "$pandoc" "`tmp1'" -o "`tmp'"
 			quietly  copy `"`tmp'"' `"`convert'"', replace
-			//copy "`tmp'" 0troubleshoot.html	, replace
+			//copy "`tmp'" 0process6.html	, replace
 		}		
 		
 		if "`markup'" == "latex" & "`export'" == "tex" {
@@ -1970,7 +1993,7 @@ program markdoc
 			`cap' quietly copy "`tmp1'" "`tex2pdf'", replace
 		}
 		
-		// copy "`tmp1'" 0process11.md	, replace		//for debugging
+		//copy "`tmp1'" 0process6.md	, replace		//for debugging
 				
 		********************************************************************
 		*	STYLING THE HTML FILE

@@ -47,6 +47,8 @@ using this application for other purposes, outside MarkDoc.
 
 ***/
 
+cap prog drop pandoc
+
 program define pandoc
 syntax anything [, pandoc(str) install ]
 	
@@ -63,9 +65,10 @@ syntax anything [, pandoc(str) install ]
 	
 	markdoccheck , `install' pandoc("`pandoc'") 
 	
-	di as txt "$pandoc " "`anything'"
+	confirm file "$pandoc"
+	di as txt "$pandoc `anything'"
 	
-	! "$pandoc " `anything'
+	! "$pandoc" `anything'
 
 end
 
