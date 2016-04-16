@@ -52,7 +52,6 @@
 	3.6.9     April,  2016
 */
 
-cap prog drop markdoc 
 
 program markdoc
 	
@@ -1763,10 +1762,10 @@ program markdoc
 			// =================================================================
 			// IMPORT files
 			// -----------------------------------------------------------------
-			capture if substr(`"`macval(line)'"',1,17) == "      . //IMPORT " {
+			if substr(`"`macval(line)'"',1,17) == "      . //IMPORT " {
 				local line : subinstr local line "      . //IMPORT " "" , all
 				local importedFile = `trim'("`line'")
-				capture file "`importedFile'"
+				confirm file "`importedFile'"
 				local line ""
 				
 				//Open and append the file
@@ -1777,7 +1776,9 @@ program markdoc
 					file write `knot' `"`macval(line)'"' _n
 					file read `read' line
 				}
+				file write `knot' `"`macval(line)'"' _n
 				file close `read'
+				local line ""
 			}
 			
 			

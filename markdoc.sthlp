@@ -19,7 +19,7 @@ PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy
 E. F. Haghish{break} 
 	Center for Medical Biometry and Medical Informatics{break}
 	University of Freiburg, Germany{break} 
-	and{break} 
+	{it:and}{break} 
 	Department of Mathematics and Computer Science{break} 
 	University of Southern Denmark{break} 
     {browse haghish@imbi.uni-freiburg.de}{break}
@@ -28,7 +28,7 @@ E. F. Haghish{break}
 	Package Updates on {ul:{browse "http://twitter.com/Haghish":Twitter}}
 	
 {p 8 8 2}
-{c 149} Please kindly post your questions on {browse "http://www.statalist.org/forums/":statalist.org}, 
+{c 149} Please post your questions on {browse "http://www.statalist.org/forums/":statalist.org}, 
 if you think others may have similar questions
 
 
@@ -183,13 +183,13 @@ can be used for adding ascii models of a program or tables in Stata help file.
 
 {title:Description} 
 
-{p 8 8 2}
+{pstd}
 {bf:markdoc} is a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents}, {it:package vignette documentation}, 
 {it:dynamic presentation slides}, as well as dynamic 
 {it:Stata package help files}. 
 
-{p 8 8 2}
+{pstd}
 For creating a dynamic document or presentation slides, MarkDoc requires a smcl 
 log-file as input and converts it to other formats. For generating dynamic Stata 
 help files or package vignette documentation, MarkDoc requires a Stata script-file 
@@ -197,7 +197,7 @@ help files or package vignette documentation, MarkDoc requires a Stata script-fi
 Visit MarkDoc homepage for documentation about generating 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#sthlp":{bf:dynamic Stata help files and documentations}}. 
 
-{p 8 8 2}
+{pstd}
 MarkDoc supports 
 three different markup languages which are 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/markdown.php":Markdown}, 
@@ -217,7 +217,7 @@ in the document, respectively. MarkDoc also
 {browse "http://www.haghish.com/statax/statax.php":a JavaScript syntax highlighter for Stata and Mata code}
  in HTML and PDF documents.
 
-{p 8 8 2}
+{pstd}
 MarkDoc creates the dynamic documents by converting {it:smcl} log-file to other 
 file formats mentioned above or parsing the documentation written in Stata script files. 
 The documentation should be written within the 
@@ -229,14 +229,14 @@ is the biggest advantage of MarkDoc and {help Weaver} packages to other classic 
 programming packages which cannot provide live-preview of the document in an 
 interactive analysis session. 
 
-{p 8 8 2}
+{pstd}
 MarkDoc supports both Stata and {help Mata:Mata} languages. Therefore, advanced users who work or 
 program in Mata, can use Markdoc - with the same syntax and markup notation - 
 to produce a dynamic document or slides, or document their programs. The same source 
 that is used for generating dynamic Stata {bf:sthlp} help files, can be used to 
 produce Microsoft Word {bf:docx}, {bf:pdf}, etc.
 
-{p 8 8 2}
+{pstd}
 For a more detailed documentation and examples, visit 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php":{bf:MarkDoc Homepage}}. 
 
@@ -492,6 +492,16 @@ file path to Pandoc using {opt pan:doc(str)} option. visit
 {browse "http://www.haghish.com/packages/pandoc.php":Installing Pandoc for Stata packages}  
 for more information regarding manual installation of Pandoc. 
 
+
+{title:Calling Pandoc}
+
+{pstd}
+{help Pandoc: Pandoc commands can also be executed from Stata}. This command takes the path to 
+the executable Pandoc from MarkDoc and allows you to use Pandoc seamlessly for converting 
+files within Stata 
+
+    {bf:  pandoc ./example.tex -o ./example.html}
+	
 
 {title:Remarks}
 

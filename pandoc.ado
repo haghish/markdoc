@@ -47,7 +47,6 @@ using this application for other purposes, outside MarkDoc.
 
 ***/
 
-cap prog drop pandoc
 
 program define pandoc
 syntax anything [, pandoc(str) install ]
