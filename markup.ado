@@ -17,9 +17,8 @@
 	literate programming in Stata. extracts the documentation notations written 
 	in script files and create a document that can be typesseted. 
  
-	3.6.7  February,  2016
+	3.7.0  February,  2016
 */
-
 
 program define markup
 	
@@ -119,13 +118,15 @@ program define markup
 	while r(eof) == 0 {	
 		
 		if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &				///
-		substr(`trim'(`"`macval(line)'"'),1,26) != "/*** DO NOT EDIT THIS LINE" | ///
-		substr(`trim'(`"`macval(line)'"'),1,5) == "/***$" {
+		substr(`trim'(`"`macval(line)'"'),1,26) != "/*** DO NOT EDIT THIS LINE" & ///
+		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" {
 			
 			file read `hitch' line
 			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) != "***/" {
-				
-				if substr(`trim'(`"`macval(line)'"'),1,1) == ":" {			
+				if substr(`trim'(`"`macval(line)'"'),1,2) == ": " {			
+					local line : subinstr local line ": " "" 
+				}
+				else if substr(`trim'(`"`macval(line)'"'),1,1) == ":" {			
 					local line : subinstr local line ":" "" 
 				}
 				

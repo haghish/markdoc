@@ -16,7 +16,7 @@
 	This program is a part of MarkDoc package and generates dynamic Stata help 
 	files within source code, in ".sthlp" file format. 
  
-	3.6.9  April,  2016
+	3.7.0  June,  2016
 */
 
 program define sthlp
@@ -54,6 +54,7 @@ program define sthlp
 	ADDress(str) 	 /// specifies author contact information (for styling)
 	Date			 /// Add the document generation date to the document
 	SUMmary(str)     /// writing the summary or abstract of the report
+	VERsion(str)     /// add version to dynamic help file
 	]
 	
 	
@@ -129,38 +130,13 @@ program define sthlp
 	if "`template'" != "empty" & substr(`trim'(`"`macval(line)'"'),1,26) != 		///
 	"/*** DO NOT EDIT THIS LINE" {
 		file write `knot' 														///
-		"/*** DO NOT EDIT THIS LINE -----------------------------------------------------" _n ///
-		"" _n																	///
-		"Version: 0.0.0" _n														///
-		"" _n(2)																///																
-		"Intro Description" _n													///
-		"=================" _n(2)												///
-		"packagename -- A new module for ... "	_n(3)							/// 
-		"Author(s)" _n															///
-		"=================" _n(2)												///
-		"Author name ..." _n													///
-		"Author affiliation ..." _n												///
-		"to add more authors, leave an empty line between authors' information" _n(2) ///
-		"Second author ..." _n													///
-		`"For more information visit {browse "http://www.haghish.com/markdoc":MarkDoc homepage}"' _n(3) ///
-		"Syntax" _n																///
-		"=================" _n(2)												///
-		"{opt exam:ple} {depvar} [{indepvars}] {ifin} using " _n				///
-		"[{it:{help filename:filename}}]" _n									///
-		"[{cmd:,} {it:options}]" _n(2)											///
-		"{synoptset 20 tabbed}{...}" _n											///
-		"{synopthdr}" _n														///
-		"{synoptline}" _n														///
-		"{synopt :{opt rep:lace}}replace this example{p_end}" _n				///
-		"{synopt :{opt app:end}}work further on this help file{p_end}" _n 		///
-		"{synopt :{opt addmore}}you can add more description for the options; Moreover, " _n ///
-		"	the text you write can be placed in multiple lines {p_end}" _n		///
-		"{synopt :{opt learn:smcl}}you won't make a loss learning" _n			///
-		"{help smcl:SMCL Language} {p_end}" _n 									///
-		"{synoptline}" _n														///
-		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(2) ///
-		`"* Note: If you like to leave the "Intro Description" or "Author(s) section"' _n ///
-		 "* 		empty, erase the text but KEEP THE HEADINGS" _n(4)			
+		"/*** DO NOT EDIT THIS LINE -----------------------------------------------------" _n ///																///
+		"Version: 1.0.0" _n														///
+		"Title: packagename" _n													///
+		"Description: __explain__ _your_ ___function___ ____brief______ly__" _n ///
+		"For more information visit "											///
+		"[MarkDoc](http://www.haghish.com/markdoc) homepage." _n				///
+		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(2) 		
 		 
 		 
 		file write `knot' `"`macval(line)'"' _n 
@@ -210,6 +186,7 @@ program define sthlp
 	}
 
 	
+	
 	// -------------------------------------------------------------------------
 	// Part 2: Reading the template and the ado-file documentation! 
 	// =========================================================================
@@ -227,179 +204,89 @@ program define sthlp
 	if substr(`trim'(`"`macval(line)'"'),1,26) == "/*** DO NOT EDIT THIS LINE" 	///
 	& "`template'" != "empty" {
 		
+		file read `hitch' line
+		
 		while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
 		& r(eof) == 0 & missing("`exitloop'") {
-			
-			// Version
+
+			// Get the package version
 			if substr(`trim'(`"`macval(line)'"'),1,8) == "Version:" {
 				local line : subinstr local line "Version:" ""
 				local v = `trim'("`line'")
-				local version "version `v'"
+				if !missing("`v'") local version "`v'"
+			}
+			
+			// Get the package title
+			if substr(`trim'(`"`macval(line)'"'),1,6) == "Title:" {
+				local line : subinstr local line "Title:" ""
+				local t = `trim'("`line'")
+				if !missing("`t'") local title "`t'"
 			}
 			
 			//Description
-			if substr(`trim'(`"`macval(line)'"'),1,17) == "Intro Description" {
-				file read `hitch' line
-				if substr(`"`macval(line)'"',1,3) == "===" {
+			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
+				local line : subinstr local line "Description:" ""
+				local description = `trim'("`line'")
+				if !missing(`"`macval(description)'"') {
+					markdown `description'
+					local description `r(md)'
 					file read `hitch' line
-				}
-				
-				while missing(`"`macval(line)'"') {
-					file read `hitch' line
-				}
-				
-				while substr(`trim'(`"`macval(line)'"'),1,6) 					///
-				!= "Author" & r(eof) == 0 {
-					local line2 = `trim'(`"`macval(line)'"')
-					local description "`description' `line2'"
-					file read `hitch' line
-				}
-				
-				// Edit the package description
-				// -------------------------------------------------------------
-				tokenize `"`macval(description)'"', parse("--")
-				local description : subinstr local description "`1'" "{bf:`1'}"
-				local description : subinstr local description "--" "{hline 2}"
-				
-				
-				markdown `description'
-				local description `r(md)'
-				
-				/*
-				// Markdown styling syntax
-				forvalues i = 1/27 {
-					local preline : subinstr local preline "___" "{ul:"
-					local preline : subinstr local preline "___" "}"
-				}
-				forvalues i = 1/27 {
-					local preline : subinstr local preline "__" "{bf:"
-					local preline : subinstr local preline "__" "}"
-				}							
-				forvalues i = 1/27 {
-					local preline : subinstr local preline "_" "{it:"
-					local preline : subinstr local preline "_" "}"
-				}
-				*/
-			}
-			
-			//Authors
-			if substr(`trim'(`"`macval(line)'"'),1,6) == "Author" {
-				file read `hitch' line
-				if substr(`"`macval(line)'"',1,3) == "===" {
-					file read `hitch' line
-				}
-				while missing(`trim'(`"`macval(line)'"')) {
-					file read `hitch' line
-				}
-				
-				//make sure it's not empty
-				if substr(`trim'(`"`macval(line)'"'),1,6) != "Syntax" {
 					
-					while substr(`trim'(`"`macval(line)'"'),1,6) 			///
-					!= "Syntax" {
-
-						if !missing("`author0'") & missing(`"`macval(line)'"') {
-							
-							while missing(`trim'(`"`macval(line)'"')) {
-								file read `hitch' line
-							}
-							
-							if substr(`trim'(`"`macval(line)'"'),1,6) 		///
-							!= "Syntax" {
-								local author`i' = `trim'("{p 4 4 2}")
-								local i `++i'
-							}	
-						}
-						
-						if substr(`trim'(`"`macval(line)'"'),1,6) 			///
-						!= "Syntax" {
-							
-							markdown `line'
-							local line `r(md)'
-							
-							
-
-							local author`i' = `trim'(`"`macval(line)'"')
-							file read `hitch' line	
-							local i `++i'
-						}	
-					}
-				}
-			}
-			
-			
-			//Syntax
-			if substr(`trim'(`"`macval(line)'"'),1,6) == "Syntax" {
-				file read `hitch' line
-				if substr(`"`macval(line)'"',1,3) == "===" {
-					file read `hitch' line
-				}
-				while missing(`"`macval(line)'"') {
-					file read `hitch' line
-				}
-				
-				//make sure it's not empty
-				if substr(`trim'(`"`macval(line)'"'),55,21) != 					///
-				"DO NOT EDIT THIS LINE" {
-					
-					while substr(`trim'(`"`macval(line)'"'),55,21) 				///
-					!= "DO NOT EDIT THIS LINE" {
-						
-						local syntax`i2' = `trim'(`"`macval(line)'"')
+					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
+					& r(eof) == 0 {
+						local line2 = `trim'(`"`macval(line)'"')
+						markdown `line2'
+						local description `"`description' `r(md)'"'
 						file read `hitch' line
-						local i2 `++i2'
-						
-						local exitloop 1
 					}
 				}
+				
 			}
-			
-		file read `hitch' line
-		}
+		
+			if substr(`trim'(`"`macval(line)'"'),55,21) == "DO NOT EDIT THIS LINE" {
+				local exitloop 1
+			}
+			else file read `hitch' line
+		}		
 	}
 	
-	// If the template is in use
+	
+	// If the template is in use write the information to SMCL file
+	// ============================================================
+	
 	if "`template'" != "empty" {
-		if !missing("`date'") {
+		
+		if !missing("`date'") & !missing("`version'") {
 			local releasDate: di c(current_date)
-			file write `knot' "{right:`version', `releasDate'}" _n
+			file write `knot' "{right:version `version', `releasDate'}" _n
 		}
-		else file write `knot' "{right:`version'}" _n
+		else if !missing("`date'") {
+			local releasDate: di c(current_date)
+			file write `knot' "{right:`releasDate'}" _n
+		}
+		else if !missing("`version'") {
+			file write `knot' "{right:version `version'}" _n
+		}
 		
-		if !missing(`"`macval(description)'"') {
+		if !missing("`title'") & !missing(`"`macval(description)'"') {
 			file write `knot' "{title:Title}" _n(2) "{phang}" _n				///
-			`"`macval(description)'"'
-		}
-		
-		if !missing("`author0'") {
-			file write `knot' _n(3) "{title:Author}" _n "`author'" _n 			///
-			"{p 4 4 2}" _n 
-			
-			local i `--i'
-			forval j = 0/`i' {
-				if `"`macval(author`j')'"' == "{p 4 4 2}"  file write `knot' _n ///
-				"{p 4 4 2}" _n
-				
-				else file write `knot' `"`macval(author`j')'{break}"'  _n
-			}
-		}
-		
-		if !missing("`syntax0'") {
-			file write `knot' _n(2) "{title:Syntax}" _n(2) 						///
-			"{p 8 16 2}" _n 
-			
-			forval j = 0/`i2' {
-				if "`syntax`j''" == "{p 8 16 2}"  file write `knot' _n
-				file write `knot' `"`macval(syntax`j')'"'  _n
-			}
+			`"{cmd:`title'} {hline 2} `macval(description)'"' _n(2)
 		}
 	}	
 	
 	// If the template is NOT in use
+	// -----------------------------
 	if "`template'" == "empty" {
-		if !missing("`date'") {
+		if !missing("`date'") & !missing("`version'") {
+			local releasDate: di c(current_date)
+			file write `knot' "{right:version `version', `releasDate'}" _n
+		}
+		else if !missing("`date'") {
 			local releasDate: di c(current_date)
 			file write `knot' "{right:`releasDate'}" _n
+		}
+		else if !missing("`version'") {
+			file write `knot' "{right:version `version'}" _n
 		}
 		if !missing("`title'") | !missing("`summary'") {
 			
@@ -409,43 +296,181 @@ program define sthlp
 			file write `knot' "{title:Title}" _n(2) "{phang}" _n				///
 			`"`title' {hline 2} `summary'"' _n(2)
 		}
-		
-		if !missing("`author'") | !missing("`affiliation'") | 					///
-		!missing("`address'") {
-			
-			file write `knot' _n "{title:Author}" _n(2) "{p 4 4 2}" _n			
-			
-			if !missing("`author'") file write `knot' `"`author'{break}"' _n
-			if !missing("`affiliation'") file write `knot' 						///
-			`"`affiliation'{break}"' _n
-			if !missing("`address'") file write `knot' `"`address'{break}"' _n
-		}
 	}
-	
+
 	
 	
 	
 	
 	// -------------------------------------------------------------------------
-	// Part 3: Prepare ASCII to SMCL table conversion
+	// Part 3: Processing the source and applying Markdown
 	// =========================================================================
 	
 	while r(eof) == 0 {	
 		
-		if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &				///
-		substr(`trim'(`"`macval(line)'"'),1,26) != 							///
-		"/*** DO NOT EDIT THIS LINE" | 											///
-		substr(`trim'(`"`macval(line)'"'),1,5) == "/***$" {
-			
+		if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &					///
+		substr(`trim'(`"`macval(line)'"'),1,26) != 								///
+		"/*** DO NOT EDIT THIS LINE" & 											///
+		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" {
 			file read `hitch' line
-			
 			//remove white space in old-fashion way!
 			cap local m : display "`line'"
 			if _rc == 0 & missing(trim("`m'")) {
 				local line ""
-				*di as err ">`line'<"
 			}
 			
+			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) 		///
+			!= "***/" {
+				
+				//IF MISSING line, forward to the next non-missing line
+				while missing(`trim'(`"`macval(line)'"')) & r(eof) == 0 {
+					file write `knot' `"`macval(line)'"' _n
+					file read `hitch' line
+					//remove white space in old-fashion way!
+					cap local m : display "`line'"
+					if _rc == 0 & missing(trim("`m'")) {
+						local line ""
+					}
+				}
+				
+				//procede when a line is found
+				//Interpret 2 lines at the time, for Markdown headings
+				
+				local preline `"`macval(line)'"'
+				if !missing(`trim'(`"`macval(line)'"')) markdown `line'
+				local preline "`r(md)'"
+				file read `hitch' line
+				
+				//remove white space in old-fashion way!
+				*cap local m : display "`line'"
+				*if _rc == 0 & missing(trim("`m'")) {
+				*	local line ""
+				*}
+		
+				// -------------------------------------------------------------
+				// If heading syntax is found, create the heading
+				// -------------------------------------------------------------
+				
+				//NOTE: MAKE SURE "---" IS NOT A TABLE. MAKE SURE "|" IS NOT USED
+				
+				if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |			///
+				substr(`trim'(`"`macval(line)'"'),1,3) == "---" & 				///
+				strpos(`"`macval(line)'"', "|") == 0 {
+					file write `knot' _n `"{title:`macval(preline)'}"' _n 
+					file read `hitch' line
+				}
+				
+				// -------------------------------------------------------------
+				// If heading is not found, process the chunk
+				// -------------------------------------------------------------
+				else {
+					
+					// check for Markdown paragraph syntax 
+					// ---------------------------------------------------------
+					if substr(`trim'(`"`macval(preline)'"'),1,4) != "***/" {
+						
+						//Check for Paragraph code
+						if substr(`trim'(`"`macval(preline)'"'),1,1) == ":" 	///
+						| substr(`trim'(`"`macval(preline)'"'),1,1) == ">" {
+							if substr(`trim'(`"`macval(preline)'"'),1,1) 	///
+							== ">" {
+								file write `knot' "{p 4 4 2}" _n
+								local preline : subinstr local preline ">" "" 
+							}
+							else if substr(`trim'(`"`macval(preline)'"'),1,1) ///
+							== ":" {
+								file write `knot' "{p}" _n
+								local preline : subinstr local preline ":" "" 
+							}
+							
+							if !missing(`trim'(`"`macval(preline)'"')) markdown `preline'
+							if _rc == 0 local preline `r(md)'
+							if !missing(`trim'(`"`macval(line)'"')) markdown `line'
+							if _rc == 0 local line `r(md)'
+							
+							if !missing(`"`macval(line)'"') {
+								local preline = `"`macval(preline)' "' + 		///
+								`"`macval(line)'"'
+						
+								while !missing(`"`macval(line)'"') &			///
+								substr(`trim'(`"`macval(line)'"'),1,4) 			///
+								!= "***/" {
+									file read `hitch' line
+									if !missing(`trim'(`"`macval(line)'"')) markdown `line'
+									if _rc == 0 local line `r(md)'
+									//remove white space in old-fashion way!
+									cap local m : display "`line'"
+									if _rc == 0 & missing(trim("`m'")) {
+										local line ""
+									}
+									
+									local preline = `"`macval(preline)' "' + 	///
+									`"`macval(line)'"'
+								}
+								
+							}
+							 
+							// Run Markdown
+							// ---------------------------------------------
+							/*
+							if !missing(`trim'(`"`macval(preline)'"')) markdown `preline'
+							if _rc == 0 local preline `r(md)'
+							else {
+								di as err "markdown.ado engine failed on "	///
+								"the following line:" _n(2)
+								di as txt `"`macval(preline)'"'
+							}
+							*/
+							
+						}
+						
+						// this part is independent of the Marjdown engine
+						// Create Markdown Horizontal line
+						// =====================================================
+						
+						// CREATING THE ASCIITABLE, start with line
+						
+						local n = `c(linesize)' + 80
+						
+						/*if !missing(`trim'(`"`macval(preline)'"')) markdown `preline'
+						local preline `r(md)'
+						*/
+						file write `knot' `"`macval(preline)'"' _n
+					}
+					
+				
+					if substr(`trim'(`"`macval(line)'"'),1,4) != "***/"  {
+						
+						local preline `"`macval(line)'"'
+						
+						
+						
+*						file write `knot' `"`macval(line)'"' _n
+						*file read `hitch' line
+						
+						//remove white space in old-fashion way!
+						cap local m : display "`line'"
+						if _rc == 0 & missing(trim("`m'")) {
+							local line ""
+						}
+						
+					}	
+					
+				}
+			
+			*local preprepreline `"`macval(prepreline)'"'
+			*local prepreline `"`macval(preline)'"'
+			
+			}
+			
+			
+		}
+		
+		// code line 
+		
+		if substr(`trim'(`"`macval(line)'"'),1,5) == "/***$" {
+			
+			file read `hitch' line
 			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) 		///
 			!= "***/" {
 				
@@ -453,39 +478,14 @@ program define sthlp
 				while missing(`"`macval(line)'"') & r(eof) == 0 {
 					file write `knot' `"`macval(line)'"' _n
 					file read `hitch' line
-					
-					//remove white space in old-fashion way!
-					cap local m : display "`line'"
-					if _rc == 0 & missing(trim("`m'")) {
-						local line ""
-						*di as err ">`line'<"
-					}
 				}
 				
-				////////////////////////////////////////////////////////////////
-				// -------------------------------------------------------------
+				//procede when a line is found
+				//Interpret 2 lines at the time, for Markdown headings
 				
-				
-				//Interpret 3 lines at the time, for Markdown headings
-				*local prepreline `"`macval(preline)'"'
 				local preline `"`macval(line)'"'
 				file read `hitch' line
-				//local currentline `"`macval(line)'"'
-				//file read `hitch' line
-				//local postline `"`macval(line)'"'
-				//local line `"`macval(currentline)'"' //stay on the current line
-				
-				
-				if _rc == 0 & missing(trim("`m'")) {
-					local line ""
-					*di as err ">`line'<"
-				}
-					
-				//remove white space in old-fashion way!
-				cap local m : display "`line'"
-				if _rc == 0 & missing(trim("`m'")) {
-					local line ""
-				}
+
 		
 				// -------------------------------------------------------------
 				// IF MARKDOWN HEADING IS FOUND 
@@ -518,15 +518,13 @@ program define sthlp
 								file write `knot' "{p}" _n
 								local preline : subinstr local preline ":" "" 
 							}
-							
-							
 
 							if !missing(`"`macval(line)'"') {
 								local preline = `"`macval(preline)' "' + 		///
 								`"`macval(line)'"'
 						
 								while !missing(`"`macval(line)'"') &			///
-								substr(`trim'(`"`macval(line)'"'),1,4) 		///
+								substr(`trim'(`"`macval(line)'"'),1,4) 			///
 								!= "***/" {
 									file read `hitch' line
 									
@@ -543,7 +541,7 @@ program define sthlp
 							
 							// Run Markdown
 							// ---------------------------------------------
-							*di as err `"p2:`preline'"'
+							di as err `"p2:`preline'"'
 							markdown `preline'
 							if _rc == 0 local preline `r(md)'
 							else {
@@ -552,45 +550,8 @@ program define sthlp
 								di as txt `"`macval(preline)'"'
 							}
 							
-							/*
-							// Markdown styling syntax
-							forvalues i = 1/27 {
-								local preline : subinstr local preline "___" "{ul:"
-								local preline : subinstr local preline "___" "}"
-							}
-							forvalues i = 1/27 {
-								local preline : subinstr local preline "__" "{bf:"
-								local preline : subinstr local preline "__" "}"
-							}							
-							forvalues i = 1/27 {
-								local preline : subinstr local preline "_" "{it:"
-								local preline : subinstr local preline "_" "}"
-							}
-							
-							*/
-							
 						}
-						
-						*di as err "p3{bf:`preline'}"
-						*di as err "p4{bf:`line'}"
-						
-						// this part is independent of the Marjdown engine
-						// Create Markdown Horizontal line
-						// =====================================================
-						
-						// CREATING THE ASCIITABLE, start with line
-						
-						//di as err "pre:`preline'"
-						//di  `"cur:`line'"'
-						//di  `"cur:`postline'"'
-						
-						*di as err "p :: `preline'"
-						*di as err "  :: `line'"
-						
-						*di as err  "ppp:: `preprepreline'"
-						*di as err "pp :: `prepreline'"
-						*di as err "p  :: `preline'"
-						*di as err "   :: `line'"
+
 						local n = `c(linesize)' + 80
 						
 						while `n' > 0 & !missing("`asciitable'") {
@@ -745,7 +706,6 @@ program define sthlp
 							local n `--n'
 						}
 						
-						
 						file write `knot' `"`macval(preline)'"' _n
 					}
 					
@@ -775,9 +735,10 @@ program define sthlp
 			
 			}
 		}
+
 		
-		// code line 
 		
+		// code line
 		file read `hitch' line
 		
 	}
@@ -793,6 +754,7 @@ program define sthlp
 	// -----------------------------------------------------------------
 	// Create the ASCII tables
 	// ================================================================= 
+	
 	tempname hitch knot 
 	qui file open `hitch' using `"`tmp1'"', read
 	qui file open `knot' using `"`tmp'"', write replace
@@ -800,6 +762,7 @@ program define sthlp
 	while r(eof) == 0 {	
 		
 		if !missing("`asciitable'") {
+			*local line : subinstr local line "- | -" "{c -}{c -}{c +}{c -}{c -}", all
 			local line : subinstr local line "-|-" "-{c +}-"
 			local line : subinstr local line "-B-" "-{c BT}-"
 			local line : subinstr local line "-T-" "-{c TT}-", all
@@ -831,7 +794,7 @@ program define sthlp
 			& `trim'(`"`macval(`l')'"') == "- - -" {
 				local `l' : subinstr local `l' "- - -" "    {hline}" 
 			}
-						
+			
 							
 			// Secondary syntax for headers
 			// -----------------------------------------------------
@@ -843,27 +806,6 @@ program define sthlp
 				local `l' : subinstr local `l' "## " "", all
 				local `l'  "{title:`l'}"
 			}
-							
-							
-							// Markdown styling syntax
-								forvalues i = 1/27 {
-									local `l' : subinstr local `l' "___" "{ul:"
-									local `l' : subinstr local `l' "___" "}"
-								}
-								forvalues i = 1/27 {
-									local `l' : subinstr local `l' "__" "{bf:"
-									local `l' : subinstr local `l' "__" "}"
-								}							
-								forvalues i = 1/27 {
-									local `l' : subinstr local `l' "_" "{it:"
-									local `l' : subinstr local `l' "_" "}"
-								}
-							
-							//local `l' : subinstr local `l' "|" "{c |}", all
-							//local `l' : subinstr local `l' "-+-" "-{c +}-", all
-							//local `l' : subinstr local `l' "+-" "{c TLC}-", all 
-							//local `l' : subinstr local `l' "-+" "-{c TRC}", all 
-							*local `l' : subinstr local `l' "-" "{c -}", all
 							
 							
 							//Make it nicer
@@ -908,3 +850,10 @@ end
 
 
 //markdoc figure.ado, replace export(sthlp) template(empty) asciitable
+markdoc 00.ado, replace export(sthlp) linesize(244) ascii //template(empty) 
+
+markdoc 00.ado, replace export(docx) version("1.0") title("Dynamic Help Files") ///
+template(empty) style(stata) linesize(244)
+
+
+*markdoc 0.ado, replace export(sthlp) template(empty) summary("this is it") title("mytitle") date version("1.0")

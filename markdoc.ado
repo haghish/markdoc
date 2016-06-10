@@ -52,7 +52,6 @@
 	3.6.9     April,  2016
 */
 
-
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -96,6 +95,7 @@ program markdoc
 	ADDress(str) 	 /// specifies author contact information (for styling)
 	Date			 /// Add the current date to the document
 	SUMmary(str)     /// writing the summary or abstract of the report
+	VERsion(str)     /// add version to dynamic help file
 	STYle(name)      /// specifies the style of the document
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
 	MATHjax 		 /// Interprets mathematics using MathJax
@@ -559,7 +559,6 @@ program markdoc
 			"Use the {bf:replace} option to replace the existing file." 					
 			exit 198
 		}
-	
 	
 	****************************************************************************
 	*DO NOT PRINT ANYTHING ON THE LOG
@@ -1945,9 +1944,6 @@ program markdoc
 		
 
 		
-	
-		
-		
 			
 		********************************************************************
 		*PART 4- CREATE MARKDOWN FILE
@@ -2381,6 +2377,7 @@ program markdoc
 	}
 			
 			
+		
 		********************************************************************
 		*	REPLACE THE HTML FILE
 		********************************************************************	
@@ -2388,7 +2385,7 @@ program markdoc
 			
 			if "`markup'" == "markdown" | "`markup'" == ""  {
 				quietly  copy `"`tmp1'"' `"`md'"', replace
-							
+						
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
 					
@@ -2399,7 +2396,7 @@ program markdoc
 					
 					shell "$pandoc" "`md'" -o "`output'"
 					quietly  copy "`output'" `"`html'"', replace
-					quietly  copy "`output'" `"`convert'"', replace
+					//quietly  copy "`output'" `"`convert'"', replace
 					
 					*shell "$pandoc" "`md'" -o "`convert'"
 					*quietly  copy "`convert'" `"`html'"', replace
@@ -2416,10 +2413,6 @@ program markdoc
 				}	
 			}	
 		}
-			
-
-		
-		
 		
 		********************************************************************
 		*EXPORT MARKDOWN FILE TO OTHER FORMATS
@@ -2430,6 +2423,7 @@ program markdoc
 			// ------------------------
 			if !missing("`printer'") {
 				local latexEngine --latex-engine="`printer'"
+				global setpath "`printer'"
 			}
 					
 			// PDF Processing
@@ -2468,7 +2462,9 @@ program markdoc
 						// The in file needs to have .html suffix. Erase any existing temp file
 						cap erase "`in'.html"
 						cap copy "`html'" "`in'.html", replace 
-
+						
+						local quietly quietly		//avoid printer log
+						
 						if !missing("`noisily'") {
 							di _n(2) "{title:Print the HTML to PDF}" _n			///
 							"$setpath --footer-center [page] " 					///
@@ -2477,9 +2473,11 @@ program markdoc
 							"--no-stop-slow-scripts --javascript-delay 1000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`in'" "`output'"' 
+							
+							local quietly           //display printer log
 						}
 						
-						shell "$setpath" 										///
+						`quietly' shell "`printer'" "$setpath" 					///
 						--footer-center [page] --footer-font-size 10 			///
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
@@ -2502,6 +2500,8 @@ program markdoc
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 						
+						local quietly quietly		//avoid printer log
+						
 						if !missing("`noisily'") {
 							di _n(2) "{title:Print the HTML to PDF}" _n			///
 							"$setpath --footer-center \[page\] " 				///
@@ -2510,9 +2510,11 @@ program markdoc
 							"--no-stop-slow-scripts --javascript-delay 1000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`html'" "`convert'"' 
+							
+							local quietly           //display printer log
 						}
-					
-						shell "$setpath" 										///
+						
+						`quietly' shell "$setpath" 						        ///
 						--footer-center \[page\] --footer-font-size 10 			///
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
@@ -2533,6 +2535,8 @@ program markdoc
 					// wkhtmltopdf
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 						
+						local quietly quietly		//avoid printer log
+						
 						if !missing("`noisily'") {
 							di _n(2) "{title:Print the HTML to PDF}" _n			///
 							"$setpath --footer-center \[page\] " 				///
@@ -2541,9 +2545,11 @@ program markdoc
 							"--no-stop-slow-scripts --javascript-delay 1000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`html'" "`convert'"' 
+							
+							local quietly           //display printer log
 						}
 						
-						shell "$setpath" 										///
+						`quietly' shell "$setpath" 								///
 						--footer-center \[page\] --footer-font-size 10 			///
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
@@ -2976,7 +2982,7 @@ program markdoc
 		sthlp `smclfile', export("`export'") template("`template'")				///
 		`replace' `date' title("`title'") summary("`summary'") 					///
 		author("`author'") affiliation("`affiliation'") address("`address'") 	///
-		`asciitable'
+		`asciitable' version("`version'")
 	}	
 	
 	
@@ -2999,3 +3005,5 @@ program markdoc
 		
 end
 
+markdoc 00.ado, replace export(html) version("1.0") title("Dynamic Help Files") ///
+template(empty) style(stata) linesize(244)

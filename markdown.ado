@@ -14,12 +14,11 @@
 	================
 	
 	This program is a part of MarkDoc package, a general purpose program for 
-	literate programming in Stata. This program generates converts Markdown 
+	literate programming in Stata. markdown command generates converts Markdown 
 	syntax to SMCL, by returning an rclass named r(md) 
  
-	3.6.7  February,  2016
+	3.7.0  June,  2016
 */
-
 
 program define markdown, rclass
 	
@@ -43,8 +42,63 @@ program define markdown, rclass
 	local 0 : subinstr local 0 "'" "{c 39}", all
 	*local 0 : subinstr local 0 "=" "{c 61}", all
 	
+	
+	// Hyperlink
+	// -------------------------------------------------------------------------
+	if strpos(`"`macval(0)'"', "](") != 0 {
+		local a = strpos(`"`macval(0)'"', "](")
+		local 0 : subinstr local 0 "](" " "
+		local l1 = substr(`"`macval(0)'"',1,`a') 
+		local l2 = substr(`"`macval(0)'"',`a'+1,.) 
+		*di as err "l1: `l1'"
+		*di as err "l2: `l2'"
+		
+		// Extract the image syntax & link text
+		if strpos(`"`macval(l1)'"', "![") != 0 {
+			local a = strpos(`"`macval(l1)'"', "![")
+			local l1 : subinstr local l1 "![" " "
+			local text = substr(`"`macval(l1)'"',1,`a') 
+			local hypertext = substr(`"`macval(l1)'"',`a'+1,.) 
+			local image 1
+		}
+		else if strpos(`"`macval(l1)'"', "[") != 0 {
+			local a = strpos(`"`macval(l1)'"', "[")
+			local l1 : subinstr local l1 "[" " "
+			local text = substr(`"`macval(l1)'"',1,`a') 
+			local hypertext = substr(`"`macval(l1)'"',`a'+1,.) 
+			*di as err "text: `text'"
+			*di as err "hypertext: `hypertext'"
+		}
+		
+		//Extract the name
+		if strpos(`"`macval(l2)'"', ")") != 0 {
+			local a = strpos(`"`macval(l2)'"', ")")
+			local l2 : subinstr local l2 ")" " "
+			local link = substr(`"`macval(l2)'"',1,`a') 
+			local rest = substr(`"`macval(l2)'"',`a'+1,.) 
+			*di as err "link: `link'"
+			*di as err "rest: `rest'"
+		}
+		
+		if "`image'" != "1" {
+			local 0 : di `"`macval(text)' {browse "`macval(link)'":`macval(hypertext)'} `macval(rest)'"'
+		}
+		else {
+			local 0 : di `"`macval(text)' `macval(rest)'"'
+		}
+	}
+	
 	// Text styling
 	// -------------------------------------------------------------------------
+	forvalues i = 1/27 {
+		*local 0 : subinstr local 0 "______" "}}{bf:"
+	}
+	
+	forvalues i = 1/27 {
+		local 0 : subinstr local 0 "____" "{bf:{ul:"
+		local 0 : subinstr local 0 "____" "}}"
+	}
+	
 	forvalues i = 1/27 {
 		local 0 : subinstr local 0 "___" "{ul:"
 		local 0 : subinstr local 0 "___" "}"
@@ -60,32 +114,23 @@ program define markdown, rclass
 	
 	// Secondary syntax for headers
 	// -------------------------------------------------------------------------
-	if substr(`trim'(`"`macval(line)'"'),1,2) == "# " {
-		local 0 : subinstr local 0 "# " "", all
+	if substr(`trim'(`"`macval(0)'"'),1,2) == "# " {
+		local 0 : subinstr local 0 "# " ""
 		local 0  "{title:`0'}"
 	}
-	else if substr(`trim'(`"`macval(line)'"'),1,3) == "## " {
-		local 0 : subinstr local 0 "## " "", all
+	else if substr(`trim'(`"`macval(0)'"'),1,3) == "## " {
+		local 0 : subinstr local 0 "## " ""
 		local 0  "{title:`0'}"
 	}
-	
-	// Simple ASCII to SMCL tables
-	// -------------------------------------------------------------------------
-	
-	/*
-	local 0 : subinstr local 0 "|" "{c |}", all
-	local 0 : subinstr local 0 "-+-" "{c -}{c +}{c -}", all
+	else if substr(`trim'(`"`macval(0)'"'),1,4) == "### " {
+		local 0 : subinstr local 0 "### " ""
+		local 0  "{title:`0'}"
+	}
+	else if substr(`trim'(`"`macval(0)'"'),1,5) == "#### " {
+		local 0 : subinstr local 0 "#### " ""
+		local 0  "{title:`0'}"
+	}
 
-	//THIS IS SMARTER, BUT SLOWER
-	
-	
-	local i 80
-	while `i' > 1 {
-		local line : display _dup(`i') "-"
-		local 0 : subinstr local 0 "`line'" "{hline `i'}"
-		local i `--i'
-	}
-	*/
 	
 	
 	// Create Markdown Horizontal line
@@ -103,6 +148,8 @@ program define markdown, rclass
 	}
 						
 						
-	return local md `0'
+	return local md `"`macval(0)'"'
 	
 end
+
+
