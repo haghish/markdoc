@@ -336,8 +336,11 @@ program define sthlp
 				//Interpret 2 lines at the time, for Markdown headings
 				
 				local preline `"`macval(line)'"'
-				if !missing(`trim'(`"`macval(line)'"')) markdown `line'
-				local preline "`r(md)'"
+				if !missing(`trim'(`"`macval(line)'"')) & 						///
+				substr(`"`macval(line)'"',1,4) != "    " {
+					markdown `line'
+					local preline "`r(md)'"
+				}	
 				file read `hitch' line
 				
 				//remove white space in old-fashion way!
@@ -382,10 +385,16 @@ program define sthlp
 								local preline : subinstr local preline ":" "" 
 							}
 							
-							if !missing(`trim'(`"`macval(preline)'"')) markdown `preline'
-							if _rc == 0 local preline `r(md)'
-							if !missing(`trim'(`"`macval(line)'"')) markdown `line'
-							if _rc == 0 local line `r(md)'
+							if !missing(`trim'(`"`macval(preline)'"')) & 		///
+							substr(`"`macval(preline)'"',1,4) != "    " {
+								markdown `preline'
+								if _rc == 0 local preline `r(md)'
+							}
+							if !missing(`trim'(`"`macval(line)'"')) & 		///
+							substr(`"`macval(line)'"',1,4) != "    " {
+								markdown `line'
+								if _rc == 0 local line `r(md)'
+							}
 							
 							if !missing(`"`macval(line)'"') {
 								local preline = `"`macval(preline)' "' + 		///
@@ -761,7 +770,7 @@ program define sthlp
 	while r(eof) == 0 {	
 		
 		if !missing("`asciitable'") {
-			*local line : subinstr local line "- | -" "{c -}{c -}{c +}{c -}{c -}", all
+			local line : subinstr local line "- | -" "{c -}{c -}{c +}{c -}{c -}", all
 			local line : subinstr local line "-|-" "-{c +}-"
 			local line : subinstr local line "-B-" "-{c BT}-"
 			local line : subinstr local line "-T-" "-{c TT}-", all
@@ -848,11 +857,12 @@ program define sthlp
 end
 
 
-//markdoc figure.ado, replace export(sthlp) template(empty) asciitable
-markdoc 00.ado, replace export(sthlp) linesize(244) ascii //template(empty) 
 
-markdoc 00.ado, replace export(docx) version("1.0") title("Dynamic Help Files") ///
-template(empty) style(stata) linesize(244)
+//markdoc figure.ado, replace export(sthlp) template(empty) asciitable
+// markdoc example.ado, replace export(sthlp) linesize(244) ascii //template(empty) 
+
+*markdoc 00.ado, replace export(docx) version("1.0") title("Dynamic Help Files") ///
+*template(empty) style(stata) linesize(244)
 
 
 *markdoc 0.ado, replace export(sthlp) template(empty) summary("this is it") title("mytitle") date version("1.0")

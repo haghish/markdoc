@@ -49,7 +49,7 @@
 	MarkDoc Versions
 	----------------
 	1.0.0	   July,  2014 
-	3.6.9     April,  2016
+	3.7.0     April,  2016
 */
 
 program markdoc
@@ -3005,5 +3005,3 @@ program markdoc
 		
 end
 
-markdoc 00.ado, replace export(html) version("1.0") title("Dynamic Help Files") ///
-template(empty) style(stata) linesize(244)

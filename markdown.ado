@@ -38,6 +38,14 @@ program define markdown, rclass
 	// Avoid string quotations and also grave accesnts
 	// -------------------------------------------------------------------------
 	*local 0 : subinstr local 0 `"""' "{c 34}", all
+	local 0 : subinstr local 0 "__`" "__", all
+	local 0 : subinstr local 0 "`__" "__", all
+	local 0 : subinstr local 0 "_`" "_", all
+	local 0 : subinstr local 0 "`_" "_", all
+	local 0 : subinstr local 0 "[`" "[", all
+	local 0 : subinstr local 0 "`]" "]", all
+	local 0 : subinstr local 0 "(`" "(", all
+	local 0 : subinstr local 0 "`)" ")", all
 	local 0 : subinstr local 0 "`" "{c 96}", all
 	local 0 : subinstr local 0 "'" "{c 39}", all
 	*local 0 : subinstr local 0 "=" "{c 61}", all
