@@ -133,9 +133,8 @@ program define sthlp
 		"/*** DO NOT EDIT THIS LINE -----------------------------------------------------" _n ///																///
 		"Version: 1.0.0" _n														///
 		"Title: packagename" _n													///
-		"Description: __explain__ _your_ ___function___ ____brief______ly__" _n ///
-		"For more information visit "											///
-		"[MarkDoc](http://www.haghish.com/markdoc) homepage." _n				///
+		"Description: __explain__ _your_ ___function___ briefly. For more " _n ///
+		"information visit [MarkDoc](http://www.haghish.com/markdoc) homepage." _n				///
 		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(2) 		
 		 
 		 
