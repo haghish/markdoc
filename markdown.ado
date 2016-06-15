@@ -98,9 +98,14 @@ program define markdown, rclass
 	
 	// Text styling
 	// -------------------------------------------------------------------------
-	forvalues i = 1/27 {
-		*local 0 : subinstr local 0 "______" "}}{bf:"
+	if substr(`trim'(`"`macval(0)'"'),1,2) == "__" & 							///
+	substr(`trim'(`"`macval(0)'"'),1,3) != "___" {
+		local 0 : subinstr local 0 "__" "{bf:"
 	}
+	*if substr(`trim'(`"`macval(0)'"'),1,1) == "_" & 							///
+	*substr(`trim'(`"`macval(0)'"'),1,2) != "__" {
+	*	local 0 : subinstr local 0 "_" "{it:"
+	*}
 	
 	forvalues i = 1/27 {
 		local 0 : subinstr local 0 "____" "{bf:{ul:"
@@ -112,12 +117,14 @@ program define markdown, rclass
 		local 0 : subinstr local 0 "___" "}"
 	}
 	forvalues i = 1/27 {
-		local 0 : subinstr local 0 "__" "{bf:"
-		local 0 : subinstr local 0 "__" "}"
+		local 0 : subinstr local 0 " __" " {bf:"
+		local 0 : subinstr local 0 "__ " "} "
+		local 0 : subinstr local 0 "__." "}."
 	}							
 	forvalues i = 1/27 {
-		local 0 : subinstr local 0 "_" "{it:"
-		local 0 : subinstr local 0 "_" "}"
+		local 0 : subinstr local 0 " _" " {it:"
+		local 0 : subinstr local 0 "_ " "} "
+		local 0 : subinstr local 0 "_." "}."
 	}
 	
 	// Secondary syntax for headers
