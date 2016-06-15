@@ -321,20 +321,11 @@ program define sthlp
 			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) 		///
 			!= "***/" {
 				
-				//IF MISSING line, forward to the next non-missing line
-				while missing(`trim'(`"`macval(line)'"')) & r(eof) == 0 {
-					file write `knot' `"`macval(line)'"' _n
-					file read `hitch' line
-					//remove white space in old-fashion way!
-					cap local m : display "`line'"
-					if _rc == 0 & missing(trim("`m'")) {
-						local line ""
-					}
-				}
-				
-				//procede when a line is found
 				//Interpret 2 lines at the time, for Markdown headings
+				//----------------------------------------------------
 				
+				// AVOID interpreting indented lines
+				// ---------------------------------
 				local preline `"`macval(line)'"'
 				if !missing(`trim'(`"`macval(line)'"')) & 						///
 				substr(`"`macval(line)'"',1,4) != "    " {
@@ -354,7 +345,6 @@ program define sthlp
 				// -------------------------------------------------------------
 				
 				//NOTE: MAKE SURE "---" IS NOT A TABLE. MAKE SURE "|" IS NOT USED
-				
 				if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |			///
 				substr(`trim'(`"`macval(line)'"'),1,3) == "---" & 				///
 				strpos(`"`macval(line)'"', "|") == 0 {
@@ -372,8 +362,10 @@ program define sthlp
 					if substr(`trim'(`"`macval(preline)'"'),1,4) != "***/" {
 						
 						//Check for Paragraph code
+						//------------------------------------------------------
 						if substr(`trim'(`"`macval(preline)'"'),1,1) == ":" 	///
 						| substr(`trim'(`"`macval(preline)'"'),1,1) == ">" {
+						
 							if substr(`trim'(`"`macval(preline)'"'),1,1) 	///
 							== ">" {
 								file write `knot' "{p 4 4 2}" _n
@@ -400,26 +392,28 @@ program define sthlp
 								local preline = `"`macval(preline)' "' + 		///
 								`"`macval(line)'"'
 						
-								while !missing(`"`macval(line)'"') &			///
-								substr(`trim'(`"`macval(line)'"'),1,4) 			///
-								!= "***/" {
-									file read `hitch' line
-									if !missing(`trim'(`"`macval(line)'"')) markdown `line'
-									if _rc == 0 local line `r(md)'
-									//remove white space in old-fashion way!
-									cap local m : display "`line'"
-									if _rc == 0 & missing(trim("`m'")) {
-										local line ""
-									}
-									
-									local preline = `"`macval(preline)' "' + 	///
-									`"`macval(line)'"'
-								}
+								*while !missing(`"`macval(line)'"') &			///
+								*substr(`trim'(`"`macval(line)'"'),1,4) 			///
+								*!= "***/" {
+								*	file read `hitch' line
+								*	if !missing(`trim'(`"`macval(line)'"')) markdown `line'
+								*	if _rc == 0 local line `r(md)'
+								*	//remove white space in old-fashion way!
+								*	cap local m : display "`line'"
+								*	if _rc == 0 & missing(trim("`m'")) {
+								*		local line ""
+								*	}
+								*	
+								*	local preline = `"`macval(preline)' "' + 	///
+								*	`"`macval(line)'"'
+								*}
 								
 							}
-							 
-							// Run Markdown
-							// ---------------------------------------------
+
+						}
+						
+						// Run Markdown
+						// ---------------------------------------------
 							/*
 							if !missing(`trim'(`"`macval(preline)'"')) markdown `preline'
 							if _rc == 0 local preline `r(md)'
@@ -429,8 +423,6 @@ program define sthlp
 								di as txt `"`macval(preline)'"'
 							}
 							*/
-							
-						}
 						
 						// this part is independent of the Marjdown engine
 						// Create Markdown Horizontal line
@@ -444,26 +436,7 @@ program define sthlp
 						local preline `r(md)'
 						*/
 						file write `knot' `"`macval(preline)'"' _n
-					}
-					
-				
-					if substr(`trim'(`"`macval(line)'"'),1,4) != "***/"  {
-						
-						local preline `"`macval(line)'"'
-						
-						
-						
-*						file write `knot' `"`macval(line)'"' _n
-						*file read `hitch' line
-						
-						//remove white space in old-fashion way!
-						cap local m : display "`line'"
-						if _rc == 0 & missing(trim("`m'")) {
-							local line ""
-						}
-						
 					}	
-					
 				}
 			
 			*local preprepreline `"`macval(prepreline)'"'
