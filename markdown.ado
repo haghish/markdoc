@@ -89,7 +89,7 @@ program define markdown, rclass
 		}
 		
 		if "`image'" != "1" {
-			local 0 : di `"`macval(text)' {browse "`macval(link)'":`macval(hypertext)'} `macval(rest)'"'
+			local 0 : di `"`macval(text)' {browse "`macval(link)'":`macval(hypertext)'}`macval(rest)'"'
 		}
 		else {
 			local 0 : di `"`macval(text)' `macval(rest)'"'
@@ -119,12 +119,21 @@ program define markdown, rclass
 	forvalues i = 1/27 {
 		local 0 : subinstr local 0 " __" " {bf:"
 		local 0 : subinstr local 0 "__ " "} "
+	}		
+	forvalues i = 1/27 {
 		local 0 : subinstr local 0 "__." "}."
-	}							
+		local 0 : subinstr local 0 "__," "},"
+		local 0 : subinstr local 0 "__;" "};"
+	}	
 	forvalues i = 1/27 {
 		local 0 : subinstr local 0 " _" " {it:"
 		local 0 : subinstr local 0 "_ " "} "
 		local 0 : subinstr local 0 "_." "}."
+	}
+	forvalues i = 1/27 {
+		local 0 : subinstr local 0 "_." "}."
+		local 0 : subinstr local 0 "_, " "}, "
+		local 0 : subinstr local 0 "_; " "}; "
 	}
 	
 	// Secondary syntax for headers
