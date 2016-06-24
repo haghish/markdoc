@@ -1070,7 +1070,7 @@ program define sthlp
 	
 	tempfile tmp1
 	quietly copy "`tmp'" "`tmp1'", replace
-	quietly copy "`tmp'" me.txt, replace
+	*quietly copy "`tmp'" me.txt, replace
 	
 	
 	
@@ -1175,7 +1175,7 @@ program define sthlp
 	file write `knot' _n
 	file close `knot'
 	quietly copy "`tmp'" "`tmp1'", replace
-	quietly copy "`tmp'" me2.txt, replace
+	*quietly copy "`tmp'" me2.txt, replace
 	
 	
 	
