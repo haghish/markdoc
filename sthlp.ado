@@ -155,27 +155,41 @@ program define sthlp
 		"{p 4 6 2}{* if by is allowed, leave the following}" _n ///
 		"{cmd:by} is allowed; see {manhelp by D}.{p_end}" _n ///
 		"{p 4 6 2}{* if weights are allowed, say which ones}" _n ///
-		"{cmd:fweight}s are allowed; see {help weight}." _n ///
+		"{cmd:fweight}s are allowed; see {help weight}." _n(2) ///
 		"Description" _n ///
 		"===========" _n(2) ///
-		"__XXX__ does ... (now put in a one-short-paragraph description of the purpose of the command)" _n(3) ///
+		"__XXX__ does ... (now put in a one-short-paragraph description of the purpose of the command)" _n(2) ///
 		"Options" _n ///
 		"=======" _n(2) ///
 		"__whatever__ does yak yak" _n(2) ///
-		"__2nd option__ etc." _n(3) ///
+		">Use __>__ for additional paragraphs within and option description to indent the paragraph." _n(2) ///
+		"__2nd option__ etc." _n(2) ///
+		"Remarks" _n ///
+		"=======" _n(2) ///
+		"The remarks are the detailed description of the command and its nuances." _n ///
+		"Official documented Stata commands don't have much for remarks, because the remarks go in the documentation." _n ///
+		"Similarly, you can write remarks that do not appear in the Stata help file, " _n ///
+		"but appear in the __package vignette__ instead. To do so, use the " _n ///
+		"__/***{c 36}__ sign instead of __/***__ sign (by adding a dollar sign) " _n ///
+		"to indicate this part of the documentation should be avoided in the " _n ///
+		"help file. The remark section can include graphics and mathematical " _n ///
+		"notations." _n(2) ///
+		"    /{c 42}{c 42}{c 42}$" _n ///
+		"    ..." _n ///
+		"    {c 42}{c 42}{c 42}/" _n(2) ///
 		"Example(s)" _n															///
 		"=================" _n(2)												///
 		"    explain what it does" _n											///
 		"        . example command" _n(2)										///
 		"    second explanation" _n												///
-		"        . example command" _n(3)										///
+		"        . example command" _n(2)										///
 		"Acknowledgements" _n ///
 		"================" _n(2) ///
 		"{p 4 4 2}" _n ///
-		"If you have thanks specific to this command, put them here." _n(3) ///
+		"If you have thanks specific to this command, put them here." _n(2) ///
 		"Author" _n ///
-		"======" _n ///
-		"Author information here; nothing for official Stata commands" _n(3) ///
+		"======" _n(2) ///
+		"Author information here; nothing for official Stata commands" _n(2) ///
 		"References" _n ///
 		"==========" _n(2) ///
 		"{p 4 4 2}" _n ///
@@ -406,64 +420,48 @@ program define sthlp
 					if substr(`trim'(`"`macval(preline)'"'),1,4) != "***/" {
 						
 						//Check for Paragraph code
-						if substr(`trim'(`"`macval(preline)'"'),1,1) == ":" 	///
-						| substr(`trim'(`"`macval(preline)'"'),1,1) == ">" {
-							if substr(`trim'(`"`macval(preline)'"'),1,1) 	///
-							== ">" {
-								file write `knot' "{p 4 4 2}" _n
+						if substr(`trim'(`"`macval(preline)'"'),1,1) == ">" {
+							
+							if substr(`trim'(`"`macval(preline)'"'),1,1) == ">" {
+								file write `knot' "{p 8 8 2}" _n
 								local preline : subinstr local preline ">" "" 
 							}
 							
-							//else if substr(`trim'(`"`macval(preline)'"'),1,1) ///
-							//== ":" {
-							//	file write `knot' "{p}" _n
-							//	local preline : subinstr local preline ":" "" 
-							//}
 							
+							/*
 							if !missing(`trim'(`"`macval(preline)'"')) & 		///
 							substr(`"`macval(preline)'"',1,4) != "    " {
 								markdown `preline'
 								if _rc == 0 local preline `"`macval(r(md))'"'
 							}
+							
 							if !missing(`trim'(`"`macval(line)'"')) & 		///
 							substr(`"`macval(line)'"',1,4) != "    " {
 								markdown `line'
 								if _rc == 0 local line `"`r(md)'"'
 							}
-							
-							if !missing(`"`macval(line)'"') {
-								local preline = `"`macval(preline)' "' + 		///
-								`"`macval(line)'"'
-						
-								while !missing(`"`macval(line)'"') &			///
-								substr(`trim'(`"`macval(line)'"'),1,4) 			///
-								!= "***/" {
-									file read `hitch' line
-									if !missing(`trim'(`"`macval(line)'"')) markdown `line'
-									if _rc == 0 local line `"`r(md)'"'
-									//remove white space in old-fashion way!
-									cap local m : display "`line'"
-									if _rc == 0 & missing(trim("`m'")) {
-										local line ""
-									}
-									
-									local preline = `"`macval(preline)' "' + 	///
-									`"`macval(line)'"'
-								}
-								
-							}
-							 
-							// Run Markdown
-							// ---------------------------------------------
-							/*
-							if !missing(`trim'(`"`macval(preline)'"')) markdown `preline'
-							if _rc == 0 local preline `r(md)'
-							else {
-								di as err "markdown.ado engine failed on "	///
-								"the following line:" _n(2)
-								di as txt `"`macval(preline)'"'
-							}
 							*/
+							
+							*if !missing(`"`macval(line)'"') {
+							*	local preline = `"`macval(preline)' "' + 		///
+							*	`"`macval(line)'"'
+						
+							*	while !missing(`"`macval(line)'"') &			///
+							*	substr(`trim'(`"`macval(line)'"'),1,4) 			///
+							*	!= "***/" {
+							*		file read `hitch' line
+							*		if !missing(`trim'(`"`macval(line)'"')) markdown `line'
+							*		if _rc == 0 local line `"`r(md)'"'
+							*		//remove white space in old-fashion way!
+							*		cap local m : display "`line'"
+							*		if _rc == 0 & missing(trim("`m'")) {
+							*			local line ""
+							*		}
+									
+							*		local preline = `"`macval(preline)' "' + 	///
+							*		`"`macval(line)'"'
+							*	}
+							*}
 							
 						}
 
@@ -828,7 +826,7 @@ program define sthlp
 							
 							if substr(`trim'(`"`macval(preline)'"'),1,1) 	///
 							== ">" {
-								file write `knot' "{p 4 4 2}" _n
+								file write `knot' "{p 8 8 2}" _n
 								local preline : subinstr local preline ">" "" 
 							}
 							else if substr(`trim'(`"`macval(preline)'"'),1,1) ///
@@ -1096,24 +1094,14 @@ program define sthlp
 				| substr(`trim'(`"`macval(line)'"'),1,4) == "{it:" ///
 				| substr(`trim'(`"`macval(line)'"'),1,4) == "{ul:" { 
 					file write `knot' "{p 4 4 2}" _n
-				}	
+				}
+				else if substr(`trim'(`"`macval(line)'"'),1,1) != "{" 			///
+				& !missing(`trim'(`"`macval(line)'"')) {
+					file write `knot' "{p 4 4 2}" _n
+				}
 			}					
 		}
-						/*	
-						if substr(`trim'(`"`macval(line)'"'),1,1) != ">" 	///
-						& substr(`trim'(`"`macval(line)'"'),1,1) != "{" &	///
-						substr(`"`macval(line)'"',1,1) != " " & ///
-						!missing(`trim'(`"`macval(line)'"')) {
-							di as txt "`preline'"
-							di as err `"`line'"' 
-							
-							if missing(`trim'(`"`macval(preline)'"')) & 		///
-							substr(`"`macval(preline)'"',1,4) != "    " {
-								file write `knot' "{p 4 4 2}" _n
-							}
-							
-						}
-						*/
+
 						
 		if !missing("`asciitable'") {
 			local line : subinstr local line "+--" "{c TLC}--"
@@ -1183,6 +1171,8 @@ program define sthlp
 		file write `knot' `"`macval(line)'"' _n
 		file read `hitch' line
 	}
+	//ADD ADDITIONAL LINE
+	file write `knot' _n
 	file close `knot'
 	quietly copy "`tmp'" "`tmp1'", replace
 	quietly copy "`tmp'" me2.txt, replace
@@ -1210,5 +1200,5 @@ program define sthlp
 		
 end
 
-//markdoc graphviz2.ado, exp(sthlp) replace
+
 //markdoc ap_manual.ado, export(sthlp) replace template(empty) ascii
