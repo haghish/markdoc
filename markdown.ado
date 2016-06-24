@@ -19,7 +19,7 @@
  
 	3.7.0  June,  2016
 */
-
+*cap prog drop markdown
 program define markdown, rclass
 	
 	local version = int(`c(stata_version)')
@@ -102,6 +102,11 @@ program define markdown, rclass
 	substr(`trim'(`"`macval(0)'"'),1,3) != "___" {
 		local 0 : subinstr local 0 "__" "{bf:"
 	}
+	if substr(`trim'(`"`macval(0)'"'),1,3) == ":__" & 							///
+	substr(`trim'(`"`macval(0)'"'),1,4) != ":___" {
+		local 0 : subinstr local 0 ":__" ":{bf:"
+	}
+	
 	*if substr(`trim'(`"`macval(0)'"'),1,1) == "_" & 							///
 	*substr(`trim'(`"`macval(0)'"'),1,2) != "__" {
 	*	local 0 : subinstr local 0 "_" "{it:"
