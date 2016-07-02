@@ -170,7 +170,7 @@ program define sthlp
 		"Official documented Stata commands don't have much for remarks, because the remarks go in the documentation." _n ///
 		"Similarly, you can write remarks that do not appear in the Stata help file, " _n ///
 		"but appear in the __package vignette__ instead. To do so, use the " _n ///
-		"__/***{c 36}__ sign instead of __/***__ sign (by adding a dollar sign) " _n ///
+		"/{c 42}{c 42}{c 42}{c 36} sign instead of /{c 42}{c 42}{c 42} sign (by adding a dollar sign) " _n ///
 		"to indicate this part of the documentation should be avoided in the " _n ///
 		"help file. The remark section can include graphics and mathematical " _n ///
 		"notations." _n(2) ///
@@ -388,7 +388,8 @@ program define sthlp
 				if !missing(`trim'(`"`macval(line)'"')) & 						///
 				substr(`"`macval(line)'"',1,4) != "    " {
 					markdown `"`macval(line)'"'
-					local preline `r(md)'
+					*local preline `r(md)'
+					local preline `"`r(md)'"'
 				}	
 				file read `hitch' line
 				
@@ -833,7 +834,9 @@ program define sthlp
 					file write `knot' "{p 4 4 2}" _n
 				}
 				else if substr(`trim'(`"`macval(line)'"'),1,1) != "{" 			///
-				& !missing(`trim'(`"`macval(line)'"')) {
+				& !missing(`trim'(`"`macval(line)'"')) 							///
+				& substr(`trim'(`"`macval(line)'"'),1,1) != "|" 				///
+				& substr(`trim'(`"`macval(line)'"'),1,1) != "+" {
 					file write `knot' "{p 4 4 2}" _n
 				}
 			}					

@@ -66,8 +66,8 @@ Produce dynamic {it:document}, {it:slide}, or {it:help files}
 {opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
 {opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
-{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt math:jax} {opt noi:sily}
-{opt ascii:table}
+{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt noi:sily}
+{* *! {opt ascii:table}}
 ]
 
 
@@ -135,7 +135,7 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt num:bered}}numbers Stata commands in the dynamic document.{p_end}
 
-{synopt:{opt linesize(int)}}change the {help linesize} for the {help log}, which can range from 80 to 255{p_end}
+{synopt:{opt linesize(int)}}change the {help linesize} for the {help log}, which can range from 80 to 255. {bf:MarkDoc} also evaluates the linesize of the document and applies the actual linesize automatically, if the linesize is not specified.{p_end}
 
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
 The available styles are {bf:simple} and {bf:stata}. If the document is exported 
@@ -146,7 +146,11 @@ even if the document is written in Markdown.
 
 {synopt:{opt template(str)}}renders the document using an external style sheet file. When the document is 
 written in Markdown or HTML and exported to HTML or PDF, a CSS filename can 
-be specified to alter the appearance of the document. Similarly, when the document is written in Markdown and exported to Microsoft Word Docx or Open Office ODT, a reference document with the similar format can be used to alter the style of the exported document (i.e. create a reference document, change the styles and themes, and use it as a template file). If the document is written in LaTeX, this option can also be used to add the required packages to the dynamic document by providing a file that inludes the packages and the template set up. 
+be specified to alter the appearance of the document. Similarly, when the document is written in Markdown 
+and exported to Microsoft Word Docx or Open Office ODT, a reference document with the similar format can be 
+used to alter the style of the exported document (i.e. create a reference document, change the styles and 
+themes, and use it as a template file). If the document is written in LaTeX, this option can also be used 
+to add the required packages to the dynamic document by providing a file that inludes the packages and the template set up. 
 
 {synopt:{opt toc}}creates table of content in PDF, Microsoft Word Docx, and LaTeX documents{p_end}
 
@@ -170,16 +174,11 @@ This option create a "main" file in LaTeX to allow compiling the document.{p_end
 {synopt:{opt statax}}highlights the syntax of Stata codes in the HTML and PDF 
 documents using {help Statax}, which is a JavaScript syntax highlighter engine for Stata{p_end}
 
-{synopt:{opt mathjax}}renders mathematical notations in the HTML and PDF document{p_end}
-
-{synopt:{opt noi:sily}}enables extended log for debugging Pandoc and wkhtmltopdf{p_end} 
-
-{synopt:{opt ascii:table}}converts ascii and figures tables to smcl. This feature 
-can be used for adding ascii models of a program or tables in Stata help file.
+{synopt:{opt noi:sily}}enables extended log for debugging markdoc{p_end} 
 
 {synoptline}
 {p2colreset}{...}
-
+{* *! {synopt:{opt ascii:table}}converts ascii and figures tables to smcl. This feature can be used for adding ascii models of a program or tables in Stata help file.}
 
 {title:Description} 
 
@@ -240,6 +239,38 @@ produce Microsoft Word {bf:docx}, {bf:pdf}, etc.
 For a more detailed documentation and examples, visit 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php":{bf:MarkDoc Homepage}}. 
 
+
+{title:Writing mathematical notation}
+
+{p 4 4 2}
+{bf:MarkDoc} can render LaTeX mathematical notations not only when the document 
+is exported to LaTeX {bf:tex}, but also when the document is exported to 
+{bf:pdf} document or {bf:slide}, Microsoft Office {bf:docx}, 
+OpenOffice and LibreOffice {bf:odt}, and {bf:html}. 
+
+{p 4 4 2}
+Mathematical notations can be inline a text paragraph or on a separate line. 
+For writing inline notations, place the notation between single dollar signs 
+(e.g. $a^2 + b^2 = c^2$). For including notation on a separate line, place the 
+notations between double dollar signs (e.g. $$a^2 + b^2 = c^2$$). The example 
+below demonstrates how to export a PDF presentation slides with notations:
+
+    {bf:. qui log using example, replace}
+	
+    {bf:    /***} 
+    {bf:    Writing mathematical notations} 
+    {bf:    ==============================} 
+
+    {bf:    Mathematical notations can be inline a text paragraph e.g. $a^2 + b^2 = c^2$}
+    {bf:    or on a separate line such as:}
+	
+    {bf:    $$a^2 + b^2 = c^2$$}
+    {bf:    ***/}
+	
+    {bf:. qui log c}
+    {bf:. markdoc example, export(slide) printer("/usr/texbin/pdflatex")}
+
+{pstd}  
 
 {title:Inserting an image or figure in the document}
 
@@ -317,7 +348,7 @@ influence the MarkDoc process. {break}
 
 {syntab:{ul:Appending external files}}
 
-{synopt :{bf: //IMPORT} {help filename} }Append external text file (Markdown, HTML, LaTeX) to the dynamic document{p_end}
+{synopt :{bf: //IMPORT} {help filename} }Include an external text file (Markdown, HTML, LaTeX) to the dynamic document{p_end}
 
 {synoptline}
 {p2colreset}{...}
@@ -560,7 +591,7 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 
 {phang}{c 29}{cmd: qui log c}
 
-    {bf:  markdoc example, replace export(html) install mathjax}			
+    {bf:  markdoc example, replace export(html) install}			
     {bf:  markdoc example, replace export(docx)}
     {bf:  markdoc example, replace export(tex) texmaster}
     {bf:  markdoc example, replace export(pdf)}

@@ -52,6 +52,7 @@
 	3.7.0     April,  2016
 */
 
+*cap prog drop markdoc
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -110,6 +111,14 @@ program markdoc
 	///Font(name)	 /// specifies the document font (ONLY HTML)
 	]
 
+	****************************************************************************
+	*CHANGED SYNTAX
+	****************************************************************************
+	if !missing("`mathjax'") {
+		di as err "{title:Attention}" _n										///
+		"the {bf:mathjax} option is now applied automatically... "
+	}
+	local mathjax mathjax
 	
 	****************************************************************************
 	*Check for Required Packages
@@ -276,6 +285,7 @@ program markdoc
 	if "`export'" == "pdf" & "`style'" == "" local style "stata" 
 		
 	// Line size
+/*	
 	if missing("`linesize'") {
 		if "`c(linesize)'" <= "82"  {
 			local clinesize "`c(linesize)'"
@@ -286,7 +296,8 @@ program markdoc
 		local clinesize "`c(linesize)'"
 		qui set linesize `linesize'
 	}
-		
+*/
+	
 	************************************************************************
 	*CHECK FOR REQUIRED SOFTWARE
 	************************************************************************
@@ -560,6 +571,59 @@ program markdoc
 			exit 198
 		}
 	
+	
+	local clinesize "`c(linesize)'"							//save the linesize
+	
+	tempfile sth //DEFINE tmp FOR THE FIRST TIME
+	tempname hitch knot 
+	qui file open `hitch' using `"`input'"', read
+	file read `hitch' line
+	local linelength 1
+	
+	
+	while r(eof) == 0 {	
+		cap local m = strlen(`"`macval(line)'"') 
+		if "`m'" > "`linelength'" {
+			local linelength `m'
+		}	
+		
+		file read `hitch' line
+	}	
+	file close `hitch'
+	
+	
+	if missing("`linesize'") {
+		if `linelength' < 90 {
+			qui set linesize 90
+		}
+		else if `linelength' < 255 {
+			qui set linesize `linelength'
+		}
+		else {
+			di as err "your document has a line of length `linelength' which "	///
+			"is beyond the limit of Stata"
+			error 198
+		}
+	}
+	else {
+		
+		if `linelength' > 255 {
+			di as err "your document has a line of length `linelength' which "	///
+			"is beyond the limit of Stata"
+			error 198
+		}
+		else if `linelength' > `linesize' {
+			di as err "{title:warning}" _n										///
+			"{p}your document has a line of length `linelength' which "			///
+			"is beyond the {bf:linesize} you have specified. This can cause "	/// 
+			"unreasonable line breaks in the dynamic document..." 
+			*error 198
+		}
+		else {
+			qui set linesize `linesize'
+		}	
+	}
+	
 	****************************************************************************
 	*DO NOT PRINT ANYTHING ON THE LOG
 	****************************************************************************
@@ -698,6 +762,7 @@ program markdoc
 				  	local jump2 1
 					local jump  1
 				}
+				
 				
 				// Special notations
 				// -------------------------------------------------------------
@@ -856,9 +921,16 @@ program markdoc
 					local line `"{com}. `macval(preline)'"'
 				}
 			}
+			
+			//remove MarkDoc output text
+			if substr(trim(`"`macval(line)'"'),1,16) == "(MarkDoc created" 		///
+			| substr(trim(`"`macval(line)'"'),1,19) == "{p}(MarkDoc created" {
+				local jump 1		
+			}
 					
 			
 			if missing("`jump'") {
+
 				file write `knot' `"`macval(line)'"' _n 
 			}	
 			if missing("`jump2'") {
@@ -868,13 +940,13 @@ program markdoc
 								
 		file close `knot'
 		capture file close `fig'
-		//copy "`tmp'" 0process1.smcl	, replace		//For debugging
+		*copy "`tmp'" 0process1.smcl	, replace		//For debugging
 		
 		
 		//copy "`f1'" fig1.txt, replace	
 		//copy "`f`figure''" fig2.txt, replace
 		
-		
+
 		
 		********************************************************************
 		* PART 2- PROCESSING SMCL: 
@@ -1165,8 +1237,11 @@ program markdoc
 					}
 				}
 				
-				if substr(trim(`"`macval(ln)'"'),1,4) == "img "  				///
+				
+				if substr(trim(`"`macval(ln)'"'),1,.) == "img"  				///
+				| substr(trim(`"`macval(ln)'"'),1,9) == "img using"  			///
 				|  substr(trim(`"`macval(ln)'"'),1,4) == "img," {
+					
 					file read `hitch' line
 					while substr(`"`macval(line)'"',1,1) == ">" & r(eof) == 0 &	///
 					substr(`"`macval(line)'"',1,3) != ">//" {
@@ -1248,7 +1323,7 @@ program markdoc
 		}
 
 		file close `knot'		
-		//copy "`tmp1'" 0process2.smcl	, replace			//For debugging
+		*copy "`tmp1'" 0process2.smcl	, replace			//For debugging
 			
 		
 		
@@ -1541,6 +1616,7 @@ program markdoc
 			while r(eof) == 0 {	
 					
 				
+				
 				if substr(`"`macval(line)'"',1,11) == "//FIGURENEW" {
 					local figure = `figure' + 1		
 					
@@ -1579,7 +1655,9 @@ program markdoc
 			file close `hitch'
 			
 		}	
-
+		
+		
+		
 		//copy "`tmp1'" 0process3.smcl, replace
 		
 		********************************************************************
@@ -2385,28 +2463,32 @@ program markdoc
 			
 			if "`markup'" == "markdown" | "`markup'" == ""  {
 				quietly  copy `"`tmp1'"' `"`md'"', replace
-						
+				
+				*copy "`md'" 0processMD1.md, replace
+				
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
 					
 					if !missing("`noisily'") {
 						di _n(2) "{title:Creating Temp file}" _n 				///
-						`"{p}$pandoc `md' -o `convert'"'
+						`"{p}$pandoc -s --mathjax `md' -o `convert'"'
 					}	
-					
-					shell "$pandoc" "`md'" -o "`output'"
+				
+					shell "$pandoc" -s --mathjax "`md'" -o "`output'"
 					quietly  copy "`output'" `"`html'"', replace
-					//quietly  copy "`output'" `"`convert'"', replace
+					
+					*quietly  copy "`output'" 0processMD1.md, replace
+					*quietly  copy "`output'" 0processHTML1.html, replace
 					
 					*shell "$pandoc" "`md'" -o "`convert'"
 					*quietly  copy "`convert'" `"`html'"', replace
 					//copy "`convert'" "0pdfhtml.html", replace
 				}
 			}
-					
-			if "`markup'" ==  "html"   {
+			
+			else if "`markup'" ==  "html"   {
 				quietly  copy `"`tmp1'"' `"`convert'"', replace
-				
+			
 				// If the export was "pdf", then copy the file to "`html'"
 				if !missing("`pdfhtml'") {
 					quietly  copy `"`tmp1'"' `"`html'"', replace
@@ -2509,7 +2591,7 @@ program markdoc
 							"--margin-left 30mm --margin-top 35mm "				///
 							"--no-stop-slow-scripts --javascript-delay 1000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
-							`"`html'" "`convert'"' 
+							`"`html' `convert'"' 
 							
 							local quietly           //display printer log
 						}
@@ -2526,7 +2608,8 @@ program markdoc
 						"`html'" "`convert'"
 					}				
 				}
-							
+				copy "`html'" sth.html, replace	
+				copy "`convert'" sth.pdf, replace	
 							
 				// UNIX PDF PRINTER DEFAULT PATHS
 				// ==============================
@@ -2581,10 +2664,10 @@ program markdoc
 				
 				if missing("`template'") & "`export'" == "docx" {
 					if "`style'" == "stata" {
-						findfile markdoc_stata.docx
+						qui findfile markdoc_stata.docx
 					}	
 					if "`style'" == "simple" {
-						findfile markdoc_simple.docx
+						qui findfile markdoc_simple.docx
 					}
 					
 					if !missing("`r(fn)'") {
@@ -2907,7 +2990,7 @@ program markdoc
 			cap confirm file "`convert'"
 			
 			if _rc == 0 {
-				di as txt "{p}(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
+				di as txt "(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
 				if "`export'" != "md" cap qui erase "`md'"
 			}
 			else display as err "MarkDoc could not produce `convert'" _n
@@ -2917,7 +3000,7 @@ program markdoc
 
 			cap confirm file "`md'"
 			if ! _rc {
-				di as txt "{p}(MarkDoc created "`"{bf:{browse "`md'"}})"' _n
+				di as txt "(MarkDoc created "`"{bf:{browse "`md'"}})"' _n
 			}
 		
 			// IF THERE WAS NO PANDOC AND NO MARKDOWN FILE...
@@ -2963,7 +3046,7 @@ program markdoc
 		
 		//erase the temporary HTML when exporting pdf
 		if "`pdfhtml'" == "pdfhtml" {
-			cap quietly erase `"`html'"' 
+			*cap quietly erase `"`html'"' 
 		}	
 		
 		macro drop pandoc

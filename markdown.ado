@@ -145,7 +145,9 @@ program define markdown, rclass
 	}	
 	forvalues i = 1/27 {
 		local 0 : subinstr local 0 " _" " {it:"
+		local 0 : subinstr local 0 "(_" "({it:"
 		local 0 : subinstr local 0 "_ " "} "
+		local 0 : subinstr local 0 "_)" "})"
 		local 0 : subinstr local 0 "_." "}."
 	}
 	forvalues i = 1/27 {
@@ -190,8 +192,8 @@ program define markdown, rclass
 	}
 						
 						
-	*return local md `"`macval(0)'"'
-	return local md `macval(0)'
+	return local md `"`macval(0)'"'
+	*return local md `macval(0)'
 	
 end
 
