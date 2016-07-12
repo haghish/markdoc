@@ -1716,8 +1716,8 @@ program markdoc
 		translator set smcl2txt lmargin  `savemargin'
 		
 		//DEBUG
-		capture erase 0process4.txt
-		copy "`tmp1'" 0process4.txt	, replace	 //for debugging
+		*capture erase 0process4.txt
+		*copy "`tmp1'" 0process4.txt	, replace	 //for debugging
 		
 		
 		********************************************************************
