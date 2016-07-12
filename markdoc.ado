@@ -1069,7 +1069,7 @@ program markdoc
 				substr(`"`macval(word1)'"',1,11) != "{com}. //ON" &				///
 				substr(`"`macval(word1)'"',1,15) != "{com}. //IMPORT" {
 					//Read the next line! and make sure it does not start with  
-					//">" Otherwise read another line
+					//">" Otherwise read another line					
 					file read `hitch' line
 					local word1 : word 1 of `"`macval(line)'"'
 								
@@ -1714,7 +1714,10 @@ program markdoc
 		*RESTORE THE DEFAULT LINESIZE OF THE TRANSLATOR
 		translator set smcl2txt linesize `savelinesize'
 		translator set smcl2txt lmargin  `savemargin'
-		//copy "`tmp1'" 0process4.txt	, replace	 //for debugging
+		
+		//DEBUG
+		capture erase 0process4.txt
+		copy "`tmp1'" 0process4.txt	, replace	 //for debugging
 		
 		
 		********************************************************************
@@ -1839,8 +1842,11 @@ program markdoc
 			// =================================================================
 			// IMPORT files
 			// -----------------------------------------------------------------
-			if substr(`"`macval(line)'"',1,17) == "      . //IMPORT " {
-				local line : subinstr local line "      . //IMPORT " "" , all
+			if substr(`"`macval(line)'"',1,17) == "      . //IMPORT " |			///
+			   substr(`"`macval(line)'"',30,12) == "  . //IMPORT"  {			//FOR STATAX			
+				local line : subinstr local line `"      ><pre class="sh_stata">  . //IMPORT "' ""
+				local line : subinstr local line "      . //IMPORT " "" 
+				local line : subinstr local line "</pre>" "" 					//for Statax
 				local importedFile = `trim'("`line'")
 				confirm file "`importedFile'"
 				local line ""
