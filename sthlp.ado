@@ -246,10 +246,11 @@ program define sthlp
 	file write `knot'  "{smcl}" _n 
 	file read `hitch' line
 	
-	local i 0
+	local i  0
 	local i2 0
 	
 	//Reading the header, if the HEADER EXISTS and the TEMPLATE IS NOT EMPTY
+	// -------------------------------------------------------------------------
 	if substr(`trim'(`"`macval(line)'"'),1,26) == "/*** DO NOT EDIT THIS LINE" 	///
 	& "`template'" != "empty" {
 		
@@ -285,8 +286,9 @@ program define sthlp
 					& r(eof) == 0 {
 						local line2 = `trim'(`"`macval(line)'"')
 						markdown `"`macval(line2)'"'
-						local description `"`description' `r(md)'"'
+						local description`i' `"`r(md)'"'
 						file read `hitch' line
+						local i `++i'
 					}
 				}
 				
@@ -319,7 +321,11 @@ program define sthlp
 		
 		if !missing("`title'") & !missing(`"`macval(description)'"') {
 			file write `knot' "{title:Title}" _n(2) "{phang}" _n				///
-			`"{cmd:`title'} {hline 2} `macval(description)'"' _n(2)
+			`"{cmd:`title'} {hline 2} `macval(description)'"' 
+			
+			forval num = 1/`i' {
+				file write `knot' `"`macval(description`num')'"' _n
+			}
 		}
 	}	
 	
