@@ -142,6 +142,7 @@ program define markdown, rclass
 		local 0 : subinstr local 0 "__." "}."
 		local 0 : subinstr local 0 "__," "},"
 		local 0 : subinstr local 0 "__;" "};"
+		local 0 : subinstr local 0 "__:" "}:"
 	}	
 	forvalues i = 1/27 {
 		local 0 : subinstr local 0 " _" " {it:"
@@ -151,9 +152,9 @@ program define markdown, rclass
 		local 0 : subinstr local 0 "_." "}."
 	}
 	forvalues i = 1/27 {
-		local 0 : subinstr local 0 "_." "}."
-		local 0 : subinstr local 0 "_, " "}, "
-		local 0 : subinstr local 0 "_; " "}; "
+		local 0 : subinstr local 0 "_," "},"
+		local 0 : subinstr local 0 "_;" "};"
+		local 0 : subinstr local 0 "_:" "}:"
 	}
 	
 	// Secondary syntax for headers
