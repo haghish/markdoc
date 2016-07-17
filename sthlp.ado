@@ -185,7 +185,7 @@ program define sthlp
 		"=======" _n(2) 														///
 		"The remarks are the detailed description of the command and its " _n 	///
 		"nuances. Official documented Stata commands don't have much for " _n	///
-		"remarks, because the remarks go in the documentation." _n 				///
+		"remarks, because the remarks go in the documentation." _n(2) 			///
 		"Example(s)" _n															///
 		"=================" _n(2)												///
 		"    explain what it does" _n											///
