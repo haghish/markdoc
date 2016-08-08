@@ -52,7 +52,7 @@
 	3.7.0     April,  2016
 */
 
-cap prog drop markdoc
+*cap prog drop markdoc
 program markdoc
 	
 	// -------------------------------------------------------------------------
