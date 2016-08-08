@@ -52,7 +52,7 @@
 	3.7.0     April,  2016
 */
 
-*cap prog drop markdoc
+cap prog drop markdoc
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -2614,8 +2614,8 @@ program markdoc
 						"`html'" "`convert'"
 					}				
 				}
-				copy "`html'" sth.html, replace	
-				copy "`convert'" sth.pdf, replace	
+*				copy "`html'" sth.html, replace	
+*				copy "`convert'" sth.pdf, replace	
 							
 				// UNIX PDF PRINTER DEFAULT PATHS
 				// ==============================
@@ -3052,7 +3052,7 @@ program markdoc
 		
 		//erase the temporary HTML when exporting pdf
 		if "`pdfhtml'" == "pdfhtml" {
-			*cap quietly erase `"`html'"' 
+			cap quietly erase `"`html'"' 
 		}	
 		
 		macro drop pandoc
