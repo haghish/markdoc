@@ -27,7 +27,7 @@ The __MarkDoc__ releases are also hosted on SSC server. So you can download the 
 You can also directly download __MarkDoc__ from GitHub which includes the latest beta version (unreleased). The `force` 
 option ensures that you _reinstall_ the package, even if the release date is not yet changed, and thus, must be specified. 
   
-    net install markdoc, force  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+    net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
     
 __MarkDoc__ also requires two additional Stata packages which are __`weaver`__ and __`statax`__, both hosted on SSC.
 
