@@ -2565,7 +2565,7 @@ program markdoc
 							local quietly           //display printer log
 						}
 						
-						`quietly' shell "`printer'" "$setpath" 					///
+						`quietly' shell "$setpath" 								///
 						--footer-center [page] --footer-font-size 10 			///
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
