@@ -1,59 +1,14 @@
 {smcl}
-{* *! MarkDoc 3.4  04Oct2015}{...}
-{* *! MarkDoc 3.5  09Oct2015}{...}
-{* *! MarkDoc 3.6  3Jan2016}{...}
-{right:version 3.6.9 April, 2016}
+{right:version 3.7.0}
 {title:Title}
 
 {phang}
-{bf:markdoc} {hline 2} A general-purpose literate programming package for Stata that 
-produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
-({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
-PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
-{bf:dzslide}), as well as dynamic 
-{it:Stata package help files} ({bf:sthlp}, {bf:{help smcl}}). 
-
-
-{title:Author} 
-{p 8 8 2}
-E. F. Haghish{break} 
-	Center for Medical Biometry and Medical Informatics{break}
-	University of Freiburg, Germany{break} 
-	{it:and}{break} 
-	Department of Mathematics and Computer Science{break} 
-	University of Southern Denmark{break} 
-    {browse haghish@imbi.uni-freiburg.de}{break}
-	{c 30}{break} 
-	{ul:{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php":http://www.haghish.com/markdoc}}{break}
-	Package Updates on {ul:{browse "http://twitter.com/Haghish":Twitter}}
-	
-{p 8 8 2}
-{c 149} Please post your questions on {browse "http://www.statalist.org/forums/":statalist.org}, 
-if you think others may have similar questions
-
-
-{title:Instalation} 
-
-{p 4 4 2}
-{cmd:MarkDoc} can be installed using the SSC server, which hosts the latest stable release of MarkDoc. The SSC installation is as follows:
-
-{p 8 8 2}
-. {bf:ssc install markdoc}{break}
-
-{p 4 4 2}
-Alternatively, advanced users may wish for the current developing version (pre-release) which can be downloaded from {browse "http://github.com/haghish/MarkDoc":GitHub}:
-
-{p 8 8 2}
-. {bf:net install markdoc, force  from(https://raw.githubusercontent.com/haghish/markdoc/master/)}{break}
-
-{p 4 4 2}
-After installing MarkDoc, install {help Weaver} and {help Statax} as follows. If the {cmd:install}
-option is specified, MarkDoc checkes for the required packages and installs them automatically, if they're not already installed. 
-
-{p 8 8 2}
-. {bf:ssc install weaver}{break}
-. {bf:ssc install statax}{break}
-	
+{cmd:markdoc} {hline 2} A general-purpose literate programming package for Stata that produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
+ ({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
+ PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
+ {bf:dzslide}), as well as dynamic 
+ {it:Stata package help files} ({bf:sthlp}, {bf:{help smcl}}). 
+ 
 
 {title:Syntax}
 
@@ -122,7 +77,7 @@ aligning the content of each column. For details see
 
 {synopt:{opt print:er(str)}}specify the path to PDF driver on the operating system{p_end}
 
-{synopt:{opt instal:l}}Installs the required packages and software automatically on the user's machine, if they are not accessible {p_end}
+{synopt:{opt instal:l}}Installs the required packages and software automatically on the user{c 39}s machine, if they are not accessible {p_end}
 
 {synopt:{opt t:est}}examines if MarkDoc is working properly by creating a test document{p_end}
 
@@ -160,7 +115,7 @@ to add the required packages to the dynamic document by providing a file that in
 
 {synopt:{opt aff:iliation(str)}}specify the author affiliation in the document{p_end}
 
-{synopt:{opt add:ress(str)}}specify the author's contact information in the document{p_end}
+{synopt:{opt add:ress(str)}}specify the author{c 39}s contact information in the document{p_end}
 
 {synopt:{opt sum:mary(str)}}specify the summary of the document{p_end}
 
@@ -180,15 +135,38 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 {p2colreset}{...}
 {* *! {synopt:{opt ascii:table}}converts ascii and figures tables to smcl. This feature can be used for adding ascii models of a program or tables in Stata help file.}
 
-{title:Description} 
 
-{pstd}
+{title:Installation}
+
+{p 4 4 2}
+{bf:markdoc} can be installed using the SSC server, which hosts the latest stable release of MarkDoc. The SSC installation is as follows:
+
+        . ssc install markdoc
+
+
+{p 4 4 2}
+Alternatively, advanced users may wish for the current developing version (pre-release) which can be downloaded from {browse "http://github.com/haghish/MarkDoc":GitHub}:
+
+        . net install markdoc, force  from(https://raw.githubusercontent.com/haghish/markdoc/master/)
+
+
+{p 4 4 2}
+After installing MarkDoc, install {help Weaver} and {help Statax} as follows. If the {cmd:install}
+option is specified, MarkDoc checkes for the required packages and installs them automatically, if they{c 39}re not already installed. 
+
+        . ssc install weaver
+        . ssc install statax
+
+
+{title:Description}
+
+{p 4 4 2}
 {bf:markdoc} is a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents}, {it:package vignette documentation}, 
 {it:dynamic presentation slides}, as well as dynamic 
 {it:Stata package help files}. 
 
-{pstd}
+{p 4 4 2}
 For creating a dynamic document or presentation slides, MarkDoc requires a smcl 
 log-file as input and converts it to other formats. For generating dynamic Stata 
 help files or package vignette documentation, MarkDoc requires a Stata script-file 
@@ -196,7 +174,7 @@ help files or package vignette documentation, MarkDoc requires a Stata script-fi
 Visit MarkDoc homepage for documentation about generating 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#sthlp":{bf:dynamic Stata help files and documentations}}. 
 
-{pstd}
+{p 4 4 2}
 MarkDoc supports 
 three different markup languages which are 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/markdown.php":Markdown}, 
@@ -211,12 +189,12 @@ Markdown {bf:md}, {bf:slidy} and {bf:dzslide} HTML-based slides, and also
 markdown {bf:md} file. MarkDoc {help weaver:requires the Weaver package} for 
 making use of the {help txt}, {help tbl}, and {help img} commands which are used for writing 
 dynamic text, creating dynamic tables, and importing figures automatically 
-in the document, respectively. MarkDoc also  
+in the document, respectively. MarkDoc also    {break}
 {help statax:requires the Statax package} which provides 
 {browse "http://www.haghish.com/statax/statax.php":a JavaScript syntax highlighter for Stata and Mata code}
  in HTML and PDF documents.
 
-{pstd}
+{p 4 4 2}
 MarkDoc creates the dynamic documents by converting {it:smcl} log-file to other 
 file formats mentioned above or parsing the documentation written in Stata script files. 
 The documentation should be written within the 
@@ -228,14 +206,14 @@ is the biggest advantage of MarkDoc and {help Weaver} packages to other classic 
 programming packages which cannot provide live-preview of the document in an 
 interactive analysis session. 
 
-{pstd}
+{p 4 4 2}
 MarkDoc supports both Stata and {help Mata:Mata} languages. Therefore, advanced users who work or 
 program in Mata, can use Markdoc - with the same syntax and markup notation - 
 to produce a dynamic document or slides, or document their programs. The same source 
 that is used for generating dynamic Stata {bf:sthlp} help files, can be used to 
 produce Microsoft Word {bf:docx}, {bf:pdf}, etc.
 
-{pstd}
+{p 4 4 2}
 For a more detailed documentation and examples, visit 
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php":{bf:MarkDoc Homepage}}. 
 
@@ -243,7 +221,7 @@ For a more detailed documentation and examples, visit
 {title:Writing mathematical notation}
 
 {p 4 4 2}
-{bf:MarkDoc} can render LaTeX mathematical notations not only when the document 
+{bf:markdoc} can render LaTeX mathematical notations not only when the document 
 is exported to LaTeX {bf:tex}, but also when the document is exported to 
 {bf:pdf} document or {bf:slide}, Microsoft Office {bf:docx}, 
 OpenOffice and LibreOffice {bf:odt}, and {bf:html}. 
@@ -251,41 +229,38 @@ OpenOffice and LibreOffice {bf:odt}, and {bf:html}.
 {p 4 4 2}
 Mathematical notations can be inline a text paragraph or on a separate line. 
 For writing inline notations, place the notation between single dollar signs 
-(e.g. $a^2 + b^2 = c^2$). For including notation on a separate line, place the 
-notations between double dollar signs (e.g. $$a^2 + b^2 = c^2$$). The example 
+(e.g. ^2 + b^2 = c^2$). For including notation on a separate line, place the 
+notations between double dollar signs (e.g. $^2 + b^2 = c^2$$). The example 
 below demonstrates how to export a PDF presentation slides with notations:
 
-    {bf:. qui log using example, replace}
+    . qui log using example, replace
 	
-    {bf:    /***} 
-    {bf:    Writing mathematical notations} 
-    {bf:    ==============================} 
+        /***
 
-    {bf:    Mathematical notations can be inline a text paragraph e.g. $a^2 + b^2 = c^2$}
-    {bf:    or on a separate line such as:}
-	
-    {bf:    $$a^2 + b^2 = c^2$$}
-    {bf:    ***/}
-	
-    {bf:. qui log c}
-    {bf:. markdoc example, export(slide) printer("/usr/texbin/pdflatex")}
+{title:        Writing mathematical notations}
 
-{pstd}  
+        Mathematical notations can be inline a text paragraph e.g. $a^2 + b^2 = c^2$
+        or on a separate line such as:
+	
+        $$a^2 + b^2 = c^2$$
+	
+    . qui log c
+    . markdoc example, export(slide) printer("/usr/texbin/pdflatex") 
+	
 
 {title:Inserting an image or figure in the document}
 
-{pstd}
+{p 4 4 2}
 Any of the supported markup languages can be used to insert a figure in the 
 document. In general, there are two ways for inserting an image in the document. 
 First, you can use Markdown, HTML, or LaTeX syntax for inserting an image {hline 2} 
 that is already saved in your hard drive {hline 2} in the document. The other solution is using {help img} command. 
-{cmd:img} command can take the {help filename} of exsisting image on the hard 
+{bf:img} command can take the {help filename} of exsisting image on the hard 
 drive and print the markup code (Markdown, HTML, or LaTeX. the default is 
 Markdown) int he document. {cmd:img} command can also auto-export the current 
 graph and import it in the document. For more information in this regard see 
 the {help img:img help file} and also 
 {ul:{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#img":Examples and explanations on MarkDoc homepage}}
-
 
 {title:Writing dynamic text}
 
@@ -319,8 +294,8 @@ table below provides a brief summary of these annotating markers. In general,
 comments - unless they appear after a command - will be ignored in the dynamic 
 document. However, the markers mentioned below are "special comments" that will 
 influence the MarkDoc process. {break} 
- 
- 
+
+
 {synoptset 30}{...}
 {marker marker}
 {p2col:{it:Marker}}Description{p_end}
@@ -362,7 +337,7 @@ it only gets printed once. For active writing within the loop or a program, see 
 
 
 {title:Writing text in the do-file}
- 
+
 {pstd}
 As noted, MarkDoc package allows writing and styling text as a comment in the do file. 
 Text can be placed between "{bf:/***}" and "{bf:***/}" signs, where these signs are placed 
@@ -371,18 +346,18 @@ on separate lines individually. Here is an example:
     {bf:    /***} 
 	
     {bf:    Text heading} 
-    {bf:    ============} 
-    
+    {bf:    {hline 12}} 
+
     {bf:    subheading}
-    {bf:    ----------} 
-    
+    {bf:    {hline 10}} 
+
     {bf:    When you write a dynamic document in MarkDoc, place text between}
     {bf:    the "/***" and "***/" signs. But they should be placed on separate lines,}
     {bf:    as shown in this example.}
 		
     {bf:    ***/}
 
-{pstd}  
+{pstd}    {break}
 	
 	
 {title:Hiding commands in dynamic document}
@@ -426,7 +401,7 @@ or run from the do file.
     {bf:  {it:command}} 
     {bf:  {it:command}} 
     {bf:  ... }
-    
+
     {bf:  //ON}
 
 
@@ -438,7 +413,7 @@ MarkDoc supports three markup languages which are
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/htmlcodes.php":HTML}, and
 {browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/latex.php":LaTeX}. 
 Whereas writing with Markdown allows exporting the document in any format (including HTML 
-and LaTeX), writing with HTML or LaTeX requires exporting the document in {bf:PDF} or {bf:html} and  
+and LaTeX), writing with HTML or LaTeX requires exporting the document in {bf:PDF} or {bf:html} and    {break}
 {bf:tex} format respectively. Markup languages hould not be used together in one document because 
 MarkDoc process each markup language differently.
 
@@ -488,7 +463,7 @@ With automatic installation (i.e. using the {opt install} option), Pandoc and Wk
 in Weaver directory which is located in /ado/plus/Weaver/ on your machine. To find the 
 location of ado/plus/ directory on your machine use the 
 {help sysdir} command which returns the system directories. The usual complete
-paths to the Weaver directory are shown below. Note that username refers to your machine's username.
+paths to the Weaver directory are shown below. Note that username refers to your machine{c 39}s username.
 
 {p 8 8 2}{bf:Windows:} {it:C:\ado\plus\Weaver} 
 
@@ -512,7 +487,7 @@ After manual installation, the paths to the executable Pandoc, wkhtmltopdf, and 
 {pstd}
 As mentioned, the required software can be installed manually or automatically. 
 The optional automatic installation is expected to 
-work properly in Microsoft Windows {bf:XP}, Windows {bf:7}, and Windows {bf:8.1}, Macintosh  
+work properly in Microsoft Windows {bf:XP}, Windows {bf:7}, and Windows {bf:8.1}, Macintosh    {break}
 {bf:OSX 10.9.5}, Linux {bf:Mint 17 Cinnamon} (32bit & 64bit), Ubuntu {bf:14} (64bit), and 
 {bf:CentOS 7} (64bit). Other operating systems may require manual software installation. 
 
@@ -520,7 +495,7 @@ work properly in Microsoft Windows {bf:XP}, Windows {bf:7}, and Windows {bf:8.1}
 However, if for some technical or permission reasons MarkDoc fails to download, access, or run 
 Pandoc, install it manually and provide the 
 file path to Pandoc using {opt pan:doc(str)} option. visit 
-{browse "http://www.haghish.com/packages/pandoc.php":Installing Pandoc for Stata packages}  
+{browse "http://www.haghish.com/packages/pandoc.php":Installing Pandoc for Stata packages}    {break}
 for more information regarding manual installation of Pandoc. 
 
 
@@ -557,11 +532,11 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 
     {bf:         /***} 
     {bf:         Introduction to MarkDoc (heading 1)} 
-    {bf:         ===================================} 
-    
+    {bf:         {hline 35}} 
+
     {bf:         Using Markdown (heading 2)}
-    {bf:         --------------------------} 
-    
+    {bf:         {hline 26}} 
+
     {bf:         Writing with __markdown__ syntax allows you to add text and graphs to}
     {bf:         _smcl_ logfile and export it to a editable document format. I will demonstrate}
     {bf:         the process by using the __Auto.dta__ dataset.}
@@ -578,11 +553,11 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 
     {bf:         /***} 
     {bf:         Adding a graph or image in the report} 
-    {bf:         ======================================} 
+    {bf:         {hline 38}} 
 
     {bf:         Adding a graph using Markdown}
-    {bf:         -----------------------------}
-    
+    {bf:         {hline 29}}
+
     {bf:         In order to add a graph using Markdown, I export the graph in PNG format.}
     {bf:         You can explain the graph in the "brackets" and define the file path in parentheses}
     {bf:         }
@@ -603,14 +578,14 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 {phang}{cmd:{c 29}  qui log using example, replace}
 
     {bf:         /***} 
-	{bf:     ---} 
+	{bf:     {hline 3}} 
 	{bf:     title:MarkDoc Dynamic Slides} 
 	{bf:     author: E. F. Haghish} 
-	{bf:     ---}
+	{bf:     {hline 3}}
 	
     {bf:         Slide 1} 
-    {bf:         =======} 
-    
+    {bf:         {hline 7}} 
+
     {bf:         - Writing with __markdown__ syntax allows you to add text and graphs }
     {bf:         to _smcl_ logfile and export it to a editable document format. I will demonstrate}
     {bf:         the process by using the __Auto.dta__ dataset.}
@@ -619,26 +594,44 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
     {bf:         Then I will export the logfile to Microsoft Office docx format.}
 	
     {bf:         Adding commands and output} 
-    {bf:         ==========================}
+    {bf:         {hline 26}}
     {bf:         ***/}
 	
 	
 
 	
-	{bf:{c 29} sysuse auto, clear}	   
+{p 4 4 2}
+	{bf:{c 29} sysuse auto, clear}	     {break}
 	{bf:{c 29} histogram price}
 	{bf:{c 29} graph export graph.png,  width(400) replace}
 	
     {bf:         /***} 
     {bf:         Adding image in a slide} 
-    {bf:         =======================} 
-    
+    {bf:         {hline 23}} 
+
     {bf:         ![Histogram of the price variable](./graph.png)}
     {bf:         ***/}
 	
+{p 4 4 2}
 	{bf:  qui log c}
 	{bf:  markdoc example, replace export(slide) install printer("/usr/texbin/pdflatex") }
-	
+
+
+{title:Author}
+
+{p 4 4 2}
+{bf:E. F. Haghish}       {break}
+Center for Medical Biometry and Medical Informatics       {break}
+University of Freiburg, Germany       {break}
+{it:and}          {break}
+Department of Mathematics and Computer Science         {break}
+University of Southern Denmark       {break}
+haghish@imbi.uni-freiburg.de       {break}
+
+{p 4 4 2}
+{browse "www.haghish.com/markdoc":MarkDoc Homepage}           {break}
+Package Updates on  {browse "http://www.twitter.com/Haghish":Twitter}    {break}
+
 
 {title:Also see}
 
@@ -646,8 +639,10 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 {space 0}{bf:{help Weaver}}: HTML & PDF Dynamic Report producer
 
 {psee}
-{space 0}{bf:{help Statax}}: JavaScript syntax highlighter for Stata
+{space 0}{bf:{help Statax}}: JavaScript syntax highlighter for Stata     {break}
 
-{psee}
-{space 0}{bf:{help Synlight}}: HTML-based syntax highlighter for Stata
+    {hline}
+
+{p 4 4 2}
+This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
 

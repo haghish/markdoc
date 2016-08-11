@@ -18,7 +18,7 @@
  
 	3.7.0  June,  2016
 */
-*cap prog drop sthlp
+cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
@@ -390,10 +390,16 @@ program define sthlp
 	
 	while r(eof) == 0 {	
 		
-		if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &					///
+		// figure out a solution for Stata's macval() problem
+		
+		local pass										// reset
+		capture if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &					///
 		substr(`trim'(`"`macval(line)'"'),1,26) != 								///
 		"/*** DO NOT EDIT THIS LINE" & 											///
-		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" {
+		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" local pass 1
+	
+		
+		if !missing("`pass'") {
 			file read `hitch' line
 			//remove white space in old-fashion way!
 			cap local m : display "`line'"
@@ -401,8 +407,7 @@ program define sthlp
 				local line ""
 			}
 			
-			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) 		///
-			!= "***/" {
+			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
 				
 				//IF MISSING line, forward to the next non-missing line
 				while missing(`trim'(`"`macval(line)'"')) & r(eof) == 0 {
@@ -554,11 +559,18 @@ program define sthlp
 		}
 		
 		// code line 
-		if substr(`trim'(`"`macval(line)'"'),1,5) == "/***$" {
+		
+		// *********************************************************************
+		// *********************************************************************
+		
+		local pass										// reset
+		capture if substr(`trim'(`"`macval(line)'"'),1,5) == "/***$" local pass 1
+		
+		if !missing("`pass'") {
 			
 			file read `hitch' line
-			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) 		///
-			!= "***/" {
+			
+			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
 				
 				//IF MISSING line, forward to the next non-missing line
 				while missing(`"`macval(line)'"') & r(eof) == 0 {
@@ -828,6 +840,8 @@ program define sthlp
 			}
 		}
 
+		// *********************************************************************
+		// *********************************************************************
 		
 		
 		// code line
@@ -973,3 +987,4 @@ program define sthlp
 		
 end
 
+markdoc mark.ado, exp(sthlp) template(empty) replace
