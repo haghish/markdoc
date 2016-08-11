@@ -666,7 +666,6 @@ program markdoc
 	Test 		 	 /// tests the required software to make sure they're running correctly 
 	PANdoc(str)  	 /// specifies the path to Pandoc software on the machine
 	PRINTer(str)     /// the path to the PDF printer on the machine
-	NUMbered 	 	 /// number Stata commands
 	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
 	statax			 /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
@@ -679,10 +678,11 @@ program markdoc
 	VERsion(str)     /// add version to dynamic help file
 	STYle(name)      /// specifies the style of the document
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
-	MATHjax 		 /// Interprets mathematics using MathJax
 	toc				 /// Creates table of content
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
+	///NUMbered 	 /// number Stata commands
+	///MATHjax 		 /// Interprets mathematics using MathJax
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
@@ -691,13 +691,6 @@ program markdoc
 	///Font(name)	 /// specifies the document font (ONLY HTML)
 	]
 
-	****************************************************************************
-	*CHANGED SYNTAX
-	****************************************************************************
-	if !missing("`mathjax'") {
-		di as err "{title:Attention}" _n										///
-		"the {bf:mathjax} option is now applied automatically... "
-	}
 	local mathjax mathjax
 	
 	****************************************************************************
@@ -738,6 +731,9 @@ program markdoc
 		}	
 	}
 	
+	// Run weaversetup
+	// -------------------------------------------------------------------------
+	capture program drop weaversetup			  //reload it
 	capture weaversetup							  //it might not be yet created
 	
 	****************************************************************************
@@ -885,19 +881,26 @@ program markdoc
 	if "`printer'" != "" {
 		confirm file "`printer'"
 	}
+	
+	
 
 	if !missing("`pandoc'") {
 		confirm file "`pandoc'"
 		global pandoc "`pandoc'"
 	}
-	
-	if missing("`pandoc'") & !missing("$pathPandoc") {
+	else if missing("`pandoc'") & !missing("$pathPandoc") {
+		confirm file "$pathPandoc"
 		global pandoc "$pathPandoc" 
 	}
+
+	// Print the path to pandoc
+	// ------------------------
+	if !missing("`noisily'") display "{title:Pandoc path}" _n "$pandoc"
+	
 	
 	*This command is defined in markdockcheck.ado and checkes the required software
 	markdoccheck , `install' `test' export(`export') style(`style') 			///
-	markup(`markup') pandoc("`pandoc'") printer("`printer'")
+	markup(`markup') pandoc("$pandoc") printer("`printer'")
 		
 	************************************************************************
 	*TEST MARKDOC
@@ -1285,10 +1288,10 @@ program markdoc
 				local preline = substr(`"`macval(preline)'"',15,.)
 				
 				//remove numbering system
-				if missing("`numbered'") {
+*				if missing("`numbered'") {
 					*local line `"{txt}   {com}. `macval(preline)'"'
 					local line = substr(`"`macval(line)'"',9,.)
-				}
+*				}
 				
 				// Figure Interpretation
 				// -------------------------------------------------------------
@@ -2260,12 +2263,12 @@ program markdoc
 		if  missing("`scriptfile'") translator set smcl2txt lmargin 6
 		if !missing("`scriptfile'") translator set smcl2txt lmargin 0
 		
-		if "`numbered'" == "numbered" {
-			if "`r(cmdnumber)'" == "off" {
-				local savecmdnumber off
-				translator set smcl2txt cmdnumber on
-			}
-		} 
+*		if "`numbered'" == "numbered" {
+*			if "`r(cmdnumber)'" == "off" {
+*				local savecmdnumber off
+*				translator set smcl2txt cmdnumber on
+*			}
+*		} 
 		else if "`r(cmdnumber)'" == "on" {
 				local savecmdnumber on
 				translator set smcl2txt cmdnumber off
