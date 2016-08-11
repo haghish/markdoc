@@ -18,7 +18,7 @@
  
 	3.7.0  June,  2016
 */
-cap prog drop sthlp
+*cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
@@ -409,7 +409,10 @@ program define sthlp
 			
 			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
 				
+*				local line : subinstr local line "`" "{c 96}", all
+*				local line : subinstr local line "'" "{c 39}", all
 				//IF MISSING line, forward to the next non-missing line
+				/*
 				while missing(`trim'(`"`macval(line)'"')) & r(eof) == 0 {
 					file write `knot' `"`macval(line)'"' _n
 					file read `hitch' line
@@ -419,6 +422,7 @@ program define sthlp
 						local line ""
 					}
 				}
+				*/
 				
 				//procede when a line is found
 				//Interpret 2 lines at the time, for Markdown headings
@@ -468,7 +472,7 @@ program define sthlp
 							}			
 						}
 
-						// this part is independent of the Marjdown engine
+						// this part is independent of the Markdown engine
 						// Create Markdown Horizontal line
 						// =====================================================
 						
@@ -987,4 +991,4 @@ program define sthlp
 		
 end
 
-markdoc mark.ado, exp(sthlp) template(empty) replace
+*do ./sthlp/bugs.do

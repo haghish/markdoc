@@ -71,7 +71,8 @@ pandoc example.tex -o example.html
 
 // STHLP Test
 // =======================================
-do ./sthlp/sthlp.do 
+do ./sthlp/sthlp.do 				// .sthlp - very messy attempt
+do ./sthlp/bugs.do 					// .sthlp - solving the known bugs
 
 markdoc ./sthlp/example.ado, replace export(html) title("THITLE") 				///
 author("HAGHISH") aff("FREIBURGH") date ///

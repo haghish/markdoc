@@ -83,6 +83,7 @@ program define markdown, rclass
 			local hypertext = substr(`"`macval(l1)'"',`a'+1,.) 
 			local image 1
 		}
+		
 		// Extract the hypertext syntax & link text
 		else if strpos(`"`macval(l1)'"', "[") != 0 {
 			local a = strpos(`"`macval(l1)'"', "[")

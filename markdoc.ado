@@ -3140,7 +3140,7 @@ program markdoc
 							"--margin-left 30mm --margin-top 35mm "				///
 							"--no-stop-slow-scripts --javascript-delay 1000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
-							`"`in'" "`output'"' 
+							"`in'.html `output'"
 							
 							local quietly           //display printer log
 						}
@@ -3154,10 +3154,11 @@ program markdoc
 						--enable-javascript  									///
 						`toc'													///
 						--debug-javascript 										///
-						"`in'.html" "`output'"
+						///"`in'.html" "`output'"
+						"`in'.html" "`convert'"
 						
 						cap erase "`in'.html"
-						cap copy "`output'" "`convert'", replace
+						///cap copy "`output'" "`convert'", replace
 					}		
 				}	
 							
