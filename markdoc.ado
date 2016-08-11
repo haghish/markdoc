@@ -3140,7 +3140,8 @@ program markdoc
 							"--margin-left 30mm --margin-top 35mm "				///
 							"--no-stop-slow-scripts --javascript-delay 1000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
-							"`in'.html `output'"
+							///"`in'.html `output'"
+							"`in'.html `convert'"
 							
 							local quietly           //display printer log
 						}
