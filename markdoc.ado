@@ -681,8 +681,8 @@ program markdoc
 	toc				 /// Creates table of content
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
-	///NUMbered 	 /// number Stata commands
-	///MATHjax 		 /// Interprets mathematics using MathJax
+	NUMbered	 	 /// number Stata commands
+	MATHjax 		 /// Interprets mathematics using MathJax
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
@@ -690,7 +690,15 @@ program markdoc
 	///PDFlatex(str) ///this command is discontinued in version 3.0 and replaced by setpath()
 	///Font(name)	 /// specifies the document font (ONLY HTML)
 	]
-
+	
+	****************************************************************************
+	*CHANGED SYNTAX
+	****************************************************************************
+	if !missing("`mathjax'") {
+		di as err "{title:Attention}" _n										///
+		"the {bf:mathjax} option is now applied automatically... "
+	}
+	
 	local mathjax mathjax
 	
 	****************************************************************************
@@ -1288,10 +1296,10 @@ program markdoc
 				local preline = substr(`"`macval(preline)'"',15,.)
 				
 				//remove numbering system
-*				if missing("`numbered'") {
+				if missing("`numbered'") {
 					*local line `"{txt}   {com}. `macval(preline)'"'
 					local line = substr(`"`macval(line)'"',9,.)
-*				}
+				}
 				
 				// Figure Interpretation
 				// -------------------------------------------------------------
@@ -2263,12 +2271,12 @@ program markdoc
 		if  missing("`scriptfile'") translator set smcl2txt lmargin 6
 		if !missing("`scriptfile'") translator set smcl2txt lmargin 0
 		
-*		if "`numbered'" == "numbered" {
-*			if "`r(cmdnumber)'" == "off" {
-*				local savecmdnumber off
-*				translator set smcl2txt cmdnumber on
-*			}
-*		} 
+		if "`numbered'" == "numbered" {
+			if "`r(cmdnumber)'" == "off" {
+				local savecmdnumber off
+				translator set smcl2txt cmdnumber on
+			}
+		} 
 		else if "`r(cmdnumber)'" == "on" {
 				local savecmdnumber on
 				translator set smcl2txt cmdnumber off
@@ -3058,13 +3066,33 @@ program markdoc
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
 					
-					if !missing("`noisily'") {
-						di _n(2) "{title:Creating Temp file}" _n 				///
-						`"{p}$pandoc -s --mathjax `md' -o `convert'"'
-					}	
+					// Linus needs special treatment here 
+					// ----------------------------------
+					if "`c(os)'" == "Unix" {
+						tempfile real
+						tempname knot
+						qui file open `knot' using "`real'", write
+						qui file close `knot'	
+						qui copy "`real'" "`real'.html", replace public
+						
+						if !missing("`noisily'") {
+							di _n(2) "{title:Creating Temp file}" _n 			///
+							`"{p}$pandoc -s --mathjax `md' -o `real'.html"'
+						}	
+					
+						shell "$pandoc" -S --mathjax "`md'" -o "`real'.html"
+						quietly  copy "`real'.html" "`html'", replace public
+					}
+					else {
+						if !missing("`noisily'") {
+							di _n(2) "{title:Creating Temp file}" _n 			///
+							///`"{p}$pandoc -s --mathjax `md' -o `convert'"'
+							`"{p}$pandoc -s --mathjax `md' -o `output'"' _n
+						}	
 				
-					shell "$pandoc" -s --mathjax "`md'" -o "`output'"
-					quietly  copy "`output'" `"`html'"', replace
+						shell "$pandoc" -s --mathjax "`md'" -o "`output'"
+						quietly  copy "`output'" `"`html'"', replace
+					}
 					
 					*quietly  copy "`output'" 0processMD1.md, replace
 					*quietly  copy "`output'" 0processHTML1.html, replace
