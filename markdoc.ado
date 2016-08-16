@@ -1,20 +1,35 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.0
+Version: 3.6.9
 Title: markdoc
 Description: A general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
 ({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
 PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
 {bf:dzslide}), as well as dynamic 
-{it:Stata package help files} ({bf:sthlp}, {bf:{help smcl}}). 
+{it:Stata package help files} ({bf:sthlp}, {bf:smcl}). The package includes 3 
+main commands which are __markdoc__, __{help rundoc}__, and __{help pandoc}__ and 
+in addition, it borrows several optional commands from the {help Weaver} package 
+which are __{help img}__, __{help txt}__, and __{help tbl}__ for automatically importing 
+figures from Stata, writing dynamic text, and creating dynamic tables respectively. 
 ----------------------------------------------------- DO NOT EDIT THIS LINE ***/
 
 /***
 Syntax
 ======
 
-{phang}
-Produce dynamic {it:document}, {it:slide}, or {it:help files}
+execute __pandoc__ commands directly from Stata
+
+{p 8 13 2}
+{bf:{help pandoc}} {it:command} [{cmd:,} options]
+
+
+produce dynamic {it:document} or {it:presentation slides} from a do-file. 
+
+{p 8 13 2}
+{bf:{help rundoc}} {it:filename.do} [{cmd:,} options]
+
+
+produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} interactively
 
 {p 8 13 2}
 {cmdab:markdoc} {help filename} [{cmd:,} 
@@ -28,7 +43,7 @@ Produce dynamic {it:document}, {it:slide}, or {it:help files}
 
 
 {phang}
-where {help filename} can be:
+where for __markdoc__, {help filename} can be:
 
 {synoptset 20 tabbed}{...}
 {synoptline}
@@ -744,6 +759,15 @@ program markdoc
 	capture program drop weaversetup			  //reload it
 	capture weaversetup							  //it might not be yet created
 	
+	
+	// -------------------------------------------------------------------------
+	// Creating PDF slides with LaTeX Markup is the same as writing LaTeX PDF doc
+	// =========================================================================
+	if "`export'" == "slide" & "`markup'" == "latex" {
+		local export pdf
+	}
+	
+	
 	****************************************************************************
 	*DEFAULTS
 	****************************************************************************
@@ -800,6 +824,10 @@ program markdoc
 			local printer "$pathWkhtmltopdf"
 		}
 	}
+	
+	
+	
+	
 	
 	********************************************************************
 	* pdfLaTeX
@@ -1531,6 +1559,8 @@ program markdoc
 								
 		file close `knot'
 		capture file close `fig'
+		
+		*capture erase 0process1.smcl
 		*copy "`tmp'" 0process1.smcl	, replace		//For debugging
 		
 		
@@ -1903,7 +1933,10 @@ program markdoc
 			
 			//COPY THE CURRENT LINE. It is used in the next round
 			local previousline `"`macval(line)'"' 
-				
+			
+			if substr(trim(`"`macval(line)'"'),1,19) ==  "{txt}end of do-file" {
+				local jump 1
+			}
 				
 			
 			if "`jump'" == "" {	
@@ -1914,6 +1947,8 @@ program markdoc
 		}
 
 		file close `knot'		
+		
+		*capture erase 0process2.smcl
 		*copy "`tmp1'" 0process2.smcl	, replace			//For debugging
 			
 		
@@ -3169,7 +3204,7 @@ program markdoc
 							"$setpath --footer-center [page] " 					///
 							" --footer-font-size 10 --margin-right 30mm "		///
 							"--margin-left 30mm --margin-top 35mm "				///
-							"--no-stop-slow-scripts --javascript-delay 1000 "	///
+							"--no-stop-slow-scripts --javascript-delay 2000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							///"`in'.html `output'"
 							"`in'.html `convert'"
@@ -3182,7 +3217,7 @@ program markdoc
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
 						--margin-top 35mm										///
-						--no-stop-slow-scripts --javascript-delay 1000 			///
+						--no-stop-slow-scripts --javascript-delay 2000 			///
 						--enable-javascript  									///
 						`toc'													///
 						--debug-javascript 										///
@@ -3208,7 +3243,7 @@ program markdoc
 							"$setpath --footer-center \[page\] " 				///
 							" --footer-font-size 10 --margin-right 30mm "		///
 							"--margin-left 30mm --margin-top 35mm "				///
-							"--no-stop-slow-scripts --javascript-delay 1000 "	///
+							"--no-stop-slow-scripts --javascript-delay 2000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`html' `convert'"' 
 							
@@ -3220,7 +3255,7 @@ program markdoc
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
 						--margin-top 35mm										///
-						--no-stop-slow-scripts --javascript-delay 1000 			///
+						--no-stop-slow-scripts --javascript-delay 2000 			///
 						--enable-javascript  									///
 						`toc'													///
 						--debug-javascript 										///
@@ -3235,6 +3270,8 @@ program markdoc
 				if "`c(os)'"=="Unix" {
 							
 					// wkhtmltopdf
+					
+					// increase the delay time to load the JS. Otherwise errors happen
 					if "$printername" == "wkhtmltopdf" | "$printername" == "" {
 						
 						local quietly quietly		//avoid printer log
@@ -3244,7 +3281,7 @@ program markdoc
 							"$setpath --footer-center \[page\] " 				///
 							" --footer-font-size 10 --margin-right 30mm "		///
 							"--margin-left 30mm --margin-top 35mm "				///
-							"--no-stop-slow-scripts --javascript-delay 1000 "	///
+							"--no-stop-slow-scripts --javascript-delay 3000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`html'" "`convert'"' 
 							
@@ -3256,7 +3293,7 @@ program markdoc
 						--margin-right 30mm 									///
 						--margin-left 30mm 										///
 						--margin-top 35mm										///
-						--no-stop-slow-scripts --javascript-delay 1000 			///
+						--no-stop-slow-scripts --javascript-delay 3000 			///
 						--enable-javascript  									///
 						`toc'													///
 						--debug-javascript 										///
@@ -3709,5 +3746,4 @@ end
 
 // create the help file
 // ====================
-
-* markdoc markdoc.ado, exp(sthlp) replace
+*markdoc markdoc.ado, exp(sthlp) replace

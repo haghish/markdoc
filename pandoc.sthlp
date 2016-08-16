@@ -49,7 +49,8 @@ using this application for other purposes, outside MarkDoc.
         . pandoc -s -S {it:filename} -o {it:filename}
 
 
-{hline}
-{p}
-this helpfile was dynamically produced by {help MarkDoc}.
-{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#sthlp":Read more...}{smcl}
+    {hline}
+
+{p 4 4 2}
+This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
+

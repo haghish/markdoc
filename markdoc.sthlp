@@ -1,5 +1,5 @@
 {smcl}
-{right:version 3.7.0}
+{right:version 3.6.9}
 {title:Title}
 
 {phang}
@@ -7,13 +7,32 @@
  ({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
  PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
  {bf:dzslide}), as well as dynamic 
- {it:Stata package help files} ({bf:sthlp}, {bf:{help smcl}}). 
+ {it:Stata package help files} ({bf:sthlp}, {bf:smcl}). The package includes 3 
+ main commands which are {bf:markdoc}, {bf:{help rundoc}}, and {bf:{help pandoc}} and 
+ in addition, it borrows several optional commands from the {help Weaver} package 
+ which are {bf:{help img}}, {bf:{help txt}}, and {bf:{help tbl}} for automatically importing 
+ figures from Stata, writing dynamic text, and creating dynamic tables respectively. 
  
 
 {title:Syntax}
 
-{phang}
-Produce dynamic {it:document}, {it:slide}, or {it:help files}
+{p 4 4 2}
+execute {bf:pandoc} commands directly from Stata
+
+{p 8 13 2}
+{bf:{help pandoc}} {it:command} [{cmd:,} options]
+
+
+{p 4 4 2}
+produce dynamic {it:document} or {it:presentation slides} from a do-file. If 
+filename is specified without an extension, .do is assumed. 
+
+{p 8 13 2}
+{bf:{help rundoc}} {it:filename.do} [{cmd:,} options]
+
+
+{p 4 4 2}
+produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} interactively
 
 {p 8 13 2}
 {cmdab:markdoc} {help filename} [{cmd:,} 
@@ -27,7 +46,7 @@ Produce dynamic {it:document}, {it:slide}, or {it:help files}
 
 
 {phang}
-where {help filename} can be:
+where for {bf:markdoc}, {help filename} can be:
 
 {synoptset 20 tabbed}{...}
 {synoptline}

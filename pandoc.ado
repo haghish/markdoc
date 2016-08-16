@@ -87,8 +87,7 @@ Example
 /***
 
 
-{hline}
-{p}
-this helpfile was dynamically produced by {help MarkDoc}.
-{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php#sthlp":Read more...}{smcl}
+- - -
+
+This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
 ***/

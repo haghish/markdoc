@@ -45,8 +45,9 @@ BUG: THE NUMBERED OPTION IS NOT WORKING. WANNA KEEP IT? PROBABLY NOT...
 // =======================================
 do ./Beamer/Beamer.do
 do ./Beamer/Beamer2.do
+do ./Beamer/Beamer3.do
 do ./Beamer/example.do
-
+do ./Beamer/Beamer_tex.do
 
 // HTML Slide Test
 // =======================================
@@ -77,6 +78,11 @@ do ./sthlp/bugs.do 					// .sthlp - solving the known bugs
 markdoc ./sthlp/example.ado, replace export(html) title("THITLE") 				///
 author("HAGHISH") aff("FREIBURGH") date ///
 address("HERE AND THERE")			
+
+
+// rundoc Test
+// =======================================
+rundoc "./rundoc/rundoc_example", export(html) statax replace
 
 
 // DO Test
