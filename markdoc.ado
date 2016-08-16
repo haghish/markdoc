@@ -1106,7 +1106,7 @@ program markdoc
 				local output "`output'.`export'"
 			}	
 			
-			local html "_`input'.html"
+			local html "`input'_.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
 			local input  "`input'.smcl"
@@ -1118,7 +1118,7 @@ program markdoc
 			else if "`export'" == "slidy" local convert "`input'.html"
 			else local convert "`input'.`export'"
 			local md  "`input'.md"
-			local html "_`input'.html"
+			local html "`input'_.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
 			local input  "`input'.ado"
@@ -1131,7 +1131,7 @@ program markdoc
 			else if "`export'" == "slidy" local convert "`input'.html"
 			else local convert "`input'.`export'"
 			local md  "`input'.md"
-			local html "_`input'.html"
+			local html "`input'_.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
 			local input  "`input'.mata"
@@ -1144,7 +1144,7 @@ program markdoc
 			else if "`export'" == "slidy" local convert "`input'.html"
 			else local convert "`input'.`export'"
 			local md  "`input'.md"
-			local html "_`input'.html"
+			local html "`input'_.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
 			local input  "`input'.do"
@@ -1164,7 +1164,7 @@ program markdoc
 				local output "`output'.`export'"
 			}	
 			local md  "`input'.md"
-			local html "_`input'.html"
+			local html "`input'_.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
 			local input  "`input'.smcl"
@@ -3126,7 +3126,7 @@ program markdoc
 						}	
 				
 						shell "$pandoc" -s --mathjax "`md'" -o "`output'"
-						quietly  copy "`output'" `"`html'"', replace
+						quietly  copy "`output'" "`html'", replace
 					}
 					
 					*quietly  copy "`output'" 0processMD1.md, replace
@@ -3747,3 +3747,4 @@ end
 // create the help file
 // ====================
 *markdoc markdoc.ado, exp(sthlp) replace
+*markdoc "./rundoc/rundoc_example", export(pdf) replace

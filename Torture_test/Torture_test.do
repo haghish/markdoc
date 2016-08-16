@@ -82,8 +82,13 @@ address("HERE AND THERE")
 
 // rundoc Test
 // =======================================
+rundoc "./rundoc/rundoc_example", export() statax replace
+rundoc "./rundoc/rundoc_example", export(markdown) statax replace
 rundoc "./rundoc/rundoc_example", export(html) statax replace
-
+rundoc "./rundoc/rundoc_example", export(docx) statax replace
+rundoc "./rundoc/rundoc_example", export(tex) statax replace texmaster
+rundoc "./rundoc/rundoc_example", export(odt) statax replace 
+rundoc "./rundoc/rundoc_example", export(pdf) statax replace
 
 // DO Test
 // =======================================

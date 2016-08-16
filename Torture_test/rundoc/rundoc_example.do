@@ -1,6 +1,3 @@
-capture quietly log close
-quietly log using example, replace 
-
 /***
 `rundoc` command
 ================
@@ -41,5 +38,5 @@ $$ Y = \beta_{0} + \beta_{1}x_{1} + \epsilon $$
 ***/
 
 
-quietly log close
+
 
