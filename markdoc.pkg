@@ -24,7 +24,7 @@ d KW: reproducible research
 d
 d Requires: Stata version 11 and weaver from SSC (q.v.)
 d
-d Distribution-Date: 20160227
+d Distribution-Date: 20160816
 d
 d Author: E.F. Haghish, University of Freiburg
 d Support: email haghish@@imbi.uni-freiburg.de
@@ -37,6 +37,9 @@ f markdocwkhtmltopdf.ado
 f markdown.ado
 f markup.ado
 f pandoc.ado
+f pandoc.sthlp
+f rundoc.ado
+f rundoc.sthlp
 f sthlp.ado
 f markdoc.sthlp
 f pandoc.sthlp
