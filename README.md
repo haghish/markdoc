@@ -20,12 +20,7 @@ Author
 Installation
 ------------
 
-The __MarkDoc__ releases are also hosted on SSC server. So you can download the latest release as follows:
-
-    ssc install markdoc
-    
-You can also directly download __MarkDoc__ from GitHub which includes the latest beta version (unreleased). The `force` 
-option ensures that you _reinstall_ the package, even if the release date is not yet changed, and thus, must be specified. 
+The major releases of __MarkDoc__ are also hosted on SSC server. But the package receives constant updates on GitHub, which hosts the most recent version, along with he previous releases. 
   
     net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
     
