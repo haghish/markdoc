@@ -655,8 +655,8 @@ Also see
 This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
 ***/
 
-cap prog drop markdoc
-*program markdoc
+*cap prog drop markdoc
+program markdoc
 	
 	// -------------------------------------------------------------------------
 	// NOTE:
