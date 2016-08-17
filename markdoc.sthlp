@@ -3,16 +3,28 @@
 {title:Title}
 
 {phang}
-{cmd:markdoc} {hline 2} A general-purpose literate programming package for Stata that produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
+{cmd:markdoc} {hline 2} a general-purpose literate programming package for Stata that produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
  ({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
  PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
  {bf:dzslide}), as well as dynamic 
- {it:Stata package help files} ({bf:sthlp}, {bf:smcl}). The package includes 3 
- main commands which are {bf:markdoc}, {bf:{help rundoc}}, and {bf:{help pandoc}} and 
- in addition, it borrows several optional commands from the {help Weaver} package 
- which are {bf:{help img}}, {bf:{help txt}}, and {bf:{help tbl}} for automatically importing 
- figures from Stata, writing dynamic text, and creating dynamic tables respectively. 
+ {it:Stata package help files} ({bf:sthlp}, {bf:smcl}).    {break}
  
+{p 8 8 2}
+ The package includes 3 
+commands which are {bf:markdoc}, {bf:{help rundoc}}, and {bf:{help pandoc}} and 
+in addition, it borrows several optional commands from the {help Weaver:Weaver package} 
+which are {bf:{help img}}, {bf:{help txt}}, and {bf:{help tbl}} for automatically importing 
+figures from Stata, writing dynamic text, and creating dynamic tables respectively. 
+
+{p 8 8 2}
+ In addition to supporting a wide range of formats and a variety of applications, 
+{bf:markdoc} includes a syntax highlighter, can render LaTeX mathematical 
+notations (in PDF, Docx, ODT, HTML, LaTeX), 
+automatically capture and include figures from Stata, creates dynamic tables, and 
+type dynamic text for interpretting the analysis. These features make the package a 
+complete tool for documenting data analysis, Stata packages, as well as a tool for 
+producing educational materials within Stata. 
+
 
 {title:Syntax}
 
@@ -24,8 +36,7 @@ execute {bf:pandoc} commands directly from Stata
 
 
 {p 4 4 2}
-produce dynamic {it:document} or {it:presentation slides} from a do-file. If 
-filename is specified without an extension, .do is assumed. 
+produce dynamic {it:document} or {it:presentation slides} from a do-file. 
 
 {p 8 13 2}
 {bf:{help rundoc}} {it:filename.do} [{cmd:,} options]
@@ -69,8 +80,7 @@ Write dynamic text using any of the supported markup languages
 {phang}
 Insert an image to the log manually or automatically.
 if {it:filename} is missing, {cmd:img} attempts to save and import the current 
-graph automatically. For more details and examples see 
-{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/weaver.php#img":Weaver documentation}
+graph automatically. 
 
 {p 8 13 2}
 {bf:{help img}} [{it:{help filename}}] 
@@ -81,17 +91,16 @@ graph automatically. For more details and examples see
 {phang}
 Create a dynamic table in Markdown documents (Not supported in HTML and LaTeX). This 
 command has several directives for styling the table, creating nested tables, and 
-aligning the content of each column. For details see 
-{browse "http://www.haghish.com/statistics/stata-blog/reproducible-research/weaver.php#tbl":Weaver documentation}
+aligning the content of each column. 
 
 {p 8 13 2}
 {bf:{help tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
 
 
 {synoptset 20 tabbed}{...}
-{synopthdr}
+{synopthdr:MarkDoc options}
 {synoptline}
-{syntab:Main}
+{syntab:}
 {synopt:{opt pan:doc(str)}}specify the path to Pandoc software on the operating system{p_end}
 
 {synopt:{opt print:er(str)}}specify the path to PDF driver on the operating system{p_end}

@@ -300,6 +300,28 @@ program define sthlp
 			}
 			
 			//Description
+			/*
+			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
+				local line : subinstr local line "Description:" ""
+				local description = `trim'("`line'")
+				if !missing(`"`macval(description)'"') {
+					markdown `"`macval(description)'"'
+					local description `r(md)'
+					file read `hitch' line
+					
+					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
+					& r(eof) == 0 {
+						*local line2 = `trim'(`"`macval(line)'"')
+						local line2 = `"`macval(line)'"'
+						markdown `"`macval(line2)'"'
+						local description`i' `"`r(md)'"'
+						file read `hitch' line
+						local i `++i'
+					}
+				}
+				
+			}
+			*/
 			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
 				local line : subinstr local line "Description:" ""
 				local description = `trim'("`line'")
