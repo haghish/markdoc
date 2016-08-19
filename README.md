@@ -2,9 +2,6 @@
 
 <a href="http://haghish.com/markdoc"><img src="./MD.png" align="left" hspace="10" vspace="6"></a>
 
-**D3** (or **D3.js**) is a JavaScript library for visualizing data using web standards. D3 helps you bring data to life using SVG, Canvas and HTML. D3 combines powerful visualization and interaction techniques with a data-driven approach to DOM manipulation, giving you the full capabilities of modern browsers and the freedom to design the right visual interface for your data.
-  
-
 **MarkDoc** is a general-purpose literate programming package for Stata that produces **dynamic analysis
 document** and **Stata package vignette** in various formats (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*),
 **dynamic presentation slides** (*pdf*, *slidy*, *dzslide*), as well as **Stata help files** (*sthlp*, 
