@@ -1,4 +1,5 @@
-# MarkDoc : a general-purpose literate programming package for Stata
+# MarkDoc 
+### a general-purpose literate programming package for Stata
 
 <a href="http://haghish.com/markdoc"><img src="./Documentation/MD100.png" align="left" hspace="10" vspace="6"></a>
 
