@@ -1,5 +1,9 @@
-![](./MD.png)
-# MarkDoc : a general-purpose literate programming package for Stata  
+# MarkDoc : a general-purpose literate programming package for Stata
+
+<a href="https://d3js.org"><img src="./MD.png" align="left" hspace="10" vspace="6"></a>
+
+**D3** (or **D3.js**) is a JavaScript library for visualizing data using web standards. D3 helps you bring data to life using SVG, Canvas and HTML. D3 combines powerful visualization and interaction techniques with a data-driven approach to DOM manipulation, giving you the full capabilities of modern browsers and the freedom to design the right visual interface for your data.
+  
 
 A general-purpose literate programming package for Stata that produces dynamic analysis
 documents or package documentation in various formats (pdf, docx, html, odt, epub, markdown),
