@@ -1,4 +1,4 @@
-![](./MD.png) # MarkDoc : a general-purpose literate programming package for Stata
+# MarkDoc : a general-purpose literate programming package for Stata  ![](./MD.png) 
 
 A general-purpose literate programming package for Stata that produces dynamic analysis
 documents or package documentation in various formats (pdf, docx, html, odt, epub, markdown),
