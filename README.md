@@ -1,4 +1,4 @@
-![]("MD.png")
+![](./MD.png)
 
 # MarkDoc : a general-purpose literate programming package for Stata
 
