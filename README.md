@@ -4,10 +4,10 @@
 
 **MarkDoc** is a general-purpose literate programming package for Stata that produces: 
 
-1. dynamic analysis document (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
-2. Stata package vignette (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
-3. dynamic presentation slides (*pdf*, *slidy*, *dzslide*)
-4. Stata help files(*sthlp*, *smcl*). 
+- dynamic analysis document (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
+- Stata package vignette (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
+- dynamic presentation slides (*pdf*, *slidy*, *dzslide*)
+- Stata help files(*sthlp*, *smcl*). 
 
 **MarkDoc** recognizes **four** markup languages for documentation which are:
 
