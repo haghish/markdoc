@@ -1,16 +1,18 @@
 # MarkDoc : a general-purpose literate programming package for Stata
 
-<a href="https://d3js.org"><img src="./MD.png" align="left" hspace="10" vspace="6"></a>
+<a href="http://haghish.com/markdoc"><img src="./MD.png" align="left" hspace="10" vspace="6"></a>
 
 **D3** (or **D3.js**) is a JavaScript library for visualizing data using web standards. D3 helps you bring data to life using SVG, Canvas and HTML. D3 combines powerful visualization and interaction techniques with a data-driven approach to DOM manipulation, giving you the full capabilities of modern browsers and the freedom to design the right visual interface for your data.
   
 
-A general-purpose literate programming package for Stata that produces dynamic analysis
-documents or package documentation in various formats (pdf, docx, html, odt, epub, markdown),
-dynamic presentation slides (pdf, slidy, dzslide), as well as dynamic Stata help files (sthlp, 
-smcl). __MarkDoc__ is very simple and intuitive to use and can be simply applied even in introductory 
-statistics courses and workshops. This is a useful tool for teaching statistics, practicing statistics, 
-data analysis, and also developing new packages. 
+**MarkDoc** is a general-purpose literate programming package for Stata that produces **dynamic analysis
+document** and **Stata package vignette** in various formats (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*),
+**dynamic presentation slides** (*pdf*, *slidy*, *dzslide*), as well as **Stata help files** (*sthlp*, 
+*smcl*). 
+
+__MarkDoc__ is very simple and intuitive to use and **can be simply applied even in introductory 
+statistics courses and workshops to teach statistics using Stata and making students to actively take notes in class, document their code, and produce analysis documents**. This is a useful tool for teaching statistics, practicing statistics, 
+data analysis, practicing transparent codeing, and also developing new packages. 
 
         
 Author
@@ -27,7 +29,9 @@ Installation
 
 The major releases of __MarkDoc__ are also hosted on SSC server. But the package receives constant updates on GitHub, which hosts the most recent version, along with he previous releases. 
   
-    net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+```js
+net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+```
     
 __MarkDoc__ also requires two additional Stata packages which are __`weaver`__ and __`statax`__, both hosted on SSC.
 
