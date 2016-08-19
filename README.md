@@ -44,8 +44,8 @@ net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/ma
 __MarkDoc__ also requires two additional Stata packages which are __`weaver`__ and __`statax`__, both hosted on SSC.
 
 <pre class="sh_stata">
-    ssc install weaver
-    ssc install statax
+ssc install weaver
+ssc install statax
 </pre>
 
     
