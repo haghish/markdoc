@@ -2,10 +2,21 @@
 
 <a href="http://haghish.com/markdoc"><img src="./MD.png" align="left" hspace="10" vspace="6"></a>
 
-**MarkDoc** is a general-purpose literate programming package for Stata that produces **dynamic analysis
-document** and **Stata package vignette** in various formats (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*),
-**dynamic presentation slides** (*pdf*, *slidy*, *dzslide*), as well as **Stata help files** (*sthlp*, 
-*smcl*). 
+**MarkDoc** is a general-purpose literate programming package for Stata that produces: 
+
+1. dynamic analysis document (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
+2. Stata package vignette (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
+3. dynamic presentation slides (*pdf*, *slidy*, *dzslide*)
+4. Stata help files(*sthlp*, *smcl*). 
+
+**MarkDoc** recognizes **four** markup languages for documentation which are:
+
+- Markdown
+- LaTeX
+- HTML
+- smcl
+
+---
 
 __MarkDoc__ is very simple and intuitive to use and **can be simply applied even in introductory 
 statistics courses and workshops to teach statistics using Stata and making students to actively take notes in class, document their code, and produce analysis documents**. This is a useful tool for teaching statistics, practicing statistics, 
