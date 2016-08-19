@@ -1,12 +1,8 @@
-<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
-# MarkDoc 
-### a general-purpose literate programming package for Stata
+# MarkDoc : a general-purpose literate programming package for Stata
 
 <a href="http://haghish.com/markdoc"><img src="./Documentation/MD100.png" align="left" hspace="10" vspace="6"></a>
 
-**MarkDoc** is a general-purpose literate programming package for Stata. It recognizes **four** markup languages for documentation which are Markdown, LaTeX, HTML, and SMCL. 
-
-**MarkDoc** applies the same format for documentation and can produce a variety of output formats which are:
+**MarkDoc** is a general-purpose literate programming package for Stata. It recognizes **four** markup languages for documentation which are Markdown, LaTeX, HTML, and SMCL. **MarkDoc** applies the same format for documentation and can produce a variety of output formats which are:
 
 <br>
 
@@ -43,12 +39,8 @@ net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/ma
     
 __MarkDoc__ also requires two additional Stata packages which are __`weaver`__ and __`statax`__, both hosted on SSC.
 
-<pre class="sh_stata">
-ssc install weaver
-ssc install statax
-</pre>
-
-    
+    ssc install weaver
+    ssc install statax
     
 Finally, in order to use a document conversion (i.e. exporting Microsoft Word, PDF, HTML, LaTeX, ePub, etc,...) __MarkDoc__ requires two additional third-party software which are [Pandoc](http://pandoc.org/) and [wkhtmltopdf](http://wkhtmltopdf.org/). Furthermore, for Typesetting LaTeX documents, a [complete distribution of LaTeX](https://latex-project.org/ftp.html) is required. The complete guide for installing them is provided in the MarkDoc help file and also, 
 [__MarkDoc Homepage__ ](http://www.haghish.com/statistics/stata-blog/reproducible-research/markdoc.php)
