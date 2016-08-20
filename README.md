@@ -1,6 +1,6 @@
 # MarkDoc : a general-purpose literate programming package for Stata
 
-<a href="http://haghish.com/markdoc"><img src="./Documentation/MD150.png" align="left" width="140" hspace="10" vspace="6"></a>
+<a href="http://haghish.com/markdoc"><img src="./Resources/images/MD150.png" align="left" width="140" hspace="10" vspace="6"></a>
 
 **MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp* (Stata help file), *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*.
 The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting.
