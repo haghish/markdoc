@@ -1,9 +1,22 @@
 # MarkDoc : a general-purpose literate programming package for Stata
 
-<a href="http://haghish.com/markdoc"><img src="./Documentation/MD150.png" align="left" width="50" hspace="10" vspace="6"></a>
+<a href="http://haghish.com/markdoc"><img src="./Documentation/MD150.png" align="left" width="140" hspace="10" vspace="6"></a>
 
 **MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp* (Stata help file), *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*.
 The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting.
+
+## Resources
+
+* [Journal Article](https://github.com/haghish/MarkDoc/wiki)
+* [Wiki](https://github.com/haghish/MarkDoc/wiki)
+* [Release Notes](https://github.com/haghish/MarkDoc/releases)
+* [Gallery](https://github.com/d3/d3/wiki/Gallery)
+* [Examples](http://bl.ocks.org/mbostock)
+* [Wiki](https://github.com/d3/d3/wiki)
+
+## Installing
+
+If you use NPM, `npm install d3`. Otherwise, download the [latest release](https://github.com/d3/d3/releases/latest). The released bundle supports anonymous AMD, CommonJS, and vanilla environments. You can load directly from [d3js.org](https://d3js.org), [CDNJS](https://cdnjs.com/libraries/d3), or [npmcdn](https://npmcdn.com/d3/). For example:
 
 Not only students, but also lecturers can get benefit from __MarkDoc__ for creating dynamic presentation slides, directly from Stata, which makes their slides to be easily updatable, reusable, and easy to create. Finally, advanced Stata programmers, can use __MarkDoc__ for creating Stata help files (_sthlp_) or pdf package vignette from their source code. 
 
