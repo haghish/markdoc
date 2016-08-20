@@ -25,24 +25,15 @@ net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/ma
 The major releases of __MarkDoc__ are also hosted on SSC server. However, installing from SSC is not recommended because the SSC package is only updated occasionly on SSC. 
 
 ```js
+ssc install markdoc
+```
+
+__MarkDoc__ requires two other packages for highlighting the syntax of Stata commands in the documents and creating dynamic tables which can be installed from SSC as well:
+
+```js
 ssc install weaver
 ssc install statax
 ```
-
-Features
------------------
-
-__MarkDoc__ recognizes 4 markup languages for documentation which are Markdown, LaTeX, HTML, and SMCL. **MarkDoc** applies the same format for documentation and can produce a variety of output formats which are:
-
-1. dynamic analysis document (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
-2. Stata package vignette (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
-3. dynamic presentation slides (*pdf*, *slidy*, *dzslide*)
-4. Stata help files(*sthlp*, *smcl*). 
-
-__MarkDoc__ is very simple and intuitive to use and **can be simply applied even in introductory 
-statistics courses and workshops to teach statistics using Stata and making students to actively take notes in class, document their code, and produce analysis documents**. This is a useful tool for teaching statistics, practicing statistics, 
-data analysis, practicing transparent codeing, and also developing new packages. 
-
 
 Author
 ------
