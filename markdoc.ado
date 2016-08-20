@@ -4,40 +4,32 @@ Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
 ({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
-PDF or JavaScripts-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
+pdf or html-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
 {bf:dzslide}), as well as dynamic 
-{it:Stata package help files} ({bf:sthlp}, {bf:smcl}).  
+{it:Stata package help files} ({bf:sthlp}).  
 ----------------------------------------------------- DO NOT EDIT THIS LINE ***/
 
 /***
-> The package includes 3 
-commands which are __markdoc__, __{help rundoc}__, and __{help pandoc}__ and 
-in addition, it borrows several optional commands from the {help Weaver:Weaver package} 
-which are __{help img}__, __{help txt}__, and __{help tbl}__ for automatically importing 
-figures from Stata, writing dynamic text, and creating dynamic tables respectively. 
-
-> In addition to supporting a wide range of formats and a variety of applications, 
-__markdoc__ includes a syntax highlighter, can render LaTeX mathematical 
-notations (in PDF, Docx, ODT, HTML, LaTeX), 
+> To improve applications of the package for developing educational materials 
+and encouraging university lecturers to ask undergraduate students to practice 
+literate programming for taking notes or doing their semester projects, 
+MarkDoc includes unique features such as a syntax highlighter. It can also 
+render LaTeX mathematical 
+notations in {bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, and {bf:latex}, 
 automatically capture and include figures from Stata, creates dynamic tables, and 
 type dynamic text for interpretting the analysis. These features make the package a 
 complete tool for documenting data analysis, Stata packages, as well as a tool for 
-producing educational materials within Stata. 
+producing educational materials within Stata. further resources are available 
+available in the webpages below. 
+
+>[Homepage](http://haghish.com/markdoc)   
+[Journal Article](http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf)   
+[MarkDoc Documentation Manual](https://github.com/haghish/MarkDoc/wiki)  
+[Release Notes](https://github.com/haghish/MarkDoc/releases)  
+[Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)  
 
 Syntax
 ======
-
-execute __pandoc__ commands directly from Stata
-
-{p 8 13 2}
-{bf:{help pandoc}} {it:command} [{cmd:,} options]
-
-
-produce dynamic {it:document} or {it:presentation slides} from a do-file. 
-
-{p 8 13 2}
-{bf:{help rundoc}} {it:filename.do} [{cmd:,} options]
-
 
 produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} interactively
 
@@ -53,28 +45,38 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 
 
 {phang}
-where for __markdoc__, {help filename} can be:
+where {help filename} extension can be:
 
 {synoptset 20 tabbed}{...}
 {synoptline}
-{synopt:{opt smcl}}converts {bf:smcl} log file to any of the supported document formats. 
-The {bf:smcl} log is used for creating {it:dynamic document} as well as 
-{it:dynamic slides}{p_end}
+{synopt:{opt smcl}}converts _smcl_ log file to any of the supported document formats. 
+The _smcl_ log is used for creating _dynamic document_ as well as 
+_dynamic slides_.{p_end}
 
-{synopt:{opt do} {c |} {opt ado} {c |} {opt mata}}creates {bf:sthlp} help files or package vignette ({bf:pdf}, {bf:html}, {bf:docx}, etc) from Stata script files{p_end}
+{synopt:{opt do}}executes the _do-file_ in a "cleared workspace" and produces a 
+_dynamic document_ or _dynamic slides_. A cleared workspace ensures the reproducibility 
+of the analysis because it neglects the data that is already loaded in Stata and 
+requires the user to load the data that is used for the analysis. 
+{p_end}
+
+{synopt: __ado__ {c |} __mata__ }MarkDoc handles Stata programs differently. 
+It creates __sthlp__ help files or package vignettes 
+({bf:pdf}, __html__, __docx__, etc) from Stata programming script files. 
+This process merely extracts the documentation from the source. The documentation 
+can be written with either smcl or Markdown or a combination of both.{p_end}
 {synoptline}
 {p2colreset}{...}
 
 
 {phang}
-Write dynamic text using any of the supported markup languages
+write dynamic text using any of the supported markup languages
 
 {p 8 13 2}
 {bf:{help txt}} [{help txt:{ul:{bf:c}}{bf:ode}}] [{it:display_directive} [{it:display_directive} [{it:...}]]]
 
 
 {phang}
-Insert an image to the log manually or automatically.
+insert an image to the log manually or automatically.
 if {it:filename} is missing, {cmd:img} attempts to save and import the current 
 graph automatically. 
 
@@ -85,12 +87,19 @@ graph automatically.
 
 
 {phang}
-Create a dynamic table in Markdown documents (Not supported in HTML and LaTeX). This 
+create a dynamic table in Markdown documents (Not supported in HTML and LaTeX). This 
 command has several directives for styling the table, creating nested tables, and 
 aligning the content of each column. 
 
 {p 8 13 2}
 {bf:{help tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
+
+
+execute __pandoc__ commands directly from Stata
+
+{p 8 13 2}
+{bf:{help pandoc}} {it:command} [{cmd:,} options]
+
 
 
 {synoptset 20 tabbed}{...}
@@ -162,18 +171,20 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 Installation
 ============
 
-__markdoc__ can be installed using the SSC server, which hosts the latest stable release of MarkDoc. The SSC installation is as follows:
+__markdoc__ is hosted both on 
+[GitHub](https://github.com/haghish/MarkDoc) 
+and SSC. MarkDoc receives weekly updates on GitHub but only occasion updates on SSC. 
+Therefore, users are recommended to install the package from GitHub:
+
+        . net install markdoc, force  from([https://raw.githubusercontent.com/haghish/markdoc/master/)
+
+To install the package from SSC server type:
 
         . ssc install markdoc
 
-
-Alternatively, advanced users may wish for the current developing version (pre-release) which can be downloaded from {browse "http://github.com/haghish/MarkDoc":GitHub}:
-
-        . net install markdoc, force  from(https://raw.githubusercontent.com/haghish/markdoc/master/)
-
-
-After installing MarkDoc, install {help Weaver} and {help Statax} as follows. If the {cmd:install}
-option is specified, MarkDoc checkes for the required packages and installs them automatically, if they're not already installed. 
+After installing MarkDoc, install {help Weaver} and {help Statax} packages. If the {cmd:install}
+option is specified, MarkDoc checkes for the required packages and installs 
+them automatically, if they're not already installed. 
 
         . ssc install weaver
         . ssc install statax
@@ -705,6 +716,9 @@ program markdoc
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	NUMbered	 	 /// number Stata commands
+	///
+	/// CHANGED SYNTAX
+	/// ========================================================================
 	MATHjax 		 /// Interprets mathematics using MathJax
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
@@ -714,19 +728,19 @@ program markdoc
 	///Font(name)	 /// specifies the document font (ONLY HTML)
 	]
 	
-	****************************************************************************
-	*CHANGED SYNTAX
-	****************************************************************************
-	if !missing("`mathjax'") {
-		di as err "{title:Attention}" _n										///
-		"the {bf:mathjax} option is now applied automatically... "
-	}
+	
+	// =========================================================================
+	// CHANGED SYNTAX
+	
+	// =========================================================================
+	
 	
 	local mathjax mathjax
 	
-	****************************************************************************
-	*Check for Required Packages
-	****************************************************************************
+	// -------------------------------------------------------------------------
+	// Check for Required Packages (Weaver & Statax)
+	// =========================================================================
+	
 	capture findfile weave.ado
 	if _rc != 0 {
 		if !missing("`install'") {
@@ -741,7 +755,6 @@ program markdoc
 				_n(2)
 				error 601
 			}
-			
 			if _rc == 0 {
 				display as err "Weaver package is required: "					///
 				"{ul:{stata ssc install weaver:ssc install weaver}}" _n(2)
@@ -767,19 +780,14 @@ program markdoc
 	capture program drop weaversetup			  //reload it
 	capture weaversetup							  //it might not be yet created
 	
-	
-	// -------------------------------------------------------------------------
 	// Creating PDF slides with LaTeX Markup is the same as writing LaTeX PDF doc
-	// =========================================================================
+	// -------------------------------------------------------------------------
 	if "`export'" == "slide" & "`markup'" == "latex" {
 		local export pdf
 	}
 	
-	
-	****************************************************************************
-	*DEFAULTS
-	****************************************************************************
-	//Auto-correcting possible typos
+	// Auto-correcting possible typos
+	// -------------------------------------------------------------------------
 	if "`markup'" == "HTML" local markup html
 	if "`markup'" == "LATEX" local markup latex
 	if "`markup'" == "Markdown" local markup markdown
@@ -789,21 +797,18 @@ program markdoc
 	if "`export'" == "SMCL" local export smcl
 	if "`export'" == "STHLP" local export sthlp
 	
-	//Markup Language
-	//===============
-	
-	//check the markup language and the exported document format. If the 
-	//format is not specified, alter the default if the "markup" is specified
-
-
-// FEATURE REQUEST ???	
-// ??? -------------------------------------------------------------------------	
-// PROGRAM IT IN A WAY THAT HTML AND LATEX CAN ALSO BE CONVERTED TO OTHER FORMAT	
+	// =========================================================================
+	// Markup Language: 
+	// check the markup language and the exported document format. If the 
+	// format is not specified, alter the default if the "markup" is specified. 
+	// check the output document for LaTeX and HTML markups and if the document 
+	// does not match the markup language, return proper error
+	// =========================================================================	
 	if "`markup'" == "html" {
 		if "`export'" != "html" & "`export'" != "pdf" & !missing("`export'") {
 			di as err "{p}The {bf:html} markup can only export {bf:html} " ///
-		"and {bf:pdf} documents"
-		error 100
+			"and {bf:pdf} documents"
+			error 100
 		}
 		if missing("`export'") local export html
 	}
@@ -811,13 +816,14 @@ program markdoc
 	if "`markup'" == "latex" {
 		if "`export'" != "tex" & "`export'" != "pdf" & !missing("`export'")  {
 			di as err "{p}The {bf:latex} markup can only export {bf:tex} " ///
-		"and {bf:pdf} documents"
-		error 100
+			"and {bf:pdf} documents"
+			error 100
 		}
 		if missing("`export'") local export tex
 	}
-// -----------------------------------------------------------------------------
-	
+
+	// should MarkDoc be quiet?
+	// -------------------------------------------------------------------------
 	if missing("`noisily'") {
 		local cap cap
 	}
@@ -825,6 +831,7 @@ program markdoc
 	// The printer is used for creating PDF documents in MarkDoc. In general,
 	// there are 2 printers available which are "wkhtmltopdf" & "pdflatex."
 	// The default is "wkhtmltopdf" 
+	// -------------------------------------------------------------------------
 	if "`export'" == "pdf" &  "`markup'" != "latex" {
 		global printername "wkhtmltopdf" 		//printer for HTML and Markdown
 		
@@ -833,16 +840,13 @@ program markdoc
 		}
 	}
 	
-	
-	
-	
-	
-	********************************************************************
-	* pdfLaTeX
-	*
-	* This section does not install pdfLaTeX. But it attempts to find it 
-	* on the users' operating system
-	********************************************************************
+
+	// =========================================================================
+	// pdfLaTeX
+	//
+	// This section does not install pdfLaTeX. But it attempts to find it 
+	// on the users' operating system
+	// =========================================================================
 	if "`export'" == "pdf" &  "`markup'" == "latex" & missing("`printer'") 		///
 	| "`export'" == "slide"	& missing("`printer'") {
 		
@@ -891,20 +895,22 @@ program markdoc
 
 			display "(warning! pdfLaTeX not found...)"
 			//error 100
-	
 		}
 	}
 	
+	// =========================================================================
 	// STYLE
-	// =====
+	// 
 	// MarkDoc applies a number of styles for HTML, PDF, and LaTeX documents
 	// The default style is "simple." Below the name of available styles is 
 	// specified for each output format. The available styles are "simple"
 	// and "stata." The default style is "simple" 
+	// =========================================================================
 	if "`style'"  == "" local style "simple"
 	if "`export'" == "pdf" & "`style'" == "" local style "stata" 
 		
 	// Line size
+	// -------------------------------------------------------------------------
 /*	
 	if missing("`linesize'") {
 		if "`c(linesize)'" <= "82"  {
@@ -917,17 +923,14 @@ program markdoc
 		qui set linesize `linesize'
 	}
 */
-	
-	************************************************************************
-	*CHECK FOR REQUIRED SOFTWARE
-	************************************************************************
+
+	// CHECK FOR REQUIRED SOFTWARE
+	// -------------------------------------------------------------------------
 	//If PDF format is specified and pdf path is not empty, make sure file exists
 	if "`printer'" != "" {
 		confirm file "`printer'"
 	}
 	
-	
-
 	if !missing("`pandoc'") {
 		confirm file "`pandoc'"
 		global pandoc "`pandoc'"
@@ -938,17 +941,18 @@ program markdoc
 	}
 
 	// Print the path to pandoc
-	// ------------------------
+	// -------------------------------------------------------------------------
 	if !missing("`noisily'") display "{title:Pandoc path}" _n "$pandoc"
 	
 	
-	*This command is defined in markdockcheck.ado and checkes the required software
+	// checkes the required software
+	// -------------------------------------------------------------------------
 	markdoccheck , `install' `test' export(`export') style(`style') 			///
 	markup(`markup') pandoc("$pandoc") printer("`printer'")
 		
-	************************************************************************
-	*TEST MARKDOC
-	************************************************************************
+	// -------------------------------------------------------------------------
+	// TEST MARKDOC
+	// =========================================================================
 	if "`test'" == "test" {
 		di _n(2)
 		di as txt "{hline}" _n
@@ -994,12 +998,12 @@ program markdoc
 		di as txt "{hline}" _n	
 	}
 					
-	************************************************************************
-	*SYNTAX PROCESSING
-	************************************************************************
+	// -------------------------------------------------------------------------
+	// SYNTAX PROCESSING
+	// =========================================================================
 		
 	// Syntax Highlighter
-	// ==================
+	// -------------------------------------------------------------------------
 	if "`export'" != "html" & "`export'" != "pdf" & !missing("`statax'") {
 		display as txt "{p}(The {bf:statax} option is only used " 				///
 	     "when exporting to {bf:html} format)" _n
@@ -1155,8 +1159,10 @@ program markdoc
 			local html "`input'_.html"
 			local pdf "`input'.pdf"
 			local name "`input'"
+			local rundocScript "`input'"
 			local input  "`input'.do"
-			local scriptfile 1						//define a scriptfile
+			*local scriptfile 1						//define a scriptfile
+			local rundoc 1							//run rundoc
 		}
 		else if (!index(lower("`input'"),".smcl")) {
 			if "`export'" == "slide" {
@@ -1197,6 +1203,42 @@ program markdoc
 			"Use the {bf:replace} option to replace the existing file." 					
 			exit 198
 		}
+		
+		// =========================================================================
+		// Execute rundoc for the do-files
+		//
+		// execute rundoc with the `name' which does not have the ".do"
+		// =========================================================================
+		if !missing("`rundoc'") {
+			rundoc "`name'",													///
+			`replace' 															///
+			markup(`markup') 													///
+			export(`export') 													///
+			`install' 															///
+			`test' 																///	
+			pandoc("`pandoc'")													///
+			printer("`printer'")												///
+			`texmaster'															///
+			`statax'															///
+			template(`template')												///
+			title("`title'")													///
+			author("`author'")													///
+			affiliation("`affiliation'")										///
+			address("`address'")												///
+			`date'  															///
+			summary("`summary'")												///
+			version("`version'")												///
+			style("`style'")													///
+			linesize(`linesize')												///
+			`toc'																///
+			`noisily'															///
+			`asciitable'														///
+			`numbered'															///
+			`mathjax'
+	
+			exit
+		}
+		
 	
 	
 	local clinesize "`c(linesize)'"							//save the linesize
@@ -3755,4 +3797,3 @@ end
 // create the help file
 // ====================
 *markdoc markdoc.ado, exp(sthlp) replace
-
