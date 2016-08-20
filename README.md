@@ -7,8 +7,9 @@ The software has a considerable focus on making literate programming easy-to-lea
 
 ## Resources
 
+* [Homepage](http://haghish.com/markdoc)
 * [Journal Article](http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf)
-* [Wiki](https://github.com/haghish/MarkDoc/wiki)
+* [Manual](https://github.com/haghish/MarkDoc/wiki)
 * [Release Notes](https://github.com/haghish/MarkDoc/releases)
 * [Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)
 * [Torture tests](https://github.com/haghish/MarkDoc/tree/master/Torture_test)
