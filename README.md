@@ -37,12 +37,16 @@ ssc install statax
 
 Author
 ------
-**E. F. Haghish**  
-Center for Medical Biometry and Medical Informatics
-University of Freiburg, Germany      
-_haghish@imbi.uni-freiburg.de_     
-_http://www.haghish.com/markdoc_  
-_[@Haghish](https://twitter.com/Haghish)_   
+  **E. F. Haghish**    
+  Center for Medical Biometry and Medical Informatics    
+  University of Freiburg, Germany       
+  _and_   
+  Department of Mathematics and Computer Science   
+  Univesity of Southern Denmark, Odense, Denmark    
+
+  _haghish@imbi.uni-freiburg.de_  
+  _http://www.haghish.com/markdoc_  
+  _[@Haghish](https://twitter.com/Haghish)_   
   
   
   
