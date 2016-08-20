@@ -1,0 +1,57 @@
+# MarkDoc : a general-purpose literate programming package for Stata
+
+<a href="http://haghish.com/markdoc"><img src="./Documentation/MD150.png" align="left" width="140" hspace="10" vspace="6"></a>
+
+**MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp* (Stata help file), *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*.
+The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting.
+
+## Resources
+
+* [Journal Article](http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf)
+* [Wiki](https://github.com/haghish/MarkDoc/wiki)
+* [Release Notes](https://github.com/haghish/MarkDoc/releases)
+* [Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)
+* [Torture tests](https://github.com/haghish/MarkDoc/tree/master/Torture_test)
+
+Installing
+----------
+
+__MarkDoc__ receives constant updates on GitHub and users are recommended to follow the updates from GitHub. To install __MarkDoc__ from GitHub on Stata, type:
+
+```js
+net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+```
+
+The major releases of __MarkDoc__ are also hosted on SSC server. However, installing from SSC is not recommended because the SSC package is only updated occasionly on SSC. 
+
+```js
+ssc install weaver
+ssc install statax
+```
+
+Features
+-----------------
+
+__MarkDoc__ recognizes 4 markup languages for documentation which are Markdown, LaTeX, HTML, and SMCL. **MarkDoc** applies the same format for documentation and can produce a variety of output formats which are:
+
+1. dynamic analysis document (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
+2. Stata package vignette (*pdf*, *docx*, *tex*, *html*, *odt*, *epub*, *markdown*)
+3. dynamic presentation slides (*pdf*, *slidy*, *dzslide*)
+4. Stata help files(*sthlp*, *smcl*). 
+
+__MarkDoc__ is very simple and intuitive to use and **can be simply applied even in introductory 
+statistics courses and workshops to teach statistics using Stata and making students to actively take notes in class, document their code, and produce analysis documents**. This is a useful tool for teaching statistics, practicing statistics, 
+data analysis, practicing transparent codeing, and also developing new packages. 
+
+
+Author
+------
+**E. F. Haghish**  
+Center for Medical Biometry and Medical Informatics
+University of Freiburg, Germany      
+_haghish@imbi.uni-freiburg.de_     
+_http://www.haghish.com/markdoc_  
+_[@Haghish](https://twitter.com/Haghish)_   
+  
+  
+  
