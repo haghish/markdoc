@@ -1,5 +1,13 @@
 /***
 
+Adding a list
+=============
+
+* this is a text line  
+* this is also  
+* how about this?  
+	
+	
 Dot in the end
 ==============
 
@@ -37,4 +45,4 @@ Unsolved
 
 ***/
 
-markdoc ./sthlp/bugs.do, export(sthlp) replace template(empty)
+markdoc "./sthlp/bugs.do", export(sthlp) replace template(empty)

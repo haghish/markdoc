@@ -1,6 +1,15 @@
 {smcl}
 
 
+{title:Adding a list}
+
+{p 4 4 2}
+* this is a text line    {break}
+* this is also    {break}
+* how about this?    {break}
+	
+	
+
 {title:Dot in the end}
 
 {p 4 4 2}
@@ -38,11 +47,6 @@ The grave accents are used to {c 96}make{c 96} font monospace. Can we
 
 
 {title:Unsolved}
-
-{p 4 4 2}
-What if the accent come in the {c 96}end{c 96} there should be at least one additional character.
-
-
 
 
 

@@ -10,3 +10,23 @@ Torture_test/doit.sh
 Torture_test/example.smcl
 
 Torture_test/example.tex
+
+private/MD.png
+
+*.psd
+
+*.do
+
+*.sthlp
+
+*.do
+
+*.gv
+
+*.png
+
+*.dot
+
+*.do
+
+*.sthlp

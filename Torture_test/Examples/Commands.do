@@ -185,7 +185,7 @@ qui log using torture_latex, replace
 		***/
 qui log c
 markdoc torture_latex, export(tex) markup(latex) replace ///
-template(Torture_test/latexHeading.tex) texmaster
+template(Torture_test/LaTeX/latexHeading.tex) texmaster
 
 markdoc torture_latex, export(tex) markup(latex) replace texmaster
 
