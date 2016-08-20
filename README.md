@@ -7,12 +7,11 @@ The software has a considerable focus on making literate programming easy-to-lea
 
 ## Resources
 
-* [Journal Article](https://github.com/haghish/MarkDoc/wiki)
+* [Journal Article](http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf)
 * [Wiki](https://github.com/haghish/MarkDoc/wiki)
 * [Release Notes](https://github.com/haghish/MarkDoc/releases)
 * [Gallery](https://github.com/d3/d3/wiki/Gallery)
 * [Examples](http://bl.ocks.org/mbostock)
-* [Wiki](https://github.com/d3/d3/wiki)
 
 ## Installing
 
