@@ -111,18 +111,28 @@ program define rundoc
 	}
 	
 	// -------------------------------------------------------------------------
-	// 1- create a log file with a name
-	// 2- execute the do-file
-	// 3- erase the log file
+	// 1- 
+	// 2- create a log file with a name
+	// 3- execute the do-file
+	// 4- close the log, restore the snapshot, erase the snapshot
+	// 5- convert the log file and erase it
 	// =========================================================================
-	capture log close rundoc
 	
+	quietly snapshot save
+	local number `r(snapshot)'
+	
+	quietly clear
+	
+	capture log close rundoc
 	quietly log using "`input'.smcl", replace smcl name(rundoc)
 	noisily do "`input'"
 	qui log close rundoc
 	
+	snapshot restore `number'
+	capture snapshot erase `number'
 	
-	markdoc "`input'.smcl",													///
+	
+	markdoc "`input'.smcl",														///
 	`replace' 																	///
 	markup(`markup') 															///
 	export(`export') 															///
