@@ -23,9 +23,9 @@ local a = 10
 txt "$$ \beta_1 = `a' $$"
 
 /***
-__Note__: when you write inline mathematical notations, there should be __NO SPACE__ 
+Note that when you write inline mathematical notations, there should be __NO SPACE__ 
 between the dollar sign and the notation. However, if you are placing your 
-notations on a separate line, 
+notations on a separate line, there should be no problem. 
 ***/
 
 qui log c
@@ -36,4 +36,4 @@ local author `"author("E. F. Haghish")"'
 markdoc example, export(html) replace `title' `author' date 
 markdoc example, export(docx) replace `title' `author' date
 markdoc example, export(odt) replace  `title' `author' date
-markdoc example, export(tex) replace texmaster  `title' `author' date
+markdoc example, export(tex) replace texmaster  `title' `author' date 

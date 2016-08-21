@@ -27,13 +27,12 @@
 
 {txt}> $$ \beta_1 = 10 $$
 {com}. 
-. txt "5. the \$ sign can be used for writing mathematical notations. To do "     ///
->         "so, write your LaTeX notations between a single dollar sign for inline "       ///
->         "notations. For example: $\beta_1 = `a'$ "
-
-
-{txt}> 5. the $ sign can be used for writing mathematical notations. To do so, write your LaTeX notations between a single dollar sign for inline notations. For example: $\beta_1 = 10$ 
-{com}. 
+. /***
+> Note that when you write inline mathematical notations, there should be __NO SPACE__ 
+> between the dollar sign and the notation. However, if you are placing your 
+> notations on a separate line, there should be no problem. 
+> ***/
+. 
 . qui log c
 {smcl}
 {com}{sf}{ul off}
