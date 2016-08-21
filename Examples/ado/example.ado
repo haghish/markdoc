@@ -44,7 +44,7 @@ Syntax
 
 
 
-
+cd "/Users/haghish/Dropbox/STATA/MY PROGRAMS/MarkDoc/MarkDoc 3.6.7"
 
 /***
 
@@ -63,7 +63,7 @@ Yet, there has been no software for macro-level documentation of R packages. In 
 ***/
 
 
-markdoc example.do, export(sthlp) markup() replace linesize(120) 				///
+markdoc example.do, export(sthlp) markup() replace linesize(120) texmaster				///
 printer("/usr/texbin/pdflatex")
 
 /***

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" async 
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- SYNTAX HIGHLIGHTING CLASSES  -->
+<style type="text/css">
+.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
+.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
+.center, #center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+
+    padding: 0px;
+    border-width: 0px;
+    border-style: solid;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    }
+
+pagebreak {
+        page-break-before: always;
+        }
+
+.pagebreak, #pagebreak {
+        page-break-before: always;
+        }
+
+td > p {padding:0; margin:0;}
+
+
+
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+table {
+        border-collapse: collapse;
+        border-bottom:1px solid black;
+        padding:5px;
+        margin-top:5px;
+
+}
+.tble {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+}
+
+.tblecenter {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        text-align:center;
+}
+
+span.tblecenter + table, span.tble + table, span.tble + img {
+        margin-top: 2px;
+}
+
+th {
+border-bottom:1px solid black;
+border-top:1px solid black;
+padding-right:20px;
+}
+
+td {
+padding-right:20px;
+}
+
+</style>
+<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
+</head>
+<body>
+<h1 id="making-the-source-code-really-reproducible">Making the source code really reproducible</h1>
+<p>To make the do-file really reproducible, we have to make sure it does not access the data that is already loaded in Stata. Think about it, if you execute a do-file on a data that is already loaded and you have been working on it, can you ensure that re-executing the do-file creates the same results again? you might have done some changes outside of the do-file on the data - such as droping a record - which makes the results ireproducible.</p>
+<p>The solution would be to <strong>run the do-file in a cleared workspace</strong> to ensure the do-file does not access the data that is already loaded. <strong>MarkDoc</strong> can take a do-file and execute the code in a cleared workspace and produce the dynamic document. This is a very different engine compared to rendering a smcl-log to a dynamic document.</p>
+<p>If the do-file return an error, <strong>MarkDoc</strong> still create the dynamic document until the point the error occured. To run this do-file, first load the <strong>auto</strong> dataset in Stata. Then call <strong><code>markdoc</code></strong> to produce the dynamic document. You should get an error the <code>no variables defined</code>, which means your do-file does not load the data, although the data are loaded in your Stata.</p>
+<pre class="sh_stata">  .  display "the next command will be an error"</pre>
+<pre><code>      the next command will be an error
+      </code></pre>
+<pre class="sh_stata">  .  regress price mpg</pre>
+<pre><code>      no variables defined
+      r(111);
+      
+      end of do-file
+      </code></pre>
+</body>
+</html>

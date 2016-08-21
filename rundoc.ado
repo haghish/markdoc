@@ -125,7 +125,7 @@ program define rundoc
 	
 	capture log close rundoc
 	quietly log using "`input'.smcl", replace smcl name(rundoc)
-	noisily do "`input'"
+	capture noisily do "`input'"
 	qui log close rundoc
 	
 	snapshot restore `number'

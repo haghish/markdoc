@@ -90,10 +90,7 @@ rundoc "./rundoc/rundoc_example", export(tex) statax replace texmaster
 rundoc "./rundoc/rundoc_example", export(odt) statax replace 
 rundoc "./rundoc/rundoc_example", export(pdf) statax replace
 
-// DO Test
-// =======================================
-do ./do/example.do 
-do ./do/all_latex.do 
+
 
 
 // Examples

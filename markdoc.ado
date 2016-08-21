@@ -1210,6 +1210,9 @@ program markdoc
 		// execute rundoc with the `name' which does not have the ".do"
 		// =========================================================================
 		if !missing("`rundoc'") {
+			
+			if !missing("`pdfhtml'") local export "pdf"
+			
 			rundoc "`name'",													///
 			`replace' 															///
 			markup(`markup') 													///
