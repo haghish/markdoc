@@ -1,0 +1,39 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. 
+. /***
+> Use a single "\$" sign for writing inline mathematical notations. For example, 
+> $f(x)=\sum_{c -(}n=0{c )-}^\infty\frac{c -(}f^{c -(}(n){c )-}(a){c )-}{c -(}n!{c )-}(x-a)^n$ would be rendered inline 
+> with the text paragraph. Use double dollar signs "$$" for placing the notations 
+> on a separate lines:
+> 
+> $$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
+> 
+> 
+> 1. Since the notations appear in comments, they will not be interpreted by 
+> Stata as global macros. 
+> 
+> 2. Place a backslash before the "\$" if you are using them in the document, but 
+> not for rendering mathematical notations. The backslash will not appear in the 
+> dynamic document. 
+> 
+> 3. You can also write dynamic mathematical notations using the __`txt`__ command. 
+> ***/
+. 
+. local a = 10
+{txt}
+{com}. txt "$$ \beta_1 = `a' $$"
+
+
+{txt}> $$ \beta_1 = 10 $$
+{com}. 
+. txt "5. the \$ sign can be used for writing mathematical notations. To do "     ///
+>         "so, write your LaTeX notations between a single dollar sign for inline "       ///
+>         "notations. For example: $\beta_1 = `a'$ "
+
+
+{txt}> 5. the $ sign can be used for writing mathematical notations. To do so, write your LaTeX notations between a single dollar sign for inline notations. For example: $\beta_1 = 10$ 
+{com}. 
+. qui log c
+{smcl}
+{com}{sf}{ul off}

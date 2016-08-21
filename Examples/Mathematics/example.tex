@@ -1,0 +1,60 @@
+
+\documentclass{article}
+\usepackage{geometry} 
+\usepackage{booktabs}         %for tables
+%\geometry{letterpaper} 
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{hyperref}         %use hyperlink
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\makeatletter
+\def\verbatim@font{\ttfamily\scriptsize}
+\makeatother
+\begin{document}
+\title{Testing Mathematical Notations in MarkDoc}
+\author{E. F. Haghish } 
+\maketitle
+
+
+Use a single ``\$'' sign for writing inline mathematical notations. For
+example, \(f(x)=\sum_{n=0}^\infty\frac{f^{(n)}(a)}{n!}(x-a)^n\) would be
+rendered inline with the text paragraph. Use double dollar signs
+``\$\$'' for placing the notations on a separate lines:
+
+\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Since the notations appear in comments, they will not be interpreted
+  by Stata as global macros.
+\item
+  Place a backslash before the ``\$'' if you are using them in the
+  document, but not for rendering mathematical notations. The backslash
+  will not appear in the dynamic document.
+\item
+  You can also write dynamic mathematical notations using the
+  \textbf{\texttt{txt}} command.
+
+\begin{verbatim}
+  .  local a = 10
+\end{verbatim}
+\end{enumerate}
+
+\[ \beta_1 = 10 \]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  the \$ sign can be used for writing mathematical notations. To do so,
+  write your LaTeX no tations between a single dollar sign for inline
+  notations. For example: \(\beta_1 = 10\)
+\end{enumerate}
+
+\end{document}
+
+
+
