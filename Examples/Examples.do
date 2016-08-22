@@ -1,11 +1,16 @@
-/*******************************************************************************
-MarkDoc Examples
-====================
+/*** 
+Examples
+========
 
-The following do files test different features of MarkDoc package. Run these 
-files one after another. Note that each do file erases the output of the 
-previous do-file to ensure the output is recreated. Make sure Stata can has 
-the premission to remove files from your working directory.
+MarkDoc has 3 different engines:
+
+1. convert smcl log-file to document or presentation slides
+
+2. execute a do-file, examine if it's reproducible, and produces dynamic 
+document or slides
+
+3. reads the documentation written in ado or mata files and export Stata help 
+files of package vignette
 
 
 E. F. Haghish
@@ -14,7 +19,7 @@ University of Southern Denmark
 Odense, Denmark
 
 Aug 2016
-*******************************************************************************/
+***/
 
 cd "/Users/haghish/Documents/Packages/markdoc/Examples"
 
