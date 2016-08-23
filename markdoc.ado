@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.6.9
+Version: 3.7.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -1163,6 +1163,9 @@ program markdoc
 			local input  "`input'.do"
 			*local scriptfile 1						//define a scriptfile
 			local rundoc 1							//run rundoc
+			
+			//allow rundoc get nested in the file
+			global rundoc "`input'"
 		}
 		else if (!index(lower("`input'"),".smcl")) {
 			if "`export'" == "slide" {

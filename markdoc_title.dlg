@@ -1,0 +1,62 @@
+// -----------------------------------------------------------------------------
+// TITLE PAGE TAB
+// =============================================================================
+VERSION 12
+POSITION . . 400 200
+
+DIALOG markdoc_title, label("MarkDoc") tabtitle("Dynamic Document")
+BEGIN
+	// title of the document
+	TEXT tx_title 10 10 . ., label("Title")
+	EDIT title    80 @ 310 19   //EDIT ed_title +30 @ 340 .
+	 
+	// Author of the document
+	TEXT tx_author 10 +20 . ., label("Author")
+	EDIT author 80 @ 310 19  
+	 
+	// Affiliation
+	TEXT tx_affiliation 10 +20 . ., label("Affiliation")
+	EDIT affiliation 80 @ 310 19   
+	 
+	// Address
+	TEXT tx_address 10 +20 . ., label("Address")
+	EDIT address 80 @ 310 19  
+	 
+	// Summary
+	TEXT tx_summary  10   +20  .    ., label("Summary")
+	EDIT summary     80   @    310  100  
+END
+
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+//HELP hlp1,   view("help markdoc")
+RESET res1
+COPY copy1
+
+
+PROGRAM command
+BEGIN
+
+
+	call create ARRAY arr_event_return
+	call create STRING str_event_return
+
+	call str_event_return.setvalue  ///
+		class event.fi_eventfile.value
+	call str_event_return.append "*"
+	call str_event_return.append    ///
+		class event.cb_eventid.value
+	call str_event_return.append "*"
+	call str_event_return.append   ///
+		class event.cb_eventdate.value
+	call str_event_return.append "*"
+	call str_event_return.append   ///
+		class event.cb_eventfirmid.value
+	call str_event_return.append "*"
+	call str_event_return.append   ///
+		class event.cb_eventcontrol.value
+
+	put str_event_return
+
+END

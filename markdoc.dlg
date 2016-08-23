@@ -1,0 +1,509 @@
+VERSION 12 
+POSITION . . 440 420
+
+
+// -----------------------------------------------------------------------------
+// LISTS
+// =============================================================================
+
+// Specify MarkDoc Format
+LIST format_list
+BEGIN
+	pdf
+	docx
+	odt
+	html
+	tex
+	markdown
+END
+
+// Specify the Markup langugae
+LIST markup_list
+BEGIN
+	markdown
+	latex
+	html
+END
+
+// Specify the Markup langugae
+LIST slide_markup_list
+BEGIN
+	markdown
+	latex
+END
+
+// Specify the Document Theme
+LIST style_list
+BEGIN
+	simple
+	stata
+END
+
+
+
+// -----------------------------------------------------------------------------
+// MAIN PAGE BUTTONS
+// =============================================================================
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+HELP hlp1,   view("help markdoc")  //"browse https://github.com/haghish/MarkDoc/wiki"
+RESET res1
+COPY copy1
+
+
+// -----------------------------------------------------------------------------
+// GENERAL SCRIPTS
+// =============================================================================
+
+// Initial script that is executed automatically
+SCRIPT PREINIT
+BEGIN	
+*    main.texmaster.disable
+	//main.statax.disable
+	
+	*if sub.visible() {
+	*}
+	
+	// for example, this will disable the foolowing button
+	*main.toc.disable
+END
+
+
+// Reset Values of the Main Tab
+// ----------------------------
+SCRIPT mainReset
+BEGIN	
+	*main.sourceFile.disable
+	main.sourceFile.setvalue ""
+	main.markup.setvalue ""
+END
+
+// Reset Values of the Slides Tab
+// -------------------------------
+
+/********************************* SLIDE
+SCRIPT subReset
+BEGIN	
+	sub.sourceFile.setvalue ""
+END
+*/
+
+		// Unused Scripts
+		// ------------------------------------
+		/*
+		// Hide LaTeX options
+		SCRIPT TeXoptions
+		BEGIN
+			main.texmaster.enable
+			main.statax.disable
+		END
+
+		SCRIPT main_ck_vlab_on
+		BEGIN
+		   main.cb_vlab.enable
+		END
+
+		SCRIPT main_ck_vlab_off
+		BEGIN
+		   main.cb_vlab.disable
+		END
+
+		SCRIPT disablethem
+		BEGIN
+		  
+			if main.format.isneq("tex") {
+				main.texmaster.disable
+			}
+		  *main.texmaster.disable
+		  *main.vars.disable
+		  *options.detail.disable
+		  *options.status.disable
+		END
+		
+		SCRIPT sub_inon
+		BEGIN
+		  sub.sp_from.enable
+		  sub.sp_to.enable
+		END
+
+		SCRIPT sub_inoff
+		BEGIN
+		  sub.sp_from.disable
+		  sub.sp_to.disable
+		END
+
+
+		*/
+
+// -----------------------------------------------------------------------------
+// DYNAMIC DOCUMENT TAB
+// =============================================================================
+
+SCRIPT main_POSTINIT
+BEGIN
+	// enable the main dialog and disable the rest
+	*main.sourceFile.enable
+	*main.sourceFile.enable
+END
+
+
+DIALOG main, label("MarkDoc") tabtitle("Dynamic Document")
+BEGIN
+	
+	//FRAME box        10   72   310    30
+	
+	// Browse SMCL or DO file
+	// -------------------------------------------------------------------------
+	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
+	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...) ///
+	filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.") ///
+	/********************************* SLIDE
+	onchange("script subReset")
+	*/
+	
+	// Specify Markup, Format, Style
+	// -------------------------------------------------------------------------
+	TEXT tx_markup   10   +30  200  .  , label("Markup language")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(markup_list) onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_format   +120 -20  200  .  , label("Document format")
+	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.texmaster.disable")    // onselchange("program test")
+	RADIO r1         @    +20   100 .  , first  label("html") onclickon("program test") //option(nociforeground)
+    RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program test") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
+    RADIO r3         +50    @   @ ., middle label("tex") onclickon("program test") //onclickon("script TeXoptions")
+    RADIO r4         +50    @   @ ., middle   label("docx") onclickon("program test")
+	RADIO r5         +50    @   @ ., middle   label("odt") onclickon("program test")
+	RADIO r6         +50    @   @ ., last   label("md") onclickon("program test")
+	
+
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_opts 10   +35  420  305, label("Options")
+	  
+		// RIGHT COLUMN
+		// ---------------------------------------------------------------------
+		
+		// install
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+	
+		// replace
+		CHECKBOX replace  @    +15   @   .  , option(replace) label("replace the existing document") default(1)
+	  
+		// syntax highlighter
+		CHECKBOX statax   @    +15   @   .  , option(statax) label("Statax syntax highlighter") default(1)
+		
+	  
+		// table of content
+		CHECKBOX toc      @    +15   @   .  , option(toc) label("table of content") 
+			   
+		// current date
+		CHECKBOX date     @    +15   @   .  , option(date) label("add the current date") 
+			   
+		// numbered
+		CHECKBOX numbered @    +15   @   .  , option(numbered) label("count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+	  
+		// texmaster
+		CHECKBOX texmaster @   +15   @   .  , option(texmaster) label("create LaTeX document template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+	  
+		// noisily
+		CHECKBOX noisily  @    +15   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+
+		// title of the document
+		TEXT tx_title @ +30 . ., label(Title)
+		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
+	 
+		// Author of the document
+		TEXT tx_author 20 +20 . ., label(Author)
+		EDIT author 80 @ 340 18  
+	 
+		// Affiliation
+		TEXT tx_affiliation 20 +20 . ., label(Affiliation)
+		EDIT affiliation 80 @ 340 18   
+	 
+		// Address
+		TEXT tx_address 20 +20 . ., label(Address)
+		EDIT address 80 @ 340 18  
+	 
+		// Summary
+		TEXT tx_summary  20   +20  .    ., label(Summary)
+		EDIT summary     80   @    340  50   
+		
+		// LEFT COLUMN
+		// ---------------------------------------------------------------------
+	
+		// layout
+		TEXT tx_style     220  134  200  .  , label("Select document layout style")
+		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
+		
+		// layout
+		TEXT tx_template  @    +40  240  .  , label("Apply layout (css, docx, tex, etc)")
+		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
+		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
+		
+		//TEXT tx_linesize  @    +40  240  .  , label("Specify linesize")
+		//SPINNER  linesize 125  @    60   .  , min(80)  max(255) default(100) tooltip("Define the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		
+END
+
+
+
+
+
+
+
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// PRESENTATION SLIDES TAB
+// =============================================================================	
+
+
+/********************************* SLIDE
+
+DIALOG sub, tabtitle("Presentation Slide") 
+BEGIN
+	
+	//BUTTON help 200 100 80 ., label("Help") onpush("view help markdoc")
+	
+	// Browse SMCL or DO file
+	// -------------------------------------------------------------------------
+	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
+	FILE sourceFile	     10   +20  420  .  , error("Open file") label(Browse...) onchange("script mainReset") filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce dynamic presentation slides by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.")
+	
+	// Specify Markup, Format, Style
+	// -------------------------------------------------------------------------
+	TEXT tx_markup   10   +30  200  .  , label("Markup language")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(slide_markup_list) onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_format   +120 -20  200  .  , label("Presentation slide format")
+	RADIO r1         @    +20   100 .  , first  label("pdf") onclickon("program test") //option(nociforeground)
+    RADIO r2         +50    @   @  ., middle label("slidy") onclickon("program test")
+    RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program test") //onclickon("script TeXoptions")
+	
+	
+	BUTTON bu_facvars @ +50 @ ., label("my Button") onpush("program bu_facvars_getOpts")
+	 
+	//BUTTON bu_facvars     _ilft	+35	200	.,			///
+	//onpush("program bu_facvars_getOpts")				///
+	//label(resource LBL_FACTOR_VARIABLE_DISPLAY_OPTIONS)
+		   
+END
+
+*/
+
+
+
+
+// -----------------------------------------------------------------------------
+// PROGRAMS
+// =============================================================================
+
+// test for the main tab
+PROGRAM test
+BEGIN
+	
+	if main.markup.iseq("markdown") {
+		call main.r1.enable
+		call main.r2.enable
+		call main.r3.enable
+		call main.r4.enable
+		call main.r5.enable
+		call main.r6.enable
+		
+		if main.r3.iseq(1)   {
+			call main.texmaster.enable
+			call main.statax.disable
+		}
+		else {
+			call main.texmaster.disable
+			if main.r4.iseq(1) | main.r5.iseq(1) | main.r6.iseq(1)  {
+				call main.statax.disable
+			}
+			else {
+				call main.statax.enable
+			}
+		}
+	}
+	
+	if main.markup.iseq("latex") {
+		call main.statax.disable
+		call main.texmaster.enable
+		call main.r3.enable
+		call main.r1.disable
+		call main.r4.disable
+		call main.r5.disable
+		call main.r6.disable
+	}
+	if main.markup.iseq("html") {
+		call main.r1.enable
+		call main.r3.disable
+		call main.r4.disable
+		call main.r5.disable
+		call main.r6.disable
+	}
+	
+	/*
+	if main.format.iseq("latex")   {
+		call main.texmaster.enable
+	}
+	*/
+	
+	// TEXMASTER 
+	/*
+	if main.format.iseq("tex") {
+		call main.texmaster.enable
+	}
+	else {
+		call main.texmaster.disable
+	}
+	*/
+	
+	
+	// STATAX
+	if main.format.iseq("html") | main.format.iseq("pdf") {
+		call main.statax.enable
+	}
+	else {
+		call main.statax.disable
+	}
+	
+END
+
+
+
+
+// -----------------------------------------------------------------------------
+// FINAL MARKDOC COMMAND
+// =============================================================================	
+PROGRAM command
+BEGIN
+	put "markdoc "
+    
+	// MAIN TAB
+	//if ! main.sourceFile { ///& ! sub.sourceFile {
+	//	require main.sourceFile
+	//}
+	
+	require main.sourceFile
+	
+	if main.sourceFile {
+		put `"""'
+		require main.sourceFile
+		put main.sourceFile
+		put `"" , "'
+		
+		put "markup(" main.markup  ") "
+		
+		if main.r1 {
+			put "export(html) "
+		}
+		if main.r2 {
+			put "export(pdf) "
+		}
+		if main.r3 {
+			put "export(tex) "
+		}
+		if main.r4 {
+			put "export(docx) "
+		}
+		if main.r5 {
+			put "export(odt) "
+		}
+		if main.r6 {
+			put "export(md) "
+		}
+	}
+	
+	/********************************* SLIDE
+	// SLIDE TAB
+	if sub.sourceFile {
+		put `"""'
+		require sub.sourceFile
+		put sub.sourceFile
+		put `"" , "'
+		
+		put "markup(" sub.markup  ") "
+		
+		if sub.r1 {
+			put "export(slide) "
+		}
+		if sub.r2 {
+			put "export(slidy) "
+		}
+		if sub.r3 {
+			put "export(dzslide) "
+		}
+	}		
+    */
+	
+	option main.replace						// replace
+	option main.install						// install 
+	option main.statax						// Statax syntax highlighter
+	option main.toc							// table of content
+	option main.date						// table of date
+	option main.numbered					// numbered 
+	option main.texmaster					// texmaster
+	option main.noisily						// noisily
+	
+	*put "export(" main.format ") "
+	
+	if main.style {
+		put "style(" `"""' main.style `"""' ") "
+	}
+	
+	if main.template {
+		put "template(" `"""' main.template `"""' ") "
+	}
+	
+	if main.title {
+		put "title(" `"""' main.title `"""' ") "
+	}	
+	if main.author {
+		put "author(" `"""' main.author `"""' ") "
+	}	
+	if main.affiliation {
+		put "affiliation(" `"""' main.affiliation  `"""' ") "
+	}	
+	if main.address {
+		put "address(" `"""' main.address `"""' ") "
+	}	
+	if main.summary {
+		put "summary(" `"""' main.summary  `"""' ") "
+	}	
+	
+	
+
+END
+
+
+
+
+
+/*** EXAMPLES
+
+/*
+  CHECKBOX ck_numbers   @     +25   @       .,                 ///
+           option(numbers)                                     ///
+           label("Present variable number along with name")    ///
+           onclickon(main.ck_fullnames.disable)                ///
+           onclickoff(main.ck_fullnames.enable)
+*/
+  
+  
+  
+  
+  
+		   
+/*		   
+  CHECKBOX ck_vlab     215 -20  185  .,                            ///
+           label("Attach value label:")                            ///
+           onclickon(script main_ck_vlab_on)                       ///
+           onclickoff(script main_ck_vlab_off)
+  COMBOBOX cb_vlab     @   +20  @    .,                            ///
+           contents(valuelabels) dropdown
+*/
+	
