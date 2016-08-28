@@ -11,23 +11,33 @@
  
 {p 8 8 2}
  To improve applications of the package for developing educational materials 
-and encouraging university lecturers to ask undergraduate students to practice 
+and encouraging university lecturers to ask students to practice 
 literate programming for taking notes or doing their semester projects, 
-MarkDoc includes unique features such as a syntax highlighter. It can also 
-render LaTeX mathematical 
-notations in {bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, and {bf:latex}, 
-automatically capture and include figures from Stata, creates dynamic tables, and 
-type dynamic text for interpretting the analysis. These features make the package a 
+MarkDoc was programmed to include unique features. For example, it includes a syntax highlighter, 
+it recognizes markdown, html, and latex markup languages, it can render latex mathematical 
+notations in {bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, and {bf:tex} documents, 
+automatically capture graphs from Stata and include them in the document, creates dynamic tables, and 
+supports writing dynamic text for interpretting the analysis. Moreover, a user-friendly 
+GUI interface was developed for the package (try {bf:{stata db markdoc}}) to make using {bf:MarkDoc} easier for newbies.
+These features make the package a 
 complete tool for documenting data analysis, Stata packages, as well as a tool for 
-producing educational materials within Stata. further resources are available 
-available in the webpages below. 
+producing educational materials within Stata Do-file editor. 
 
 {p 8 8 2}
-{browse "http://haghish.com/markdoc":Homepage}{break}
-{browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}{break}
-{browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}{break}
-{browse "https://github.com/haghish/MarkDoc/releases":Release Notes}{break}
-{browse "https://github.com/haghish/MarkDoc/tree/master/Examples":Examples}{break}
+ The source code of the project 
+{browse "https://github.com/haghish/MarkDoc":is hosted on GitHub} 
+and also, the package documentation
+{browse "https://github.com/haghish/MarkDoc/wiki":is hosted on GitHub wiki}. all contributions to the package, including improving 
+the documentation or providing further examples are welcome. 
+further resources are available in the webpages below. 
+
+{p 8 8 2}
+ {browse "http://haghish.com/markdoc":Homepage}     {break}
+{browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}     {break}
+{browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}    {break}
+{browse "https://github.com/haghish/MarkDoc/releases":Release Notes}    {break}
+{browse "https://github.com/haghish/MarkDoc/tree/master/Examples":Examples}    {break}
+{browse "http://www.statalist.org/forums/forum/general-stata-discussion/general":Please ask your questions on statalist.org} 
 
 
 {title:Syntax}
@@ -58,7 +68,7 @@ The {it:smcl} log is used for creating {it:dynamic document} as well as
 {synopt:{opt do}}executes the {it:do-file} in a "cleared workspace" and produces a 
 {it:dynamic document} or {it:dynamic slides}. A cleared workspace ensures the reproducibility 
 of the analysis because it neglects the data that is already loaded in Stata and 
-requires the user to load the data that is used for the analysis. 
+requires the user to load the data that is used for the analysis in the do-file. 
 {p_end}
 
 {synopt: {bf:ado} {c |} {bf:mata} }MarkDoc handles Stata programs differently. 
@@ -70,21 +80,27 @@ can be written with either smcl or Markdown or a combination of both.{p_end}
 {p2colreset}{...}
 
 
-{phang}
-write dynamic text using any of the supported markup languages
+{p 4 4 2}
+{bf:MarkDoc} package also includes a few more commands that can be used to 
+facilitate writing the dynamic document or dynamic slides. These commands are 
+briefly described below, while the 
+{browse "https://github.com/haghish/MarkDoc/wiki":complete documentation is available on GitHub wiki}:
+
+{p 4 4 2}
+write dynamic text using any of the supported markup languages. You can also 
+use this command to write text within a loop or a program. 
 
 {p 8 13 2}
-{bf:{help txt}} [{help txt:{ul:{bf:c}}{bf:ode}}] [{it:display_directive} [{it:display_directive} [{it:...}]]]
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/txt":txt}} [{help txt:{ul:{bf:c}}{bf:ode}}] [{it:display_directive} [{it:display_directive} [{it:...}]]]
 
 
-{phang}
-insert an image to the log manually or automatically.
-if {it:filename} is missing, {cmd:img} attempts to save and import the current 
-graph automatically. 
+{p 4 4 2}
+include an image in the document. if {it:filename} is missing, {bf:img} command
+captures, saves, and imports the current graph from Stata automatically. 
 
 {p 8 13 2}
-{bf:{help img}} [{it:{help filename}}] 
-[{cmd:,} {opt tit:le(str)} {opt w:idth(int)} {opt h:eight(int)} 
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/img":img}} [{it:{help filename}}] 
+[{cmd:,} {opt markup(str)} {opt tit:le(str)} {opt w:idth(int)} {opt h:eight(int)} 
 {opt m:arkup(str)} {opt left center} ]
 
 
@@ -176,7 +192,7 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {p 4 4 2}
 {bf:markdoc} is hosted both on 
-{browse "https://github.com/haghish/MarkDoc":GitHub}
+{browse "https://github.com/haghish/MarkDoc":GitHub} 
 and SSC. MarkDoc receives weekly updates on GitHub but only occasion updates on SSC. 
 Therefore, users are recommended to install the package from GitHub:
 
@@ -230,7 +246,7 @@ dynamic text, creating dynamic tables, and importing figures automatically
 in the document, respectively. MarkDoc also    {break}
 {help statax:requires the Statax package} which provides 
 {browse "http://www.haghish.com/statax/statax.php":a JavaScript syntax highlighter for Stata and Mata code}
-in HTML and PDF documents.
+ in HTML and PDF documents.
 
 {p 4 4 2}
 MarkDoc creates the dynamic documents by converting {it:smcl} log-file to other 
@@ -267,8 +283,8 @@ OpenOffice and LibreOffice {bf:odt}, and {bf:html}.
 {p 4 4 2}
 Mathematical notations can be inline a text paragraph or on a separate line. 
 For writing inline notations, place the notation between single dollar signs 
-(e.g. 11^2 + b^2 = c^2$). For including notation on a separate line, place the 
-notations between double dollar signs (e.g. $11^2 + b^2 = c^2$$). The example 
+(e.g. ^2 + b^2 = c^2$). For including notation on a separate line, place the 
+notations between double dollar signs (e.g. $^2 + b^2 = c^2$$). The example 
 below demonstrates how to export a PDF presentation slides with notations:
 
     . qui log using example, replace
@@ -637,8 +653,8 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 	
 	
 
-{p 4 4 2}
 	
+{p 4 4 2}
 	{bf:{c 29} sysuse auto, clear}	     {break}
 	{bf:{c 29} histogram price}
 	{bf:{c 29} graph export graph.png,  width(400) replace}
@@ -650,6 +666,7 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
     {bf:         ![Histogram of the price variable](./graph.png)}
     {bf:         ***/}
 	
+{p 4 4 2}
 	{bf:  qui log c}
 	{bf:  markdoc example, replace export(slide) install printer("/usr/texbin/pdflatex") }
 
@@ -666,8 +683,8 @@ University of Southern Denmark       {break}
 haghish@imbi.uni-freiburg.de       {break}
 
 {p 4 4 2}
-{browse "www.haghish.com/markdoc":MarkDoc Homepage}{break}
-Package Updates on{browse "http://www.twitter.com/Haghish":Twitter}{break}
+{browse "www.haghish.com/markdoc":MarkDoc Homepage}           {break}
+Package Updates on  {browse "http://www.twitter.com/Haghish":Twitter}    {break}
 
 
 {title:Also see}

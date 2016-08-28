@@ -1,0 +1,360 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" async 
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- SYNTAX HIGHLIGHTING CLASSES  -->
+<style type="text/css">
+.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
+.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
+.center, #center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+
+    padding: 0px;
+    border-width: 0px;
+    border-style: solid;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    }
+
+pagebreak {
+        page-break-before: always;
+        }
+
+.pagebreak, #pagebreak {
+        page-break-before: always;
+        }
+
+td > p {padding:0; margin:0;}
+
+
+
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+table {
+        border-collapse: collapse;
+        border-bottom:1px solid black;
+        padding:5px;
+        margin-top:5px;
+
+}
+.tble {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+}
+
+.tblecenter {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        text-align:center;
+}
+
+span.tblecenter + table, span.tble + table, span.tble + img {
+        margin-top: 2px;
+}
+
+th {
+border-bottom:1px solid black;
+border-top:1px solid black;
+padding-right:20px;
+}
+
+td {
+padding-right:20px;
+}
+
+</style>
+<!-- Stata Style  -->
+<style type="text/css">
+body {
+
+        margin:10px 30px 10px 30px;
+        font-family: ;
+        }
+
+@page {
+        size: auto;
+        margin: 10mm 20px 15mm 20px;
+        color:#828282;
+        font-family: ;
+ @top-left { content: "" ; font-size:11px; margin-top:5px; } 
+@bottom {
+        content: "Page " counter(page); font-size:14px; 
+        }
+        }
+
+@page:first {
+@top-left {
+        content: normal
+        }
+@bottom {
+        content: normal
+        }
+        }
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+ul {        list-style:circle;
+        margin-top:0;
+        margin-bottom:0;
+        }
+
+div ul a {
+        color:black;
+        text-decoration:none;
+        }
+
+div ul {
+        list-style: none;
+        margin: 0px 0 10px -15px;
+        padding-left:15px;
+        }
+
+div ul li {
+        font-weight:bold;
+        margin-top:20px;
+        }
+
+div ul li ul li {
+        font-weight: normal;
+        margin-left:20px;
+        margin-top:5px;
+        }
+
+div ul li ul li ul li {
+        font-weight: normal;
+        font-style:none;
+        margin-top:5px;
+        }
+
+div ul li ul li ul li ul li {
+        font-weight: normal;
+        font-style:italic;
+        margin-top:5px;
+        }
+
+img {
+        margin: 5px 0 5px 0;
+        padding: 0px;
+        cursor:-webkit-zoom-in;
+        cursor:-moz-zoom-in;
+        display:inline-block;
+        text-align: left;
+        clear: both;
+        }
+
+h1, h1 > a, h1 > a:link {
+        margin:24px 0px 2px 0px;
+        padding: 0;
+        font-family: ;
+        color:#17365D;
+        font-size: 22px;
+        }
+
+h1 > a:hover, h1 > a:hover{
+color:#345A8A;
+} 
+
+h2, h2 > a, h2 > a, h2 > a:link {
+        margin:14px 0px 2px 0px;
+        padding: 0;
+        font-family: ;
+        color:#345A8A;
+        font-size: 18px;
+        font-weight:bold;
+        }
+
+h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {
+        margin:14px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        color:#4F81BD;
+        font-size: 14px;
+        font-weight:bold;
+        }
+
+h4 {
+        margin:10px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        font-size: 14px;
+        color:#4F81BD;
+        font-weight:bold;
+        font-style:italic;
+        }
+
+h5  {
+        font-family: ;
+        font-size: 14px;
+        font-weight:normal;
+        color:#4F81BD;
+        }
+
+h6  {
+        font-size:14px;
+        font-family: ;
+        font-weight:normal;
+        font-style:italic;
+        color:#4F81BD;
+        }
+
+p {
+        font-family: ;
+        font-weight:normal;
+        font-size:14px;
+        line-height:14px;
+        line-height: 16px;
+        text-align:justify;
+        text-align: left;
+        text-justify:inter-word;
+        margin:0 0 14px 0;
+        }
+
+.code {
+        white-space:pre;
+        color: black;
+        padding:5px;
+        display:block;
+        font-size:12px;
+        line-height:14px;
+        background-color:#E1E6F0;
+        font-family:"Lucida Console", Monaco, monospace, "Courier New", Courier, monospace;
+        font-weight:normal;
+        text-shadow:#FFF;
+        border:thin;
+        border-color: #345A8A; 
+        border-style: solid;
+        unicode-bidi: embed;
+        margin:20px 0 0px 0;
+        }
+
+.output {
+        white-space:pre;
+        display:block;
+        font-family:monospace,"Lucida Console", Monaco, "Courier New", Courier, monospace;
+        font-size:12px; 
+        line-height: 12px;
+        margin:0 0 14px 0;
+        border:thin; 
+        unicode-bidi: embed;
+        border-color: #345A8A; 
+        padding:14px 5px 0 5px;
+        background-color:transparent;
+        }
+
+</style>
+<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
+</head>
+<header>
+MarkDoc Manual
+</header>
+<body>
+<p><span class="author">E. F. Haghish </span> <span class="author">Department of Mathematics and Computer Science</span> <span class="author">University of Southern Denmark</span></p>
+<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
+<p><strong>MarkDoc</strong> is a general-purpose literate programming package for Stata. <strong>MarkDoc</strong> is very simple and intuitive to use and it supports creating dynamic documents interactively. The software has a considerable focus on making literate programming easy and intuitive for newbies. Moreover, it greatly values the readability of the source code and thus provide several options to keep the source code as plain as possible. Therefore, <strong>MarkDoc</strong> can be taught to undergraduate students in introductory statistics courses to boost active learning, document code, and practice statistical reporting. Based on my personal experiences in teaching statistics students enjoy taking notes in their script files and writing dynamic documents.</p>
+<p>Not only students, but also lecturers can get benefit from <strong>MarkDoc</strong> for creating dynamic presentation slides, directly from Stata, which makes their slides to be easily updatable, reusable, and easy to create. Finally, advanced Stata programmers, can get benefit from <strong>MarkDoc</strong> for creating Stata help files in (<em>sthlp</em>) or pdf package vignette from their source code.</p>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><a href="http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf">Journal Article</a></li>
+<li><a href="http://haghish.com/markdoc">Homepage</a></li>
+<li><a href="https://github.com/haghish/MarkDoc/releases">Release Notes</a></li>
+<li><a href="https://github.com/haghish/MarkDoc/tree/master/Examples">Examples</a></li>
+<li>[[Package Structure]]</li>
+</ul>
+<h2 id="features">Features</h2>
+<p><strong>MarkDoc</strong> has several unique features which makes it an ideal package for practicing literate programming at any level, from a complete newbie to an advanced programmer. In brief, it can:</p>
+<ul>
+<li>highlight the syntax of Stata commands in HTML and PDF</li>
+<li>Produce dynamic documents in several formats by:
+<ul>
+<li>converting <em>smcl</em> log file to any format</li>
+<li>actively reproducing a dynamic document from a <em>do-file</em></li>
+</ul></li>
+<li>Produce presentation slides in PDF or HTML</li>
+<li>Produce Stata package help files (sthlp) or package vignette (pdf, html, latex, docx, ...) from the source code</li>
+<li>Render LaTeX mathematical notations in Microsoft Word docx, OpenOffice odt, html, and pdf</li>
+<li>Capture a graph automatically from Stata and include it in the dynamic document or slides</li>
+<li>Include a stored image in the dynamic document</li>
+<li>Create dynamic tables</li>
+<li>Write dynamic text for interpreting the results</li>
+<li>Specify what commands or results should be included in the dynamic document</li>
+<li>Include external text files (markdown, LateX, html, smcl, etc.) in the dynamic document</li>
+<li>Provide a &quot;standard&quot; template with descriptions for creating template help files</li>
+</ul>
+<h2 id="formats">Formats</h2>
+<p>The main idea of <strong>MarkDoc</strong> is that a single documentation format and a markup language should be able to produce a variety of document formats from the same source. For example, a graduate student should be able to produce an HTML output from a source code written with <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a> and also, use the same source to create a PDF analysis report, presentation slides, a LaTeX document, or a Microsoft Word document. This range of supported document formats makes &quot;reusing&quot; the documentation easy because a single format can be used for creating a variety of formats.</p>
+<p>However, in addition to Markdown, <strong>MarkDoc</strong> recognizes 3 other markup languages for documentation which are LaTeX, HTML, and SMCL. <strong>MarkDoc</strong> applies the same format for documentation and can produce:</p>
+<ol style="list-style-type: decimal">
+<li>dynamic analysis document (<em>pdf</em>, <em>docx</em>, <em>tex</em>, <em>html</em>, <em>odt</em>, <em>epub</em>, <em>markdown</em>)</li>
+<li>Stata package vignette (<em>pdf</em>, <em>docx</em>, <em>tex</em>, <em>html</em>, <em>odt</em>, <em>epub</em>, <em>markdown</em>)</li>
+<li>dynamic presentation slides (<em>pdf</em>, <em>slidy</em>, <em>dzslide</em>)</li>
+<li>Stata help files(<em>sthlp</em>, <em>smcl</em>).</li>
+</ol>
+<p><strong>MarkDoc</strong> produces these document formats in several ways. Classically, <strong>MarkDoc</strong> takes a Stata <em>smcl</em> log file and converts it to any of the supported formats which are shown below.</p>
+<center>
+<a href="https://github.com/haghish/MarkDoc/blob/master/Resources/images/markdoc_smcl.png"><img src="https://raw.githubusercontent.com/haghish/MarkDoc/master/Resources/images/markdoc_smcl.png"  width="200" hspace="10" vspace="6"></a>
+</center>
+<p>In this case, <strong>MarkDoc</strong> processes the smcl file, which has a <strong>.smcl</strong> suffix and produces the document. The smcl file can be written in any of the supported markup languages which are Markdown ()default), html, latex. A smcl log file that is written with Markdown can be converted to <em>pdf</em>, <em>docx</em>, <em>tex</em>, <em>html</em>, <em>odt</em>, <em>epub</em>, and <em>markdown</em>. If the smcl log file is written in html or latex, only a pdf and html or latex document can be exported respectively. Therefore, to get the maximum format compatibility from <strong>MarkDoc</strong>, <a href="http://www.haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/markdown.php">Writing with Markdown</a> is recommended compared to <a href="http://www.haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/latex.php">LaTeX</a> or html.</p>
+<p><br></p>
+<center>
+<a href="https://github.com/haghish/MarkDoc/blob/master/Resources/images/markdoc_do.png"><img src="https://raw.githubusercontent.com/haghish/MarkDoc/master/Resources/images/markdoc_do.png" width="200" hspace="10" vspace="6"></a>
+</center>
+<p>To ensure the analysis is <strong>really reproducible</strong>, converting a smcl file to a document is not enough. Instead a very restricted procedure is required to ensure the do-file loads the dataset that it uses for the analysis. In other words, the literate programming package should imagine there is no dataset loaded in Stata and then executes the do-file in a cleared workspace. When <strong>MarkDoc</strong> is given a Stata <em>do-file</em>, it executes the the script file in a new workspace and produces the dynamic document or presentation slides in any of the supported formats.</p>
+<p><br></p>
+<center>
+<a href="https://github.com/haghish/MarkDoc/blob/master/Resources/images/markdoc_source.png"><img src="https://raw.githubusercontent.com/haghish/MarkDoc/master/Resources/images/markdoc_source.png" width="200" hspace="10" vspace="6"></a>
+</center>
+<p>In addition, <strong>MarkDoc</strong> can also create a dynamic document, presentation slides, or package documentation from Stata script files which have the <strong>.do</strong>, <strong>.ado</strong>, and <strong>.mata</strong> suffix. Similarly, the documentations can be written in Markdown, html, or latex. However, for exporting Stata help files, only Markdown, smcl, or a combination of these two markup languages can be used to create <strong>.sthlp</strong> files. While html and latex can be used for creating package vignettes, it seems more plausible to write the documentation by combining smcl and Markdown, which on the one hand can greatly simplifies writing Stata help files and on the other, ensures that the help file can have the flexibility of the smcl language when it is needed.</p>
+<h2 id="dialog-box">Dialog box</h2>
+<center>
+<a href="https://github.com/haghish/MarkDoc/blob/master/Resources/images/markdoc_dialog_box.png"><img src="https://raw.githubusercontent.com/haghish/MarkDoc/master/Resources/images/markdoc_dialog_box.png" width="200" align="middle" hspace="10" vspace="6"></a>
+</center>
+<p>To further facilitate using <strong>MarkDoc</strong> in classrooms, a dialog box was written for Stata, which also shows the options and features of Stata. The dialog box is currently only supporting the <em>dynamic document</em> engine of <strong>MarkDoc</strong>.</p>
+<p>To use the dialog box, type:</p>
+<pre class="sh_stata">
+db markdoc
+</pre>
+<p><br></p>
+<h2 id="author">Author</h2>
+<p><strong>E. F. Haghish</strong><br />
+Center for Medical Biometry and Medica Informatics University of Freiburg, Germany<br />
+<em>and</em><br />
+Department of Mathematics and Computer Science<br />
+Univesity of Southern Denmark, Odense, Denmark</p>
+<p><em>haghish@imbi.uni-freiburg.de</em><br />
+<em>http://www.haghish.com/markdoc</em><br />
+@<a href="https://twitter.com/Haghish">Haghish</a></p>
+<h1 id="help">Help</h1>
+<p>Please ask your questions on <a href="http://www.statalist.org/forums/forum/general-stata-discussion/general">statalist.org</a>. There are many users who can answer your questions. Moreover, many other users might have the same issues and thus it is much better to ask and respond to them publicly instead of private emails. You will also find the <a href="http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf">Journal Article</a> ver useful.</p>
+</body>
+</html>

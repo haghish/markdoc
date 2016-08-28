@@ -9,7 +9,7 @@ qui log using example, replace
 ---
 title: "Dynamic Slides in MarkDoc Package"
 author: E. F. Haghish
-date: February 2016
+date: or anything else
 fontsize: 14pt
 
 output:
