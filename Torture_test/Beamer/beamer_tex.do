@@ -1,4 +1,6 @@
 
+//If you produce the slide from the do-file, instead of smcl, remove the log from the 
+//top line, because the document must begine with the latex heading. 
 qui log using example, replace
 
 /***
@@ -22,4 +24,4 @@ Contents of the second slide
 
 
 qui log c
-markdoc example, exp(pdf) markup(latex) replace 
+*markdoc example, exp(pdf) markup(latex) replace 

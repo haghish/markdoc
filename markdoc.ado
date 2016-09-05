@@ -724,6 +724,7 @@ program markdoc
 	statax			 /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
 	TITle(str)   	 /// specifies the title of the document (for styling)
+	subtitle(str)    /// specifies the subtitle (currently only for slides)
 	AUthor(str)  	 /// specifies the author of mthe document (for styling)
 	AFFiliation(str) /// specifies author affiliation (for styling)
 	ADDress(str) 	 /// specifies author contact information (for styling)
@@ -739,6 +740,15 @@ program markdoc
 	helplayout	 	 /// create temporary help layout
 	debug			 /// run the debug mode and save the temporary files
 	///
+	/// Slide options
+	/// ========================================================================
+	btheme(str) 	 ///
+	bcolor(str) 	 ///
+	bfont(str)  	 ///
+	bfontsize(str)   ///
+	bcodesize(str)	 ///
+	bwidth(str)	 	 ///
+	bheight(str)	 ///
 	/// CHANGED SYNTAX
 	/// ========================================================================
 	MATHjax 		 /// Interprets mathematics using MathJax
@@ -2551,8 +2561,28 @@ program markdoc
 					file write `knot' "---" _n 
 				}
 				
+				else if "`export'" == "slide" | "`export'" == "slidy" 			///
+				| "`export'" == "dzslide" {
+					
+					file write `knot' 											///
+					"---" _n	
+					
+					if !missing("`title'") {
+						file write `knot' `"title: "`title'""' _n
+					}	
+					if !missing("`subtitle'") {
+						file write `knot' `"subtitle: "`subtitle'""' _n
+					}
+					if !missing("`author'")  {
+						file write `knot' `"author: "`author'""' _n
+					}
+					if !missing("`affiliation'") {
+						file write `knot' `"date: "`affiliation'""' _n
+					}
+					file write `knot' "---" _n 
+				}
 				
-				if "`export'" != "docx" & "`export'" != "odt" {
+				else {
 				
 					if "`title'" != "" file write `knot'  						///
 					"  `title'" _n 												///
@@ -2565,11 +2595,15 @@ program markdoc
 					"`c(current_date)'    " _n(2)  
 				}
 				
-				if "`export'" != "docx" {
-					if "`summary'" != "" file write `knot'  "`summary'    " _n(2)
-				}
+				if "`export'" != "slide" & "`export'" != "slidy" 			///
+				& "`export'" != "dzslide" {
 				
-				if "`address'" != "" file write `knot'  "_`address'_    " _n(2) 
+					if "`export'" != "docx" {
+						if "`summary'" != "" file write `knot'  "`summary'    " _n(2)
+					}
+					
+					if "`address'" != "" file write `knot'  "_`address'_    " _n(2) 
+				}	
 			}
 		}
 		
@@ -3480,26 +3514,42 @@ program markdoc
 						tempfile template
 						tempname knot 
 						qui cap file open `knot' using "`template'", write replace
+						
+						if !missing("`bwidth'") & !missing("`bheight'") {
+							file write `knot' "\geometry{paperwidth=`bwidth'mm,paperheight=`bheight'mm}" _n
+						}
+						
+						if missing("`bcodesize'") local `bverbatim' tiny
 						file write `knot' "\makeatletter" _n
-						file write `knot' "\def\verbatim@font{\ttfamily\tiny}" _n
-						file write `knot' "\makeatother" _n
+						file write `knot' "\def\verbatim@font{\ttfamily\`bcodesize'}" _n
+						file write `knot' "\makeatother" _n 
+						
+						
+						
 						file close `knot'
 					}
 
 					// Use temporary files to prevent problems with UNC directories on
 					// Windows
 					// (See: https://support.microsoft.com/en-us/kb/156276)
-			
+					
+					// Beamer layout options
+					// ---------------------
+					if !missing("`btheme'") local beamerlayout -V theme:`btheme'
+					if !missing("`bcolor'") local beamerlayout `beamerlayout' -V colortheme:`bcolor'
+					if !missing("`bfont'") local beamerlayout `beamerlayout' -V fonttheme:`bfont'
+					*if !missing("`bfontsize'") local beamerlayout `beamerlayout' fontsize:`bfontsize'pt
+					
 					if "`noisily'" == "noisily" {
 						di _n(2) "{title:Executing Pandoc Command}"	_n			///
 						`""$pandoc" `toc' -t beamer "`md'" "'					///
-						`"`latexEngine' --include-in-header="`template'" -o "`output'""'
+						`"`latexEngine' --include-in-header="`template'" `beamerlayout' -o "`output'""'
 					}
 					//It seems that Pandoc will need a ".pdf" extension to 
 					//produce PDF slides
 					
 					shell "$pandoc" `toc' -t beamer "`md'" `latexEngine' 		///
-					--include-in-header="`template'" -o "`output'" //"`out'.pdf"
+					--include-in-header="`template'" `beamerlayout' -o "`output'" //"`out'.pdf"
 
 					quietly copy "`output'" "`convert'", replace
 					capture erase "`output'"
@@ -3576,8 +3626,8 @@ program markdoc
 					"\usepackage{hyperref}         %use hyperlink" _n			///
 					"\usepackage{epstopdf}" _n 									///
 					"\DeclareGraphicsRule{.tif}{png}{.png}"						///
+					"{`convert #1 `dirname #1`/`basename #1 .tif`.png}" _n		///	
 					"\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}" ///
-					"{`convert #1 `dirname #1`/`basename #1 .tif`.png}" _n		///		
 					"\makeatletter" _n											///
 					"\def\verbatim@font{\ttfamily\scriptsize}" _n				///
 					"\makeatother" _n									
@@ -3758,8 +3808,24 @@ program markdoc
 				
 			****************************************************
 			*CREATING THE PDF FROM TEX
-			****************************************************	
+			****************************************************				
 			if !missing("`pdftex'") & "`export'" != "slide" {
+				
+				if !missing("`debug'") {
+					copy "`tex2pdf'"  0tex2pdf.tex, replace
+				}
+				
+				
+				// get the file name from the path
+				if "`c(os)'" == "Windows" {
+					local name : subinstr local name "\" "/", all				 
+				}
+				tokenize "`name'", parse("/")
+				while !missing("`1'") {
+					if missing("`2'") local name = "`1'"	
+					macro shift
+				} 
+				
 				if "`printer'" != "" {
 					if "`noisily'" == "noisily" {
 						di _n(2) "{title:Compiling LaTeX to PDF}" _n			///
@@ -3780,13 +3846,23 @@ program markdoc
 			****************************************************
 			*PRINTING THE OUTPUT NOTIFICATION
 			****************************************************
-			cap confirm file "`convert'"
-			
-			if _rc == 0 {
-				di as txt "(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
-				if "`export'" != "md" cap qui erase "`md'"
+			if !missing("`pdftex'") & "`export'" != "slide" {
+				cap confirm file "`name'.pdf"
+				if _rc == 0 {
+					di as txt "(MarkDoc created "`"{bf:{browse "`name'.pdf"}})"' _n
+				}
+				else display as err "MarkDoc could not produce `name'.pdf" _n
 			}
-			else display as err "MarkDoc could not produce `convert'" _n
+			
+			else {
+				cap confirm file "`convert'"
+				if _rc == 0 {
+					di as txt "(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
+					if "`export'" != "md" cap qui erase "`md'"
+				}
+				else display as err "MarkDoc could not produce `convert'" _n
+			}
+			
 		}
 		
 		if "`export'" == "" {

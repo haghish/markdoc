@@ -46,7 +46,85 @@ BEGIN
 	stata
 END
 
+// Beamer Theme
+LIST theme_list
+BEGIN
+	default
+	AnnArbor
+	Antibes
+	Bergen
+	Berkeley
+	Berlin
+	Boadilla
+	boxes
+	CambridgeUS
+	Copenhagen
+	Darmstadt
+	Dresden
+	Frankfurt
+	Goettingen
+	Hannover
+	Ilmenau
+	JuanLesPins
+	Luebeck
+	Madrid
+	Malmoe
+	Marburg
+	Montpellier
+	PaloAlto
+	Pittsburgh
+	Rochester
+	Singapore
+	Szeged
+	Warsaw
+END
 
+// Beamer Color
+LIST color_list
+BEGIN
+	default
+	albatross
+	beaver
+	beetle
+	crane
+	dolphin
+	dove
+	fly
+	lily
+	orchid
+	rose
+	seagull
+	seahorse
+	sidebartab
+	structure
+	whale
+	wolverine
+END
+
+// Beamer Font
+LIST font_list
+BEGIN
+	default
+	professionalfonts
+	serif
+	structurebold
+	structureitalicserif
+	structuresmallcapsserif
+END
+
+LIST code_list
+BEGIN
+	tiny
+	scriptsize
+	footnotesize
+	small
+	normalsize
+	large
+	Large
+	LARGE
+	huge
+	Huge
+END
 
 // -----------------------------------------------------------------------------
 // MAIN PAGE BUTTONS
@@ -221,7 +299,7 @@ BEGIN
 		CHECKBOX numbered @    +15   @   .  , option(numbered) label("count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
 		// texmaster
-		CHECKBOX texmaster @   +15   @   .  , option(texmaster) label("create LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX texmaster @   +15   @   .  , option(texmaster) label("create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
 		CHECKBOX noisily  @    +15   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
@@ -306,10 +384,33 @@ BEGIN
 	//BUTTON bu_facvars     _ilft	+35	200	.,			///
 	//onpush("program bu_facvars_getOpts")				///
 	//label(resource LBL_FACTOR_VARIABLE_DISPLAY_OPTIONS)
+
 	
+	GROUPBOX beamer 10   +35  420  70, label("Beamer layout")
+	
+		TEXT tx_theme    +10  +20 200  .  , label("Theme")
+		COMBOBOX theme   @    +17 69   .  , dropdownlist contents(theme_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_color    +72 -17  200  .  , label("Color")
+		COMBOBOX color   @    +17 69   .  , dropdownlist contents(color_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_font     +72 -17  200  .  , label("Font")
+		COMBOBOX font    @    +17 69   .  , dropdownlist contents(font_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_codesize     +72 -17  200  .  , label("Code size")
+		COMBOBOX codesize    @    +17 69   .  , dropdownlist contents(code_list) default(scriptsize) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_bwidth +77 -17  240  .  , label("Width")
+		SPINNER bwidth @    +17 50   .  , min(80)  max(255) default(128) tooltip("change the font size of the slide")
+		
+		TEXT tx_bheight +60 -17  240  .  , label("Height")
+		SPINNER bheight @    +17 50   .  , min(80)  max(255) default(96) tooltip("change the font size of the slide")
+		
+		
+		
 	// GROUPBOX
 	// -------------------------------------------------------------------------
-	GROUPBOX gb_opts 10   +35  420  305, label("Options")
+	GROUPBOX gb_opts 10   +50  420  218, label("Options")
 	  
 		// RIGHT COLUMN
 		// ---------------------------------------------------------------------
@@ -318,55 +419,68 @@ BEGIN
 		CHECKBOX install  +10  +25  -20  .  , option(install) label("install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
 	
 		// replace
-		CHECKBOX replace  @    +21   @   .  , option(replace) label("replace the existing document") default(1)
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("replace the existing document") default(1)
 			   
 		// current date
-		CHECKBOX date     @    +21   @   .  , option(date) label("add the current date") 
+		//CHECKBOX date     @    +17   @   .  , option(date) label("add the current date") 
 			   
 		// numbered
-		CHECKBOX numbered @    +21   @   .  , option(numbered) label("count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+		CHECKBOX numbered @    +17   @   .  , option(numbered) label("count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
 		// texmaster
-		CHECKBOX texmaster @   +21   @   .  , option(texmaster) label("create LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
-		CHECKBOX noisily  @    +21   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// title of the document
-		TEXT tx_title @ 270 . ., label(Title)
+		TEXT tx_title @ 322 . ., label(Title)
 		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
-	 
+		
+		// subtitle
+		TEXT tx_subtitle 20 +20 . ., label(Subtitle)
+		EDIT subtitle 80 @ 340 18  
+		
 		// Author of the document
 		TEXT tx_author 20 +20 . ., label(Author)
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 . ., label(Affiliation)
+		TEXT tx_affiliation 20 +20 . ., label(Date / Aff)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
-		TEXT tx_address 20 +20 . ., label(Address)
-		EDIT address 80 @ 340 18  
+		//TEXT tx_address 20 +20 . ., label(Address)
+		//EDIT address 80 @ 340 18  
 	 
 		// Summary
-		TEXT tx_summary  20   +20  .    ., label(Summary)
-		EDIT summary     80   @    340  50   
+		*TEXT tx_summary  20   +20  .    ., label(Summary)
+		*EDIT summary     80   @    340  50   
+		
+		
 		
 		// LEFT COLUMN
 		// ---------------------------------------------------------------------
 	
 		// layout
-		TEXT tx_style     220  134  200  .  , label("Generate YAML layout template")
-		BUTTON yamlgenerator @    +20  80    .  , label("Generate...") onpush("view dialog yaml") //onpush("program sub_yaml")
+	*	TEXT tx_style     220  134  200  .  , label("Theme")
+		*BUTTON yamlgenerator @    +20  80    .  , label("Generate...") onpush("view dialog yaml") //onpush("program sub_yaml")
 		//COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
+	*	COMBOBOX theme   @    +20 80   .  , dropdownlist contents(theme_list)
 		
+	*	TEXT tx_color    +100 134  200  .  , label("Color")
+	*	COMBOBOX color   @    +20 80   .  , dropdownlist contents(color_list)
+	
 		// layout
-		TEXT tx_template  @    +40  240  .  , label("Use layout (yaml, css, or tex)")
+		TEXT tx_template  220  220  240  .  , label("Use layout (css or tex)")
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
+		TEXT tx_linesize  @    +48  240  .  , label("Adjust document linesize")
 		SPINNER  linesize 360  @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+
+		
+		
 END
 
 
@@ -424,7 +538,7 @@ BEGIN
 		CHECKBOX date     @    +18   @   .  , option(date) label("add the current date") 
 			   
 		// texmaster
-		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("create LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
 		CHECKBOX noisily  @    +18   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
@@ -569,20 +683,42 @@ END
 PROGRAM subtest
 BEGIN
 	
+	if sub.r1.iseq(1) {
+		call sub.theme.enable
+		call sub.color.enable
+		call sub.font.enable
+		call sub.codesize.enable
+		call sub.bwidth.enable
+		call sub.bheight.enable
+	}
+	else {
+		call sub.theme.disable
+		call sub.color.disable
+		call sub.font.disable
+		call sub.codesize.disable
+		call sub.bwidth.disable
+		call sub.bheight.disable
+	}
+	
 	// else if the markup is Markdown
 	if sub.markup.iseq("markdown") {
 		call sub.r1.enable
 		call sub.r2.enable
 		call sub.r3.enable
 		call sub.texmaster.disable
-		call sub.yamlgenerator.enable
+		call sub.theme.enable
+		call sub.color.enable
+		call sub.font.enable
+		call sub.codesize.enable
+		call sub.bwidth.enable
+		call sub.bheight.enable
 	}
 	
 	// else if the markup is LaTeX
 	else {
 		call sub.r2.disable
 		call sub.r3.disable
-		call sub.yamlgenerator.disable
+		*call sub.yamlgenerator.disable
 		
 		if sub.r1.iseq(1)    {
 			call sub.texmaster.enable
@@ -590,6 +726,13 @@ BEGIN
 		else {
 			call sub.texmaster.disable
 		}
+		
+		call sub.theme.disable
+		call sub.color.disable
+		call sub.font.disable
+		call sub.codesize.disable
+		call sub.bwidth.disable
+		call sub.bheight.disable
 	}
 	
 END
@@ -769,9 +912,6 @@ BEGIN
 		
 		option sub.replace						// replace
 		option sub.install						// install 
-		//option main.statax						// Statax syntax highlighter
-		//option main.toc							// table of content
-		option sub.date						// table of date
 		option sub.numbered					// numbered 
 		option sub.texmaster					// texmaster
 		option sub.noisily						// noisily
@@ -783,28 +923,49 @@ BEGIN
 		//}
 		
 		if sub.template {
-			put "template(" `"""' main.template `"""' ") "
+			put "template(" `"""' sub.template `"""' ") "
 		}
 		
 		if sub.title {
-			put "title(" `"""' main.title `"""' ") "
+			put "title(" `"""' sub.title `"""' ") "
 		}	
+		if sub.subtitle {
+			put "subtitle(" `"""' sub.subtitle `"""' ") "
+		}
 		if sub.author {
-			put "author(" `"""' main.author `"""' ") "
+			put "author(" `"""' sub.author `"""' ") "
 		}	
 		if sub.affiliation {
-			put "affiliation(" `"""' main.affiliation  `"""' ") "
-		}	
-		if sub.address {
-			put "address(" `"""' main.address `"""' ") "
-		}	
-		if sub.summary {
-			put "summary(" `"""' main.summary  `"""' ") "
-		}	
-		
+			put "affiliation(" `"""' sub.affiliation  `"""' ") "
+		}		
+
 		if sub.linesize {
 			put "linesize(" sub.linesize ") "
 		}
+		
+		// Beamer Layout
+		if sub.theme {
+			put "btheme(" sub.theme ") "
+		}
+		if sub.color {
+			put "bcolor(" sub.color ") "
+		}
+		if sub.font {
+			put "bfont(" sub.font ") "
+		}
+		
+		if sub.codesize {
+			put "bcodesize(" sub.codesize ") "
+		}
+		
+		if sub.bwidth {
+			put "bwidth(" sub.bwidth ") "
+		}
+		if sub.bheight {
+			put "bheight(" sub.bheight ") "
+		}
+		
+		
 	}		
    
 	
