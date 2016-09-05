@@ -29,6 +29,7 @@ d
 d Author: E.F. Haghish, University of Freiburg
 d Support: email haghish@@imbi.uni-freiburg.de
 d
+f abspath.ado
 f markdoc.ado
 f markdoc.dlg
 f markdoc.sthlp
