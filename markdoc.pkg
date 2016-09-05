@@ -45,7 +45,5 @@ f rundoc.sthlp
 f sthlp.ado
 f wkhtmltopdf.ado
 f wkhtmltopdf.sthlp
-f yaml.ado
-f yaml.dlg
 F markdoc_stata.docx
 F markdoc_simple.docx
