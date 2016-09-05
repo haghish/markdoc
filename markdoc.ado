@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.0
+Version: 3.7.2
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -10,23 +10,35 @@ pdf or html-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy},
 ----------------------------------------------------- DO NOT EDIT THIS LINE ***/
 
 /***
-> To improve applications of the package for developing educational materials 
-and encouraging university lecturers to ask undergraduate students to practice 
+{p 8 8 2}
+To improve applications of the package for developing educational materials 
+and encouraging university lecturers to ask students to practice 
 literate programming for taking notes or doing their semester projects, 
-MarkDoc includes unique features such as a syntax highlighter. It can also 
-render LaTeX mathematical 
-notations in {bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, and {bf:latex}, 
-automatically capture and include figures from Stata, creates dynamic tables, and 
-type dynamic text for interpretting the analysis. These features make the package a 
+MarkDoc was programmed to include unique features. For example, it includes a syntax highlighter, 
+it recognizes markdown, html, and latex markup languages, it can render latex mathematical 
+notations in {bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, and {bf:tex} documents, 
+automatically capture graphs from Stata and include them in the document, creates dynamic tables, and 
+supports writing dynamic text for interpretting the analysis. Moreover, a user-friendly 
+GUI interface was developed for the package (try {bf:{stata db markdoc}}) to make using __MarkDoc__ easier for newbies.
+These features make the package a 
 complete tool for documenting data analysis, Stata packages, as well as a tool for 
-producing educational materials within Stata. further resources are available 
-available in the webpages below. 
+producing educational materials within Stata Do-file editor. 
 
->[Homepage](http://haghish.com/markdoc)   
+{p 8 8 2}
+The source code of the project 
+[is hosted on GitHub](https://github.com/haghish/MarkDoc) 
+and also, the package documentation
+[is hosted on GitHub wiki](https://github.com/haghish/MarkDoc/wiki). all 
+contributions to the package, including improving the documentation or providing 
+further examples are welcome. further resources are available in the webpages below. 
+
+{p 8 8 2}
+[Homepage](http://haghish.com/markdoc)   
 [Journal Article](http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf)   
 [MarkDoc Documentation Manual](https://github.com/haghish/MarkDoc/wiki)  
 [Release Notes](https://github.com/haghish/MarkDoc/releases)  
 [Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)  
+[Please ask your questions on statalist.org](http://www.statalist.org/forums/forum/general-stata-discussion/general) 
 
 Syntax
 ======
@@ -45,44 +57,47 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 
 
 {phang}
-where {help filename} extension can be:
+where {help filename} can be:
 
 {synoptset 20 tabbed}{...}
 {synoptline}
-{synopt:{opt smcl}}converts _smcl_ log file to any of the supported document formats. 
-The _smcl_ log is used for creating _dynamic document_ as well as 
-_dynamic slides_.{p_end}
+{synopt:{opt smcl}}converts {it:smcl} log file to any of the supported document formats. 
+The {it:smcl} log is used for creating {it:dynamic document} as well as 
+{it:dynamic slides}.{p_end}
 
-{synopt:{opt do}}executes the _do-file_ in a "cleared workspace" and produces a 
-_dynamic document_ or _dynamic slides_. A cleared workspace ensures the reproducibility 
+{synopt:{opt do}}executes the {it:do-file} in a "cleared workspace" and produces a 
+{it:dynamic document} or {it:dynamic slides}. A cleared workspace ensures the reproducibility 
 of the analysis because it neglects the data that is already loaded in Stata and 
-requires the user to load the data that is used for the analysis. 
+requires the user to load the data that is used for the analysis in the do-file. 
 {p_end}
 
-{synopt: __ado__ {c |} __mata__ }MarkDoc handles Stata programs differently. 
-It creates __sthlp__ help files or package vignettes 
-({bf:pdf}, __html__, __docx__, etc) from Stata programming script files. 
+{synopt: {bf:ado} {c |} {bf:mata} }MarkDoc handles Stata programs differently. 
+It creates {bf:sthlp} help files or package vignettes 
+({bf:pdf}, {bf:html}, {bf:docx}, etc) from Stata programming script files. 
 This process merely extracts the documentation from the source. The documentation 
 can be written with either smcl or Markdown or a combination of both.{p_end}
 {synoptline}
 {p2colreset}{...}
 
 
-{phang}
-write dynamic text using any of the supported markup languages
+__MarkDoc__ package also includes a few more commands that can be used to 
+facilitate writing the dynamic document or dynamic slides. These commands are 
+briefly described below, while the 
+[complete documentation is available on GitHub wiki](https://github.com/haghish/MarkDoc/wiki):
+
+write dynamic text using any of the supported markup languages. You can also 
+use this command to write text within a loop or a program. 
 
 {p 8 13 2}
-{bf:{help txt}} [{help txt:{ul:{bf:c}}{bf:ode}}] [{it:display_directive} [{it:display_directive} [{it:...}]]]
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/txt":txt}} [{help txt:{ul:{bf:c}}{bf:ode}}] [{it:display_directive} [{it:display_directive} [{it:...}]]]
 
 
-{phang}
-insert an image to the log manually or automatically.
-if {it:filename} is missing, {cmd:img} attempts to save and import the current 
-graph automatically. 
+include an image in the document. if _filename_ is missing, __img__ command
+captures, saves, and imports the current graph from Stata automatically. 
 
 {p 8 13 2}
-{bf:{help img}} [{it:{help filename}}] 
-[{cmd:,} {opt tit:le(str)} {opt w:idth(int)} {opt h:eight(int)} 
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/img":img}} [{it:{help filename}}] 
+[{cmd:,} {opt markup(str)} {opt tit:le(str)} {opt w:idth(int)} {opt h:eight(int)} 
 {opt m:arkup(str)} {opt left center} ]
 
 
@@ -92,14 +107,19 @@ command has several directives for styling the table, creating nested tables, an
 aligning the content of each column. 
 
 {p 8 13 2}
-{bf:{help tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/tbl":tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
 
 
 execute __pandoc__ commands directly from Stata
 
 {p 8 13 2}
-{bf:{help pandoc}} {it:command} [{cmd:,} options]
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/pandoc":pandoc}} {it:command} ]
 
+
+convert html files to pdf using __wkhtmltopdf__ software
+
+{p 8 13 2}
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/wkhtmltopdf":wkhtmltopdf}} {it:command} ]
 
 
 {synoptset 20 tabbed}{...}
@@ -716,6 +736,8 @@ program markdoc
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	NUMbered	 	 /// number Stata commands
+	helplayout	 	 /// create temporary help layout
+	debug			 /// run the debug mode and save the temporary files
 	///
 	/// CHANGED SYNTAX
 	/// ========================================================================
@@ -1036,9 +1058,8 @@ program markdoc
 	*/
 				
 	if "`texmaster'" != "" & "`export'" != "tex" & "`export'" != "pdf" {
-		di as err "{p}The {ul:{bf:texmaster}} option should only be " 			///
-		"specified while exporting to {bf:tex} format. " _n
-		error 198
+		di as txt "{p}(The {ul:{bf:texmaster}} option should only be " 			///
+		"specified while exporting to {bf:tex} format)" _n
 	}
 		
 	//Styles should be "simple" or "stata"
@@ -1125,10 +1146,23 @@ program markdoc
 		}
 		else if (index(lower("`input'"),".ado")) {
 			local input : subinstr local input ".ado" ""
-			if "`export'" == "slide" local convert "`input'.pdf"
-			else if "`export'" == "dzslide" local convert "`input'.html"
-			else if "`export'" == "slidy" local convert "`input'.html"
-			else local convert "`input'.`export'"
+			*if "`export'" == "slide" local convert "`input'.pdf"
+			*else if "`export'" == "dzslide" local convert "`input'.html"
+			*else if "`export'" == "slidy" local convert "`input'.html"
+			*else local convert "`input'.`export'"
+			if "`export'" == "slide" {
+				local convert "`input'.pdf"
+				local output "`output'.pdf"
+			}	
+			else if "`export'" == "dzslide" | "`export'" == "slidy" {
+				local convert "`input'.html"
+				local output "`output'.html"
+			}
+			else {
+				local convert "`input'.`export'"
+				local output "`output'.`export'"
+			}
+			
 			local md  "`input'.md"
 			local html "`input'_.html"
 			local pdf "`input'.pdf"
@@ -1151,10 +1185,23 @@ program markdoc
 		}
 		else if (index(lower("`input'"),".do")) {
 			local input : subinstr local input ".do" ""
-			if "`export'" == "slide" local convert "`input'.pdf"
-			else if "`export'" == "dzslide" local convert "`input'.html"
-			else if "`export'" == "slidy" local convert "`input'.html"
-			else local convert "`input'.`export'"
+			*if "`export'" == "slide" local convert "`input'.pdf"
+			*else if "`export'" == "dzslide" local convert "`input'.html"
+			*else if "`export'" == "slidy" local convert "`input'.html"
+			*else local convert "`input'.`export'"
+			if "`export'" == "slide" {
+				local convert "`input'.pdf"
+				local output "`output'.pdf"
+			}	
+			else if "`export'" == "dzslide" | "`export'" == "slidy" {
+				local convert "`input'.html"
+				local output "`output'.html"
+			}
+			else {
+				local convert "`input'.`export'"
+				local output "`output'.`export'"
+			}
+			
 			local md  "`input'.md"
 			local html "`input'_.html"
 			local pdf "`input'.pdf"
@@ -1430,7 +1477,8 @@ program markdoc
 					while substr(`"`macval(line)'"',1,1) == ">" {
 						local preline `"`macval(line)'"'
 						local preline : subinstr local preline ">" ""
-						local preline = trim(`"`macval(preline)'"')
+						ocal preline : subinstr local preline "	" "    ", all //convert tab to 4 spaces
+*						local preline = trim(`"`macval(preline)'"')  //THIS WILL RUIN MARKDOWN
 						file write `knot' `">`macval(preline)'"' _n 
 						file read `hitch' line
 					}
@@ -1497,7 +1545,7 @@ program markdoc
 							local preline `"`macval(line)'"'
 							local preline : subinstr local preline ">" ""
 							local preline = trim(`"`macval(preline)'"')
-							if substr(`"`macval(preline)'"',1,4) != "***/" {
+							if substr(trim(`"`macval(preline)'"'),1,4) != "***/" {
 								file write `fig' `"`macval(preline)'"' _n 
 							}	
 							file read `hitch' line
@@ -1512,7 +1560,7 @@ program markdoc
 							local preline `"`macval(line)'"'
 							local preline : subinstr local preline ">" ""
 							local preline = trim(`"`macval(preline)'"')
-							if substr(`"`macval(preline)'"',1,4) != "***/" {
+							if substr(trim(`"`macval(preline)'"'),1,4) != "***/" {
 								file write `fig' `"`macval(preline)'"' _n 
 							}	
 							file read `hitch' line
@@ -1546,7 +1594,8 @@ program markdoc
 					while substr(`"`macval(line)'"',1,1) == ">" {
 						local preline `"`macval(line)'"'
 						local preline : subinstr local preline ">" ""
-						local preline = trim(`"`macval(preline)'"')
+						local preline : subinstr local preline "	" "    ", all //convert tab to 4 spaces
+*						local preline = trim(`"`macval(preline)'"')
 						file write `knot' `">`macval(preline)'"' _n 
 						file read `hitch' line
 					}
@@ -1616,8 +1665,10 @@ program markdoc
 		file close `knot'
 		capture file close `fig'
 		
-		*capture erase 0process1.smcl
-		*copy "`tmp'" 0process1.smcl	, replace		//For debugging
+		if !missing("`debug'") {
+			capture erase 0process1.smcl
+			copy "`tmp'" 0process1.smcl	, replace		//For debugging
+		}
 		
 		
 		//copy "`f1'" fig1.txt, replace	
@@ -1865,8 +1916,8 @@ program markdoc
 
 			//Remove "***/"
 			//=============
-			if substr(`"`macval(line)'"',1,5) == ">***/" {
-				local line : subinstr local line ">***/" ""	
+			if trim(substr(trim(`"`macval(line)'"'),2,.)) == "***/" {
+				local line : subinstr local line "***/" ""	
 			}
 			
 
@@ -2004,15 +2055,12 @@ program markdoc
 
 		file close `knot'		
 		
-		*capture erase 0process2.smcl
-		*copy "`tmp1'" 0process2.smcl	, replace			//For debugging
+		if !missing("`debug'") {
+			capture erase 0process2.smcl
+			copy "`tmp1'" 0process2.smcl	, replace			//For debugging
+		}
+		
 			
-		
-		
-	
-		
-		
-		
 		********************************************************************
 		*CREATING CODE BLOCK WITH txt [code] COMMAND
 		*
@@ -2054,7 +2102,9 @@ program markdoc
 			file close `knot'
 			file close `hitch'	
 			
-			//copy "`tmp1'" 0process2B.smcl	, replace
+			if !missing("`debug'") {
+				copy "`tmp1'" 0process2B.smcl	, replace
+			}	
 		}
 			
 
@@ -2255,7 +2305,9 @@ program markdoc
 			file close `knot'
 			file close `hitch'
 		
-			//copy "`tmp1'" 0process2C.smcl	, replace	
+			if !missing("`debug'") {
+				copy "`tmp1'" 0process2C.smcl	, replace	
+			}	
 		}
 			
 
@@ -2276,6 +2328,11 @@ program markdoc
 			tempfile tmp3
 			global localfile "`tmp3'"
 			markup `smclfile', export("`export'") `replace' localfile("$localfile")
+			
+			if !missing("`debug'") {
+				display as txt _n(2) "{title:extracting documentation}" _n 
+				copy "$localfile" 0documentation.txt, replace
+			}
 		}	
 		
 
@@ -2336,11 +2393,14 @@ program markdoc
 			file close `knot'
 			file close `hitch'
 			
+			
+			if !missing("`debug'") {
+				copy "`tmp1'" 0process3.smcl, replace
+			}
 		}	
 		
 		
-		
-		//copy "`tmp1'" 0process3.smcl, replace
+			
 		
 		********************************************************************
 		*PART 3A- TRANSLATING SMCL TO TXT
@@ -2398,8 +2458,10 @@ program markdoc
 		translator set smcl2txt lmargin  `savemargin'
 		
 		//DEBUG
-		*capture erase 0process4.txt
-		*copy "`tmp1'" 0process4.txt	, replace	 //for debugging
+		if !missing("`debug'") {
+			capture erase 0process4.txt
+			copy "`tmp1'" 0process4.txt	, replace	 //for debugging
+		}	
 		
 		
 		********************************************************************
@@ -2606,8 +2668,10 @@ program markdoc
 				
 		file close `knot'
 		file close `hitch'
-		//copy "`tmp1'" 0process5.txt	, replace
-			
+		
+		if !missing("`debug'") {
+			copy "`tmp1'" 0process5.txt	, replace
+		}
 		
 		
 		
@@ -2704,7 +2768,9 @@ program markdoc
 			file close `knot'
 			file close `hitch'
 			
-		* copy "`tmp1'" 5B.txt	, replace
+			if !missing("`debug'") {
+				copy "`tmp1'" 5B.txt	, replace
+			}	
 		}	
 		
 		
@@ -2756,8 +2822,11 @@ program markdoc
 			`cap' quietly copy "`tmp1'" "`tex2pdf'", replace
 		}
 		
-		//copy "`tmp1'" 0process6.md	, replace		//for debugging
-				
+		if !missing("`debug'") {
+			copy "`tmp1'" 0process6.md	, replace		//for debugging
+			copy "`md'" "0md.md", replace
+		}	
+			
 		********************************************************************
 		*	STYLING THE HTML FILE
 		********************************************************************			
@@ -3138,7 +3207,10 @@ program markdoc
 				
 			file close `knot'
 			file close `hitch'
-			*cap quietly copy "`tmp1'" "html.txt", replace			
+			
+			if !missing("`debug'") {
+				cap quietly copy "`tmp1'" "html.txt", replace	
+			}	
 		
 	}
 			
@@ -3185,8 +3257,10 @@ program markdoc
 						quietly  copy "`output'" "`html'", replace
 					}
 					
-					*quietly  copy "`output'" 0processMD1.md, replace
-					*quietly  copy "`output'" 0processHTML1.html, replace
+					if !missing("`debug'") {
+						quietly  copy "`output'" 0processMD1.md, replace
+						quietly  copy "`output'" 0processHTML1.html, replace
+					}	
 					
 					*shell "$pandoc" "`md'" -o "`convert'"
 					*quietly  copy "`convert'" `"`html'"', replace
@@ -3203,7 +3277,7 @@ program markdoc
 				}	
 			}	
 		}
-		
+	
 		********************************************************************
 		*EXPORT MARKDOWN FILE TO OTHER FORMATS
 		********************************************************************
@@ -3361,7 +3435,7 @@ program markdoc
 			****************************************************
 			* DEALING WITH THE CONVERT FILE
 			****************************************************
-		
+	
 			//di _n(2)
 			if "`markup'" == "markdown" & "`pdfhtml'" == "" | 					///
 			"`markup'" == "" & "`pdfhtml'" == "" {
@@ -3450,11 +3524,16 @@ program markdoc
 					`reference' "`md'" -o "`output'"		
 					
 					quietly copy "`output'" "`convert'", replace
-
+					
+					if !missing("`debug'") {
+						copy "`md'" 0md2.md, replace
+						copy "`output'" 00output.txt, replace
+						copy "`convert'" 00convert.txt, replace
+					}
 				}	
 			}
 			
-			
+				
 			****************************************************
 			*CREATING THE TEXMASTER FILE
 			****************************************************
@@ -3497,6 +3576,7 @@ program markdoc
 					"\usepackage{hyperref}         %use hyperlink" _n			///
 					"\usepackage{epstopdf}" _n 									///
 					"\DeclareGraphicsRule{.tif}{png}{.png}"						///
+					"\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}" ///
 					"{`convert #1 `dirname #1`/`basename #1 .tif`.png}" _n		///		
 					"\makeatletter" _n											///
 					"\def\verbatim@font{\ttfamily\scriptsize}" _n				///
@@ -3577,6 +3657,7 @@ program markdoc
 					"\usepackage{shadow}" _n									///
 					"\usepackage{natbib}" _n									///
 					"\usepackage{chapterbib}" _n								///
+					"\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}" ///
 					"\bibpunct{(}{)}{;}{a}{}{,}" _n(2)
 					
 					// Append external template file
@@ -3774,10 +3855,10 @@ program markdoc
 	if "`smclfile'" != "" & "`test'" == "" & "`export'" == "sthlp" | 			///
 	"`smclfile'" != "" & "`test'" == "" & "`export'" == "smcl" {
 
-		sthlp `smclfile', export("`export'") template("`template'")				///
-		`replace' `date' title("`title'") summary("`summary'") 					///
+		sthlp `smclfile', markup("`markup'") export("`export'") 				///
+		template("`template'") `replace' `date' title("`title'")  				///
 		author("`author'") affiliation("`affiliation'") address("`address'") 	///
-		`asciitable' version("`version'")
+		summary("`summary'") `asciitable' version("`version'") `helplayout'
 	}	
 	
 	
@@ -3803,3 +3884,10 @@ end
 // create the help file
 // ====================
 *markdoc markdoc.ado, exp(sthlp) replace
+
+/*
+
+markdoc "markdoc.ado" , export(html) helplayout replace style("simple") 
+title("MarkDoc Help File") author("E. F. Haghish") 
+affiliation("Department of Mathematics and Computer Science <br> University of Southern Denmark") 
+summary(`"This file includes the MarkDoc help file, converted to HTML using MarkDoc package itself. To reproduce the HTML help file from the source code, execute: <br><code> markdoc "markdoc.ado" , export(html) replace style("stata")</code>"') linesize(110)

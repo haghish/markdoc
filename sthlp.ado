@@ -55,6 +55,8 @@ program define sthlp
 	Date			 /// Add the document generation date to the document
 	SUMmary(str)     /// writing the summary or abstract of the report
 	VERsion(str)     /// add version to dynamic help file
+	markup(str)		 ///
+	helplayout		 ///
 	]
 	
 	
@@ -99,7 +101,7 @@ program define sthlp
 	confirm file "`script'"
 	
 	// If the template is not "empty", then make sure other locals are ""
-	if "`template'" != "empty" {
+	if !missing("`helplayout'") {
 		local author 
 		local affiliation
 		local address
@@ -141,7 +143,7 @@ program define sthlp
 		"    {c 42}{c 42}{c 42}/" _n(2) ///
 	*/
 	
-	if "`template'" != "empty" & substr(`trim'(`"`macval(line)'"'),1,26) != 	///
+	if !missing("`helplayout'") & substr(`trim'(`"`macval(line)'"'),1,26) != 	///
 	"/*** DO NOT EDIT THIS LINE" {
 		file write `knot' 														///
 		"/*** DO NOT EDIT THIS LINE -----------------------------------------------------" _n    ///																///
@@ -277,8 +279,7 @@ program define sthlp
 	
 	//Reading the header, if the HEADER EXISTS and the TEMPLATE IS NOT EMPTY
 	// -------------------------------------------------------------------------
-	if substr(`trim'(`"`macval(line)'"'),1,26) == "/*** DO NOT EDIT THIS LINE" 	///
-	& "`template'" != "empty" {
+	if substr(`trim'(`"`macval(line)'"'),1,26) == "/*** DO NOT EDIT THIS LINE" {
 		
 		file read `hitch' line
 		
@@ -354,7 +355,7 @@ program define sthlp
 	// If the template is in use write the information to SMCL file
 	// ============================================================
 	
-	if "`template'" != "empty" {
+	*if "`template'" != "empty" {
 		
 		if !missing("`date'") & !missing("`version'") {
 			local releasDate: di c(current_date)
@@ -376,11 +377,12 @@ program define sthlp
 				file write `knot' `" `macval(description`num')'"' _n
 			}
 		}
-	}	
+	*}	
 	
 	// If the template is NOT in use
 	// -----------------------------
-	if "`template'" == "empty" {
+	/*
+	if missing("`helplayout'") {
 		if !missing("`date'") & !missing("`version'") {
 			local releasDate: di c(current_date)
 			file write `knot' "{right:version `version', `releasDate'}" _n
@@ -401,6 +403,7 @@ program define sthlp
 			`"`title' {hline 2} `summary'"' _n(2)
 		}
 	}
+	*/
 
 	
 	

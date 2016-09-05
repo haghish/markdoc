@@ -1,5 +1,5 @@
 {smcl}
-{right:version 3.7.0}
+{right:version 3.7.2}
 {title:Title}
 
 {phang}
@@ -10,7 +10,7 @@
  {it:Stata package help files} ({bf:sthlp}).    {break}
  
 {p 8 8 2}
- To improve applications of the package for developing educational materials 
+To improve applications of the package for developing educational materials 
 and encouraging university lecturers to ask students to practice 
 literate programming for taking notes or doing their semester projects, 
 MarkDoc was programmed to include unique features. For example, it includes a syntax highlighter, 
@@ -24,15 +24,15 @@ complete tool for documenting data analysis, Stata packages, as well as a tool f
 producing educational materials within Stata Do-file editor. 
 
 {p 8 8 2}
- The source code of the project 
+The source code of the project 
 {browse "https://github.com/haghish/MarkDoc":is hosted on GitHub} 
 and also, the package documentation
-{browse "https://github.com/haghish/MarkDoc/wiki":is hosted on GitHub wiki}. all contributions to the package, including improving 
-the documentation or providing further examples are welcome. 
-further resources are available in the webpages below. 
+{browse "https://github.com/haghish/MarkDoc/wiki":is hosted on GitHub wiki}. all 
+contributions to the package, including improving the documentation or providing 
+further examples are welcome. further resources are available in the webpages below. 
 
 {p 8 8 2}
- {browse "http://haghish.com/markdoc":Homepage}     {break}
+{browse "http://haghish.com/markdoc":Homepage}     {break}
 {browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}     {break}
 {browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}    {break}
 {browse "https://github.com/haghish/MarkDoc/releases":Release Notes}    {break}
@@ -57,7 +57,7 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 
 
 {phang}
-where {help filename} extension can be:
+where {help filename} can be:
 
 {synoptset 20 tabbed}{...}
 {synoptline}
@@ -110,15 +110,21 @@ command has several directives for styling the table, creating nested tables, an
 aligning the content of each column. 
 
 {p 8 13 2}
-{bf:{help tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/tbl":tbl}} {it:(#[,#...] [\ #[,#...] [\ [...]]])} [{cmd:,} {opt tit:le(str)}]
 
 
 {p 4 4 2}
 execute {bf:pandoc} commands directly from Stata
 
 {p 8 13 2}
-{bf:{help pandoc}} {it:command} [{cmd:,} options]
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/pandoc":pandoc}} {it:command} ]
 
+
+{p 4 4 2}
+convert html files to pdf using {bf:wkhtmltopdf} software
+
+{p 8 13 2}
+{bf:{browse "https://github.com/haghish/MarkDoc/wiki/wkhtmltopdf":wkhtmltopdf}} {it:command} ]
 
 
 {synoptset 20 tabbed}{...}

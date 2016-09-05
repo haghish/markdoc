@@ -1,0 +1,204 @@
+VERSION 12 
+POSITION . . 400 370
+
+
+// -----------------------------------------------------------------------------
+// LISTS
+// =============================================================================
+
+// Beamer Theme
+LIST theme_list
+BEGIN
+	default
+	AnnArbor
+	Antibes
+	Bergen
+	Berkeley
+	Berlin
+	Boadilla
+	boxes
+	CambridgeUS
+	Copenhagen
+	Darmstadt
+	Dresden
+	Frankfurt
+	Goettingen
+	Hannover
+	Ilmenau
+	JuanLesPins
+	Luebeck
+	Madrid
+	Malmoe
+	Marburg
+	Montpellier
+	PaloAlto
+	Pittsburgh
+	Rochester
+	Singapore
+	Szeged
+	Warsaw
+END
+
+// Beamer Color
+LIST color_list
+BEGIN
+	default
+	albatross
+	beaver
+	beetle
+	crane
+	dolphin
+	dove
+	fly
+	lily
+	orchid
+	rose
+	seagull
+	seahorse
+	sidebartab
+	structure
+	whale
+	wolverine
+END
+
+// Beamer Font
+LIST font_list
+BEGIN
+	default
+	professionalfonts
+	serif
+	structurebold
+	structureitalicserif
+	structuresmallcapsserif
+END
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// MAIN PAGE BUTTONS
+// =============================================================================
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+HELP hlp1,   view("browse https://github.com/haghish/MarkDoc/wiki/YAML") 
+RESET res1
+
+
+
+DIALOG yaml, label("YAML Generator") tabtitle("Dynamic Document")
+BEGIN
+	
+	
+	//TEXT tx_options  10    +35    .    .   , label("Beamer layout customization")
+	//FRAME box        10    72   310    30, 
+	
+	GROUPBOX tx_layout  10    5    380    140   , label("Beamer layout customization")
+	
+		
+	TEXT tx_theme    +10  +25 200  .  , label("Theme")
+	COMBOBOX theme   @    +20 80   .  , dropdownlist contents(theme_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_color    +100 30  200  .  , label("Color")
+	COMBOBOX color   @    +20 80   .  , dropdownlist contents(color_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_font     +100 30  200  .  , label("Font")
+	COMBOBOX font    @    +20 80   .  , dropdownlist contents(font_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_fontsize +100 30  240  .  , label("Font size")
+	SPINNER fontsize @    +20 60   .  , min(1)  max(100) default(12) tooltip("change the font size of the slide")
+	
+	// layout
+	TEXT tx_template 20   +40 300  .  , label("Use LaTeX header configuration to alter the layout")
+	FILE template     @   +20 360   .  , label(Browse...) default("")  ///
+	filter("All files|*.*")
+		
+		
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_opts 10   +50  380  100, label("Title page")
+	  
+		// current date
+		//CHECKBOX date2 20    +25   @   .  , option(date) label("add the current date") onclickon("program yamltest")
+			   
+
+		// title of the document
+		TEXT tx_title 20 +25 . ., label(Title)
+		EDIT title    80 @ 300 18   //EDIT ed_title +30 @ 340 .
+	 
+		// Author of the document
+		TEXT tx_author 20 +20 . ., label(Author)
+		EDIT author 80 @ 300 18  
+	 
+		// Affiliation
+		TEXT tx_etc 20 +20 . ., label(Date, etc)
+		EDIT date    80 @ 300 18   
+	
+		
+		
+	
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_file 10   +50  380  85, label("Save the YAML file")
+		
+		TEXT tx_name     20    +25    .    .   , label("File name")
+		TEXT tx_name2    280   @    .    .   , label("(e.g. myfile.txt)")
+		EDIT sourceFile	 80    @   150  .  , label("File name") 
+		
+		// replace
+		CHECKBOX replace 20   +25  200 .  , option(replace) label("replace the existing document") default(1)
+		
+END
+
+
+// -----------------------------------------------------------------------------
+// FINAL YAML COMMAND
+// =============================================================================	
+PROGRAM command
+BEGIN
+	
+    
+	// You must load a file!
+	if ! yaml.sourceFile {
+		require yaml.sourceFile
+		
+		stata "yaml "
+		
+	}
+	
+	put "yaml "
+	put `"""' yaml.sourceFile `"" , "'
+	
+	if yaml.theme {
+		put "theme(" `"""' yaml.theme `"""' ") "
+	}
+	if yaml.color {
+		put "color(" `"""' yaml.color `"""' ") "
+	}
+	if yaml.font {
+		put "font(" `"""' yaml.font `"""' ") "
+	}
+	if yaml.fontsize {
+		put "fontsize(" `"""' yaml.fontsize `"""' ") "
+	}
+	if yaml.template {
+		put "template(" `"""' yaml.template `"""' ") "
+	}
+	if yaml.title {
+		put "title(" `"""' yaml.title `"""' ") "
+	}	
+	if yaml.author {
+		put "author(" `"""' yaml.author `"""' ") "
+	}	
+	if yaml.date {
+		put "date(" `"""' yaml.date  `"""' ") "
+	}	
+	option yaml.replace						// replace
+
+	
+	
+	
+	
+
+END

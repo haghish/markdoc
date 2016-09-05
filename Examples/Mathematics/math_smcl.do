@@ -1,6 +1,17 @@
 qui log using example, replace
 
 /***
+Writing mathematical notations 
+==============================
+
+The text paragraph can include mathematical notations. For example, this 
+formula $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$ will be displayed within 
+the text paragraph, whereas this next formula will be placed on a separate 
+line: $$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
+		
+***/
+		
+/***
 Use a single "\$" sign for writing inline mathematical notations. For example, 
 $f(x)=\sum_{n=0}^\infty\frac{f^{(n)}(a)}{n!}(x-a)^n$ would be rendered inline 
 with the text paragraph. Use double dollar signs "$$" for placing the notations 

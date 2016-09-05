@@ -65,12 +65,12 @@ program wkhtmltopdf
 		local printer "$setpath"
 	}	
 	
-	di as err ":::`printer'"
+	*di as err ":::`printer'"
 	
 	shell "`printer'" `0'
 	
 end
 
 
-markdoc wkhtmltopdf.ado, export(sthlp) replace
+*markdoc wkhtmltopdf.ado, export(sthlp) replace
 

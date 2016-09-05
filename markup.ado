@@ -20,6 +20,7 @@
 	3.7.0  February,  2016
 */
 
+*capture program drop markup
 program define markup
 	
 	// NOTE:
@@ -110,19 +111,83 @@ program define markup
 	qui file open `hitch' using `"`script'"', read
 	qui file open `knot' using `"`tmp'"', write replace
 	file read `hitch' line
+	local i  1
 	
-
 	// -----------------------------------------------------------------
 	// EXTRACT NOTATIONS 
 	// ================================================================= 
 	while r(eof) == 0 {	
 		
-		if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &				///
-		substr(`trim'(`"`macval(line)'"'),1,26) != "/*** DO NOT EDIT THIS LINE" & ///
-		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" {
-			
+		local passtitle
+		
+		capture if substr(`trim'(`"`macval(line)'"'),1,26) == "/*** DO NOT EDIT THIS LINE" {
+			local passtitle 1
 			file read `hitch' line
-			while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) != "***/" {
+		}
+		
+		while !missing("`passtitle'") {
+			*file read `hitch' line
+			
+			local titlefound 1
+			
+			// Get the package title
+			if substr(`trim'(`"`macval(line)'"'),1,6) == "Title:" {
+				local line : subinstr local line "Title:" ""
+				local t = `trim'("`line'")
+				if !missing("`t'") local title "`t'"
+				
+				file write `knot' "> __`title':__ "
+			}
+			
+			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
+				local line : subinstr local line "Description:" ""
+				local description = `trim'("`line'")
+				if !missing(`"`macval(description)'"') {
+					
+	
+					markdown `"`macval(description)'"'
+					local description `r(md)'	
+					file write `knot' "`description'" _n
+					file read `hitch' line
+					
+					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
+					& r(eof) == 0 {
+						*local line2 = `trim'(`"`macval(line)'"')
+						local line2 = `"`macval(line)'"'
+						markdown `"`macval(line2)'"'
+						file write `knot' `"`r(md)'"' _n
+						file read `hitch' line
+					}
+				}
+				
+			}
+			
+		
+			if substr(`trim'(`"`macval(line)'"'),55,21) == "DO NOT EDIT THIS LINE" {
+				local passtitle		//exit the loop
+			}
+			else file read `hitch' line
+		}
+		
+		
+		local pass										// reset
+		capture if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &			///
+		substr(`trim'(`"`macval(line)'"'),1,26) != 								///
+		"/*** DO NOT EDIT THIS LINE" & 											///
+		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" {
+			local pass 1
+			file read `hitch' line
+		}	
+		
+		
+		if !missing("`pass'") {
+
+			
+			*while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,4) != "***/" {
+			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
+				
+				
+				
 				if substr(`trim'(`"`macval(line)'"'),1,2) == ": " {			
 					local line : subinstr local line ": " "" 
 				}
@@ -144,6 +209,7 @@ program define markup
 				file read `hitch' line
 			}
 		}
+		
 		file read `hitch' line
 	}
 	

@@ -49,20 +49,20 @@ using this application for other purposes, outside MarkDoc.
 
 
 program define pandoc
-syntax anything [, pandoc(str) install ]
+syntax anything //[, pandoc(str) install ]
 	
 	capture weaversetup							  //it might not be yet created
 	
-	if !missing("`pandoc'") {
-		confirm file "`pandoc'"
-		global pandoc "`pandoc'"
-	}
+	*if !missing("`pandoc'") {
+	*	confirm file "`pandoc'"
+	*	global pandoc "`pandoc'"
+	*}
 	
 	if missing("`pandoc'") & !missing("$pathPandoc") {
 		global pandoc "$pathPandoc" 
 	}
 	
-	markdoccheck , `install' pandoc("`pandoc'") 
+	markdoccheck //, `install' pandoc("`pandoc'") 
 	
 	confirm file "$pandoc"
 	di as txt "$pandoc `anything'"
