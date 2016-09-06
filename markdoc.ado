@@ -940,21 +940,6 @@ program markdoc
 	// =========================================================================
 	if "`style'"  == "" local style "simple"
 	if "`export'" == "pdf" & "`style'" == "" local style "stata" 
-		
-	// Line size
-	// -------------------------------------------------------------------------
-/*	
-	if missing("`linesize'") {
-		if "`c(linesize)'" <= "82"  {
-			local clinesize "`c(linesize)'"
-			qui set linesize 90
-		}
-	}
-	else {
-		local clinesize "`c(linesize)'"
-		qui set linesize `linesize'
-	}
-*/
 
 	// CHECK FOR REQUIRED SOFTWARE
 	// -------------------------------------------------------------------------
@@ -1026,7 +1011,6 @@ program markdoc
 				"May The Source Be With You! ;)}" _n
 			}
 		}
-		
 		di as txt "{hline}" _n	
 	}
 					
@@ -1565,7 +1549,7 @@ program markdoc
 				if substr(trim(`"`macval(preline)'"'),1,5) == "/***/" |			///
 				substr(trim(`"`macval(preline)'"'),1,4) ==    "/**/"  |			///
 				substr(trim(`"`macval(preline)'"'),1,4) ==    "//ON"  |			///
-				substr(`trim'(`"`macval(preline)'"'),1,8) ==    "//IMPORT"  |	///
+				substr(`trim'(`"`macval(preline)'"'),1,8) ==  "//IMPORT"  |		///
 				substr(trim(`"`macval(preline)'"'),1,5) ==    "//OFF" {		
 			
 					local preline = trim(`"`macval(preline)'"')
@@ -1878,8 +1862,6 @@ program markdoc
 			}
 			
 
-			
-			
 			****************************************************************
 			* 12) REMOVING EMPTY LINES
 			****************************************************************
@@ -1922,7 +1904,6 @@ program markdoc
 					}
 				}
 				
-				
 				if substr(trim(`"`macval(ln)'"'),1,.) == "img"  				///
 				| substr(trim(`"`macval(ln)'"'),1,9) == "img using"  			///
 				|  substr(trim(`"`macval(ln)'"'),1,4) == "img," {
@@ -1933,7 +1914,6 @@ program markdoc
 						file read `hitch' line							
 					}
 				}
-				
 				
 				if substr(trim(`"`macval(ln)'"'),1,4) == "tbl "  				///
 				|  substr(trim(`"`macval(ln)'"'),1,5) == "tble " {
@@ -2014,7 +1994,7 @@ program markdoc
 		
 		if !missing("`debug'") {
 			capture erase 0process2.smcl
-			copy "`tmp1'" 0process2.smcl	, replace			//For debugging
+			copy "`tmp1'" 0process2.smcl	, replace			//for debugging
 		}
 		
 		
@@ -2024,7 +2004,7 @@ program markdoc
 		* GUESSING THE DOCUMENTATION LINESIZE
 		********************************************************************
 		if missing("`linesize'") {
-			local clinesize "`c(linesize)'"							//save the linesize
+			local clinesize "`c(linesize)'"						//save the linesize
 			tempfile sth 
 			tempname hitch knot 
 			qui file open `hitch' using "`tmp1'", read
