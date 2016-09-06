@@ -974,7 +974,7 @@ program markdoc
 
 	// Print the path to pandoc
 	// -------------------------------------------------------------------------
-	if !missing("`noisily'") display "{title:Pandoc path}" _n "$pandoc"
+	if !missing("`noisily'") display _n(2) "{title:Pandoc path}" _n "$pandoc"
 	
 	
 	// checkes the required software
@@ -1302,71 +1302,7 @@ program markdoc
 			exit
 		}
 		
-	
-	
-	local clinesize "`c(linesize)'"							//save the linesize
-	
-	tempfile sth //DEFINE tmp FOR THE FIRST TIME
-	tempname hitch knot 
-	qui file open `hitch' using `"`input'"', read
-	file read `hitch' line
-	local linelength 1
-	
-	
-	while r(eof) == 0 {	
-		cap local m = strlen(`"`macval(line)'"') 
-		if `m' > `linelength' {
-			local linelength `m'
-		}	
-		file read `hitch' line
-	}	
-	file close `hitch'
-	
-	
-	if missing("`linesize'") {
-		if `linelength' < 90 {
-			*qui set linesize 90
-		}
-		else if `linelength' < 255 {
-			*qui set linesize `linelength'
-			local linesize `linelength'
-		}
-		else {
-			*di as txt "{title:warning}" 
-			*di as txt "{p}your document has a line of length `linelength' which "	///
-			*"is beyond the limit of Stata... This can damage your document"
-			*error 198
-		}
-	}
-	else {
-		
-		if `linelength' > 255 {
-			*di as txt "{title:warning}"
-			*di as txt "your document has a line of length `linelength' which "	///
-			*"is beyond the limit of Stata"
-			*error 198
-		}
-		else if `linelength' > `linesize' {
-			*di as txt "{title:warning}" 									///
-			*"{p}your document has a line of length `linelength' which "			///
-			*"is beyond the {bf:linesize} you have specified. This can cause "	/// 
-			*"unreasonable line breaks in the dynamic document..." 
-			*error 198
-		}
-		else {
-			*qui set linesize `linesize'
-			local linesize `linelength'
-		}	
-	}
-	
-	if !missing("`noisily'") {
-		di as txt _n(2) "{title:linesize}" _n
-		
-		display as txt "    DOCUMENT WIDTH: `linelength'" 
-		display as txt "SPECIFIED LINESIZE: `c(linesize)'" _n
-		
-	}
-	
+
 	****************************************************************************
 	*DO NOT PRINT ANYTHING ON THE LOG
 	****************************************************************************
@@ -2081,7 +2017,65 @@ program markdoc
 			copy "`tmp1'" 0process2.smcl	, replace			//For debugging
 		}
 		
+		
+		
+		
+		********************************************************************
+		* GUESSING THE DOCUMENTATION LINESIZE
+		********************************************************************
+		if missing("`linesize'") {
+			local clinesize "`c(linesize)'"							//save the linesize
+			tempfile sth 
+			tempname hitch knot 
+			qui file open `hitch' using "`tmp1'", read
+			file read `hitch' line
+			local linelength 1
+			while r(eof) == 0 {
+				local pass
+				cap if substr(`"`macval(line)'"',1,1) == ">" local pass 1
+				if !missing("`pass'") {
+					cap local m = strlen(`"`macval(line)'"') 
+					if `m' > `linelength' {
+						local linelength `m'
+					}				
+				}	
+				file read `hitch' line
+			}
+			file close `hitch'
+			local pass
 			
+			// the problem happens if:
+			// -----------------------
+			if `linelength' > `c(linesize)' {
+				if `linelength' > 255 {
+					di as err _n(2) "{title:Warning}"
+					di as txt "{p}your documentation has a width of "			///
+					"`linelength' which is beyond the limit of Stata. This " 	///
+					"can corrupt your document..." _n
+					
+					qui set linesize 255
+					*error 198
+				}
+				else {
+					di as txt _n(2) "{title:Warning}"
+					di as txt "{p}your documentation has a width of "			///
+					"`linelength', while your Stata has linesize of " 			///
+					"`c(linesize)'. Since you did not specify the "				///
+					"{bf:linesize} option, MarkDoc applied the width of "		///
+					"`linelength' for your document automatically" _n
+					
+					qui set linesize `linelength'
+				}	
+			}
+			
+			// display the original inelength and linesize
+			if !missing("`noisily'") {
+				di as txt _n(2) "{title:Linesize}" _n
+				display as txt "    DOCUMENT WIDTH: `linelength'" 
+				display as txt "SPECIFIED LINESIZE: `clinesize'" _n
+			}
+		}
+	
 		********************************************************************
 		*CREATING CODE BLOCK WITH txt [code] COMMAND
 		*
