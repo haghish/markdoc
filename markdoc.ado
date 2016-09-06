@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.2
+Version: 3.7.3
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -1315,10 +1315,9 @@ program markdoc
 	
 	while r(eof) == 0 {	
 		cap local m = strlen(`"`macval(line)'"') 
-		if "`m'" > "`linelength'" {
+		if `m' > `linelength' {
 			local linelength `m'
 		}	
-		
 		file read `hitch' line
 	}	
 	file close `hitch'
@@ -1326,34 +1325,46 @@ program markdoc
 	
 	if missing("`linesize'") {
 		if `linelength' < 90 {
-			qui set linesize 90
+			*qui set linesize 90
 		}
 		else if `linelength' < 255 {
-			qui set linesize `linelength'
+			*qui set linesize `linelength'
+			local linesize `linelength'
 		}
 		else {
-			di as err "your document has a line of length `linelength' which "	///
-			"is beyond the limit of Stata"
-			error 198
+			*di as txt "{title:warning}" 
+			*di as txt "{p}your document has a line of length `linelength' which "	///
+			*"is beyond the limit of Stata... This can damage your document"
+			*error 198
 		}
 	}
 	else {
 		
 		if `linelength' > 255 {
-			di as err "your document has a line of length `linelength' which "	///
-			"is beyond the limit of Stata"
-			error 198
+			*di as txt "{title:warning}"
+			*di as txt "your document has a line of length `linelength' which "	///
+			*"is beyond the limit of Stata"
+			*error 198
 		}
 		else if `linelength' > `linesize' {
-			di as err "{title:warning}" _n										///
-			"{p}your document has a line of length `linelength' which "			///
-			"is beyond the {bf:linesize} you have specified. This can cause "	/// 
-			"unreasonable line breaks in the dynamic document..." 
+			*di as txt "{title:warning}" 									///
+			*"{p}your document has a line of length `linelength' which "			///
+			*"is beyond the {bf:linesize} you have specified. This can cause "	/// 
+			*"unreasonable line breaks in the dynamic document..." 
 			*error 198
 		}
 		else {
-			qui set linesize `linesize'
+			*qui set linesize `linesize'
+			local linesize `linelength'
 		}	
+	}
+	
+	if !missing("`noisily'") {
+		di as txt _n(2) "{title:linesize}" _n
+		
+		display as txt "    DOCUMENT WIDTH: `linelength'" 
+		display as txt "SPECIFIED LINESIZE: `c(linesize)'" _n
+		
 	}
 	
 	****************************************************************************
@@ -3922,7 +3933,8 @@ program markdoc
 		macro drop setpath 							//Path of the pdf printer
 		macro drop printername
 		macro drop printerpath
-
+		
+		//remove this!
 		if !missing("`clinesize'") {
 			qui set linesize `clinesize'
 		}
