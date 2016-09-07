@@ -7,30 +7,6 @@
 						  haghish@imbi.uni-freiburg.de
 								        
                        * MarkDoc comes with no warranty *
-
-	
-	
-	MarkDoc Package
-	===============
-	
-	This ado file is a part of MarkDoc package and is called within markdoccheck.ado
-	file to check if wkhtmltopdf printer is installed on the system correctly and is 
-	accessible for MarkDoc package
-	
-	
-	Engine
-	------
-	
-	wkhtmltopdf is an open source freeware for Windows, Mac, and Unix operating 
-	systems and converts HTML to PDF documents. The Automatic Version of 
-	wkhtmltopdf software will be downloaded from http://www.haghish.com/. 
-	
-	
-	MarkDoc Versions
-	----------------
-	
-	3.0.0  August, 2015
-	3.3.0  September, 2015
 */
 	
 	

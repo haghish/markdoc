@@ -25,16 +25,6 @@
 	machine, then Pandoc is installed automatically. Otherwise, Stata will 
 	print an error and provide the option to install Pandoc automatically 
 	within Stata. 
-	
-	The Automatic Version of Pandoc software will be downloaded from 
-	http://www.haghish.com/. 
-	
-	
-	MarkDoc Versions
-	----------------
-	
-	1.0  July, 2014 
-	3.6.1  January, 2016
 */
 	
 	

@@ -17,23 +17,7 @@
 	markdoccheck.ado, the program that checks if Pandoc is installed on the 
 	system correctly. If not, the current program is run to install Pandoc
 	from http://www.haghish.com/
-	
-	
-	Engine
-	------
-	
-	The user must be connected to internet. Stata will connect to 
-	http://www.haghish.com/ and downloads a correct version of Pandoc based on 
-	the Operating System of the user. The program is downloaded and unzipped at 
-	the Weaver directory. See the MarkDoc help file for more information in this 
-	regard. 
-	
-	
-	MarkDoc Versions
-	----------------
-	
-	1.0.0  July, 2014 
-	3.0.0  August, 2015
+
 */
 	
 

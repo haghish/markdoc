@@ -17,12 +17,6 @@
 	markdoc.ado. It will connecto to http://haghish.com/ to obtain the latest 
 	version of the MarkDoc package and notify the user, if the package is not 
 	updated. 
-	
-	MarkDoc Versions
-	----------------
-	
-	1.0.0  July,     2014 
-	3.6.8  February, 2016
 */
 
 

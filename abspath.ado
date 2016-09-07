@@ -24,7 +24,6 @@ Syntax
 {opt abspath} {it:{help filename:filename}}
 ----------------------------------------------------- DO NOT EDIT THIS LINE ***/
 
-
 /***
 Mata Syntax
 ===========
