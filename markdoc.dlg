@@ -336,8 +336,9 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
-		SPINNER  linesize 360  @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate @    +25  10  .  , default(0) onclickon("program test") onclickoff("program test")
+		TEXT tx_linesize  +14   @  240  .  , label("Adjust the linesize") 
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 END
 
@@ -476,11 +477,10 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		TEXT tx_linesize  @    +48  240  .  , label("Adjust document linesize")
-		SPINNER  linesize 360  @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate 217   +48  240  .  , default(0) onclickon("program subtest") onclickoff("program subtest")
+		TEXT tx_linesize  +17   @  240  .  , label("Adjust the linesize") 
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 
-		
-		
 END
 
 
@@ -575,8 +575,13 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
-		SPINNER  linesize 360  @    60   .  , min(80)  max(255) default(100) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate @    +25  10  .  , default(0) onclickon("program vintest") onclickoff("program vintest")
+		TEXT tx_linesize  +14   @  240  .  , label("Adjust the linesize") 
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		
+		
+		*TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
+		*SPINNER  linesize 360  @    60   .  , min(80)  max(255) default(100) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 		   
 END
@@ -608,6 +613,16 @@ END
 // -----------------------------------------------------------------------------
 PROGRAM test
 BEGIN
+	
+	// activate the linesize
+	// ----------------------
+	call main.linesize.disable
+	if main.activate.iseq(0) {
+		call main.linesize.disable
+	}
+	if main.activate.iseq(1) {
+		call main.linesize.enable
+	}
 	
 	if main.markup.iseq("markdown") {
 		call main.r1.enable
@@ -674,6 +689,10 @@ BEGIN
 		call main.statax.disable
 	}
 	
+	
+
+	
+	
 END
 
 
@@ -683,6 +702,17 @@ END
 PROGRAM subtest
 BEGIN
 	
+	// activate the linesize
+	// ----------------------
+	call sub.linesize.disable
+	if sub.activate.iseq(0) {
+		call sub.linesize.disable
+	}
+	if sub.activate.iseq(1) {
+		call sub.linesize.enable
+	}
+	
+	/*
 	if sub.r1.iseq(1) {
 		call sub.theme.enable
 		call sub.color.enable
@@ -699,9 +729,10 @@ BEGIN
 		call sub.bwidth.disable
 		call sub.bheight.disable
 	}
+	*/
 	
 	// else if the markup is Markdown
-	if sub.markup.iseq("markdown") {
+	if sub.markup.iseq("markdown") & sub.r1.iseq(1) {
 		call sub.r1.enable
 		call sub.r2.enable
 		call sub.r3.enable
@@ -742,6 +773,16 @@ END
 // -----------------------------------------------------------------------------
 PROGRAM vintest
 BEGIN
+	
+	// activate the linesize
+	// ----------------------
+	call vignette.linesize.disable
+	if vignette.activate.iseq(0) {
+		call vignette.linesize.disable
+	}
+	if vignette.activate.iseq(1) {
+		call vignette.linesize.enable
+	}
 	
 	// else if the markup is Markdown
 	if vignette.markup.iseq("markdown & smcl") {
@@ -807,6 +848,16 @@ BEGIN
 	//call yaml
 END
 
+
+PROGRAM activate
+BEGIN
+	if main.activate.iseq(1) {
+		call main.linesize.enable
+	}
+	else {
+		call main.linesize.disable
+	}
+END
 
 
 // -----------------------------------------------------------------------------
