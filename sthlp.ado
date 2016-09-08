@@ -222,7 +222,7 @@ program define sthlp
 		"Author Name (2016), "	 												///
 		"[title & external link](http://www.haghish.com/markdoc/)" _n(2) 		///
 		"- - -" _n(2)													///
-		"_This help file was dynamically produced by"							///
+		"_This help file was dynamically produced by " _n						///
 		"[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/)_ " _n ///
 		"***/" _n(4)
 		
