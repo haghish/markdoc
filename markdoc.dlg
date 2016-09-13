@@ -336,9 +336,9 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +31  200  .  , default(0) label("Adjust document linesize") onclickon("program test") onclickoff("program test")
+		CHECKBOX activate @    +31  200  .  , default(0) label("Adjust linesize") onclickon("program test") onclickoff("program test")
 		*TEXT tx_linesize  +20   @  100  .  , label("Adjust the linesize") 
-		SPINNER  linesize 360   @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 END
 
@@ -477,9 +477,9 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +31  200  .  , label("Adjust document linesize") default(0) onclickon("program subtest") onclickoff("program subtest")
+		CHECKBOX activate @    +31  200  .  , label("Adjust linesize") default(0) onclickon("program subtest") onclickoff("program subtest")
 		*TEXT tx_linesize  +17   @  240  .  , label("Adjust the linesize") 
-		SPINNER  linesize 360   @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 
 END
 
@@ -576,8 +576,8 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +31  -20  .  , label("Adjust document linesize") default(0) onclickon("program vintest") onclickoff("program vintest")
-		SPINNER  linesize 360   @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate @    +30  -20  .  , label("Adjust linesize") default(0) onclickon("program vintest") onclickoff("program vintest")
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 		
 		*TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
