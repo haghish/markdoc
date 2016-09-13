@@ -46,3 +46,7 @@ private/multi_window_dialogbox/markdoc_title.dlg
 private/multi_window_dialogbox/markdoc.dlg
 
 private/opencsv.do
+
+private/yaml.dlg
+
+private/yaml.ado
