@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.3
+Version: 3.7.6
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -779,7 +779,7 @@ program markdoc
 			ssc install weaver
 		}
 		else {
-			capture findfile statax.ado
+			capture findfile Statax.js
 			if _rc != 0 {
 				display as err "Weaver & Statax packages are required: " _n 	///
 				"{c 149} {ul:{stata ssc install weaver:ssc install weaver}}" _n ///
@@ -795,7 +795,7 @@ program markdoc
 		}	
 	}
 
-	capture findfile statax.ado
+	capture findfile Statax.js
 	if _rc != 0 {
 		if !missing("`install'") {
 			ssc install statax
