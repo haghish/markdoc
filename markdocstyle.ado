@@ -5,7 +5,7 @@ program markdocstyle
 version 11
 syntax [anything] , export(str) tmp(str) tmp1(str) [texmaster] [markup(str)]	///
 [STYle(name)] [Font(str)] [LANDscape] [css(str)] [debug] [noisily] [figure] 	///
-[template(str)]
+[template(str)] [mathjax]
 	
 	
 	// LaTeX Styling
