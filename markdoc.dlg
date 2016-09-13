@@ -42,8 +42,8 @@ END
 // Specify the Document Theme
 LIST style_list
 BEGIN
-	simple
 	stata
+	simple
 END
 
 // Beamer Theme
@@ -280,65 +280,65 @@ BEGIN
 		// ---------------------------------------------------------------------
 		
 		// install
-		CHECKBOX install  +10  +25  -20  .  , option(install) label("install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
 	
 		// replace
-		CHECKBOX replace  @    +15   @   .  , option(replace) label("replace the existing document") default(1)
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
 	  
 		// syntax highlighter
-		CHECKBOX statax   @    +15   @   .  , option(statax) label("Statax syntax highlighter") default(1)
+		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1)
 		
 	  
 		// table of content
-		CHECKBOX toc      @    +15   @   .  , option(toc) label("table of content") 
+		CHECKBOX toc      @    +17   @   .  , option(toc) label("Table of content") 
 			   
 		// current date
-		CHECKBOX date     @    +15   @   .  , option(date) label("add the current date") 
+		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
 			   
 		// numbered
-		CHECKBOX numbered @    +15   @   .  , option(numbered) label("count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
 		// texmaster
-		CHECKBOX texmaster @   +15   @   .  , option(texmaster) label("create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
-		CHECKBOX noisily  @    +15   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// title of the document
-		TEXT tx_title @ +30 . ., label(Title)
+		TEXT tx_title @ +30 50 ., label(Title)
 		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
 	 
 		// Author of the document
-		TEXT tx_author 20 +20 . ., label(Author)
+		TEXT tx_author 20 +20 50 ., label(Author)
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 . ., label(Affiliation)
+		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
-		TEXT tx_address 20 +20 . ., label(Address)
+		TEXT tx_address 20 +20 50 ., label(Address)
 		EDIT address 80 @ 340 18  
 	 
 		// Summary
-		TEXT tx_summary  20   +20  .    ., label(Summary)
-		EDIT summary     80   @    340  50   
+		TEXT tx_summary  20   +20  50    ., label(Summary)
+		EDIT summary     80   @    340  36   
 		
 		// LEFT COLUMN
 		// ---------------------------------------------------------------------
 	
 		// layout
-		TEXT tx_style     220  134  200  .  , label("Select document layout style")
+		TEXT tx_style     220  137  200  .  , label("Select document layout style")
 		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
 		
 		// layout
-		TEXT tx_template  @    +40  240  .  , label("Use layout (css, docx, tex, etc)")
+		TEXT tx_template  @    +30  200  .  , label("Use layout (css, docx, tex, etc)")
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +25  10  .  , default(0) onclickon("program test") onclickoff("program test")
-		TEXT tx_linesize  +14   @  240  .  , label("Adjust the linesize") 
-		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate @    +31  200  .  , default(0) label("Adjust document linesize") onclickon("program test") onclickoff("program test")
+		*TEXT tx_linesize  +20   @  100  .  , label("Adjust the linesize") 
+		SPINNER  linesize 360   @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 END
 
@@ -389,22 +389,22 @@ BEGIN
 	
 	GROUPBOX beamer 10   +35  420  70, label("Beamer layout")
 	
-		TEXT tx_theme    +10  +20 200  .  , label("Theme")
+		TEXT tx_theme    +10  +20 200  50  , label("Theme")
 		COMBOBOX theme   @    +17 69   .  , dropdownlist contents(theme_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
-		TEXT tx_color    +72 -17  200  .  , label("Color")
+		TEXT tx_color    +72 -17  200  50  , label("Color")
 		COMBOBOX color   @    +17 69   .  , dropdownlist contents(color_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
-		TEXT tx_font     +72 -17  200  .  , label("Font")
+		TEXT tx_font     +72 -17  200  50  , label("Font")
 		COMBOBOX font    @    +17 69   .  , dropdownlist contents(font_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
-		TEXT tx_codesize     +72 -17  200  .  , label("Code size")
+		TEXT tx_codesize     +72 -17  50  .  , label("Code size")
 		COMBOBOX codesize    @    +17 69   .  , dropdownlist contents(code_list) default(scriptsize) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
-		TEXT tx_bwidth +77 -17  240  .  , label("Width")
+		TEXT tx_bwidth +77 -17  50  .  , label("Width")
 		SPINNER bwidth @    +17 50   .  , min(80)  max(255) default(128) tooltip("change the font size of the slide")
 		
-		TEXT tx_bheight +60 -17  240  .  , label("Height")
+		TEXT tx_bheight +60 -17  50  .  , label("Height")
 		SPINNER bheight @    +17 50   .  , min(80)  max(255) default(96) tooltip("change the font size of the slide")
 		
 		
@@ -417,37 +417,37 @@ BEGIN
 		// ---------------------------------------------------------------------
 		
 		// install
-		CHECKBOX install  +10  +25  -20  .  , option(install) label("install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
 	
 		// replace
-		CHECKBOX replace  @    +17   @   .  , option(replace) label("replace the existing document") default(1)
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
 			   
 		// current date
 		//CHECKBOX date     @    +17   @   .  , option(date) label("add the current date") 
 			   
 		// numbered
-		CHECKBOX numbered @    +17   @   .  , option(numbered) label("count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
 		// texmaster
-		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
-		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// title of the document
-		TEXT tx_title @ 322 . ., label(Title)
+		TEXT tx_title @ 322 50 ., label(Title)
 		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
 		
 		// subtitle
-		TEXT tx_subtitle 20 +20 . ., label(Subtitle)
+		TEXT tx_subtitle 20 +20 50 ., label(Subtitle)
 		EDIT subtitle 80 @ 340 18  
 		
 		// Author of the document
-		TEXT tx_author 20 +20 . ., label(Author)
+		TEXT tx_author 20 +20 50 ., label(Author)
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 . ., label(Date / Aff)
+		TEXT tx_affiliation 20 +20 50 ., label(Date / Aff)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
@@ -473,13 +473,13 @@ BEGIN
 	*	COMBOBOX color   @    +20 80   .  , dropdownlist contents(color_list)
 	
 		// layout
-		TEXT tx_template  220  220  240  .  , label("Use layout (css or tex)")
+		TEXT tx_template  220  223  200  .  , label("Use layout (css or tex)")
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate 217   +48  240  .  , default(0) onclickon("program subtest") onclickoff("program subtest")
-		TEXT tx_linesize  +17   @  240  .  , label("Adjust the linesize") 
-		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate @    +31  200  .  , label("Adjust document linesize") default(0) onclickon("program subtest") onclickoff("program subtest")
+		*TEXT tx_linesize  +17   @  240  .  , label("Adjust the linesize") 
+		SPINNER  linesize 360   @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 
 END
 
@@ -522,62 +522,62 @@ BEGIN
 		// RIGHT COLUMN
 		// ---------------------------------------------------------------------
 		
-		// install
-		CHECKBOX helplayout  +10  +25  -20  .  , option(helplayout) label("append help-file template") default(1) 
 		
 		// install
-		CHECKBOX install  @    +17  @  .  , option(install) label("install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
-	
+		CHECKBOX install  +10    +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		
 		// replace
-		CHECKBOX replace  @    +18   @   .  , option(replace) label("replace the existing document") default(1)
-	  
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
+		
+		// append template
+		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Append help-file template") default(1) 
+
 		// table of content
-		CHECKBOX toc      @    +17   @   .  , option(toc) label("table of content") 
+		CHECKBOX toc      @    +17   @   .  , option(toc) label("Table of content") 
 			   
 		// current date
-		CHECKBOX date     @    +18   @   .  , option(date) label("add the current date") 
+		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
 			   
 		// texmaster
-		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
-		CHECKBOX noisily  @    +18   @   .  , option(noisily) label("execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// title of the document
-		TEXT tx_title @ 270 . ., label(Title)
+		TEXT tx_title @ 270 50 ., label(Title)
 		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
 	 
 		// Author of the document
-		TEXT tx_author 20 +20 . ., label(Author)
+		TEXT tx_author 20 +20 50 ., label(Author)
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 . ., label(Affiliation)
+		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
-		TEXT tx_address 20 +20 . ., label(Address)
+		TEXT tx_address 20 +20 50 ., label(Address)
 		EDIT address 80 @ 340 18  
 		
 		// Summary
-		TEXT tx_summary  20   +20  .    ., label(Summary)
+		TEXT tx_summary  20   +20  50    ., label(Summary)
 		EDIT summary     80   @    340  50   
 		
 		// LEFT COLUMN
 		// ---------------------------------------------------------------------
 	
 		// layout
-		TEXT tx_style     220  134  200  .  , label("Select document layout style")
+		TEXT tx_style     220  136  200  .  , label("Select document layout style")
 		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
 		
 		// layout
-		TEXT tx_template  @    +40  240  .  , label("Use layout (css, docx, tex, etc)")
+		TEXT tx_template  @    +31  200  .  , label("Use layout (css, docx, tex, etc)")
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +25  10  .  , default(0) onclickon("program vintest") onclickoff("program vintest")
-		TEXT tx_linesize  +14   @  240  .  , label("Adjust the linesize") 
-		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		CHECKBOX activate @    +31  -20  .  , label("Adjust document linesize") default(0) onclickon("program vintest") onclickoff("program vintest")
+		SPINNER  linesize 360   @    60   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 		
 		*TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
