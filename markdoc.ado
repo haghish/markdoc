@@ -2851,7 +2851,7 @@ program markdoc
 		********************************************************************			
 		if "`export'" == "html"  {
 			tempfile tmp1
-			markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster'				///
+			markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster' `mathjax'	///
 			export("`export'") markup("`markup'") `debug' `noisily' style(`style')
 		}
 		
