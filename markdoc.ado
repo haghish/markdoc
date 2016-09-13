@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.3
+Version: 3.7.6
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -2850,6 +2850,13 @@ program markdoc
 		*	STYLING THE HTML FILE
 		********************************************************************			
 		if "`export'" == "html"  {
+			tempfile tmp1
+			markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster'				///
+			export("`export'") markup("`markup'") `debug' `noisily' style(`style')
+		}
+		
+		/*
+		if "`export'" == "html"  {
 		
 			// The HTML file already has gone through Pandoc 
 			//quietly  copy `"`tmp1'"' `"`tmp'"', replace
@@ -3231,9 +3238,10 @@ program markdoc
 				cap quietly copy "`tmp1'" "html.txt", replace	
 			}	
 		
-	}
+		}
+		*/
 			
-			
+		
 		
 		********************************************************************
 		*	REPLACE THE HTML FILE
@@ -3584,13 +3592,21 @@ program markdoc
 			if !missing("`texmaster'") | missing("`texmaster'") & 				///
 			!missing("`template'") & "`markup'" == "latex" 						///
 			& "`export'" != "slide" {
+				
 				tempfile tmp
 				tempfile tmp1
-					
 				if missing("`tex2pdf'") quietly copy "`convert'" `"`tmp'"', replace
 				else quietly copy "`tex2pdf'" `"`tmp'"', replace
 				qui cap erase "`convert'"
+				
+				markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster'			///
+				export("`export'") markup("`markup'") `debug' `noisily' 		///
+				style(`style') template("`template'")
+								
+				*tempname hitch knot		
+				*qui cap file open `knot' using "`tmp1'", write replace
 					
+				/*
 				tempname hitch knot 
 				qui file open `hitch' using "`tmp'", read 
 				qui cap file open `knot' using "`tmp1'", write replace
@@ -3730,9 +3746,11 @@ program markdoc
 						"\end{abstract}" _n(2)
 					}
 				}
-								
+				
+					
 				
 				// Append external template file
+				// ------------------------------------------------------------
 				if missing("`texmaster'") & !missing("`template'") {
 					confirm file "`template'"
 					tempname latexstyle
@@ -3780,8 +3798,8 @@ program markdoc
 				file write `knot'  _n "\end{document}" _n(4)				
 				file close `hitch'
 				file close `knot'
-				
-				
+			*/	
+			
 				
 				
 				
@@ -3789,6 +3807,8 @@ program markdoc
 				//REPLACE THE FILE
 				if missing("`tex2pdf'") quietly copy `"`tmp1'"' "`convert'", replace
 				else quietly copy `"`tmp1'"' "`tex2pdf'", replace	
+				
+				copy "`tmp1'" "0style3.txt", replace
 			}
 				
 			****************************************************
@@ -3847,7 +3867,6 @@ program markdoc
 				}
 				else display as err "MarkDoc could not produce `convert'" _n
 			}
-			
 		}
 		
 		if "`export'" == "" {
