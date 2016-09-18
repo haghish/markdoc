@@ -22,7 +22,7 @@ __MarkDoc__ receives constant updates on GitHub and users are recommended to fol
 net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
 ```
 
-<!-->
+<!--
 The major releases of __MarkDoc__ are also hosted on SSC server. However, installing from SSC is not recommended because the SSC package is only updated occasionly on SSC. 
 
 ```js
