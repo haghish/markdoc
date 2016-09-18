@@ -29,6 +29,7 @@ The major releases of __MarkDoc__ are also hosted on SSC server. However, instal
 ssc install markdoc
 ```
 -->
+
 __MarkDoc__ requires two other packages for highlighting the syntax of Stata commands in the documents and creating dynamic tables which can be installed from SSC as well:
 
 ```js
