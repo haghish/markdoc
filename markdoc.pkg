@@ -43,7 +43,6 @@ f markup.ado
 f pandoc.ado
 f pandoc.sthlp
 f rundoc.ado
-f rundoc.sthlp
 f sthlp.ado
 f wkhtmltopdf.ado
 f wkhtmltopdf.sthlp
