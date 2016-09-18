@@ -1,7 +1,7 @@
 
 *capture program drop markdocstyle
 program markdocstyle
-
+ 
 version 11
 syntax [anything] , export(str) tmp(str) tmp1(str) [texmaster] [markup(str)]	///
 [STYle(name)]  [debug] [noisily] [figure] [toc]	[date] [title(str)] 			///

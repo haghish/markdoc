@@ -1,5 +1,5 @@
 d 'MARKDOC': module for literate programming
-d
+d 
 d  MarkDoc is a general-purpose literate programming package for Stata that produces
 d dynamic analysis documents or package documentation in various formats (pdf,
 d docx, html, odt, epub, markdown), dynamic presentation slides (pdf, slidy,
