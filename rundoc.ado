@@ -1,67 +1,3 @@
-/*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 1.0.0
-Title: rundoc
-Description: executes a _do-file_ and exports a dynamic document in any format 
-supported by __{help markdoc}__ 
------------------------------------------------------ DO NOT EDIT THIS LINE ***/
-
-/***
-Syntax
-======
-
-produce dynamic {it:document} or {it:presentation slides} from a do-file. If 
-filename is specified without an extension, .do is assumed. 
-
-{p 8 16 2}
-{cmd: rundoc} {help filename} [{cmd:,} 
-{opt pan:doc(str)} {opt print:er(str)} {opt instal:l} {opt replace} 
-{opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
-{opt template(str)} {opt toc}
-{opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
-{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt noi:sily}
-{* *! {opt ascii:table}}
-]
-{p_end}
-
-Description
-===========
-
-__rundoc__ executes a dynamic document from a do-file. In contrast to __{help markdoc}__ 
-that requires smcl file for generating a dynamic document or presentation slides, 
-__rundoc__ does not require you to create a __smcl__ log file and takes the 
-do-file as the source and can export a document to all of the document formats 
-supported by {help markdoc} which are __pdf__, __docx__, __odt__, __html__, 
-__latex__, __slides__, etc.
-
-Options
-=======
-
-__rundoc__ takes the same options as {help markdoc}. The only difference is that 
-the __export()__ option does not accept __sthlp__ or __smcl__ which are used for 
-creating dynamic Stata help files in {help markdoc} package. 
-
-Author
-======
-
-__E. F. Haghish__     
-Center for Medical Biometry and Medical Informatics     
-University of Freiburg, Germany     
-_and_        
-Department of Mathematics and Computer Science       
-University of Southern Denmark     
-haghish@imbi.uni-freiburg.de     
-      
-[MarkDoc Homepage](www.haghish.com/markdoc)         
-Package Updates on [Twitter](http://www.twitter.com/Haghish)     
-
-- - -
-
-_This help file was dynamically produced by[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/)_ 
-***/
-
-
-
-
 // CREATES A LOG AND CALLS MARKDOC! 
 
 *cap prog drop rundoc
@@ -93,12 +29,22 @@ program define rundoc
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	NUMbered	 	 /// number Stata commands
 	MATHjax 		 /// Interprets mathematics using MathJax
+	/// Slide options
+	/// ========================================================================
+	btheme(str) 	 ///
+	bcolor(str) 	 ///
+	bfont(str)  	 ///
+	bfontsize(str)   ///
+	bcodesize(str)	 ///
+	bwidth(str)	 	 ///
+	bheight(str)	 ///
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
 	///RUNhead(str)  /// running head for the document (for styling) 
 	///PDFlatex(str) ///this command is discontinued in version 3.0 and replaced by setpath()
 	///Font(name)	 /// specifies the document font (ONLY HTML)
+	///
 	]
 	
 	
@@ -156,7 +102,14 @@ program define rundoc
 	`noisily'																	///
 	`asciitable'																///
 	`numbered'																	///
-	`mathjax'																	
+	`mathjax'																	///
+	btheme(`btheme')															///
+	bcolor(`bcolor')															///
+	bfont(`bfont')																///
+	bfontsize(`bfontsize')   													///
+	bcodesize(`bcodesize')	 													///
+	bwidth(`bwidth')	 														///
+	bheight(`bheight')															
 																			
 	capture quietly erase "`input'.smcl"
 

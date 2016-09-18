@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.6
+Version: 1.4.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -686,7 +686,7 @@ Also see
 This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
 ***/
 
-*cap prog drop markdoc
+cap prog drop markdoc
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -710,7 +710,14 @@ program markdoc
 	}
 	version `version'
 	
-		
+	// -------------------------------------------------------------------------
+	// WARNING	
+	// =======
+	//
+	// Any change in the syntax should be also made in rundoc.ado and markdoc 
+	// called by rundoc
+	// =========================================================================
+	
 	syntax [anything(name=smclfile id="The smcl file name is")]  				/// 
 	[, 				 ///
 	replace 	 	 /// replaces the exported file
@@ -760,13 +767,11 @@ program markdoc
 	///Font(name)	 /// specifies the document font (ONLY HTML)
 	]
 	
+
 	
 	// =========================================================================
 	// CHANGED SYNTAX
-	
-	// =========================================================================
-	
-	
+	// =========================================================================	
 	local mathjax mathjax
 	
 	// -------------------------------------------------------------------------
@@ -1281,8 +1286,15 @@ program markdoc
 			`noisily'															///
 			`asciitable'														///
 			`numbered'															///
-			`mathjax'
-	
+			`mathjax'															///
+			btheme(`btheme')													///
+			bcolor(`bcolor')													///
+			bfont(`bfont')														///
+			bfontsize(`bfontsize')   											///
+			bcodesize(`bcodesize')	 											///
+			bwidth(`bwidth')	 												///
+			bheight(`bheight')	 					
+			
 			exit
 		}
 		
@@ -2394,7 +2406,7 @@ program markdoc
 			}
 		}	
 		
-		
+	
 			
 		
 		********************************************************************
@@ -2852,7 +2864,10 @@ program markdoc
 		if "`export'" == "html"  {
 			tempfile tmp1
 			markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster' `mathjax'	///
-			export("`export'") markup("`markup'") `debug' `noisily' style(`style')
+			`statax' style(`style') template("`template'") `figure' ///
+			export("`export'") markup("`markup'") `debug' `noisily' `toc'		///
+			title("`title'") author("`author'") affiliation("`affiliation'")	///
+			address("`address'") summary("`summary'") `date'
 		}
 		
 		/*
@@ -3528,10 +3543,18 @@ program markdoc
 					
 					// Beamer layout options
 					// ---------------------
-					if !missing("`btheme'") local beamerlayout -V theme:`btheme'
-					if !missing("`bcolor'") local beamerlayout `beamerlayout' -V colortheme:`bcolor'
-					if !missing("`bfont'") local beamerlayout `beamerlayout' -V fonttheme:`bfont'
+				
+					if !missing("`btheme'") {
+						local beamerlayout : di "-V theme:`btheme'"
+					}	
+					if !missing("`bcolor'") {
+						local beamerlayout : di "`beamerlayout' -V colortheme:`bcolor'"
+					}	
+					if !missing("`bfont'")  {
+						local beamerlayout : di "`beamerlayout' -V fonttheme:`bfont'"
+					}	
 					*if !missing("`bfontsize'") local beamerlayout `beamerlayout' fontsize:`bfontsize'pt
+
 					
 					if "`noisily'" == "noisily" {
 						di _n(2) "{title:Executing Pandoc Command}"	_n			///
@@ -3601,7 +3624,9 @@ program markdoc
 				
 				markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster'			///
 				export("`export'") markup("`markup'") `debug' `noisily' 		///
-				style(`style') template("`template'")
+				style(`style') template("`template'") `figure' `statax' `toc' 	///
+				title("`title'") author("`author'") affiliation("`affiliation'")	///
+				address("`address'") summary("`summary'") `date'
 								
 				*tempname hitch knot		
 				*qui cap file open `knot' using "`tmp1'", write replace
