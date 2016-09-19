@@ -41,7 +41,7 @@ MarkDoc also requires 3 third-party software, which are:
 
 - [__Pandoc__](http://pandoc.org/installing.html)
 - [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
-- [__pdfLaTeX](https://www.latex-project.org/get/)
+- [__pdfLaTeX__](https://www.latex-project.org/get/)
 
 
 Author
