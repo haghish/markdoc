@@ -37,6 +37,11 @@ net install weaver, replace  from("https://raw.githubusercontent.com/haghish/wea
 net install statax, from("https://raw.githubusercontent.com/haghish/statax/master/")
 ```
 
+MarkDoc also requires 3 third-party software, which are:
+
+- [__Pandoc__](http://pandoc.org/installing.html)
+- [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
+- [__pdfLaTeX](https://www.latex-project.org/get/)
 
 
 Author
