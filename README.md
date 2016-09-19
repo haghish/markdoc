@@ -43,6 +43,7 @@ MarkDoc also requires 3 third-party software, which are:
 - [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
 - [__pdfLaTeX__](https://www.latex-project.org/get/)
 
+The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. 
 
 Author
 ------
