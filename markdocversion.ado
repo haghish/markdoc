@@ -28,7 +28,7 @@ program define markdocversion
 		cap qui do "http://www.haghish.com/packages/update.do"
 	//}
 		
-	global markdocversion 3.68
+	global markdocversion 3.78
 	
 	if "$thenewestmarkdocversion" > "$markdocversion" {	
 		di _n(2)
