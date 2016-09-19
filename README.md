@@ -33,9 +33,11 @@ ssc install markdoc
 __MarkDoc__ requires two other packages for highlighting the syntax of Stata commands in the documents and creating dynamic tables which can be installed from SSC as well:
 
 ```js
-ssc install weaver
-ssc install statax
+net install weaver, replace  from("https://raw.githubusercontent.com/haghish/weaver/master/")
+net install statax, from("https://raw.githubusercontent.com/haghish/statax/master/")
 ```
+
+
 
 Author
 ------
