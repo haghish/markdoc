@@ -26,6 +26,7 @@ program define rundoc
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
 	toc				 /// Creates table of content
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
+	debug			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	NUMbered	 	 /// number Stata commands
 	MATHjax 		 /// Interprets mathematics using MathJax
@@ -72,7 +73,7 @@ program define rundoc
 	capture log close rundoc
 	quietly log using "`input'.smcl", replace smcl name(rundoc)
 	capture noisily do "`input'"
-	qui log close rundoc
+	qui log off rundoc
 	
 	snapshot restore `number'
 	capture snapshot erase `number'
@@ -100,6 +101,7 @@ program define rundoc
 	linesize(`linesize')														///
 	`toc'																		///
 	`noisily'																	///
+	`debug'																		///
 	`asciitable'																///
 	`numbered'																	///
 	`mathjax'																	///
@@ -110,9 +112,10 @@ program define rundoc
 	bcodesize(`bcodesize')	 													///
 	bwidth(`bwidth')	 														///
 	bheight(`bheight')															
-																			
+	
+	capture qui log close rundoc
 	capture quietly erase "`input'.smcl"
-
+	
 end
 
 

@@ -1,4 +1,4 @@
-/*** 
+/*
 Examples
 ========
 
@@ -12,6 +12,8 @@ document or slides
 3. reads the documentation written in ado or mata files and export Stata help 
 files of package vignette
 
+This document provides examples for all of the engines
+
 
 E. F. Haghish
 Department of Mathematics and Computer Science
@@ -19,7 +21,7 @@ University of Southern Denmark
 Odense, Denmark
 
 Aug 2016
-***/
+*/
 
 cd "/Users/haghish/Documents/Packages/markdoc/Examples"
 

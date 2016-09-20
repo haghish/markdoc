@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.8
+Version: 3.7.9
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -1284,6 +1284,7 @@ program markdoc
 			linesize(`linesize')												///
 			`toc'																///
 			`noisily'															///
+			`debug'															///
 			`asciitable'														///
 			`numbered'															///
 			`mathjax'															///
@@ -3525,14 +3526,14 @@ program markdoc
 						
 						if !missing("`bwidth'") & !missing("`bheight'") {
 							file write `knot' "\geometry{paperwidth=`bwidth'mm,paperheight=`bheight'mm}" _n
-						}
-						
-						if missing("`bcodesize'") local `bverbatim' tiny
+						}						
+						if missing("`bcodesize'") {
+							local bcodesize tiny
+						}	
+						local bcodesize : di "\" "`bcodesize'"
 						file write `knot' "\makeatletter" _n
-						file write `knot' "\def\verbatim@font{\ttfamily\`bcodesize'}" _n
+						file write `knot' "\def\verbatim@font{\ttfamily`bcodesize'}" _n
 						file write `knot' "\makeatother" _n 
-						
-						
 						
 						file close `knot'
 					}
@@ -3571,7 +3572,11 @@ program markdoc
 					capture erase "`output'"
 					
 					*shell "$pandoc" -t beamer "`md'" -V theme:Boadilla -V 		///
-					*colortheme:lily `fontsize' -o "`convert'"		
+					*colortheme:lily `fontsize' -o "`convert'"	
+					
+					if !missing("`debug'") {					
+						copy "`template'" 0template.txt, replace
+					}
 				}				
 				else {
 
