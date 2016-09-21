@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.7.9
+Version: 3.8.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -686,7 +686,7 @@ Also see
 This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
 ***/
 
-*cap prog drop markdoc
+
 program markdoc
 	
 	// -------------------------------------------------------------------------
@@ -1118,6 +1118,18 @@ program markdoc
 		// Create an "output" file that is exported from Pandoc
 		// --------------------------------------------------------------
 		tempfile output 
+		
+		// For those who work on the server, temporary file with a suffix that 
+		// does not yet exist becomes a problem. Define a temporary file and 
+		// replace the current remp file! 
+		tempfile tempput
+		tempname knot
+		file open `knot' using "`tempput'", write
+		file close `knot'		
+		confirm file "`tempput'"		
+
+
+	
 		tempfile md
 		local md  "`md'.md"
 		
@@ -1252,6 +1264,10 @@ program markdoc
 			"Use the {bf:replace} option to replace the existing file." 					
 			exit 198
 		}
+		
+	
+		quietly copy "`tempput'" "`output'", replace
+
 		
 		// =========================================================================
 		// Execute rundoc for the do-files
@@ -2858,7 +2874,9 @@ program markdoc
 			copy "`tmp1'" 0process6.md	, replace		//for debugging
 			copy "`md'" "0md.md", replace
 		}	
-			
+	
+		
+		
 		********************************************************************
 		*	STYLING THE HTML FILE
 		********************************************************************			
@@ -3272,6 +3290,7 @@ program markdoc
 				// If the export was "pdf", then copy the file to "`html'"
 				if "`pdfhtml'" == "pdfhtml" {
 					
+					
 					// Linus needs special treatment here 
 					// ----------------------------------
 					if "`c(os)'" == "Unix" {
@@ -3592,8 +3611,8 @@ program markdoc
 					}
 					
 					shell "$pandoc" `mathjax' `toc' 		///
-					`reference' "`md'" -o "`output'"		
-					
+					`reference' "`md'" -o "`output'"			
+			
 					quietly copy "`output'" "`convert'", replace
 					
 					if !missing("`debug'") {
