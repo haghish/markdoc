@@ -1,0 +1,681 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" async 
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- SYNTAX HIGHLIGHTING CLASSES  -->
+<style type="text/css">
+.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
+.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
+.center, #center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+
+    padding: 0px;
+    border-width: 0px;
+    border-style: solid;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    }
+
+pagebreak {
+        page-break-before: always;
+        }
+
+.pagebreak, #pagebreak {
+        page-break-before: always;
+        }
+
+td > p {padding:0; margin:0;}
+
+
+
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+table {
+        border-collapse: collapse;
+        border-bottom:1px solid black;
+        padding:5px;
+        margin-top:5px;
+
+}
+.tble {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+}
+
+.tblecenter {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        text-align:center;
+}
+
+span.tblecenter + table, span.tble + table, span.tble + img {
+        margin-top: 2px;
+}
+
+th {
+border-bottom:1px solid black;
+border-top:1px solid black;
+padding-right:20px;
+}
+
+td {
+padding-right:20px;
+}
+
+</style>
+<!-- Stata Style  -->
+<style type="text/css">
+body {
+
+        margin:10px 30px 10px 30px;
+        font-family: ;
+        }
+
+@page {
+        size: auto;
+        margin: 10mm 20px 15mm 20px;
+        color:#828282;
+        font-family: ;
+ @top-left { content: "" ; font-size:11px; margin-top:5px; } 
+@bottom {
+        content: "Page " counter(page); font-size:14px; 
+        }
+        }
+
+@page:first {
+@top-left {
+        content: normal
+        }
+@bottom {
+        content: normal
+        }
+        }
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+ul {        list-style:circle;
+        margin-top:0;
+        margin-bottom:0;
+        }
+
+div ul a {
+        color:black;
+        text-decoration:none;
+        }
+
+div ul {
+        list-style: none;
+        margin: 0px 0 10px -15px;
+        padding-left:15px;
+        }
+
+div ul li {
+        font-weight:bold;
+        margin-top:20px;
+        }
+
+div ul li ul li {
+        font-weight: normal;
+        margin-left:20px;
+        margin-top:5px;
+        }
+
+div ul li ul li ul li {
+        font-weight: normal;
+        font-style:none;
+        margin-top:5px;
+        }
+
+div ul li ul li ul li ul li {
+        font-weight: normal;
+        font-style:italic;
+        margin-top:5px;
+        }
+
+img {
+        margin: 5px 0 5px 0;
+        padding: 0px;
+        cursor:-webkit-zoom-in;
+        cursor:-moz-zoom-in;
+        display:inline-block;
+        text-align: left;
+        clear: both;
+        }
+
+h1, h1 > a, h1 > a:link {
+        margin:24px 0px 2px 0px;
+        padding: 0;
+        font-family: ;
+        color:#17365D;
+        font-size: 22px;
+        }
+
+h1 > a:hover, h1 > a:hover{
+color:#345A8A;
+} 
+
+h2, h2 > a, h2 > a, h2 > a:link {
+        margin:14px 0px 2px 0px;
+        padding: 0;
+        font-family: ;
+        color:#345A8A;
+        font-size: 18px;
+        font-weight:bold;
+        }
+
+h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {
+        margin:14px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        color:#4F81BD;
+        font-size: 14px;
+        font-weight:bold;
+        }
+
+h4 {
+        margin:10px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        font-size: 14px;
+        color:#4F81BD;
+        font-weight:bold;
+        font-style:italic;
+        }
+
+h5  {
+        font-family: ;
+        font-size: 14px;
+        font-weight:normal;
+        color:#4F81BD;
+        }
+
+h6  {
+        font-size:14px;
+        font-family: ;
+        font-weight:normal;
+        font-style:italic;
+        color:#4F81BD;
+        }
+
+p {
+        font-family: ;
+        font-weight:normal;
+        font-size:14px;
+        line-height:14px;
+        line-height: 16px;
+        text-align:justify;
+        text-align: left;
+        text-justify:inter-word;
+        margin:0 0 14px 0;
+        }
+
+.code {
+        white-space:pre;
+        color: black;
+        padding:5px;
+        display:block;
+        font-size:12px;
+        line-height:14px;
+        background-color:#E1E6F0;
+        font-family:"Lucida Console", Monaco, monospace, "Courier New", Courier, monospace;
+        font-weight:normal;
+        text-shadow:#FFF;
+        border:thin;
+        border-color: #345A8A; 
+        border-style: solid;
+        unicode-bidi: embed;
+        margin:20px 0 0px 0;
+        }
+
+.output {
+        white-space:pre;
+        display:block;
+        font-family:monospace,"Lucida Console", Monaco, "Courier New", Courier, monospace;
+        font-size:12px; 
+        line-height: 12px;
+        margin:0 0 14px 0;
+        border:thin; 
+        unicode-bidi: embed;
+        border-color: #345A8A; 
+        padding:14px 5px 0 5px;
+        background-color:transparent;
+        }
+
+</style>
+<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
+</head>
+<header>
+Reproducible Research With Stata
+</header>
+<body>
+<span class="author">E. F. Haghish</span> <span class="author">IMADA, University of Southern Denmark</span> <span class="author">haghish@imada.sdu.de</span>
+<p style="padding-right:15%; padding-left:15%;padding-top:100px;text-align: justify;text-justify:inter-word;">
+This document summarizes the examples of the workshop. I have organized the examples in separate files and render them in a single document to provide an example of how a large document can be produced dynamically by calling smaller chunks of code.
+</p>
+<p><br /></p>
+<h1 id="workshop-examples">Workshop Examples</h1>
+<p>This document includes some of the examples of the workshop. I have organized them in separate do files and the dynamic document will include all of the examples.</p>
+<h2 id="help">Help</h2>
+<p>If you need help about working with <strong>MarkDoc</strong> package, probably the best place to begin is the <a href="https://github.com/haghish/MarkDoc/wiki">MarkDoc GitHub Wiki</a>, which is the package manual. If you have questions, post them on <www.statalist.org> and I get back to you shortly.</p>
+<pre><code>      Hellow World
+      </code></pre>
+<pre class="sh_stata">  . display "hello world"</pre>
+<h1 id="header">Header</h1>
+<p>sthing will appear</p>
+<h2 id="header-2">Header 2</h2>
+<h3 id="header-3">Header 3</h3>
+<h4 id="header-4">Header 4</h4>
+<h5 id="header-5">Header 5</h5>
+<h1 id="part-2">Part 2</h1>
+<p>This is a text paragraph. Text can be <em>italic</em> or <em>italic</em>. Also, it can be <strong>Bold</strong> or <strong>Bold</strong>.</p>
+<blockquote>
+<p>&quot;the text paragraph can be indented for - typically -quoting &quot;</p>
+</blockquote>
+<ul>
+<li>This is item 1</li>
+<li>Item 2</li>
+<li>item 3</li>
+<li>This is another item</li>
+<li>quite file I hope
+<ul>
+<li>sublist item 1</li>
+<li>sublist 2
+<ul>
+<li>subsublist 1</li>
+<li>item</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>sth</li>
+<li>sth</li>
+</ol></li>
+<li>continue with sublist</li>
+</ul></li>
+<li>continue with the list</li>
+</ul>
+<h1 id="numbered-list">Numbered list</h1>
+<ol style="list-style-type: decimal">
+<li>numbered item 1</li>
+<li>item 2
+<ol style="list-style-type: decimal">
+<li>subitem 1</li>
+<li>subitem 2
+<ol start="2" style="list-style-type: decimal">
+<li>subsub item</li>
+</ol></li>
+<li>sth</li>
+</ol></li>
+<li>back to item</li>
+</ol>
+<p>Using the &quot;---&quot; sign will add a line in the document</p>
+<hr />
+<h2 id="breaking-the-line">Breaking the line</h2>
+<p>Add 2 or more spaces at the end of the line to break it without starting<br />
+a new<br />
+paragraph</p>
+<hr />
+<h2 id="adding-links">Adding links</h2>
+<p>This is a link to MarkDoc's GitHub Manual <a href="https://github.com/haghish/MarkDoc/wiki" class="uri">https://github.com/haghish/MarkDoc/wiki</a></p>
+<p>You can also change the <strong>hypertext</strong> e.g. <a href="https://github.com/haghish/MarkDoc/wiki">MarDoc's Manual</a></p>
+<hr />
+<pre class="sh_stata">  .  sysuse auto, clear      //load auto dataset </pre>
+<pre><code>      (1978 Automobile Data)
+      </code></pre>
+<pre class="sh_stata">  .  summarize </pre>
+<pre><code>          Variable |        Obs        Mean    Std. Dev.       Min        Max
+      -------------+---------------------------------------------------------
+              make |          0
+             price |         74    6165.257    2949.496       3291      15906
+               mpg |         74     21.2973    5.785503         12         41
+             rep78 |         69    3.405797    .9899323          1          5
+          headroom |         74    2.993243    .8459948        1.5          5
+      -------------+---------------------------------------------------------
+             trunk |         74    13.75676    4.277404          5         23
+            weight |         74    3019.459    777.1936       1760       4840
+            length |         74    187.9324    22.26634        142        233
+              turn |         74    39.64865    4.399354         31         51
+      displacement |         74    197.2973    91.83722         79        425
+      -------------+---------------------------------------------------------
+        gear_ratio |         74    3.014865    .4562871       2.19       3.89
+           foreign |         74    .2972973    .4601885          0          1
+      
+      </code></pre>
+<hr />
+<pre class="sh_stata">  .  histogram price</pre>
+<pre><code>      (bin=8, start=3291, width=1576.875)
+      
+      </code></pre>
+<pre class="sh_stata">  . graph export price_hist.png, replace width(300) </pre>
+<pre><code>      (file price_hist.png written in PNG format)
+      
+      </code></pre>
+<h2 id="including-a-figure">Including a figure</h2>
+<p>Next, I include the histogram of the Price variable using the <code>histogram</code> command and the <code>price</code> variable.</p>
+<hr />
+<div class="figure">
+<img src="price_hist.png" alt="Figure 1. Histogram of the price variable" />
+<p class="caption">Figure 1. Histogram of the <code>price</code> variable</p>
+</div>
+<pre class="sh_stata">  .  histogram mpg</pre>
+<pre><code>      (bin=8, start=12, width=3.625)
+      
+      
+      </code></pre>
+<div class="figure">
+<img src="Weaver-figure/figure_1.png" alt="Figure 2. Histogram of the mpg variable" />
+<p class="caption">Figure 2. Histogram of the <code>mpg</code> variable</p>
+</div>
+<hr />
+<h2 id="writing-dynamic-text">Writing dynamic text</h2>
+<p>use the <code>txt</code> command to interpret values of macros and scalars:</p>
+<pre class="sh_stata">  .  summarize price</pre>
+<pre><code>          Variable |        Obs        Mean    Std. Dev.       Min        Max
+      -------------+---------------------------------------------------------
+             price |         74    6165.257    2949.496       3291      15906
+      </code></pre>
+<pre class="sh_stata">  . return list</pre>
+<pre><code>      scalars:
+                        r(N) =  74
+                    r(sum_w) =  74
+                     r(mean) =  6165.256756756757
+                      r(Var) =  8699525.974268788
+                       r(sd) =  2949.495884768919
+                      r(min) =  3291
+                      r(max) =  15906
+                      r(sum) =  456229
+      
+      </code></pre>
+<p>The number of subject is 74 subjects in the darta set.</p>
+<hr />
+<h2 id="creating-table">creating table</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Optopns</strong></th>
+<th align="left"><strong>Discription</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">markup(str)</td>
+<td align="left">specifies the markup language that is used for documentation</td>
+</tr>
+<tr class="even">
+<td align="left">title(str)</td>
+<td align="left">displays the table description</td>
+</tr>
+<tr class="odd">
+<td align="left">width(int)</td>
+<td align="left">specifies the width of the table in HTML and LaTeX</td>
+</tr>
+<tr class="even">
+<td align="left">height(int)</td>
+<td align="left">specifies the height of the table in HTML and LaTeX</td>
+</tr>
+<tr class="odd">
+<td align="left">center</td>
+<td align="left">aligns the table to the center of the document in HTML and LaTeX</td>
+</tr>
+<tr class="even">
+<td align="left">left</td>
+<td align="left">aligns the table to the left of the document</td>
+</tr>
+</tbody>
+</table>
+<p>--</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">size</th>
+<th align="left">material</th>
+<th align="left">color</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">9</td>
+<td align="left">leather</td>
+<td align="left">brown</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="left">hemp canvas</td>
+<td align="left">natural</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">glass tran</td>
+<td align="left">sparent</td>
+</tr>
+</tbody>
+</table>
+<p>Mathematical notations ======================+</p>
+<p>You can use markdoc to:</p>
+<ol style="list-style-type: decimal">
+<li>write inline notations (i.e. in the text paragraphs)</li>
+<li>on a separate line</li>
+</ol>
+<p>For example, $$ will appear inline whereas <span class="math display">\[\sum\]</span> willbe on another line.</p>
+<h1 id="writing-mathematical-notations">Writing mathematical notations</h1>
+<p>The text paragraph can include mathematical notations. For example, this formula <span class="math inline">\(Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span> will be displayed within the text paragraph, whereas this next formula will be placed on a separate line: <span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\]</span></p>
+<p>Use a single &quot;$&quot; sign for writing inline mathematical notations. For example, <span class="math inline">\(f(x)=\sum_{n=0}^\infty\frac{f^{(n)}(a)}{n!}(x-a)^n\)</span> would be rendered inline with the text paragraph. Use double dollar signs &quot;$$&quot; for placing the notations on a separate lines:</p>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\]</span></p>
+<ol style="list-style-type: decimal">
+<li><p>Since the notations appear in comments, they will not be interpreted by Stata as global macros.</p></li>
+<li><p>Place a backslash before the &quot;$&quot; if you are using them in the document, but not for rendering mathematical notations. The backslash will not appear in the dynamic document.</p></li>
+<li><p>You can also write dynamic mathematical notations using the <strong><code>txt</code></strong> command.</p></li>
+</ol>
+<pre class="sh_stata">  .  local a = 10</pre>
+<p><span class="math display">\[ \beta_1 = 10 \]</span></p>
+<p>Note that when you write inline mathematical notations, there should be <strong>NO SPACE</strong> between the dollar sign and the notation. However, if you are placing your notations on a separate line, there should be no problem.</p>
+<h2 id="data-preparation">Data preparation</h2>
+<ol style="list-style-type: decimal">
+<li>clear the data from Stata</li>
+<li>laod the auto dataset</li>
+</ol>
+<pre class="sh_stata">  .  clear</pre>
+<pre class="sh_stata">  . sysuse auto</pre>
+<pre><code>      (1978 Automobile Data)
+      
+      
+      
+      </code></pre>
+<h2 id="summarize-the-data">Summarize the data</h2>
+<pre class="sh_stata">  .  summarize</pre>
+<pre><code>          Variable |        Obs        Mean    Std. Dev.       Min        Max
+      -------------+---------------------------------------------------------
+              make |          0
+             price |         74    6165.257    2949.496       3291      15906
+               mpg |         74     21.2973    5.785503         12         41
+             rep78 |         69    3.405797    .9899323          1          5
+          headroom |         74    2.993243    .8459948        1.5          5
+      -------------+---------------------------------------------------------
+             trunk |         74    13.75676    4.277404          5         23
+            weight |         74    3019.459    777.1936       1760       4840
+            length |         74    187.9324    22.26634        142        233
+              turn |         74    39.64865    4.399354         31         51
+      displacement |         74    197.2973    91.83722         79        425
+      -------------+---------------------------------------------------------
+        gear_ratio |         74    3.014865    .4562871       2.19       3.89
+           foreign |         74    .2972973    .4601885          0          1
+      </code></pre>
+<pre class="sh_stata">  .  histogram price</pre>
+<pre><code>      (bin=8, start=3291, width=1576.875)
+      
+      
+      </code></pre>
+<div class="figure">
+<img src="Weaver-figure/figure_2.png" alt="Histogram of the price variable" />
+<p class="caption">Histogram of the <code>price</code> variable</p>
+</div>
+<h2 id="dealining-with-the-returned-values">Dealining with the returned values</h2>
+<p>Use the <code>return list</code> command to list the returned values. Most of the estimations are stored in a matrix. Therefore, we copy the matrix and use it to extract the values dynamically.</p>
+<pre class="sh_stata">  .  regress price mpg foreign</pre>
+<pre><code>            Source |       SS           df       MS      Number of obs   =        74
+      -------------+----------------------------------   F(2, 71)        =     14.07
+             Model |   180261702         2  90130850.8   Prob &gt; F        =    0.0000
+          Residual |   454803695        71  6405685.84   R-squared       =    0.2838
+      -------------+----------------------------------   Adj R-squared   =    0.2637
+             Total |   635065396        73  8699525.97   Root MSE        =    2530.9
+      
+      ------------------------------------------------------------------------------
+             price |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+      -------------+----------------------------------------------------------------
+               mpg |  -294.1955   55.69172    -5.28   0.000    -405.2417   -183.1494
+           foreign |   1767.292    700.158     2.52   0.014     371.2169    3163.368
+             _cons |   11905.42   1158.634    10.28   0.000     9595.164    14215.67
+      ------------------------------------------------------------------------------
+      
+      
+      </code></pre>
+<p>return the rclass objects</p>
+<pre class="sh_stata">  .  return list</pre>
+<pre><code>      scalars:
+                    r(level) =  95
+      
+      matrices:
+                    r(table) :  9 x 3
+      </code></pre>
+<pre class="sh_stata">  . mat A = r(table)</pre>
+<pre class="sh_stata">  . mat list A</pre>
+<pre><code>      A[9,3]
+                     mpg     foreign       _cons
+           b  -294.19553   1767.2922   11905.415
+          se   55.691719   700.15797   1158.6345
+           t  -5.2825724   2.5241336   10.275385
+      pvalue   1.333e-06   .01383634   1.085e-15
+          ll  -405.24167    371.2169   9595.1638
+          ul   -183.1494   3163.3676   14215.667
+          df          71          71          71
+        crit   1.9939434   1.9939434   1.9939434
+       eform           0           0           0
+      
+      </code></pre>
+<p>Stata returns the estimations in the <strong>eclass</strong></p>
+<pre class="sh_stata">  .  ereturn list</pre>
+<pre><code>      scalars:
+                        e(N) =  74
+                     e(df_m) =  2
+                     e(df_r) =  71
+                        e(F) =  14.07044507869964
+                       e(r2) =  .2838474630671753
+                     e(rmse) =  2530.945641206649
+                      e(mss) =  180261701.570873
+                      e(rss) =  454803694.5507485
+                     e(r2_a) =  .2636741521676592
+                       e(ll) =  -683.3599714095877
+                     e(ll_0) =  -695.7128688987767
+                     e(rank) =  3
+      
+      macros:
+                  e(cmdline) : &quot;regress price mpg foreign&quot;
+                    e(title) : &quot;Linear regression&quot;
+                e(marginsok) : &quot;XB default&quot;
+                      e(vce) : &quot;ols&quot;
+                   e(depvar) : &quot;price&quot;
+                      e(cmd) : &quot;regress&quot;
+               e(properties) : &quot;b V&quot;
+                  e(predict) : &quot;regres_p&quot;
+                e(estat_cmd) : &quot;regress_estat&quot;
+      
+      matrices:
+                        e(b) :  1 x 3
+                        e(V) :  3 x 3
+      
+      functions:
+                   e(sample)   
+      </code></pre>
+<pre class="sh_stata">  . mat B = e(b)</pre>
+<pre class="sh_stata">  . mat list B</pre>
+<pre><code>      B[1,3]
+                 mpg     foreign       _cons
+      y1  -294.19553   1767.2922   11905.415
+      
+      </code></pre>
+<h1 id="creating-the-dynamic-table">Creating the dynamic table</h1>
+<p>In the workshop the following question came up. How can we use the returned values from Stata and create a dynamic table.</p>
+<p>We are trying to create a <strong>dynamic table</strong> that includes the variables and <span class="math inline">\(\beta_0\)</span>. We need to get the stored values from returned matrices in Stata in the following procedure:</p>
+<ol style="list-style-type: decimal">
+<li>save the Stata matrix with a new name</li>
+<li>extract the scalars of interest</li>
+<li>get the name of the columns of the matrix
+<ol style="list-style-type: decimal">
+<li>parse the names of each column</li>
+<li>change the /_const name to <span class="math inline">\(\beta_0\)</span></li>
+</ol></li>
+<li>use the <strong><code>tbl</code></strong> command to generate the dynamic table.</li>
+</ol>
+<pre class="sh_stata">  .  scalar scal1 = A[1,1]</pre>
+<pre class="sh_stata">  . scalar scal2 = A[1,2]</pre>
+<pre class="sh_stata">  . scalar scal3 = A[1,3] </pre>
+<pre class="sh_stata">  .  local colnms: coln A</pre>
+<pre class="sh_stata">  . di "`colnms'"</pre>
+<pre><code>      mpg foreign _cons
+      </code></pre>
+<pre class="sh_stata">  .  tokenize "`colnms'"</pre>
+<pre class="sh_stata">  . display "`1'  `2'  `3'"</pre>
+<pre><code>      mpg  foreign  _cons
+      </code></pre>
+<pre class="sh_stata">  .  local n = 1</pre>
+<pre class="sh_stata">  . while "`1'" != "" {</pre>
+<pre class="sh_stata">  .         if "`1'" == "_cons" {</pre>
+<pre class="sh_stata">  .                 local m`n' "$\\beta_0$"</pre>
+<pre class="sh_stata">  .         }</pre>
+<pre class="sh_stata">  .         else {</pre>
+<pre class="sh_stata">  .                 local m`n' `1'</pre>
+<pre class="sh_stata">  .         }       </pre>
+<pre class="sh_stata">  .         local n = `n' + 1</pre>
+<pre class="sh_stata">  .         macro shift</pre>
+<pre class="sh_stata">  . }</pre>
+<pre class="sh_stata">  .  display "`m1' `m2' `m3'"</pre>
+<pre><code>      mpg foreign $\\beta_0$
+      
+      </code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">mpg</th>
+<th align="center">foreign</th>
+<th align="center"><span class="math inline">\(\beta_0\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">-294.20</td>
+<td align="center">1767.29</td>
+<td align="center">11905.42</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

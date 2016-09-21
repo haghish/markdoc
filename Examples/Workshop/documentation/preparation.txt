@@ -1,0 +1,5 @@
+Data preparation
+-----------------
+
+1. clear the data from Stata
+2. laod the auto dataset
