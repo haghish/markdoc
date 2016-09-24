@@ -998,14 +998,14 @@ program markdoc
 		affiliation("Medical Biometry and Medical Informatics, "				///
 		"University of Freiburg") 												///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
-		printer("`printer'") `noisily'
+		printer("`printer'") `noisily' `install'
 		
 		markdoc example, export(pdf) statax linesize(120) replace 				///
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
 		affiliation("Medical Biometry and Medical Informatics, "				///
 		"University of Freiburg") 												///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
-		printer("`printer'") `noisily'
+		printer("`printer'") `noisily' `install'
 		
 		
 		cap quietly findfile "example.html"
