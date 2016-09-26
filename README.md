@@ -19,7 +19,7 @@ Installing
 __MarkDoc__ receives constant updates on GitHub and users are recommended to follow the updates from GitHub. To install __MarkDoc__ from GitHub on Stata, type:
 
 ```js
-net install markdoc, replace  from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+net install markdoc, from("https://raw.githubusercontent.com/haghish/markdoc/master/")
 ```
 
 <!--
