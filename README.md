@@ -33,7 +33,7 @@ ssc install markdoc
 __MarkDoc__ requires two other packages for highlighting the syntax of Stata commands in the documents and creating dynamic tables which can be installed from SSC as well:
 
 ```js
-net install weaver, replace  from("https://raw.githubusercontent.com/haghish/weaver/master/")
+net install weaver, from("https://raw.githubusercontent.com/haghish/weaver/master/")
 net install statax, from("https://raw.githubusercontent.com/haghish/statax/master/")
 ```
 
@@ -44,6 +44,22 @@ MarkDoc also requires 3 third-party software, which are:
 - [__pdfLaTeX__](https://www.latex-project.org/get/)
 
 The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. 
+
+
+Dialog box
+----------
+
+<center>
+<a href="https://github.com/haghish/MarkDoc/wiki/GUI"><img src="https://raw.githubusercontent.com/wiki/haghish/MarkDoc/images/gui_markdoc.png"  width="300" hspace="10" vspace="6"></a>
+</center>
+
+To further facilitate using __MarkDoc__ in classrooms, a dialog box was written for Stata, which also shows the options and features of MarkDoc. The dialog box supports all three engines of MarkDOc for creating 
+_dynamic document_, _dynamic presentation slides_, and _package vignette (e.g. Stata help files, package manual, etc)_. 
+
+To use the dialog box, type:
+
+    db markdoc
+
 
 Author
 ------
