@@ -1,5 +1,5 @@
 {smcl}
-{right:version 3.8.0}
+{right:version 3.8.1}
 {title:Title}
 
 {phang}
@@ -25,19 +25,19 @@ producing educational materials within Stata Do-file editor.
 
 {p 8 8 2}
 The source code of the project 
-{browse "https://github.com/haghish/MarkDoc":is hosted on GitHub} 
+{browse "https://github.com/haghish/MarkDoc":is hosted on GitHub}
 and also, the package documentation
 {browse "https://github.com/haghish/MarkDoc/wiki":is hosted on GitHub wiki}. all 
 contributions to the package, including improving the documentation or providing 
 further examples are welcome. further resources are available in the webpages below. 
 
 {p 8 8 2}
-{browse "http://haghish.com/markdoc":Homepage}     {break}
-{browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}     {break}
-{browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}    {break}
-{browse "https://github.com/haghish/MarkDoc/releases":Release Notes}    {break}
-{browse "https://github.com/haghish/MarkDoc/tree/master/Examples":Examples}    {break}
-{browse "http://www.statalist.org/forums/forum/general-stata-discussion/general":Please ask your questions on statalist.org} 
+{browse "http://haghish.com/markdoc":Homepage}{break}
+{browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}{break}
+{browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}{break}
+{browse "https://github.com/haghish/MarkDoc/releases":Release Notes}{break}
+{browse "https://github.com/haghish/MarkDoc/tree/master/Examples":Examples}{break}
+{browse "http://www.statalist.org/forums/forum/general-stata-discussion/general":Please ask your questions on statalist.org}
 
 
 {title:Syntax}
@@ -198,7 +198,7 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {p 4 4 2}
 {bf:markdoc} is hosted both on 
-{browse "https://github.com/haghish/MarkDoc":GitHub} 
+{browse "https://github.com/haghish/MarkDoc":GitHub}
 and SSC. MarkDoc receives weekly updates on GitHub but only occasion updates on SSC. 
 Therefore, users are recommended to install the package from GitHub:
 
@@ -252,7 +252,7 @@ dynamic text, creating dynamic tables, and importing figures automatically
 in the document, respectively. MarkDoc also    {break}
 {help statax:requires the Statax package} which provides 
 {browse "http://www.haghish.com/statax/statax.php":a JavaScript syntax highlighter for Stata and Mata code}
- in HTML and PDF documents.
+in HTML and PDF documents.
 
 {p 4 4 2}
 MarkDoc creates the dynamic documents by converting {it:smcl} log-file to other 
@@ -659,8 +659,8 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 	
 	
 
-	
 {p 4 4 2}
+	
 	{bf:{c 29} sysuse auto, clear}	     {break}
 	{bf:{c 29} histogram price}
 	{bf:{c 29} graph export graph.png,  width(400) replace}
@@ -672,7 +672,6 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
     {bf:         ![Histogram of the price variable](./graph.png)}
     {bf:         ***/}
 	
-{p 4 4 2}
 	{bf:  qui log c}
 	{bf:  markdoc example, replace export(slide) install printer("/usr/texbin/pdflatex") }
 
@@ -689,8 +688,8 @@ University of Southern Denmark       {break}
 haghish@imbi.uni-freiburg.de       {break}
 
 {p 4 4 2}
-{browse "www.haghish.com/markdoc":MarkDoc Homepage}           {break}
-Package Updates on  {browse "http://www.twitter.com/Haghish":Twitter}    {break}
+{browse "www.haghish.com/markdoc":MarkDoc Homepage}{break}
+Package Updates on{browse "http://www.twitter.com/Haghish":Twitter}{break}
 
 
 {title:Also see}
