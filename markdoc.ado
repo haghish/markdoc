@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.1
+Version: 3.8.2
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -3290,7 +3290,9 @@ program markdoc
 				if missing("`tex2pdf'") quietly copy `"`tmp1'"' "`convert'", replace
 				else quietly copy `"`tmp1'"' "`tex2pdf'", replace	
 				
-				copy "`tmp1'" "0style3.txt", replace
+				if !missing("`debug'") {
+					copy "`tmp1'" "0style3.txt", replace
+				}	
 			}
 				
 			****************************************************
