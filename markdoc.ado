@@ -1068,7 +1068,7 @@ program markdoc
 	}
 	*/
 				
-	if "`texmaster'" != "" & "`export'" != "tex" & "`export'" != "pdf" {
+	if "`master'" != "" & "`export'" != "tex" & "`export'" != "pdf" {
 		di as txt "{p}(The {ul:{bf:texmaster}} option should only be " 			///
 		"specified while exporting to {bf:tex} format)" _n
 	}
@@ -1298,7 +1298,7 @@ program markdoc
 			`test' 																///	
 			pandoc("`pandoc'")													///
 			printer("`printer'")												///
-			`texmaster'															///
+			`master'															///
 			`statax'															///
 			template(`template')												///
 			title("`title'")													///
@@ -2911,7 +2911,7 @@ program markdoc
 			
 			// Add the document style
 			// -------------------------------------------------------------
-			markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster' `mathjax'	///
+			markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `master' `mathjax'	///
 			`statax' style(`style') template("`template'") `figure' 			///
 			export("`export'") markup("`markup'") `debug' `noisily' `toc'		///
 			title("`title'") author("`author'") affiliation("`affiliation'")	///
@@ -3278,7 +3278,7 @@ program markdoc
 			//  checked that texmaster should be used with "tex"
 			
 			
-			if !missing("`texmaster'") | missing("`texmaster'") & 				///
+			if !missing("`master'") | missing("`master'") & 				///
 			!missing("`template'") & "`markup'" == "latex" 						///
 			& "`export'" != "slide" {
 				
@@ -3290,7 +3290,7 @@ program markdoc
 				
 				// Add the document style
 				// -------------------------------------------------------------
-				markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `texmaster'			///
+				markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `master'			///
 				export("`export'") markup("`markup'") `debug' `noisily' 		///
 				style(`style') template("`template'") `figure' `statax' `toc' 	///
 				title("`title'") author("`author'") affiliation("`affiliation'")	///

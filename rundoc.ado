@@ -13,6 +13,7 @@ program define rundoc
 	PANdoc(str)  	 /// specifies the path to Pandoc software on the machine
 	PRINTer(str)     /// the path to the PDF printer on the machine
 	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
+	master 	 	 	 /// creates a "Main" LaTeX & HTML layout 
 	statax			 /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
 	TITle(str)   	 /// specifies the title of the document (for styling)
@@ -87,7 +88,7 @@ program define rundoc
 	`test' 																		///	
 	pandoc("`pandoc'")															///
 	printer("`printer'")														///
-	`texmaster'																	///
+	`master'																	///
 	`statax'																	///
 	template(`template')														///
 	title("`title'")															///
