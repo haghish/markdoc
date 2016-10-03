@@ -782,7 +782,7 @@ program markdoc
 	if !missing("`texmaster'") {
 		di "The {bf:texmaster} option was renamed to {bf:master}, although it "	///
 	   "continues to work..." _n 
-	   local master `texmaster'	
+	   local master master
 	}   
 	
 	// -------------------------------------------------------------------------
