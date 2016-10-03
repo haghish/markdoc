@@ -1,13 +1,13 @@
 {smcl}
-{right:version 3.8.2}
+{right:version 3.8.3}
 {title:Title}
 
 {phang}
 {cmd:markdoc} {hline 2} a general-purpose literate programming package for Stata that produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
- ({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
+ ({bf:pdf}, {bf:docx}, {bf:odt}, {bf:html}, {bf:xhtml}, {bf:epub}, {bf:markdown}), 
  pdf or html-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
  {bf:dzslide}), as well as dynamic 
- {it:Stata package help files} ({bf:sthlp}).    {break}
+ {it:Stata package help files} ({bf:sthlp}). 
  
 {p 8 8 2}
 To improve applications of the package for developing educational materials 
@@ -25,19 +25,19 @@ producing educational materials within Stata Do-file editor.
 
 {p 8 8 2}
 The source code of the project 
-{browse "https://github.com/haghish/MarkDoc":is hosted on GitHub}
+{browse "https://github.com/haghish/MarkDoc":is hosted on GitHub} 
 and also, the package documentation
 {browse "https://github.com/haghish/MarkDoc/wiki":is hosted on GitHub wiki}. all 
 contributions to the package, including improving the documentation or providing 
 further examples are welcome. further resources are available in the webpages below. 
 
 {p 8 8 2}
-{browse "http://haghish.com/markdoc":Homepage}{break}
-{browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}{break}
-{browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}{break}
-{browse "https://github.com/haghish/MarkDoc/releases":Release Notes}{break}
-{browse "https://github.com/haghish/MarkDoc/tree/master/Examples":Examples}{break}
-{browse "http://www.statalist.org/forums/forum/general-stata-discussion/general":Please ask your questions on statalist.org}
+{browse "http://haghish.com/markdoc":Homepage}     {break}
+{browse "http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf":Journal Article}     {break}
+{browse "https://github.com/haghish/MarkDoc/wiki":MarkDoc Documentation Manual}    {break}
+{browse "https://github.com/haghish/MarkDoc/releases":Release Notes}    {break}
+{browse "https://github.com/haghish/MarkDoc/tree/master/Examples":Examples}    {break}
+{browse "http://www.statalist.org/forums/forum/general-stata-discussion/general":Please ask your questions on statalist.org} 
 
 
 {title:Syntax}
@@ -51,7 +51,7 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 {opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
 {opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
-{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt noi:sily}
+{opt sum:mary(str)} {opt d:ate} {opt master} {opt statax} {opt noi:sily}
 {* *! {opt ascii:table}}
 ]
 
@@ -152,7 +152,7 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
 The available styles are {bf:simple} and {bf:stata}. If the document is exported 
-in LaTeX format, the {bf:stata} option (also if used with {cmd: texmaster} option) 
+in LaTeX format, the {bf:stata} option (also if used with {cmd: master} option) 
 will produce a {browse "http://www.stata-journal.com/author/":LaTeX article in the {bf:Stata Journal} style}, 
 even if the document is written in Markdown.
 {ul:In other words, you can write your stata journal article using Markdown}.{p_end}
@@ -179,10 +179,13 @@ to add the required packages to the dynamic document by providing a file that in
 
 {synopt:{opt d:ate}}specify the current date in the document{p_end}
 
-{synopt:{opt tex:master}}while creating a LaTeX document, MarkDoc only translates the 
-content of the smcl file to tex and since the document does not include the formatting and 
-required LaTeX packages, it cannot be compiled (although it can be imported in a document). 
-This option create a "main" file in LaTeX to allow compiling the document.{p_end}
+{synopt:{opt master}}while creating a LaTeX or HTML document, MarkDoc only translates the 
+content of the smcl file to tex or html respectively. Since the document does not include the required
+layout, it cannot be compiled (although it can be imported in a document). 
+This option creates the layout in LaTeX and HTML to allow compiling the document. 
+Many features of the HTML document (that are written with HTML markup) such as 
+mathematical notations require this option. Otherwise, the user should build 
+the layout from scratch.{p_end}
 
 {synopt:{opt statax}}highlights the syntax of Stata codes in the HTML and PDF 
 documents using {help Statax}, which is a JavaScript syntax highlighter engine for Stata{p_end}
@@ -198,7 +201,7 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 
 {p 4 4 2}
 {bf:markdoc} is hosted both on 
-{browse "https://github.com/haghish/MarkDoc":GitHub}
+{browse "https://github.com/haghish/MarkDoc":GitHub} 
 and SSC. MarkDoc receives weekly updates on GitHub but only occasion updates on SSC. 
 Therefore, users are recommended to install the package from GitHub:
 
@@ -252,7 +255,7 @@ dynamic text, creating dynamic tables, and importing figures automatically
 in the document, respectively. MarkDoc also    {break}
 {help statax:requires the Statax package} which provides 
 {browse "http://www.haghish.com/statax/statax.php":a JavaScript syntax highlighter for Stata and Mata code}
-in HTML and PDF documents.
+ in HTML and PDF documents.
 
 {p 4 4 2}
 MarkDoc creates the dynamic documents by converting {it:smcl} log-file to other 
@@ -628,7 +631,7 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 
     {bf:  markdoc example, replace export(html) install}			
     {bf:  markdoc example, replace export(docx)}
-    {bf:  markdoc example, replace export(tex) texmaster}
+    {bf:  markdoc example, replace export(tex) master}
     {bf:  markdoc example, replace export(pdf)}
     {bf:  markdoc example, replace export(epub)}
 
@@ -659,8 +662,8 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 	
 	
 
-{p 4 4 2}
 	
+{p 4 4 2}
 	{bf:{c 29} sysuse auto, clear}	     {break}
 	{bf:{c 29} histogram price}
 	{bf:{c 29} graph export graph.png,  width(400) replace}
@@ -672,6 +675,7 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
     {bf:         ![Histogram of the price variable](./graph.png)}
     {bf:         ***/}
 	
+{p 4 4 2}
 	{bf:  qui log c}
 	{bf:  markdoc example, replace export(slide) install printer("/usr/texbin/pdflatex") }
 
@@ -688,8 +692,8 @@ University of Southern Denmark       {break}
 haghish@imbi.uni-freiburg.de       {break}
 
 {p 4 4 2}
-{browse "www.haghish.com/markdoc":MarkDoc Homepage}{break}
-Package Updates on{browse "http://www.twitter.com/Haghish":Twitter}{break}
+{browse "www.haghish.com/markdoc":MarkDoc Homepage}           {break}
+Package Updates on  {browse "http://www.twitter.com/Haghish":Twitter}    {break}
 
 
 {title:Also see}

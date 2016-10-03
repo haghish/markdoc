@@ -1,12 +1,12 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.2
+Version: 3.8.3
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
-({bf:pdf}, {bf:docx}, {bf:html}, {bf:odt}, {bf:epub}, {bf:markdown}), 
+({bf:pdf}, {bf:docx}, {bf:odt}, {bf:html}, {bf:xhtml}, {bf:epub}, {bf:markdown}), 
 pdf or html-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
 {bf:dzslide}), as well as dynamic 
-{it:Stata package help files} ({bf:sthlp}).  
+{it:Stata package help files} ({bf:sthlp}). 
 ----------------------------------------------------- DO NOT EDIT THIS LINE ***/
 
 /***
@@ -51,7 +51,7 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 {opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
 {opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
-{opt sum:mary(str)} {opt d:ate} {opt tex:master} {opt statax} {opt noi:sily}
+{opt sum:mary(str)} {opt d:ate} {opt master} {opt statax} {opt noi:sily}
 {* *! {opt ascii:table}}
 ]
 
@@ -147,7 +147,7 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
 The available styles are {bf:simple} and {bf:stata}. If the document is exported 
-in LaTeX format, the {bf:stata} option (also if used with {cmd: texmaster} option) 
+in LaTeX format, the {bf:stata} option (also if used with {cmd: master} option) 
 will produce a {browse "http://www.stata-journal.com/author/":LaTeX article in the {bf:Stata Journal} style}, 
 even if the document is written in Markdown.
 {ul:In other words, you can write your stata journal article using Markdown}.{p_end}
@@ -174,10 +174,13 @@ to add the required packages to the dynamic document by providing a file that in
 
 {synopt:{opt d:ate}}specify the current date in the document{p_end}
 
-{synopt:{opt tex:master}}while creating a LaTeX document, MarkDoc only translates the 
-content of the smcl file to tex and since the document does not include the formatting and 
-required LaTeX packages, it cannot be compiled (although it can be imported in a document). 
-This option create a "main" file in LaTeX to allow compiling the document.{p_end}
+{synopt:{opt master}}while creating a LaTeX or HTML document, MarkDoc only translates the 
+content of the smcl file to tex or html respectively. Since the document does not include the required
+layout, it cannot be compiled (although it can be imported in a document). 
+This option creates the layout in LaTeX and HTML to allow compiling the document. 
+Many features of the HTML document (that are written with HTML markup) such as 
+mathematical notations require this option. Otherwise, the user should build 
+the layout from scratch.{p_end}
 
 {synopt:{opt statax}}highlights the syntax of Stata codes in the HTML and PDF 
 documents using {help Statax}, which is a JavaScript syntax highlighter engine for Stata{p_end}
@@ -612,7 +615,7 @@ Use the "Markers" for hiding sections of the log-file in the dynamic document.
 
     {bf:  markdoc example, replace export(html) install}			
     {bf:  markdoc example, replace export(docx)}
-    {bf:  markdoc example, replace export(tex) texmaster}
+    {bf:  markdoc example, replace export(tex) master}
     {bf:  markdoc example, replace export(pdf)}
     {bf:  markdoc example, replace export(epub)}
 
@@ -729,6 +732,7 @@ program markdoc
 	PANdoc(str)  	 /// specifies the path to Pandoc software on the machine
 	PRINTer(str)     /// the path to the PDF printer on the machine
 	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
+	master 	 	 	 /// creates a "Main" LaTeX & HTML layout 
 	statax			 /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
 	TITle(str)   	 /// specifies the title of the document (for styling)
@@ -774,6 +778,12 @@ program markdoc
 	// CHANGED SYNTAX
 	// =========================================================================	
 	local mathjax mathjax
+					
+	if !missing("`texmaster'") {
+		di "The {bf:texmaster} option was renamed to {bf:master}, although it "	///
+	   "continues to work..." _n 
+	   local master `texmaster'	
+	}   
 	
 	// -------------------------------------------------------------------------
 	// Check for Required Packages (Weaver & Statax)
@@ -843,7 +853,8 @@ program markdoc
 	// does not match the markup language, return proper error
 	// =========================================================================	
 	if "`markup'" == "html" {
-		if "`export'" != "html" & "`export'" != "pdf" & !missing("`export'") {
+		if "`export'" != "html" & "`export'" != "pdf" & "`export'" != "xhtml" & ///
+		!missing("`export'") {
 			di as err "{p}The {bf:html} markup can only export {bf:html} " ///
 			"and {bf:pdf} documents"
 			error 100
