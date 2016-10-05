@@ -1,0 +1,1128 @@
+VERSION 12 
+POSITION . . 440 420
+
+
+// -----------------------------------------------------------------------------
+// LISTS
+// =============================================================================
+
+// Specify MarkDoc Format
+LIST format_list
+BEGIN
+	pdf
+	docx
+	odt
+	html
+	tex
+	markdown
+END
+
+// Specify the Markup langugae
+LIST markup_list
+BEGIN
+	markdown
+	latex
+	html
+END
+
+// Specify the Markup langugae for Stata documentation
+LIST helpfile_list
+BEGIN
+	markdown & smcl
+	//smcl
+END
+
+// Specify the Markup langugae
+LIST slide_markup_list
+BEGIN
+	markdown
+	latex
+END
+
+// Specify the Document Theme
+LIST style_list
+BEGIN
+	stata
+	simple
+END
+
+// Beamer Theme
+LIST theme_list
+BEGIN
+	default
+	AnnArbor
+	Antibes
+	Bergen
+	Berkeley
+	Berlin
+	Boadilla
+	boxes
+	CambridgeUS
+	Copenhagen
+	Darmstadt
+	Dresden
+	Frankfurt
+	Goettingen
+	Hannover
+	Ilmenau
+	JuanLesPins
+	Luebeck
+	Madrid
+	Malmoe
+	Marburg
+	Montpellier
+	PaloAlto
+	Pittsburgh
+	Rochester
+	Singapore
+	Szeged
+	Warsaw
+END
+
+// Beamer Color
+LIST color_list
+BEGIN
+	default
+	albatross
+	beaver
+	beetle
+	crane
+	dolphin
+	dove
+	fly
+	lily
+	orchid
+	rose
+	seagull
+	seahorse
+	sidebartab
+	structure
+	whale
+	wolverine
+END
+
+// Beamer Font
+LIST font_list
+BEGIN
+	default
+	professionalfonts
+	serif
+	structurebold
+	structureitalicserif
+	structuresmallcapsserif
+END
+
+LIST code_list
+BEGIN
+	tiny
+	scriptsize
+	footnotesize
+	small
+	normalsize
+	large
+	Large
+	LARGE
+	huge
+	Huge
+END
+
+// -----------------------------------------------------------------------------
+// MAIN PAGE BUTTONS
+// =============================================================================
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+HELP hlp1,   view("help markdoc")  //"browse https://github.com/haghish/MarkDoc/wiki"
+RESET res1
+COPY copy1
+
+
+// -----------------------------------------------------------------------------
+// GENERAL SCRIPTS
+// =============================================================================
+
+// Initial script that is executed automatically
+SCRIPT PREINIT
+BEGIN	
+*    main.texmaster.disable
+	//main.statax.disable
+	
+	*if sub.visible() {
+	*}
+	
+	// for example, this will disable the foolowing button
+	*main.toc.disable
+END
+
+
+// Reset Values of the Main Tab
+// ----------------------------
+SCRIPT mainReset
+BEGIN	
+	*main.sourceFile.disable
+	*main.sourceFile.setvalue ""
+	*main.markup.setvalue ""
+	sub.sourceFile.setvalue ""
+	vignette.sourceFile.setvalue ""
+END
+
+// Reset Values of the Slides Tab
+// -------------------------------
+
+SCRIPT subReset
+BEGIN	
+	
+	
+	main.sourceFile.setvalue ""
+	*main.markup.setvalue ""
+	vignette.sourceFile.setvalue ""
+	
+END
+
+SCRIPT vignetteReset
+BEGIN	
+	sub.sourceFile.setvalue ""
+	main.sourceFile.setvalue ""
+END
+
+
+		// Unused Scripts
+		// ------------------------------------
+		/*
+		// Hide LaTeX options
+		SCRIPT TeXoptions
+		BEGIN
+			main.texmaster.enable
+			main.statax.disable
+		END
+
+		SCRIPT main_ck_vlab_on
+		BEGIN
+		   main.cb_vlab.enable
+		END
+
+		SCRIPT main_ck_vlab_off
+		BEGIN
+		   main.cb_vlab.disable
+		END
+
+		SCRIPT disablethem
+		BEGIN
+		  
+			if main.format.isneq("tex") {
+				main.texmaster.disable
+			}
+		  *main.texmaster.disable
+		  *main.vars.disable
+		  *options.detail.disable
+		  *options.status.disable
+		END
+		
+		SCRIPT sub_inon
+		BEGIN
+		  sub.sp_from.enable
+		  sub.sp_to.enable
+		END
+
+		SCRIPT sub_inoff
+		BEGIN
+		  sub.sp_from.disable
+		  sub.sp_to.disable
+		END
+
+
+		*/
+
+// -----------------------------------------------------------------------------
+// DYNAMIC DOCUMENT TAB
+// =============================================================================
+
+SCRIPT main_POSTINIT
+BEGIN
+	// enable the main dialog and disable the rest
+	*main.sourceFile.enable
+	*main.sourceFile.enable
+END
+
+
+DIALOG main, label("MarkDoc") tabtitle("Dynamic Document")
+BEGIN
+	
+	//FRAME box        10   72   310    30
+	
+	// Browse SMCL or DO file
+	// -------------------------------------------------------------------------
+	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
+	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...) ///
+	filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.") ///
+	onchange("script mainReset")
+	
+	// Specify Markup, Format, Style
+	// -------------------------------------------------------------------------
+	TEXT tx_markup   10   +30  200  .  , label("Markup language")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(markup_list) onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_format   +120 -20  200  .  , label("Document format")
+	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.texmaster.disable")    // onselchange("program test")
+	RADIO r1         @    +20   100 .  , first  label("html") onclickon("program test") //option(nociforeground)
+    RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program test") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
+    RADIO r3         +50    @   @ ., middle label("tex") onclickon("program test") //onclickon("script TeXoptions")
+    RADIO r4         +50    @   @ ., middle   label("docx") onclickon("program test")
+	RADIO r5         +50    @   @ ., middle   label("odt") onclickon("program test")
+	RADIO r6         +50    @   @ ., last   label("md") onclickon("program test")
+	
+
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_opts 10   +35  420  305, label("Options")
+	  
+		// RIGHT COLUMN
+		// ---------------------------------------------------------------------
+		
+		// install
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+	
+		// replace
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
+	  
+		// syntax highlighter
+		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1)
+		
+	  
+		// table of content
+		CHECKBOX toc      @    +17   @   .  , option(toc) label("Table of content") 
+			   
+		// current date
+		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
+			   
+		// numbered
+		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+	  
+		// texmaster
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+	  
+		// noisily
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+
+		// title of the document
+		TEXT tx_title @ +30 50 ., label(Title)
+		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
+	 
+		// Author of the document
+		TEXT tx_author 20 +20 50 ., label(Author)
+		EDIT author 80 @ 340 18  
+	 
+		// Affiliation
+		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
+		EDIT affiliation 80 @ 340 18   
+	 
+		// Address
+		TEXT tx_address 20 +20 50 ., label(Address)
+		EDIT address 80 @ 340 18  
+	 
+		// Summary
+		TEXT tx_summary  20   +20  50    ., label(Summary)
+		EDIT summary     80   @    340  36   
+		
+		// LEFT COLUMN
+		// ---------------------------------------------------------------------
+	
+		// layout
+		TEXT tx_style     220  137  200  .  , label("Select document layout style")
+		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
+		
+		// layout
+		TEXT tx_template  @    +30  200  .  , label("Use layout (css, docx, tex, etc)")
+		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
+		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
+		
+		CHECKBOX activate @    +31  200  .  , default(0) label("Adjust linesize") onclickon("program test") onclickoff("program test")
+		*TEXT tx_linesize  +20   @  100  .  , label("Adjust the linesize") 
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		
+END
+
+
+
+
+
+
+
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// PRESENTATION SLIDES TAB
+// =============================================================================	
+
+
+
+DIALOG sub, tabtitle("Presentation Slide") 
+BEGIN
+	
+	//BUTTON help 200 100 80 ., label("Help") onpush("view help markdoc")
+	
+	// Browse SMCL or DO file
+	// -------------------------------------------------------------------------
+	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
+	FILE sourceFile	     10   +20  420  .  , error("Open file") label(Browse...) onchange("script subReset") filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce dynamic presentation slides by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.")
+	
+	// Specify Markup, Format, Style
+	// -------------------------------------------------------------------------
+	TEXT tx_markup   10   +30  200  .  , label("Markup language")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(slide_markup_list) onselchange("program subtest") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	
+	TEXT tx_format   +120 -20  200  .  , label("Presentation slide format")
+	RADIO r1         @    +20   100 .  , first  label("pdf") onclickon("program subtest") //option(nociforeground)
+    RADIO r2         +50    @   @  ., middle label("slidy") onclickon("program subtest")
+    RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program subtest") //onclickon("script TeXoptions")
+	
+	
+//	BUTTON bu_facvars @ +50 @ ., label("my Button") onpush("program bu_facvars_getOpts")
+	 
+	//BUTTON bu_facvars     _ilft	+35	200	.,			///
+	//onpush("program bu_facvars_getOpts")				///
+	//label(resource LBL_FACTOR_VARIABLE_DISPLAY_OPTIONS)
+
+	
+	GROUPBOX beamer 10   +35  420  70, label("Beamer layout")
+	
+		TEXT tx_theme    +10  +20 200  50  , label("Theme")
+		COMBOBOX theme   @    +17 69   .  , dropdownlist contents(theme_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_color    +72 -17  200  50  , label("Color")
+		COMBOBOX color   @    +17 69   .  , dropdownlist contents(color_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_font     +72 -17  200  50  , label("Font")
+		COMBOBOX font    @    +17 69   .  , dropdownlist contents(font_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_codesize     +72 -17  50  .  , label("Code size")
+		COMBOBOX codesize    @    +17 69   .  , dropdownlist contents(code_list) default(scriptsize) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		
+		TEXT tx_bwidth +77 -17  50  .  , label("Width")
+		SPINNER bwidth @    +17 50   .  , min(80)  max(255) default(128) tooltip("change the font size of the slide")
+		
+		TEXT tx_bheight +60 -17  50  .  , label("Height")
+		SPINNER bheight @    +17 50   .  , min(80)  max(255) default(96) tooltip("change the font size of the slide")
+		
+		
+		
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_opts 10   +50  420  218, label("Options")
+	  
+		// RIGHT COLUMN
+		// ---------------------------------------------------------------------
+		
+		// install
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+	
+		// replace
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
+			   
+		// current date
+		//CHECKBOX date     @    +17   @   .  , option(date) label("add the current date") 
+			   
+		// numbered
+		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+	  
+		// texmaster
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+	  
+		// noisily
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+
+		// title of the document
+		TEXT tx_title @ 322 50 ., label(Title)
+		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
+		
+		// subtitle
+		TEXT tx_subtitle 20 +20 50 ., label(Subtitle)
+		EDIT subtitle 80 @ 340 18  
+		
+		// Author of the document
+		TEXT tx_author 20 +20 50 ., label(Author)
+		EDIT author 80 @ 340 18  
+	 
+		// Affiliation
+		TEXT tx_affiliation 20 +20 50 ., label(Date / Aff)
+		EDIT affiliation 80 @ 340 18   
+	 
+		// Address
+		//TEXT tx_address 20 +20 . ., label(Address)
+		//EDIT address 80 @ 340 18  
+	 
+		// Summary
+		*TEXT tx_summary  20   +20  .    ., label(Summary)
+		*EDIT summary     80   @    340  50   
+		
+		
+		
+		// LEFT COLUMN
+		// ---------------------------------------------------------------------
+	
+		// layout
+	*	TEXT tx_style     220  134  200  .  , label("Theme")
+		*BUTTON yamlgenerator @    +20  80    .  , label("Generate...") onpush("view dialog yaml") //onpush("program sub_yaml")
+		//COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
+	*	COMBOBOX theme   @    +20 80   .  , dropdownlist contents(theme_list)
+		
+	*	TEXT tx_color    +100 134  200  .  , label("Color")
+	*	COMBOBOX color   @    +20 80   .  , dropdownlist contents(color_list)
+	
+		// layout
+		TEXT tx_template  220  223  200  .  , label("Use layout (css or tex)")
+		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
+		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
+		
+		CHECKBOX activate @    +31  200  .  , label("Adjust linesize") default(0) onclickon("program subtest") onclickoff("program subtest")
+		*TEXT tx_linesize  +17   @  240  .  , label("Adjust the linesize") 
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+
+END
+
+
+
+
+// -----------------------------------------------------------------------------
+// PACKAGE VIGNETTE TAB
+// =============================================================================	
+DIALOG vignette, tabtitle("Package Vignette") 
+BEGIN
+	
+	// Browse ADO or MATA file
+	// -------------------------------------------------------------------------
+	TEXT txt_file	     10    5   320  .  , label(`"Select "ado" or "mata" file"')
+	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...) ///
+	filter("Ado file|*.ado|Mata file|*.mata") tooltip("MarkDoc can produce Stata help file by extracting the documentation from the source code. Select a script file to be used as the source of the document.") ///
+	onchange("script vignetteReset")
+	
+	
+	// Specify Markup, Format, Style
+	// -------------------------------------------------------------------------
+	TEXT tx_markup   10   +30  200  .  , label("Markup language")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
+	
+	TEXT tx_format   +120 -20  200  .  , label("Document format")
+	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.texmaster.disable")    // onselchange("program test")
+	RADIO r1         @    +20   100 .  , first  label("sthlp") onclickon("program vintest") //option(nociforeground)
+    RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program vintest") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
+    RADIO r3         +42    @   @ ., middle label("html") onclickon("program vintest") //onclickon("script TeXoptions")
+    RADIO r4         +47    @   @ ., middle   label("docx") onclickon("program vintest")
+	RADIO r5         +48    @   @ ., middle   label("odt") onclickon("program vintest")
+	RADIO r6         +40    @   @ ., middle   label("tex") onclickon("program vintest")
+	RADIO r7         +40    @   @ ., last   label("md") onclickon("program vintest")
+	
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_opts 10   +35  420  305, label("Options")
+	  
+		// RIGHT COLUMN
+		// ---------------------------------------------------------------------
+		
+		
+		// install
+		CHECKBOX install  +10    +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		
+		// replace
+		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
+		
+		// append template
+		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Append help-file template") default(1) 
+
+		// table of content
+		CHECKBOX toc      @    +17   @   .  , option(toc) label("Table of content") 
+			   
+		// current date
+		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
+			   
+		// texmaster
+		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+	  
+		// noisily
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+
+		// title of the document
+		TEXT tx_title @ 270 50 ., label(Title)
+		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
+	 
+		// Author of the document
+		TEXT tx_author 20 +20 50 ., label(Author)
+		EDIT author 80 @ 340 18  
+	 
+		// Affiliation
+		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
+		EDIT affiliation 80 @ 340 18   
+	 
+		// Address
+		TEXT tx_address 20 +20 50 ., label(Address)
+		EDIT address 80 @ 340 18  
+		
+		// Summary
+		TEXT tx_summary  20   +20  50    ., label(Summary)
+		EDIT summary     80   @    340  50   
+		
+		// LEFT COLUMN
+		// ---------------------------------------------------------------------
+	
+		// layout
+		TEXT tx_style     220  136  200  .  , label("Select document layout style")
+		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
+		
+		// layout
+		TEXT tx_template  @    +31  200  .  , label("Use layout (css, docx, tex, etc)")
+		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
+		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
+		
+		CHECKBOX activate @    +30  -20  .  , label("Adjust linesize") default(0) onclickon("program vintest") onclickoff("program vintest")
+		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		
+		
+		*TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
+		*SPINNER  linesize 360  @    60   .  , min(80)  max(255) default(100) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		
+		   
+END
+
+
+/*
+
+// -----------------------------------------------------------------------------
+// CONVERT FILES TAB
+// =============================================================================	
+DIALOG convert, tabtitle("Convert Formats") 
+BEGIN
+	
+ 
+		   
+END
+
+
+*/
+
+
+
+
+// -----------------------------------------------------------------------------
+// PROGRAMS
+// =============================================================================
+
+// test for the main tab
+// -----------------------------------------------------------------------------
+PROGRAM test
+BEGIN
+	
+	// activate the linesize
+	// ----------------------
+	call main.linesize.disable
+	if main.activate.iseq(0) {
+		call main.linesize.disable
+	}
+	if main.activate.iseq(1) {
+		call main.linesize.enable
+	}
+	
+	if main.markup.iseq("markdown") {
+		call main.r1.enable
+		call main.r2.enable
+		call main.r3.enable
+		call main.r4.enable
+		call main.r5.enable
+		call main.r6.enable
+		
+		if main.r3.iseq(1)   {
+			call main.texmaster.enable
+			call main.statax.disable
+		}
+		else {
+			call main.texmaster.disable
+			if main.r4.iseq(1) | main.r5.iseq(1) | main.r6.iseq(1)  {
+				call main.statax.disable
+			}
+			else {
+				call main.statax.enable
+			}
+		}
+	}
+	
+	if main.markup.iseq("latex") {
+		call main.statax.disable
+		call main.texmaster.enable
+		call main.r3.enable
+		call main.r1.disable
+		call main.r4.disable
+		call main.r5.disable
+		call main.r6.disable
+	}
+	if main.markup.iseq("html") {
+		call main.r1.enable
+		call main.r3.disable
+		call main.r4.disable
+		call main.r5.disable
+		call main.r6.disable
+	}
+	
+	/*
+	if main.format.iseq("latex")   {
+		call main.texmaster.enable
+	}
+	*/
+	
+	// TEXMASTER 
+	/*
+	if main.format.iseq("tex") {
+		call main.texmaster.enable
+	}
+	else {
+		call main.texmaster.disable
+	}
+	*/
+	
+	
+	// STATAX
+	if main.format.iseq("html") | main.format.iseq("pdf") {
+		call main.statax.enable
+	}
+	else {
+		call main.statax.disable
+	}
+	
+	
+
+	
+	
+END
+
+
+
+// test for the sub tab
+// -----------------------------------------------------------------------------
+PROGRAM subtest
+BEGIN
+	
+	// activate the linesize
+	// ----------------------
+	call sub.linesize.disable
+	if sub.activate.iseq(0) {
+		call sub.linesize.disable
+	}
+	if sub.activate.iseq(1) {
+		call sub.linesize.enable
+	}
+	
+	/*
+	if sub.r1.iseq(1) {
+		call sub.theme.enable
+		call sub.color.enable
+		call sub.font.enable
+		call sub.codesize.enable
+		call sub.bwidth.enable
+		call sub.bheight.enable
+	}
+	else {
+		call sub.theme.disable
+		call sub.color.disable
+		call sub.font.disable
+		call sub.codesize.disable
+		call sub.bwidth.disable
+		call sub.bheight.disable
+	}
+	*/
+	
+	// else if the markup is Markdown
+	if sub.markup.iseq("markdown") & sub.r1.iseq(1) {
+		call sub.r1.enable
+		call sub.r2.enable
+		call sub.r3.enable
+		call sub.texmaster.disable
+		call sub.theme.enable
+		call sub.color.enable
+		call sub.font.enable
+		call sub.codesize.enable
+		call sub.bwidth.enable
+		call sub.bheight.enable
+	}
+	
+	// else if the markup is LaTeX
+	else {
+		call sub.r2.disable
+		call sub.r3.disable
+		*call sub.yamlgenerator.disable
+		
+		if sub.r1.iseq(1)    {
+			call sub.texmaster.enable
+		}
+		else {
+			call sub.texmaster.disable
+		}
+		
+		call sub.theme.disable
+		call sub.color.disable
+		call sub.font.disable
+		call sub.codesize.disable
+		call sub.bwidth.disable
+		call sub.bheight.disable
+	}
+	
+END
+
+
+// test for the vignette tab
+// -----------------------------------------------------------------------------
+PROGRAM vintest
+BEGIN
+	
+	// activate the linesize
+	// ----------------------
+	call vignette.linesize.disable
+	if vignette.activate.iseq(0) {
+		call vignette.linesize.disable
+	}
+	if vignette.activate.iseq(1) {
+		call vignette.linesize.enable
+	}
+	
+	// else if the markup is Markdown
+	if vignette.markup.iseq("markdown & smcl") {
+		call vignette.r1.enable
+		call vignette.r2.enable
+		call vignette.r3.enable
+		call vignette.r4.enable
+		call vignette.r5.enable
+		call vignette.r6.enable
+		call vignette.r7.enable
+		call vignette.texmaster.disable
+		*call vignette.yamlgenerator.enable
+		
+		if vignette.r6.iseq(1)    {
+			call vignette.texmaster.enable
+		}
+		else {
+			call vignette.texmaster.disable
+		}
+	}
+	
+	// else if the markup is LaTeX
+	else {
+		call vignette.r2.disable
+		call vignette.r3.disable
+		call vignette.r4.disable
+		call vignette.r5.disable
+		call vignette.r6.disable
+		call vignette.r7.disable
+		call vignette.texmaster.disable
+		*call vignette.yamlgenerator.disable
+	}
+	
+	if vignette.r1.iseq(1)    {
+		call vignette.toc.disable
+		call vignette.style.disable
+		call vignette.template.disable
+		
+		call vignette.title.disable
+		call vignette.author.disable
+		call vignette.affiliation.disable
+		call vignette.address.disable
+		call vignette.summary.disable
+	}
+	else {
+		call vignette.toc.enable
+		call vignette.style.enable
+		call vignette.template.enable
+		
+		call vignette.title.enable
+		call vignette.author.enable
+		call vignette.affiliation.enable
+		call vignette.address.enable
+		call vignette.summary.enable
+	}
+	
+END
+
+
+PROGRAM sub_yaml
+BEGIN
+	call create CHILD yaml , //nomodal //AS markdoc_title 
+	//call yaml
+END
+
+
+PROGRAM activate
+BEGIN
+	if main.activate.iseq(1) {
+		call main.linesize.enable
+	}
+	else {
+		call main.linesize.disable
+	}
+END
+
+
+// -----------------------------------------------------------------------------
+// FINAL MARKDOC COMMAND
+// =============================================================================	
+PROGRAM command
+BEGIN
+	put "markdoc "
+    
+	// You must load a file!
+	if ! main.sourceFile & ! sub.sourceFile & ! vignette.sourceFile {
+		require main.sourceFile
+	}
+	
+	// Main Tab
+	// -------------------------------------------------------------------------
+	if main.sourceFile {
+		put `"""'
+		require main.sourceFile
+		put main.sourceFile
+		put `"" , "'
+		
+		put "markup(" main.markup  ") "
+		
+		if main.r1 {
+			put "export(html) "
+		}
+		if main.r2 {
+			put "export(pdf) "
+		}
+		if main.r3 {
+			put "export(tex) "
+		}
+		if main.r4 {
+			put "export(docx) "
+		}
+		if main.r5 {
+			put "export(odt) "
+		}
+		if main.r6 {
+			put "export(md) "
+		}
+		
+		option main.replace						// replace
+		option main.install						// install 
+		option main.statax						// Statax syntax highlighter
+		option main.toc							// table of content
+		option main.date						// table of date
+		option main.numbered					// numbered 
+		option main.texmaster					// texmaster
+		option main.noisily						// noisily
+		
+		*put "export(" main.format ") "
+		
+		if main.style {
+			put "style(" `"""' main.style `"""' ") "
+		}
+		
+		if main.template {
+			put "template(" `"""' main.template `"""' ") "
+		}
+		
+		if main.title {
+			put "title(" `"""' main.title `"""' ") "
+		}	
+		if main.author {
+			put "author(" `"""' main.author `"""' ") "
+		}	
+		if main.affiliation {
+			put "affiliation(" `"""' main.affiliation  `"""' ") "
+		}	
+		if main.address {
+			put "address(" `"""' main.address `"""' ") "
+		}	
+		if main.summary {
+			put "summary(" `"""' main.summary  `"""' ") "
+		}
+		
+		if main.linesize {
+			put "linesize(" main.linesize ") "
+		}
+	}
+	
+	// SLIDE TAB
+	// -------------------------------------------------------------------------
+	if sub.sourceFile {
+		put `"""'
+		require sub.sourceFile
+		put sub.sourceFile
+		put `"" , "'
+		
+		put "markup(" sub.markup  ") "
+		
+		if sub.r1 {
+			put "export(slide) "
+		}
+		if sub.r2 {
+			put "export(slidy) "
+		}
+		if sub.r3 {
+			put "export(dzslide) "
+		}
+		
+		option sub.replace						// replace
+		option sub.install						// install 
+		option sub.numbered					// numbered 
+		option sub.texmaster					// texmaster
+		option sub.noisily						// noisily
+		
+		*put "export(" main.format ") "
+		
+		//if main.style {
+		//	put "style(" `"""' main.style `"""' ") "
+		//}
+		
+		if sub.template {
+			put "template(" `"""' sub.template `"""' ") "
+		}
+		
+		if sub.title {
+			put "title(" `"""' sub.title `"""' ") "
+		}	
+		if sub.subtitle {
+			put "subtitle(" `"""' sub.subtitle `"""' ") "
+		}
+		if sub.author {
+			put "author(" `"""' sub.author `"""' ") "
+		}	
+		if sub.affiliation {
+			put "affiliation(" `"""' sub.affiliation  `"""' ") "
+		}		
+
+		if sub.linesize {
+			put "linesize(" sub.linesize ") "
+		}
+		
+		// Beamer Layout
+		if sub.theme {
+			put "btheme(" sub.theme ") "
+		}
+		if sub.color {
+			put "bcolor(" sub.color ") "
+		}
+		if sub.font {
+			put "bfont(" sub.font ") "
+		}
+		
+		if sub.codesize {
+			put "bcodesize(" sub.codesize ") "
+		}
+		
+		if sub.bwidth {
+			put "bwidth(" sub.bwidth ") "
+		}
+		if sub.bheight {
+			put "bheight(" sub.bheight ") "
+		}
+		
+		
+	}		
+   
+	
+	// Vignette Tab
+	// -------------------------------------------------------------------------
+	if vignette.sourceFile {
+		
+		put `"""'
+		put vignette.sourceFile
+		put `"" , "'
+		
+		//the markdown is default, so only specify the smcl
+		if vignette.markup.iseq("smcl") {
+			put "markup(" vignette.markup  ") "
+		}	
+		
+		if vignette.r1 {
+			put "export(sthlp) "
+		}
+		if vignette.r2 {
+			put "export(pdf) "
+		}
+		if vignette.r3 {
+			put "export(html) "
+		}
+		if vignette.r4 {
+			put "export(docx) "
+		}
+		if vignette.r5 {
+			put "export(odt) "
+		}
+		if vignette.r6 {
+			put "export(tex) "
+		}
+		if vignette.r7 {
+			put "export(md) "
+		}
+		
+		option vignette.helplayout					// temp layout
+		option vignette.replace						// replace
+		option vignette.install						// install 
+		option vignette.toc							// table of content
+		option vignette.date						// table of date
+		option vignette.texmaster					// texmaster
+		option vignette.noisily						// noisily
+		
+		*put "export(" vignette.format ") "
+		
+		if vignette.style {
+			put "style(" `"""' vignette.style `"""' ") "
+		}
+		
+		if vignette.template {
+			put "template(" `"""' vignette.template `"""' ") "
+		}
+		
+		if vignette.title {
+			put "title(" `"""' vignette.title `"""' ") "
+		}	
+		if vignette.author {
+			put "author(" `"""' vignette.author `"""' ") "
+		}	
+		if vignette.affiliation {
+			put "affiliation(" `"""' vignette.affiliation  `"""' ") "
+		}	
+		if vignette.address {
+			put "address(" `"""' vignette.address `"""' ") "
+		}	
+		if vignette.summary {
+			put "summary(" `"""' vignette.summary  `"""' ") "
+		}
+		
+		if vignette.linesize {
+			put "linesize(" vignette.linesize ") "
+		}
+	}
+	
+	
+
+END
+
+
+
+
+
+/*** EXAMPLES
+
+/*
+  CHECKBOX ck_numbers   @     +25   @       .,                 ///
+           option(numbers)                                     ///
+           label("Present variable number along with name")    ///
+           onclickon(main.ck_fullnames.disable)                ///
+           onclickoff(main.ck_fullnames.enable)
+*/
+  
+  
+  
+  
+  
+		   
+/*		   
+  CHECKBOX ck_vlab     215 -20  185  .,                            ///
+           label("Attach value label:")                            ///
+           onclickon(script main_ck_vlab_on)                       ///
+           onclickoff(script main_ck_vlab_off)
+  COMBOBOX cb_vlab     @   +20  @    .,                            ///
+           contents(valuelabels) dropdown
+*/
+	
