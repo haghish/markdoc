@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.3
+Version: 3.8.4
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -2725,6 +2725,19 @@ program markdoc
 			if substr(`"`macval(line)'"',1,8) == "       *" {
 				local line : subinstr local line "       * " "", all	
 				local line : subinstr local line "       *" "", all	
+			}
+			
+			// Removing the "***" marker, when the document is not Slides
+			// ----------------------------------------------------------
+			
+			// If we are not exporting to slides, remove the alternative <HR>
+			if "`export'" != "slide" & "`export'" != "slidy" & "`export'" 		///
+			!= "dzslide" {
+				local clue
+				capture local clue : di trim(`"`macval(line)'"')	
+				if "`clue'" == "***" & substr(`"`macval(line)'"',1,4) != "    " {
+					local line : subinstr local line "***" ""
+				}
 			}
 									
 			//TABLES FOR MARKDOWN
