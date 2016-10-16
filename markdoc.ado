@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.4
+Version: 3.8.5
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -2735,7 +2735,7 @@ program markdoc
 			!= "dzslide" {
 				local clue
 				capture local clue : di trim(`"`macval(line)'"')	
-				if "`clue'" == "***" & substr(`"`macval(line)'"',1,4) != "    " {
+				if `"`macval(clue)'"' == "***" & substr(`"`macval(line)'"',1,4) != "    " {
 					local line : subinstr local line "***" ""
 				}
 			}
