@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.5
+Version: 3.8.6
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -3301,11 +3301,14 @@ program markdoc
 				else quietly copy "`tex2pdf'" `"`tmp'"', replace
 				qui cap erase "`convert'"
 				
+				//fix the toc
+				if "`toc'" == "--toc" local toc2 toc
+				
 				// Add the document style
 				// -------------------------------------------------------------
 				markdocstyle , tmp("`tmp'") tmp1("`tmp1'") `master'			///
 				export("`export'") markup("`markup'") `debug' `noisily' 		///
-				style(`style') template("`template'") `figure' `statax' `toc' 	///
+				style(`style') template("`template'") `figure' `statax' `toc2' 	///
 				title("`title'") author("`author'") affiliation("`affiliation'")	///
 				address("`address'") summary("`summary'") `date'
 								
