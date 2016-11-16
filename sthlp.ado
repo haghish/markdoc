@@ -358,10 +358,15 @@ program define sthlp
 		file write `pkg' "d" _n	"d Distribution-Date: `today'" _n "d" _n
 		
 		// make a list of installable files
+		
 		local list : dir . files "*" 
 		tokenize `"`list'"'
 		while `"`macval(1)'"' != "" {
-			if "`macval(1)'"' != ".DS_Store" {
+			if `"`macval(1)'"' != ".DS_Store" & 								///
+			substr(`"`macval(1)'"', -4,.) != ".pkg" &							///
+			substr(`"`macval(1)'"', -4,.) != ".toc" &							///
+			`"`macval(1)'"' != "README.md" & `"`macval(1)'"' != "readme.md"		///
+			{
 				file write `pkg' `"F `1'"' _n
 			}
 			macro shift
