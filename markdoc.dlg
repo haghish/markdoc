@@ -447,7 +447,7 @@ BEGIN
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 50 ., label(Date / Aff)
+		TEXT tx_affiliation 20 +20 50 ., label(Date/Aff)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
@@ -531,6 +531,9 @@ BEGIN
 		
 		// append template
 		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Append help-file template") default(1) 
+		
+		// build
+		CHECKBOX build    @    +17   @   .  , option(build) label("Build the toc & pkg files") default(1) tooltip("Check this button to make MarkDoc automatically generate the Stata.toc and packagename.pkg files for you. These files are required for making your package installable, if you host it on GitHub or your personal website") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// table of content
 		CHECKBOX toc      @    +17   @   .  , option(toc) label("Table of content") 
@@ -540,13 +543,13 @@ BEGIN
 			   
 		// texmaster
 		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
-	  
+		
 		// noisily
 		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// title of the document
-		TEXT tx_title @ 270 50 ., label(Title)
-		EDIT title 80 @ 340 18   //EDIT ed_title +30 @ 340 .
+		TEXT tx_title @ +30 50 ., label(Title)
+		EDIT title    80 @ 340 18   //EDIT ed_title +30 @ 340 .
 	 
 		// Author of the document
 		TEXT tx_author 20 +20 50 ., label(Author)
@@ -562,7 +565,8 @@ BEGIN
 		
 		// Summary
 		TEXT tx_summary  20   +20  50    ., label(Summary)
-		EDIT summary     80   @    340  50   
+		EDIT summary     80   @    340  36   
+		
 		
 		// LEFT COLUMN
 		// ---------------------------------------------------------------------
@@ -817,10 +821,11 @@ BEGIN
 	}
 	
 	if vignette.r1.iseq(1)    {
+		call vignette.build.enable
+		
 		call vignette.toc.disable
 		call vignette.style.disable
 		call vignette.template.disable
-		
 		call vignette.title.disable
 		call vignette.author.disable
 		call vignette.affiliation.disable
@@ -831,12 +836,13 @@ BEGIN
 		call vignette.toc.enable
 		call vignette.style.enable
 		call vignette.template.enable
-		
 		call vignette.title.enable
 		call vignette.author.enable
 		call vignette.affiliation.enable
 		call vignette.address.enable
 		call vignette.summary.enable
+		
+		call vignette.build.disable
 	}
 	
 END
@@ -1058,6 +1064,7 @@ BEGIN
 		option vignette.helplayout					// temp layout
 		option vignette.replace						// replace
 		option vignette.install						// install 
+		option vignette.build						// table of content
 		option vignette.toc							// table of content
 		option vignette.date						// table of date
 		option vignette.texmaster					// texmaster

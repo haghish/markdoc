@@ -15,10 +15,9 @@
 	
 	This program is a part of MarkDoc package and generates dynamic Stata help 
 	files within source code, in ".sthlp" file format. 
- 
-	3.7.0  June,  2016
 */
-*cap prog drop sthlp
+
+cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
@@ -55,6 +54,7 @@ program define sthlp
 	Date			 /// Add the document generation date to the document
 	SUMmary(str)     /// writing the summary or abstract of the report
 	VERsion(str)     /// add version to dynamic help file
+	build		 	 /// creates the toc and pkg files
 	markup(str)		 ///
 	helplayout		 ///
 	]
@@ -287,21 +287,23 @@ program define sthlp
 		& r(eof) == 0 & missing("`exitloop'") {
 
 			// Get the package version
+			// ---------------------------------------------------------------
 			if substr(`trim'(`"`macval(line)'"'),1,8) == "Version:" {
 				local line : subinstr local line "Version:" ""
 				local v = `trim'("`line'")
-				if !missing("`v'") local version "`v'"
+				if !missing("`v'") local version "`v'"				
 			}
 			
 			// Get the package title
+			// ---------------------------------------------------------------
 			if substr(`trim'(`"`macval(line)'"'),1,6) == "Title:" {
 				local line : subinstr local line "Title:" ""
 				local t = `trim'("`line'")
 				if !missing("`t'") local title "`t'"
 			}
 			
-			//Description
-			/*
+			// Description
+			// ---------------------------------------------------------------
 			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
 				local line : subinstr local line "Description:" ""
 				local description = `trim'("`line'")
@@ -312,7 +314,6 @@ program define sthlp
 					
 					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
 					& r(eof) == 0 {
-						*local line2 = `trim'(`"`macval(line)'"')
 						local line2 = `"`macval(line)'"'
 						markdown `"`macval(line2)'"'
 						local description`i' `"`r(md)'"'
@@ -320,30 +321,7 @@ program define sthlp
 						local i `++i'
 					}
 				}
-				
 			}
-			*/
-			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
-				local line : subinstr local line "Description:" ""
-				local description = `trim'("`line'")
-				if !missing(`"`macval(description)'"') {
-					markdown `"`macval(description)'"'
-					local description `r(md)'
-					file read `hitch' line
-					
-					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
-					& r(eof) == 0 {
-						*local line2 = `trim'(`"`macval(line)'"')
-						local line2 = `"`macval(line)'"'
-						markdown `"`macval(line2)'"'
-						local description`i' `"`r(md)'"'
-						file read `hitch' line
-						local i `++i'
-					}
-				}
-				
-			}
-		
 			if substr(`trim'(`"`macval(line)'"'),55,21) == "DO NOT EDIT THIS LINE" {
 				local exitloop 1
 			}
@@ -351,6 +329,50 @@ program define sthlp
 		}		
 	}
 	
+	
+	// Create the toc file
+	// =======================================================================
+	if !missing("`build'") {
+		tempfile toctmp pkgtmp 
+		tempname toc pkg
+		qui file open `toc' using `"`toctmp'"', write replace
+		qui file open `pkg' using `"`pkgtmp'"', write replace
+		
+		file write `toc' "v `version'" _n
+		
+		
+		
+		local capital : di ustrupper("`title'") 
+		file write `toc' "d '`capital'': `description'" _n
+		file write `pkg' "d '`capital'': `description'" _n			
+		local n 1
+		while !missing(`"`description`n''"') {
+			file write `toc' `"d `description`n''"' _n
+			file write `pkg' `"d `description`n''"' _n
+			local n `++n'
+		}
+		macro drop n
+		
+		//get the date in SSC style:
+		local today : display %tdCCYYNNDD date(c(current_date), "DMY")
+		file write `pkg' "d" _n	"d Distribution-Date: `today'" _n "d" _n
+		
+		// make a list of installable files
+		local list : dir . files "*" 
+		tokenize `"`list'"'
+		while `"`macval(1)'"' != "" {
+			if "`macval(1)'"' != ".DS_Store" {
+				file write `pkg' `"F `1'"' _n
+			}
+			macro shift
+		}
+		
+		file write `toc' "p `title'" _n
+		file close `toc'
+		file close `pkg'
+		quietly copy "`toctmp'" "stata.toc", replace
+		quietly copy "`pkgtmp'" "`title'.pkg", replace
+	}
 	
 	// If the template is in use write the information to SMCL file
 	// ============================================================
@@ -465,7 +487,7 @@ program define sthlp
 				*if _rc == 0 & missing(trim("`m'")) {
 				*	local line ""
 				*}
-		
+					
 				// -------------------------------------------------------------
 				// If heading syntax is found, create the heading
 				// -------------------------------------------------------------
@@ -995,12 +1017,6 @@ program define sthlp
 	
 	
 	
-	
-	
-	
-	
-	
-	
 	quietly copy "`tmp'" "`convert'", `replace'	
 	//quietly copy "`tmp'" "$localfile", `replace'	
 	capture macro drop localfile
@@ -1017,3 +1033,4 @@ program define sthlp
 end
 
 *do ./sthlp/bugs.do
+sthlp github.ado, export(sthlp) build replace

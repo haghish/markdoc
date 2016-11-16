@@ -1,5 +1,5 @@
 {smcl}
-{right:version 3.8.7}
+{right:version 3.8.8}
 {title:Title}
 
 {phang}
@@ -186,6 +186,11 @@ This option creates the layout in LaTeX and HTML to allow compiling the document
 Many features of the HTML document (that are written with HTML markup) such as 
 mathematical notations require this option. Otherwise, the user should build 
 the layout from scratch.{p_end}
+
+{synopt:{opt build}}when generating dynamic package documentation in sthlp format, 
+the {bf:build} option will also create the {bf:stata.toc} and {bf:pkgname.pkg} 
+automatically, so that cou can host an installable version of the package on 
+GitHub or your personal website. {p_end}
 
 {synopt:{opt statax}}highlights the syntax of Stata codes in the HTML and PDF 
 documents using {help Statax}, which is a JavaScript syntax highlighter engine for Stata{p_end}

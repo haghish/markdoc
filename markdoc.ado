@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.7
+Version: 3.8.8
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
@@ -181,6 +181,11 @@ This option creates the layout in LaTeX and HTML to allow compiling the document
 Many features of the HTML document (that are written with HTML markup) such as 
 mathematical notations require this option. Otherwise, the user should build 
 the layout from scratch.{p_end}
+
+{synopt:{opt build}}when generating dynamic package documentation in sthlp format, 
+the {bf:build} option will also create the {bf:stata.toc} and {bf:pkgname.pkg} 
+automatically, so that cou can host an installable version of the package on 
+GitHub or your personal website. {p_end}
 
 {synopt:{opt statax}}highlights the syntax of Stata codes in the HTML and PDF 
 documents using {help Statax}, which is a JavaScript syntax highlighter engine for Stata{p_end}
@@ -746,6 +751,7 @@ program markdoc
 	STYle(name)      /// specifies the style of the document
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
 	toc				 /// Creates table of content
+	build		 	 /// creates the toc and pkg files
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
 	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	NUMbered	 	 /// number Stata commands
@@ -3450,7 +3456,7 @@ program markdoc
 		sthlp `smclfile', markup("`markup'") export("`export'") 				///
 		template("`template'") `replace' `date' title("`title'")  				///
 		author("`author'") affiliation("`affiliation'") address("`address'") 	///
-		summary("`summary'") `asciitable' version("`version'") `helplayout'
+		summary("`summary'") `asciitable' version("`version'") `helplayout' `build'
 	}	
 	
 	
