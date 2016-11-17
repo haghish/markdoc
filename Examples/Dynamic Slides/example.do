@@ -160,14 +160,16 @@ size  material      color
 
 
 Mathematical notations
-======================+
+======================
 
 You can use markdoc to:
 
 1. write inline notations (i.e. in the text paragraphs)
 2. on a separate line
 
-For example, $\sum $ will appear inline whereas $$\sum$$ willbe on another line.
+For example, $\sum$ will appear inline whereas $$\sum$$ willbe on another line.
+
+
 ***/
 
 
