@@ -618,6 +618,13 @@ END
 PROGRAM test
 BEGIN
 	
+	// drop other source files
+	// -----------------------
+	if main.sourceFile.isneq("") {
+		sub.sourceFile.iseq("") 
+		vignette.sourceFile.iseq("") 
+	}
+	
 	// activate the linesize
 	// ----------------------
 	call main.linesize.disable
@@ -706,6 +713,13 @@ END
 PROGRAM subtest
 BEGIN
 	
+	// drop other source files
+	// -----------------------
+	if sub.sourceFile.isneq("") {
+		main.sourceFile.iseq("") 
+		vignette.sourceFile.iseq("") 
+	}
+	
 	// activate the linesize
 	// ----------------------
 	call sub.linesize.disable
@@ -777,6 +791,13 @@ END
 // -----------------------------------------------------------------------------
 PROGRAM vintest
 BEGIN
+	
+	// drop other source files
+	// -----------------------
+	if vignette.sourceFile.isneq("") {
+		main.sourceFile.iseq("") 
+		sub.sourceFile.iseq("") 
+	}
 	
 	// activate the linesize
 	// ----------------------
