@@ -366,6 +366,7 @@ program define sthlp
 			substr(`"`macval(1)'"', -4,.) != ".pkg" &							///
 			substr(`"`macval(1)'"', -4,.) != ".toc" &							///
 			`"`macval(1)'"' != "README.md" & `"`macval(1)'"' != "readme.md"		///
+			& `"`macval(1)'"' != "dependency.do"								///
 			{
 				file write `pkg' `"F `1'"' _n
 			}
