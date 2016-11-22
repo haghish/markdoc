@@ -1,1 +1,3 @@
-github install haghish/weaver , replace
+github install haghish/weaver 
+github install haghish/markdown
+
