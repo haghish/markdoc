@@ -3489,3 +3489,4 @@ markdoc "markdoc.ado" , export(html) helplayout replace style("simple")
 title("MarkDoc Help File") author("E. F. Haghish") 
 affiliation("Department of Mathematics and Computer Science <br> University of Southern Denmark") 
 summary(`"This file includes the MarkDoc help file, converted to HTML using MarkDoc package itself. To reproduce the HTML help file from the source code, execute: <br><code> markdoc "markdoc.ado" , export(html) replace style("stata")</code>"') linesize(110)
+*/
