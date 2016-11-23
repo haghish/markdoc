@@ -50,7 +50,7 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 {opt pan:doc(str)} {opt print:er(str)} {opt instal:l} {opt t:est} {opt replace} 
 {opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
-{opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
+{opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
 {opt sum:mary(str)} {opt d:ate} {opt master} {opt statax} {opt noi:sily}
 {* *! {opt ascii:table}}
 ]
@@ -143,8 +143,6 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt num:bered}}numbers Stata commands in the dynamic document.{p_end}
 
-{synopt:{opt linesize(int)}}change the {help linesize} for the {help log}, which can range from 80 to 255. {bf:MarkDoc} also evaluates the linesize of the document and applies the actual linesize automatically, if the linesize is not specified.{p_end}
-
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
 The available styles are {bf:simple} and {bf:stata}. If the document is exported 
 in LaTeX format, the {bf:stata} option (also if used with {cmd: master} option) 
@@ -199,23 +197,22 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 Installation
 ============
 
-__markdoc__ is hosted both on 
-[GitHub](https://github.com/haghish/MarkDoc) 
-and SSC. MarkDoc receives weekly updates on GitHub but only occasion updates on SSC. 
-Therefore, users are recommended to install the package from GitHub:
+The latest release as well as archived older versions of __markdoc__ are hosted on 
+[GitHub](https://github.com/haghish/MarkDoc) website. MarkDoc receives weekly 
+updates on GitHub so I recommend you to "watch" (subscribe) the repository's 
+updates on GitHub to get the latest news about the package.
+ 
+__markdoc__ depends on several other Stata modules. If you have the 
+[__github__ package](https://github.com/haghish/github) installed, you can install 
+__markdoc__ and all of its dependencies by typing:
 
-        . net install markdoc, force  from([https://raw.githubusercontent.com/haghish/markdoc/master/)
+        . github install haghish/markdoc
 
-To install the package from SSC server type:
+The __github__ command is used for searching, installing, and uninstalling Stata 
+packages with their dependencies from GitHub website. to install the __github__ 
+command, type:
 
-        . ssc install markdoc
-
-After installing MarkDoc, install {help Weaver} and {help Statax} packages. If the {cmd:install}
-option is specified, MarkDoc checkes for the required packages and installs 
-them automatically, if they're not already installed. 
-
-        . ssc install weaver
-        . ssc install statax
+        . net install github, from("https://haghish.github.io/github/")
 
 Description
 ===========
@@ -479,17 +476,6 @@ to HTML and LaTeX, which add to the complexity of the code.
 To learn about using Markdown syntax for styling text and importing graphs, see 
 {browse "http://haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/markdown.php":Writing with Markdown in Stata}.
 
-
-{title:Linesize}
-
-{pstd}
-Users can alter the linesize of the dynamic document using the {opt linesize(int)}
-option. The value of the linesize can range from 80 to 255. 
-If you wish to export your smcl logfile to {bf:Microsoft Word docx} format, note that 
-Microsoft Word documents have a large left and right margin and you should reduce the 
-margins of the Word document manually or alternatively reduce the font size. 
-
-
 {title:Software Installation}
 {psee}
 
@@ -736,7 +722,6 @@ program markdoc
 	Test 		 	 /// tests the required software to make sure they're running correctly 
 	PANdoc(str)  	 /// specifies the path to Pandoc software on the machine
 	PRINTer(str)     /// the path to the PDF printer on the machine
-	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
 	master 	 	 	 /// creates a "Main" LaTeX & HTML layout 
 	statax			 /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
@@ -749,7 +734,6 @@ program markdoc
 	SUMmary(str)     /// writing the summary or abstract of the report
 	VERsion(str)     /// add version to dynamic help file
 	STYle(name)      /// specifies the style of the document
-	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
 	toc				 /// Creates table of content
 	build		 	 /// creates the toc and pkg files
 	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
@@ -770,6 +754,8 @@ program markdoc
 	/// CHANGED SYNTAX
 	/// ========================================================================
 	MATHjax 		 /// Interprets mathematics using MathJax
+	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
+	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
 	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
@@ -795,23 +781,36 @@ program markdoc
 	// Check for Required Packages (Weaver & Statax)
 	// =========================================================================
 	
+	capture findfile github.ado
+	if _rc != 0 {
+		if !missing("`install'") {
+			net install github, from("https://haghish.github.io/github/")
+		}
+		else {
+			display as err "github package is required: "						///
+			`"{ul:{stata net install github, from("https://haghish.github.io/github/"):net install github, from("https://haghish.github.io/github/")}}"' _n(2)
+			error 601
+		}
+	}	
+		
 	capture findfile weave.ado
 	if _rc != 0 {
 		if !missing("`install'") {
-			ssc install weaver
+			
+			github install haghish/weaver
 		}
 		else {
 			capture findfile statax.ado
 			if _rc != 0 {
 				display as err "Weaver & Statax packages are required: " _n 	///
-				"{c 149} {ul:{stata ssc install weaver:ssc install weaver}}" _n ///
-				"{c 149} {ul:{stata ssc install statax:ssc install Statax}}"  	///
+				"{c 149} {ul:{stata github install haghish/weaver:github install haghish/weaver}}" _n ///
+				"{c 149} {ul:{stata github install haghish/statax:github install haghish/statax}}"  	///
 				_n(2)
 				error 601
 			}
 			if _rc == 0 {
 				display as err "Weaver package is required: "					///
-				"{ul:{stata ssc install weaver:ssc install weaver}}" _n(2)
+				"{ul:{stata github install haghish/weaver:github install haghish/weaver}}" _n(2)
 				error 601
 			}
 		}	
@@ -820,11 +819,11 @@ program markdoc
 	capture findfile statax.ado
 	if _rc != 0 {
 		if !missing("`install'") {
-			ssc install statax
+			github install haghish/statax
 		}
 		else {
 			display as err "Statax package is required: "						///
-			"{ul:{stata ssc install statax:ssc install statax}}" _n(2)
+			"{ul:{stata github install haghish/statax:github install haghish/statax}}" _n(2)
 			error 601
 		}	
 	}
@@ -1011,14 +1010,14 @@ program markdoc
 		di as txt "{p}The example do-file is successfully executed. Next, " 								///
 		"MarkDoc attempts to compile a HTML and PDF document" _n
 		
-		markdoc example, export(html) statax linesize(120) replace 				///
+		markdoc example, export(html) statax replace 				///
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
 		affiliation("Medical Biometry and Medical Informatics, "				///
 		"University of Freiburg") 												///
 		address(haghish@imbi.uni-freiburg.de) style(stata) pandoc("`pandoc'")	///
 		printer("`printer'") `noisily' `install'
 		
-		markdoc example, export(pdf) statax linesize(120) replace 				///
+		markdoc example, export(pdf) statax replace 				///
 		title(Testing MarkDoc Package) author(E. F. Haghish) 					///
 		affiliation("Medical Biometry and Medical Informatics, "				///
 		"University of Freiburg") 												///
@@ -1075,7 +1074,7 @@ program markdoc
 	*/
 				
 	if "`master'" != "" & "`export'" != "tex" & "`export'" != "pdf" {
-		di as txt "{p}(The {ul:{bf:texmaster}} option should only be " 			///
+		di as txt "{p}(The {ul:{bf:master}} option should only be " 			///
 		"specified while exporting to {bf:tex} format)" _n
 	}
 		
