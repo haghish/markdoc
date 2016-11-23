@@ -16,11 +16,13 @@
 Installing
 ----------
 
-__MarkDoc__ receives constant updates on GitHub and users are recommended to follow the updates from GitHub. To install __MarkDoc__ from GitHub on Stata, type:
+__MarkDoc__ requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install __MarkDoc__ and all of its dependencies as shown below:
 
 ```js
-net install markdoc, from("https://raw.githubusercontent.com/haghish/markdoc/master/")
+github install haghish/markdoc
 ```
+
+ 
 
 <!--
 The major releases of __MarkDoc__ are also hosted on SSC server. However, installing from SSC is not recommended because the SSC package is only updated occasionly on SSC. 
@@ -30,12 +32,7 @@ ssc install markdoc
 ```
 -->
 
-__MarkDoc__ requires two other packages for highlighting the syntax of Stata commands in the documents and creating dynamic tables which can be installed from SSC as well:
 
-```js
-net install weaver, from("https://raw.githubusercontent.com/haghish/weaver/master/")
-net install statax, from("https://raw.githubusercontent.com/haghish/statax/master/")
-```
 
 MarkDoc also requires 3 third-party software, which are:
 
