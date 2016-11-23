@@ -13,10 +13,11 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 	
 	// LaTeX Styling
 	// =========================================================================
-	if !missing("`master'") | missing("`master'") & 						///
+	if !missing("`master'") & "`markup'" == "latex" 							///
+	& "`export'" != "slide" | missing("`master'") & 							///
 	!missing("`template'") & "`markup'" == "latex" 								///
 	& "`export'" != "slide" {
-		
+	
 		tempname hitch knot 
 		qui file open `hitch' using "`tmp'", read 
 		qui cap file open `knot' using "`tmp1'", write replace
@@ -219,7 +220,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 					
 	// HTML Styling
 	// =========================================================================
-	if "`export'" == "html" {
+	if !missing("`master'") & "`export'" == "html" {
 		
 		tempname hitch knot 
 		qui file open `hitch' using `"`tmp'"', read 

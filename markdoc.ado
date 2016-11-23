@@ -893,8 +893,15 @@ program markdoc
 			local printer "$pathWkhtmltopdf"
 		}
 	}
-	
 
+	// should MarkDoc create a layout master?
+	// -------------------------------------------------------------------------
+	if !missing("`style'") | !missing("`statax'") {
+		if "`export'" == "pdf" | "`export'" == "html" | "`export'" == "tex" {
+			local master master
+		}
+	}
+	
 	// =========================================================================
 	// pdfLaTeX
 	//
@@ -1073,9 +1080,9 @@ program markdoc
 	}
 	*/
 				
-	if "`master'" != "" & "`export'" != "tex" & "`export'" != "pdf" {
+	if "`master'" != "" & "`export'" != "tex" & "`export'" != "pdf" & "`export'" != "html" {
 		di as txt "{p}(The {ul:{bf:master}} option should only be " 			///
-		"specified while exporting to {bf:tex} format)" _n
+		"specified while exporting to {bf:tex} or {bf:html} format)" _n
 	}
 		
 	//Styles should be "simple" or "stata"
@@ -2920,11 +2927,11 @@ program markdoc
 		}	
 	
 		
-		
+	
 		********************************************************************
 		*	STYLING THE HTML FILE
 		********************************************************************			
-		if "`export'" == "html"  {
+		if !missing("`master'") & "`export'" == "html"  {
 			tempfile tmp1
 			
 			// Add the document style
@@ -3296,7 +3303,8 @@ program markdoc
 			//  checked that texmaster should be used with "tex"
 			
 			
-			if !missing("`master'") | missing("`master'") & 				///
+			if !missing("`master'")  & "`markup'" == "latex" 					///
+			& "`export'" != "slide"| missing("`master'") & 						///
 			!missing("`template'") & "`markup'" == "latex" 						///
 			& "`export'" != "slide" {
 				

@@ -144,7 +144,7 @@ COPY copy1
 // Initial script that is executed automatically
 SCRIPT PREINIT
 BEGIN	
-*    main.texmaster.disable
+*    main.master.disable
 	//main.statax.disable
 	
 	*if sub.visible() {
@@ -192,7 +192,7 @@ END
 		// Hide LaTeX options
 		SCRIPT TeXoptions
 		BEGIN
-			main.texmaster.enable
+			main.master.enable
 			main.statax.disable
 		END
 
@@ -210,9 +210,9 @@ END
 		BEGIN
 		  
 			if main.format.isneq("tex") {
-				main.texmaster.disable
+				main.master.disable
 			}
-		  *main.texmaster.disable
+		  *main.master.disable
 		  *main.vars.disable
 		  *options.detail.disable
 		  *options.status.disable
@@ -263,7 +263,7 @@ BEGIN
 	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(markup_list) onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
-	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.texmaster.disable")    // onselchange("program test")
+	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
 	RADIO r1         @    +20   100 .  , first  label("html") onclickon("program test") //option(nociforeground)
     RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program test") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
     RADIO r3         +50    @   @ ., middle label("tex") onclickon("program test") //onclickon("script TeXoptions")
@@ -284,6 +284,9 @@ BEGIN
 	
 		// replace
 		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
+	    
+		// master
+		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// syntax highlighter
 		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1)
@@ -297,9 +300,6 @@ BEGIN
 			   
 		// numbered
 		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
-	  
-		// texmaster
-		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
 		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
@@ -428,8 +428,8 @@ BEGIN
 		// numbered
 		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
-		// texmaster
-		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		// master
+		CHECKBOX master @   +17   @   .  , option(master) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
 		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
@@ -506,7 +506,7 @@ BEGIN
 	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
-	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.texmaster.disable")    // onselchange("program test")
+	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
 	RADIO r1         @    +20   100 .  , first  label("sthlp") onclickon("program vintest") //option(nociforeground)
     RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program vintest") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
     RADIO r3         +42    @   @ ., middle label("html") onclickon("program vintest") //onclickon("script TeXoptions")
@@ -534,16 +534,17 @@ BEGIN
 		
 		// build
 		CHECKBOX build    @    +17   @   .  , option(build) label("Build the toc & pkg files") default(1) tooltip("Check this button to make MarkDoc automatically generate the Stata.toc and packagename.pkg files for you. These files are required for making your package installable, if you host it on GitHub or your personal website") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
-
+		
+		// master
+		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		
+		
 		// table of content
 		CHECKBOX toc      @    +17   @   .  , option(toc) label("Table of content") 
 			   
 		// current date
 		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
 			   
-		// texmaster
-		CHECKBOX texmaster @   +17   @   .  , option(texmaster) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
-		
 		// noisily
 		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
@@ -643,12 +644,12 @@ BEGIN
 		call main.r5.enable
 		call main.r6.enable
 		
-		if main.r3.iseq(1)   {
-			call main.texmaster.enable
+		// Statax defaults
+		// ----------------------------------------------------------
+		if main.r3.iseq(1)  {
 			call main.statax.disable
 		}
 		else {
-			call main.texmaster.disable
 			if main.r4.iseq(1) | main.r5.iseq(1) | main.r6.iseq(1)  {
 				call main.statax.disable
 			}
@@ -656,11 +657,20 @@ BEGIN
 				call main.statax.enable
 			}
 		}
+		
+		// master defaults
+		// ----------------------------------------------------------
+		if main.r1.iseq(1)  | main.r3.iseq(1)  {
+			call main.master.enable
+		}
+		else {
+			call main.master.disable
+		}
 	}
 	
 	if main.markup.iseq("latex") {
 		call main.statax.disable
-		call main.texmaster.enable
+		call main.master.enable
 		call main.r3.enable
 		call main.r1.disable
 		call main.r4.disable
@@ -677,17 +687,17 @@ BEGIN
 	
 	/*
 	if main.format.iseq("latex")   {
-		call main.texmaster.enable
+		call main.master.enable
 	}
 	*/
 	
-	// TEXMASTER 
+	// master 
 	/*
 	if main.format.iseq("tex") {
-		call main.texmaster.enable
+		call main.master.enable
 	}
 	else {
-		call main.texmaster.disable
+		call main.master.disable
 	}
 	*/
 	
@@ -754,7 +764,7 @@ BEGIN
 		call sub.r1.enable
 		call sub.r2.enable
 		call sub.r3.enable
-		call sub.texmaster.disable
+		call sub.master.disable
 		call sub.theme.enable
 		call sub.color.enable
 		call sub.font.enable
@@ -770,10 +780,10 @@ BEGIN
 		*call sub.yamlgenerator.disable
 		
 		if sub.r1.iseq(1)    {
-			call sub.texmaster.enable
+			call sub.master.enable
 		}
 		else {
-			call sub.texmaster.disable
+			call sub.master.disable
 		}
 		
 		call sub.theme.disable
@@ -818,14 +828,16 @@ BEGIN
 		call vignette.r5.enable
 		call vignette.r6.enable
 		call vignette.r7.enable
-		call vignette.texmaster.disable
+		call vignette.master.disable
 		*call vignette.yamlgenerator.enable
 		
-		if vignette.r6.iseq(1)    {
-			call vignette.texmaster.enable
+		// master defaults
+		// -------------------------------------------------------------------
+		if vignette.r6.iseq(1) | vignette.r3.iseq(1)  {
+			call vignette.master.enable
 		}
 		else {
-			call vignette.texmaster.disable
+			call vignette.master.disable
 		}
 	}
 	
@@ -837,7 +849,7 @@ BEGIN
 		call vignette.r5.disable
 		call vignette.r6.disable
 		call vignette.r7.disable
-		call vignette.texmaster.disable
+		call vignette.master.disable
 		*call vignette.yamlgenerator.disable
 	}
 	
@@ -934,7 +946,7 @@ BEGIN
 		option main.toc							// table of content
 		option main.date						// table of date
 		option main.numbered					// numbered 
-		option main.texmaster					// texmaster
+		option main.master					// master
 		option main.noisily						// noisily
 		
 		*put "export(" main.format ") "
@@ -991,7 +1003,7 @@ BEGIN
 		option sub.replace						// replace
 		option sub.install						// install 
 		option sub.numbered					// numbered 
-		option sub.texmaster					// texmaster
+		option sub.master					// master
 		option sub.noisily						// noisily
 		
 		*put "export(" main.format ") "
@@ -1088,7 +1100,7 @@ BEGIN
 		option vignette.build						// table of content
 		option vignette.toc							// table of content
 		option vignette.date						// table of date
-		option vignette.texmaster					// texmaster
+		option vignette.master					// master
 		option vignette.noisily						// noisily
 		
 		*put "export(" vignette.format ") "
