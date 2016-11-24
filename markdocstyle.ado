@@ -10,12 +10,13 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 [Font(str)] [LANDscape] [css(str)] ///
 [texmaster]
 	
-	
 	// LaTeX Styling
 	// =========================================================================
-	if !missing("`master'") & "`markup'" == "latex" 							///
-	& "`export'" != "slide" | missing("`master'") & 							///
-	!missing("`template'") & "`markup'" == "latex" 								///
+	if !missing("`master'")  & "`markup'" == "latex" 					///
+	& "`export'" != "slide"| 											///
+	!missing("`master'")  & "`export'" == "tex" 						///
+	| missing("`master'") & 											///
+	!missing("`template'") & "`markup'" == "latex" 						///
 	& "`export'" != "slide" {
 	
 		tempname hitch knot 
@@ -23,6 +24,20 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		qui cap file open `knot' using "`tmp1'", write replace
 		file write `knot'  _newline
 		file read `hitch' line
+	
+		if !missing("`statax'") {			
+			*findfile Statax.tex
+			
+			local d : pwd
+			cap qui cd "`c(sysdir_plus)'/s"
+			local tempPath : pwd
+			*local template "`tempPath'/Statax.tex"	
+			local mytheme "`tempPath'/Statax.tex"	
+			confirm file "`mytheme'"
+			*cap qui cd "`d'"
+			capture copy "`mytheme'" "Statax.tex", replace
+			local stataxcode "\include{Statax}              %included in your working dorectory"
+		}
 		
 		**************
 		* SIMPLE STYLE
@@ -30,6 +45,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		if !missing("`master'") & "`style'" == "simple" {
 			file write `knot' 											///
 			"\documentclass{article}" _n								///
+			"`stataxcode'" _n											///
 			"\usepackage{geometry} " _n									///
 			"\usepackage{booktabs}         %for tables" _n				///
 			"%\geometry{letterpaper} " _n								///
@@ -192,6 +208,19 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 					"\end{verbatim}" "\end{stlog}"
 				}
 			}
+			else if !missing("`statax'") {
+				if substr(trim(`"`macval(line)'"'),1,16) == 			///
+					"\begin{verbatim}" {
+					local line : subinstr local line 					///
+					"\begin{verbatim}" "\begin{statax}"
+				}
+				if substr(trim(`"`macval(line)'"'),1,14) == 			///
+					"\end{verbatim}" {
+					local line : subinstr local line 					///
+					"\end{verbatim}" "\end{statax}"
+				}
+			
+			}
 			file write `knot' `"`macval(line)'"' _n  
 			file read `hitch' line
 		}
@@ -313,25 +342,32 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			
 				
 			//Margin left will KEEP the table in the left and won't center it
-			/*
+			
 			if "`style'" == "" | "`style'" == "simple" {
-				file write `knot' "margin-left:0px;" _n
+				*file write `knot' "margin-left:0px;" _n
+				file write `knot' ".figure {" _n								///
+				_skip(8)"text-align: center" _n									///
+				"}" _n(2)
 			}
-				
+			
+			/*
 			if "`style'" == "stata" {
 				file write `knot' "margin-left:0px;" _n
 			}
 			*/
 				
-			file write `knot' "th {" _n 											///
-			"border-bottom:1px solid black;" _n 									///
-			"border-top:1px solid black;" _n 										///
-			"padding-right:20px;" _n 												///
-			"}" _n(2) 																///
-			"td {" _n 																///
-			"padding-right:20px;" _n 												///
+			file write `knot' "th {" _n 										///
+			_skip(8) "border-bottom:1px solid black;" _n 						///
+			_skip(8) "border-top:1px solid black;" _n 							///
+			_skip(8) "padding-right:20px;" _n 									///
+			"}" _n(2) 															///
+			"td {" _n 															///
+			_skip(8) "padding-right:20px;" _n 									///
+			"}" _n(2)															///
+			"body {" _n															///
+			_skip(8) "text-align:justify" _n									///
 			"}" _n(2)
-
+			
 			file write `knot' "</style>" _n(4)
 			
 					
