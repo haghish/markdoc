@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" async 
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- SYNTAX HIGHLIGHTING CLASSES  -->
+<style type="text/css">
+.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
+.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
+.center, #center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+
+    padding: 0px;
+    border-width: 0px;
+    border-style: solid;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    }
+
+pagebreak {
+        page-break-before: always;
+        }
+
+.pagebreak, #pagebreak {
+        page-break-before: always;
+        }
+
+td > p {padding:0; margin:0;}
+
+
+
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+table {
+        border-collapse: collapse;
+        border-bottom:1px solid black;
+        padding:5px;
+        margin-top:5px;
+
+}
+.tble {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+}
+
+.tblecenter {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        text-align:center;
+}
+
+span.tblecenter + table, span.tble + table, span.tble + img {
+        margin-top: 2px;
+}
+
+.figure {
+        text-align: center
+}
+
+th {
+        border-bottom:1px solid black;
+        border-top:1px solid black;
+        padding-right:20px;
+}
+
+td {
+        padding-right:20px;
+}
+
+body {
+        text-align:justify
+}
+
+</style>
+</head>
+<body>
+<pre><code>      .  sysuse auto, clear
+      (1978 Automobile Data)
+
+      . summarize foreign 
+
+          Variable |        Obs        Mean    Std. Dev.       Min        Max
+      -------------+---------------------------------------------------------
+           foreign |         74    .2972973    .4601885          0          1
+
+      . scalar c = &quot;Dynamic&quot; 
+
+      . local min = `r(min)&#39;
+
+      . scalar max = r(max)</code></pre>
+<h3 id="dynamic-text">Dynamic text</h3>
+<p>The documentation can include numeric and string macros and scalars. For example, the values of the <code>foreign</code> variable range between 0 to 1.</p>
+</body>
+</html>
