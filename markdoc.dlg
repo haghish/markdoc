@@ -321,24 +321,23 @@ BEGIN
 		EDIT address 80 @ 340 18  
 	 
 		// Summary
-		TEXT tx_summary  20   +20  50    ., label(Summary)
+		TEXT tx_summary  20   +20  60    ., label(Summary)
 		EDIT summary     80   @    340  36   
 		
 		// LEFT COLUMN
 		// ---------------------------------------------------------------------
 	
 		// layout
-		TEXT tx_style     220  137  200  .  , label("Select document layout style")
+		TEXT tx_style     220  135  200  .  , label("Select document layout style")
 		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
 		
 		// layout
-		TEXT tx_template  @    +30  200  .  , label("Use layout (css, docx, tex, etc)")
+		TEXT tx_template  @    +31  200  .  , label("Use layout (css, docx, tex, etc)")
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +31  200  .  , default(0) label("Adjust linesize") onclickon("program test") onclickoff("program test")
-		*TEXT tx_linesize  +20   @  100  .  , label("Adjust the linesize") 
-		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		//CHECKBOX activate @    +31  200  .  , default(0) label("Adjust linesize") onclickon("program test") onclickoff("program test")
+		//SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 END
 
@@ -473,13 +472,12 @@ BEGIN
 	*	COMBOBOX color   @    +20 80   .  , dropdownlist contents(color_list)
 	
 		// layout
-		TEXT tx_template  220  223  200  .  , label("Use layout (css or tex)")
+		TEXT tx_template  220  221  200  .  , label("Use layout (css or tex)")
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +31  200  .  , label("Adjust linesize") default(0) onclickon("program subtest") onclickoff("program subtest")
-		*TEXT tx_linesize  +17   @  240  .  , label("Adjust the linesize") 
-		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		//CHECKBOX activate @    +31  200  .  , label("Adjust linesize") default(0) onclickon("program subtest") onclickoff("program subtest")
+		//SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 
 END
 
@@ -565,7 +563,7 @@ BEGIN
 		EDIT address 80 @ 340 18  
 		
 		// Summary
-		TEXT tx_summary  20   +20  50    ., label(Summary)
+		TEXT tx_summary  20   +20  60    ., label(Summary)
 		EDIT summary     80   @    340  36   
 		
 		
@@ -573,7 +571,7 @@ BEGIN
 		// ---------------------------------------------------------------------
 	
 		// layout
-		TEXT tx_style     220  136  200  .  , label("Select document layout style")
+		TEXT tx_style     220  135  200  .  , label("Select document layout style")
 		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
 		
 		// layout
@@ -581,8 +579,8 @@ BEGIN
 		FILE template     @    +20  200   .  , error("Open file") label(Browse...) ///
 		filter("css file|*.css|LaTeX header Template|*.tex|Microsoft Word Template|*.docx|OpenOffice Template|*.odt|All files|*.*")
 		
-		CHECKBOX activate @    +30  -20  .  , label("Adjust linesize") default(0) onclickon("program vintest") onclickoff("program vintest")
-		SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
+		//CHECKBOX activate @    +30  -20  .  , label("Adjust linesize") default(0) onclickon("program vintest") onclickoff("program vintest")
+		//SPINNER  linesize 340   @    80   .  , min(80)  max(255) default(110) tooltip("Adjust the width of your document. If the specified linesize is less than the actual width, your document will show unreasonably disjoint lines or words.")
 		
 		
 		*TEXT tx_linesize  @    +25  240  .  , label("Adjust document linesize")
@@ -628,13 +626,13 @@ BEGIN
 	
 	// activate the linesize
 	// ----------------------
-	call main.linesize.disable
-	if main.activate.iseq(0) {
-		call main.linesize.disable
-	}
-	if main.activate.iseq(1) {
-		call main.linesize.enable
-	}
+	*call main.linesize.disable
+	*if main.activate.iseq(0) {
+	*	call main.linesize.disable
+	*}
+	*if main.activate.iseq(1) {
+	*	call main.linesize.enable
+	*}
 	
 	if main.markup.iseq("markdown") {
 		call main.r1.enable
@@ -646,16 +644,11 @@ BEGIN
 		
 		// Statax defaults
 		// ----------------------------------------------------------
-		if main.r3.iseq(1)  {
+		if main.r4.iseq(1) | main.r5.iseq(1) | main.r6.iseq(1)  {
 			call main.statax.disable
 		}
 		else {
-			if main.r4.iseq(1) | main.r5.iseq(1) | main.r6.iseq(1)  {
-				call main.statax.disable
-			}
-			else {
-				call main.statax.enable
-			}
+			call main.statax.enable
 		}
 		
 		// master defaults
@@ -732,13 +725,13 @@ BEGIN
 	
 	// activate the linesize
 	// ----------------------
-	call sub.linesize.disable
-	if sub.activate.iseq(0) {
-		call sub.linesize.disable
-	}
-	if sub.activate.iseq(1) {
-		call sub.linesize.enable
-	}
+	*call sub.linesize.disable
+	*if sub.activate.iseq(0) {
+	*	call sub.linesize.disable
+	*}
+	*if sub.activate.iseq(1) {
+	*	call sub.linesize.enable
+	*}
 	
 	/*
 	if sub.r1.iseq(1) {
@@ -811,13 +804,13 @@ BEGIN
 	
 	// activate the linesize
 	// ----------------------
-	call vignette.linesize.disable
-	if vignette.activate.iseq(0) {
-		call vignette.linesize.disable
-	}
-	if vignette.activate.iseq(1) {
-		call vignette.linesize.enable
-	}
+	*call vignette.linesize.disable
+	*if vignette.activate.iseq(0) {
+	*	call vignette.linesize.disable
+	*}
+	*if vignette.activate.iseq(1) {
+	*	call vignette.linesize.enable
+	*}
 	
 	// else if the markup is Markdown
 	if vignette.markup.iseq("markdown & smcl") {
@@ -890,12 +883,12 @@ END
 
 PROGRAM activate
 BEGIN
-	if main.activate.iseq(1) {
-		call main.linesize.enable
-	}
-	else {
-		call main.linesize.disable
-	}
+	*if main.activate.iseq(1) {
+	*	call main.linesize.enable
+	*}
+	*else {
+	*	call main.linesize.disable
+	*}
 END
 
 
@@ -975,9 +968,9 @@ BEGIN
 			put "summary(" `"""' main.summary  `"""' ") "
 		}
 		
-		if main.linesize {
-			put "linesize(" main.linesize ") "
-		}
+		*if main.linesize {
+		*	put "linesize(" main.linesize ") "
+		*}
 	}
 	
 	// SLIDE TAB
@@ -1029,9 +1022,9 @@ BEGIN
 			put "affiliation(" `"""' sub.affiliation  `"""' ") "
 		}		
 
-		if sub.linesize {
-			put "linesize(" sub.linesize ") "
-		}
+		*if sub.linesize {
+		*	put "linesize(" sub.linesize ") "
+		*}
 		
 		// Beamer Layout
 		if sub.theme {
@@ -1129,9 +1122,9 @@ BEGIN
 			put "summary(" `"""' vignette.summary  `"""' ") "
 		}
 		
-		if vignette.linesize {
-			put "linesize(" vignette.linesize ") "
-		}
+		*if vignette.linesize {
+		*	put "linesize(" vignette.linesize ") "
+		*}
 	}
 	
 	
