@@ -15,7 +15,7 @@ perhaps something?
 
 scalar a = 10.847958758976
 
-matrix mymat = (1,2\ 3, 4)
+matrix A = (1,2\ 3, 4)
 scalar b = A[2,1]
 local a = 999
 sysuse auto, clear

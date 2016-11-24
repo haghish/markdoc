@@ -1,12 +1,10 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.8.9
+Version: 3.9.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
-produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
-({bf:pdf}, {bf:docx}, {bf:odt}, {bf:html}, {bf:xhtml}, {bf:epub}, {bf:markdown}), 
-pdf or html-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
-{bf:dzslide}), as well as dynamic 
-{it:Stata package help files} ({bf:sthlp}). 
+produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
+__odt__, __html__, __epub__, __markdown__, presentation slides in __pdf__ or 
+__html__, as well as dynamic Stata package help files __sthlp__. 
 ----------------------------------------------------- DO NOT EDIT THIS LINE ***/
 
 /***
@@ -751,7 +749,7 @@ program markdoc
 	bcodesize(str)	 ///
 	bwidth(str)	 	 ///
 	bheight(str)	 ///
-	/// CHANGED SYNTAX
+	/// DISCONTINUED SYNTAX
 	/// ========================================================================
 	MATHjax 		 /// Interprets mathematics using MathJax
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
@@ -776,6 +774,13 @@ program markdoc
 	   "continues to work..." _n 
 	   local master master
 	}   
+	
+	if !missing("`linesize'") {
+		di "The {bf:linesize} option is discontinued. {bf:markdoc} auto-detects "	///
+	   "the linesize..." _n 
+	   local linesize
+	   //DO THE CHANGES
+	}  
 	
 	// -------------------------------------------------------------------------
 	// Check for Required Packages (Weaver & Statax)
@@ -896,7 +901,7 @@ program markdoc
 
 	// should MarkDoc create a layout master?
 	// -------------------------------------------------------------------------
-	if !missing("`style'") | !missing("`statax'") {
+	if !missing("`style'") | !missing("`statax'") | "`export'" == "pdf" {
 		if "`export'" == "pdf" | "`export'" == "html" | "`export'" == "tex" {
 			local master master
 		}
@@ -1049,9 +1054,10 @@ program markdoc
 		
 	// Syntax Highlighter
 	// -------------------------------------------------------------------------
-	if "`export'" != "html" & "`export'" != "pdf" & !missing("`statax'") {
+	if "`export'" != "html" & "`export'" != "pdf" & !missing("`statax'") 		///
+	& "`export'" != "tex" {
 		display as txt "{p}(The {bf:statax} option is only used " 				///
-	     "when exporting to {bf:html} format)" _n
+	     "when exporting to {bf:html}, {bf:pdf}, or {bf:tex} formats)" _n
 		 local statax 							//Erase the macro
 	}
 	
@@ -2739,6 +2745,11 @@ program markdoc
 				local line : subinstr local line "       *" "", all	
 			}
 			
+			// Kill empty spaces
+			if `"`macval(line)'"' == "      " | `"`macval(line)'"' == "       " {
+				local line ""
+			}
+			
 			// Removing the "***" marker, when the document is not Slides
 			// ----------------------------------------------------------
 			
@@ -3304,7 +3315,9 @@ program markdoc
 			
 			
 			if !missing("`master'")  & "`markup'" == "latex" 					///
-			& "`export'" != "slide"| missing("`master'") & 						///
+			& "`export'" != "slide"| 											///
+			!missing("`master'")  & "`export'" == "tex" 						///
+			| missing("`master'") & 											///
 			!missing("`template'") & "`markup'" == "latex" 						///
 			& "`export'" != "slide" {
 				
@@ -3489,10 +3502,3 @@ end
 // create the help file
 // ====================
 *markdoc markdoc.ado, exp(sthlp) replace
-
-/*
-
-markdoc "markdoc.ado" , export(html) helplayout replace style("simple") 
-title("MarkDoc Help File") author("E. F. Haghish") 
-affiliation("Department of Mathematics and Computer Science <br> University of Southern Denmark") 
-summary(`"This file includes the MarkDoc help file, converted to HTML using MarkDoc package itself. To reproduce the HTML help file from the source code, execute: <br><code> markdoc "markdoc.ado" , export(html) replace style("stata")</code>"') linesize(110)

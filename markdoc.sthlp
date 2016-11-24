@@ -1,13 +1,11 @@
 {smcl}
-{right:version 3.8.9}
+{right:version 3.9.0}
 {title:Title}
 
 {phang}
-{cmd:markdoc} {hline 2} a general-purpose literate programming package for Stata that produces {it:dynamic analysis documents} and {it:package vignette documentation} in various formats 
- ({bf:pdf}, {bf:docx}, {bf:odt}, {bf:html}, {bf:xhtml}, {bf:epub}, {bf:markdown}), 
- pdf or html-based {it:dynamic presentation slides} ({bf:slide}, {bf:slidy}, 
- {bf:dzslide}), as well as dynamic 
- {it:Stata package help files} ({bf:sthlp}). 
+{cmd:markdoc} {hline 2} a general-purpose literate programming package for Stata that produces dynamic analysis documents in various formats, such as {bf:pdf}, {bf:docx}, 
+ {bf:odt}, {bf:html}, {bf:epub}, {bf:markdown}, presentation slides in {bf:pdf} or 
+ {bf:html}, as well as dynamic Stata package help files {bf:sthlp}. 
  
 {p 8 8 2}
 To improve applications of the package for developing educational materials 
@@ -50,7 +48,7 @@ produce dynamic {it:documents}, {it:presentation slides}, or {it:help files} int
 {opt pan:doc(str)} {opt print:er(str)} {opt instal:l} {opt t:est} {opt replace} 
 {opt e:xport(name)} {opt mark:up(name)} {opt num:bered} {opt sty:le(name)} 
 {opt template(str)} {opt toc}
-{opt linesize(int)} {opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
+{opt tit:le(str)} {opt au:thor(str)} {opt aff:iliation(str)} {opt add:ress(str)} 
 {opt sum:mary(str)} {opt d:ate} {opt master} {opt statax} {opt noi:sily}
 {* *! {opt ascii:table}}
 ]
@@ -148,8 +146,6 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt num:bered}}numbers Stata commands in the dynamic document.{p_end}
 
-{synopt:{opt linesize(int)}}change the {help linesize} for the {help log}, which can range from 80 to 255. {bf:MarkDoc} also evaluates the linesize of the document and applies the actual linesize automatically, if the linesize is not specified.{p_end}
-
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
 The available styles are {bf:simple} and {bf:stata}. If the document is exported 
 in LaTeX format, the {bf:stata} option (also if used with {cmd: master} option) 
@@ -205,25 +201,24 @@ documents using {help Statax}, which is a JavaScript syntax highlighter engine f
 {title:Installation}
 
 {p 4 4 2}
-{bf:markdoc} is hosted both on 
-{browse "https://github.com/haghish/MarkDoc":GitHub} 
-and SSC. MarkDoc receives weekly updates on GitHub but only occasion updates on SSC. 
-Therefore, users are recommended to install the package from GitHub:
-
-        . net install markdoc, force  from([https://raw.githubusercontent.com/haghish/markdoc/master/)
+The latest release as well as archived older versions of {bf:markdoc} are hosted on 
+{browse "https://github.com/haghish/MarkDoc":GitHub} website. MarkDoc receives weekly 
+updates on GitHub so I recommend you to "watch" (subscribe) the repository{c 39}s 
+updates on GitHub to get the latest news about the package.
 
 {p 4 4 2}
-To install the package from SSC server type:
+{bf:markdoc} depends on several other Stata modules. If you have the 
+{browse "https://github.com/haghish/github":__github} package} installed, you can install 
+{bf:markdoc} and all of its dependencies by typing:
 
-        . ssc install markdoc
+        . github install haghish/markdoc
 
 {p 4 4 2}
-After installing MarkDoc, install {help Weaver} and {help Statax} packages. If the {cmd:install}
-option is specified, MarkDoc checkes for the required packages and installs 
-them automatically, if they{c 39}re not already installed. 
+The {bf:github} command is used for searching, installing, and uninstalling Stata 
+packages with their dependencies from GitHub website. to install the {bf:github} 
+command, type:
 
-        . ssc install weaver
-        . ssc install statax
+        . net install github, from("https://haghish.github.io/github/")
 
 
 {title:Description}
@@ -494,17 +489,6 @@ language which makes your text distinguishable from the computer code, in contra
 to HTML and LaTeX, which add to the complexity of the code. 
 To learn about using Markdown syntax for styling text and importing graphs, see 
 {browse "http://haghish.com/statistics/stata-blog/reproducible-research/dynamic_documents/markdown.php":Writing with Markdown in Stata}.
-
-
-{title:Linesize}
-
-{pstd}
-Users can alter the linesize of the dynamic document using the {opt linesize(int)}
-option. The value of the linesize can range from 80 to 255. 
-If you wish to export your smcl logfile to {bf:Microsoft Word docx} format, note that 
-Microsoft Word documents have a large left and right margin and you should reduce the 
-margins of the Word document manually or alternatively reduce the font size. 
-
 
 {title:Software Installation}
 {psee}

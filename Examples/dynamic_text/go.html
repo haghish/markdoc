@@ -2,27 +2,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="text/javascript" async 
+<script type="text/javascript" async
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <!-- SYNTAX HIGHLIGHTING CLASSES  -->
 <style type="text/css">
-.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
-.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
-.center, #center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
-    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
-    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
 
-    padding: 0px;
-    border-width: 0px;
-    border-style: solid;
-    cursor:-webkit-zoom-in;
-    cursor:-moz-zoom-in;
-    }
 
 pagebreak {
         page-break-before: always;
@@ -39,11 +24,11 @@ td > p {padding:0; margin:0;}
 
 header {
         font-size:28px;
-        padding-bottom:5px; 
+        padding-bottom:5px;
         margin:0;
-        padding-top:150px; 
+        padding-top:150px;
         font-family: ;
-        background-color:white; 
+        background-color:white;
         text-align:center;
         display:block;
         }
@@ -75,17 +60,13 @@ span.tblecenter + table, span.tble + table, span.tble + img {
 }
 
 th {
-        border-bottom:1px solid black;
-        border-top:1px solid black;
-        padding-right:20px;
+border-bottom:1px solid black;
+border-top:1px solid black;
+padding-right:20px;
 }
 
 td {
-        padding-right:20px;
-}
-
-body {
-        text-align:justify
+padding-right:20px;
 }
 
 </style>
@@ -102,9 +83,9 @@ body {
         margin: 10mm 20px 15mm 20px;
         color:#828282;
         font-family: ;
- @top-left { content: "" ; font-size:11px; margin-top:5px; } 
+ @top-left { content: "" ; font-size:11px; margin-top:5px; }
 @bottom {
-        content: "Page " counter(page); font-size:14px; 
+        content: "Page " counter(page); font-size:14px;
         }
         }
 
@@ -119,11 +100,11 @@ body {
 
 header {
         font-size:28px;
-        padding-bottom:5px; 
+        padding-bottom:5px;
         margin:0;
-        padding-top:150px; 
+        padding-top:150px;
         font-family: ;
-        background-color:white; 
+        background-color:white;
         text-align:center;
         display:block;
         }
@@ -187,7 +168,7 @@ h1, h1 > a, h1 > a:link {
 
 h1 > a:hover, h1 > a:hover{
 color:#345A8A;
-} 
+}
 
 h2, h2 > a, h2 > a, h2 > a:link {
         margin:14px 0px 2px 0px;
@@ -256,7 +237,7 @@ p {
         font-weight:normal;
         text-shadow:#FFF;
         border:thin;
-        border-color: #345A8A; 
+        border-color: #345A8A;
         border-style: solid;
         unicode-bidi: embed;
         margin:20px 0 0px 0;
@@ -266,41 +247,61 @@ p {
         white-space:pre;
         display:block;
         font-family:monospace,"Lucida Console", Monaco, "Courier New", Courier, monospace;
-        font-size:12px; 
+        font-size:12px;
         line-height: 12px;
         margin:0 0 14px 0;
-        border:thin; 
+        border:thin;
         unicode-bidi: embed;
-        border-color: #345A8A; 
+        border-color: #345A8A;
         padding:14px 5px 0 5px;
         background-color:transparent;
         }
 
+
+
+        /*
+           Developed by E. F. Haghish http://www.haghish.com/
+           Center for Medical Biometry and Medical Informatics
+           University of Freiburg, Germany
+           haghish@imbi.uni-freiburg.de
+           for documentation visit http://www.haghish.com/statax
+        */
+
+       pre.sh_sourceCode .sh_keyword          { color: #00008A; }     /* Stata Commands        */
+       pre.sh_sourceCode .sh_string           { color: #800000; }     /* strings               */
+       pre.sh_sourceCode .sh_macro            { color: #008080; }     /* local & global macros */
+       pre.sh_sourceCode .sh_string .sh_macro { color: #800000; }     /* macro in string       */
+       pre.sh_sourceCode .sh_comment          { color: #008000; }     /* Comment               */
+       pre.sh_sourceCode .sh_predef_func      { color: #0052FF; }     /* Stata Functions       */
+       pre.sh_sourceCode .sh_function         { color: #0052FF; }     /* Any Function()        */
+       pre.sh_sourceCode .sh_number           { color: #0333FF; }     /* Numbers               */
+       pre.sh_sourceCode .sh_symbol           { color: black;   }     /* Operators and signs   */
+       pre.sh_sourceCode .sh_cbracket         { color: #FF0182; }     /* Braces                */
+       pre.sh_stata{font-family: 'menlo-regular', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'sans-serif','Trebuchet MS';}
+
+pre.sh_sourceCode {
+  font-size: 10px;
+}
+
 </style>
+<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
 </head>
 <body>
-<pre><code>      . display &quot;Hi&quot;
-      Hi
-
-      .  di &quot;what!!&quot;
-      what!!
-
-      .  di &quot;funny&quot;
-      funny
-
-      .  di &quot;oh ojk&quot;
-      oh ojk</code></pre>
+<pre class="sh_stata">  . display "Hi"</pre>
+<pre><code>      Hi</code></pre>
+<pre class="sh_stata">  .  di "what!!"</pre>
+<pre><code>      what!!</code></pre>
+<pre class="sh_stata">  .  di "funny"</pre>
+<pre><code>      funny</code></pre>
+<pre class="sh_stata">  .  di "oh ojk"</pre>
+<pre><code>      oh ojk</code></pre>
 <p>perhaps something?</p>
-<pre><code>      .  scalar a = 10.847958758976
-
-      .  matrix mymat = (1,2\ 3, 4)
-
-      . scalar b = A[2,1]
-
-      . local a = 999
-
-      . sysuse auto, clear
-      (1978 Automobile Data)</code></pre>
+<pre class="sh_stata">  .  scalar a = 10.847958758976</pre>
+<pre class="sh_stata">  .  matrix A = (1,2\ 3, 4)</pre>
+<pre class="sh_stata">  . scalar b = A[2,1]</pre>
+<pre class="sh_stata">  . local a = 999</pre>
+<pre class="sh_stata">  . sysuse auto, clear</pre>
+<pre><code>      (1978 Automobile Data)</code></pre>
 <h2 id="how-about-10.85">How about 10.85?</h2>
 <p><strong>Price</strong> equals: 4082</p>
 <p>And here is Scalar 3</p>
