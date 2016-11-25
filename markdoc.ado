@@ -854,6 +854,7 @@ program markdoc
 	if "`export'" == "LATEX" | "`export'" == "latex" local export tex
 	if "`export'" == "SMCL" local export smcl
 	if "`export'" == "STHLP" local export sthlp
+	if "`export'" == "latex" local export tex
 	
 	// =========================================================================
 	// Markup Language: 
