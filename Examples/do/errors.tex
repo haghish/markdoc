@@ -1,5 +1,6 @@
 
 \documentclass{article}
+
 \usepackage{geometry} 
 \usepackage{booktabs}         %for tables
 %\geometry{letterpaper} 
@@ -8,7 +9,7 @@
 \usepackage{hyperref}         %use hyperlink
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
-\makeatletter
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\makeatletter
 \def\verbatim@font{\ttfamily\scriptsize}
 \makeatother
 \begin{document}
@@ -38,18 +39,6 @@ first load the \textbf{auto} dataset in Stata. Then call
 get an error the \texttt{no\ variables\ defined}, which means your
 do-file does not load the data, although the data are loaded in your
 Stata.
-
-\begin{verbatim}
-      .  display "the next command will be an error"
-      the next command will be an error
-      
-      .  regress price mpg
-      no variables defined
-      r(111);
-      
-      end of do-file
-      
-\end{verbatim}
 
 \end{document}
 

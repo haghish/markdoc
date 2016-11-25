@@ -26,16 +26,14 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		file read `hitch' line
 	
 		if !missing("`statax'") {			
-			*findfile Statax.tex
-			
 			local d : pwd
 			cap qui cd "`c(sysdir_plus)'/s"
 			local tempPath : pwd
 			*local template "`tempPath'/Statax.tex"	
 			local mytheme "`tempPath'/Statax.tex"	
 			confirm file "`mytheme'"
-			*cap qui cd "`d'"
-			capture copy "`mytheme'" "Statax.tex", replace
+			qui copy "`mytheme'" "Statax.tex", replace
+			cap qui cd "`d'"
 			local stataxcode "\include{Statax}              %included in your working dorectory"
 		}
 		
