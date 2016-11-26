@@ -123,7 +123,7 @@ program define rundoc
 			
 			// evaluate the objects
 			// ---------------------------------------------------------------
-			*qui copy "`objects'" "____.txt", replace public	
+*qui copy "`objects'" "____.txt", replace public	
 			tempfile results2
 			
 			file write `knot' "//OFF" _n 																	///
@@ -131,6 +131,7 @@ program define rundoc
 			"tempname resread reswrite " _n																	///
 			`"file open "' "`" "reswrite" "'" `" using ""' "`" "results" "'" `"", write replace"' 	_n		///
 			`"file open "' "`" "resread" "'" `" using ""' "`objects'" `"", read"'	_n				    	///
+///`"copy "`objects'" "___.txt", replace public"'	_n		/// FOR TESTING THE LIST		    	///			
 			`"file read "' "`" "resread" "'" `" line"'	_n			                                        ///
 			"while r(eof) == 0 {" _n 																		///
 			`"  file write  "' "`" "reswrite" "'" `" "'  "`" `"""' "`" `"macval(line)"' "'" `"  ""' "'" _n  ///
@@ -139,6 +140,8 @@ program define rundoc
 			`"      file write  "' "`" "reswrite" "' "  `"""' "`" "test" "'" `"""' _n 						///
 			"  }" _n 																						///
 			"  else {" _n 																					///
+			"    local test2 //RESET" _n																	///
+			"    local test3 //RESET" _n																	///
 			"    capture local test2 : display " "`" "line" "'" _n 											///
 			"    capture local test3 : display int(" "`" "test2" "'" ")" _n(2) 								/// 
 				 ///INTEGER
@@ -166,7 +169,7 @@ program define rundoc
 			"        }" _n 																					///
 			"    }" _n 																						///
 			/// STRING SCALARS
-			"    else  {" _n 																				///
+			"    if missing(" `"""' "`" "test2" "'" `"""' ")  {" _n 																				///
 			"        capture local m : display  " `"""' "`" "line" "'" `"""'  _n 							///
 			`"        file write  "' "`" "reswrite" "' "  `"""' "`" "m" "'" `"""' _n 						///
 			///"        }" _n 																				///
@@ -181,7 +184,8 @@ program define rundoc
 			"}" _n 																							///
 			"file close ""`" "resread" "'" " " _n 															///
 			"file close  ""`" "reswrite" "'" " " _n 														///
-			"quietly copy " "`" "results" "'" " `results2', public replace" _n 									///
+			"quietly copy " "`" "results" "'" " `results2', public replace" _n 								///
+///"quietly copy " "`" "results" "'" " ___res.txt, public replace" _n 								///
 			"//ON" _n
 			
 			file close `knot'
@@ -190,6 +194,7 @@ program define rundoc
 			// get the code
 			// ---------------------------------------------------------------
 			capture noisily do "`tmp'"
+*copy "`tmp'" "___code.txt", replace
 			
 			// create a dataset
 			// ---------------------------------------------------------------
