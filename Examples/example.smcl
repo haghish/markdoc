@@ -1,0 +1,50 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. 
+. /***
+> MarkDoc: A literate programming package for Stata
+> =================================================
+> 
+> ***/
+. 
+. 
+. local a 1
+{txt}
+{com}. scalar b = 2
+{txt}
+{com}. local c "HI"
+{txt}
+{com}. scalar d = "World"
+{txt}
+{com}. sysuse auto, clear
+{txt}(1978 Automobile Data)
+
+{com}. summarize price
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}price {c |}{res}         74    6165.257    2949.496       3291      15906
+{txt}
+{com}. di "and this?"
+{res}and this?
+{txt}
+{com}. 
+. /***
+> Header one
+> ==========
+> 
+> Header 2
+> --------
+> 
+> ### Header 3 and also
+> 
+> #### Header 4 here
+> 
+> to read the documentation, visit 
+> [The GitHub Repository](http://github.com/haghish/markdoc)
+> 
+> ***/
+. 
+. qui log c
+{smcl}
+{com}{sf}{ul off}

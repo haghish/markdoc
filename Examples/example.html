@@ -1,0 +1,356 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" async 
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- SYNTAX HIGHLIGHTING CLASSES  -->
+<style type="text/css">
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align:justify;
+    margin: 0 8%;
+    font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    line-height: 1.5;
+}
+
+a {
+   color: #1e6bb8;
+       text-decoration: none;
+}
+a:hover {
+       text-decoration: underline;
+}
+
+.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
+.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
+.center, #center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+
+    padding: 0px;
+    border-width: 0px;
+    border-style: solid;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    }
+
+pagebreak {
+        page-break-before: always;
+        }
+
+.pagebreak, #pagebreak {
+        page-break-before: always;
+        }
+
+td > p {padding:0; margin:0;}
+
+
+
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+table {
+        border-collapse: collapse;
+        border-bottom:1px solid black;
+        padding:5px;
+        margin-top:5px;
+
+}
+.tble {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+}
+
+.tblecenter {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        text-align:center;
+}
+
+span.tblecenter + table, span.tble + table, span.tble + img {
+        margin-top: 2px;
+}
+
+th {
+        border-bottom:1px solid black;
+        border-top:1px solid black;
+        padding-right:20px;
+}
+
+td {
+        padding-right:20px;
+}
+
+pre code {
+       font-size: 10px;
+       padding-top: 0;
+       padding-bottom: 0;
+       margin-top: 0;
+       margin-bottom: 0;
+      font-family: "menlo-regular","Consolas", "Liberation Mono", Menlo, Courier, monospace;
+}
+
+code {
+   padding: 2px 4px;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+       font-size: 0.9rem;
+       color: #383e41;
+       background-color: #f3f6fa;
+   border-radius: 0.3rem; 
+   display: block;
+}
+
+pre {
+   padding: 0.8rem 0 ;
+      font: 1rem Consolas, "Liberation Mono", Menlo,  Courier, monospace;
+       margin-top: 0;
+       margin-bottom: 1rem;
+       color: #567482;
+   word-wrap: normal;
+   background-color: #f3f6fa;
+   border: solid 1px #dce6f0;
+   border-radius: 0.3rem; 
+}
+
+pre > code {
+   padding: 0;
+       margin: 0;
+       color: #567482;
+       word-break: normal;
+}
+
+</style>
+<!-- Stata Style  -->
+<style type="text/css">
+@page {
+        size: auto;
+        margin: 10mm 20px 15mm 20px;
+        color:#828282;
+        font-family: ;
+ @top-left { content: "" ; font-size:11px; margin-top:5px; } 
+@bottom {
+        content: "Page " counter(page); font-size:14px; 
+        }
+        }
+
+@page:first {
+@top-left {
+        content: normal
+        }
+@bottom {
+        content: normal
+        }
+        }
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: ;
+        background-color:white; 
+        text-align:center;
+        display:block;
+        }
+
+ul {        list-style:circle;
+        margin-top:0;
+        margin-bottom:0;
+        }
+
+div ul a {
+        color:black;
+        text-decoration:none;
+        }
+
+div ul {
+        list-style: none;
+        margin: 0px 0 10px -15px;
+        padding-left:15px;
+        }
+
+div ul li {
+        font-weight:bold;
+        margin-top:20px;
+        }
+
+div ul li ul li {
+        font-weight: normal;
+        margin-left:20px;
+        margin-top:5px;
+        }
+
+div ul li ul li ul li {
+        font-weight: normal;
+        font-style:none;
+        margin-top:5px;
+        }
+
+div ul li ul li ul li ul li {
+        font-weight: normal;
+        font-style:italic;
+        margin-top:5px;
+        }
+
+img {
+        margin: 5px 0 5px 0;
+        padding: 0px;
+        cursor:-webkit-zoom-in;
+        cursor:-moz-zoom-in;
+        display:inline-block;
+        text-align: left;
+        clear: both;
+        }
+
+h1, h1 > a, h1 > a:link {
+        margin:0.67em 0;
+        padding: 0;
+        font-family: ;
+        color:#17365D;
+        font-size: 26px;
+        }
+
+h1 > a:hover, h1 > a:hover{
+color:#345A8A;
+} 
+
+h2, h2 > a, h2 > a, h2 > a:link {
+        margin:14px 0px 2px 0px;
+        padding: 0;
+        font-family: ;
+        color:#345A8A;
+        font-size: 18px;
+        font-weight:bold;
+        }
+
+h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {
+        margin:14px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        color:#4F81BD;
+        font-size: 14px;
+        font-weight:bold;
+        }
+
+h4 {
+        margin:10px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        font-size: 14px;
+        color:#4F81BD;
+        font-weight:bold;
+        font-style:italic;
+        }
+
+h5  {
+        font-family: ;
+        font-size: 14px;
+        font-weight:normal;
+        color:#4F81BD;
+        }
+
+h6  {
+        font-size:14px;
+        font-family: ;
+        font-weight:normal;
+        font-style:italic;
+        color:#4F81BD;
+        }
+
+p {
+        font-family: ;
+        font-weight:normal;
+        font-size:14px;
+        line-height:14px;
+        line-height: 16px;
+        text-align:justify;
+        text-align: left;
+        text-justify:inter-word;
+        margin:0 0 14px 0;
+        }
+
+.code {
+        white-space:pre;
+        color: black;
+        padding:5px;
+        display:block;
+        font-size:12px;
+        line-height:14px;
+        background-color:#E1E6F0;
+        font-family:"Lucida Console", Monaco, monospace, "Courier New", Courier, monospace;
+        font-weight:normal;
+        text-shadow:#FFF;
+        border:thin;
+        border-color: #345A8A; 
+        border-style: solid;
+        unicode-bidi: embed;
+        margin:20px 0 0px 0;
+        }
+
+.output {
+        white-space:pre;
+        display:block;
+        font-family:monospace,"Lucida Console", Monaco, "Courier New", Courier, monospace;
+        font-size:12px; 
+        line-height: 12px;
+        margin:0 0 14px 0;
+        border:thin; 
+        unicode-bidi: embed;
+        border-color: #345A8A; 
+        padding:14px 5px 0 5px;
+        background-color:transparent;
+        }
+
+</style>
+<link rel="stylesheet" type="text/css" href="/Users/haghish/Documents/Packages/markdoc/Examples/styles/css.css">
+</head>
+<body>
+<h1 id="markdoc-a-literate-programming-package-for-stata">MarkDoc: A literate programming package for Stata</h1>
+<pre><code>      . local a 1
+
+      . scalar b = 2
+
+      . local c &quot;HI&quot;
+
+      . scalar d = &quot;World&quot;
+
+      . sysuse auto, clear
+      (1978 Automobile Data)
+
+      . summarize price
+
+          Variable |        Obs        Mean    Std. Dev.       Min        Max
+      -------------+---------------------------------------------------------
+             price |         74    6165.257    2949.496       3291      15906
+
+      . di &quot;and this?&quot;
+      and this?</code></pre>
+<h1 id="header-one">Header one</h1>
+<h2 id="header-2">Header 2</h2>
+<h3 id="header-3-and-also">Header 3 and also</h3>
+<h4 id="header-4-here">Header 4 here</h4>
+<p>to read the documentation, visit <a href="http://github.com/haghish/markdoc">The GitHub Repository</a></p>
+</body>
+</html>

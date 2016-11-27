@@ -973,7 +973,7 @@ program markdoc
 	// specified for each output format. The available styles are "simple"
 	// and "stata." The default style is "simple" 
 	// =========================================================================
-	if "`style'"  == "" local style "simple"
+	if "`style'"  == "" local style "stata"   //??? CHANGE IT
 	if "`export'" == "pdf" & "`style'" == "" local style "stata" 
 
 	// CHECK FOR REQUIRED SOFTWARE
@@ -1414,10 +1414,8 @@ program markdoc
 			// replacing the "dots" with "{com}. "
 			// ================================================================= 
 			if substr(`"`macval(line)'"',1,1) == "." & `"`macval(line)'"' > "." {	
-				local h : di substr(`"`macval(line)'"',2,.) 
-				local line `"{com}. `macval(h)'"'
+				local line : subinstr local line "." "{com}."
 			}
-			
 			
 			// -----------------------------------------------------------------
 			// LOOP CORRECTION 
@@ -3073,8 +3071,8 @@ program markdoc
 						if !missing("`noisily'") {
 							di _n(2) "{title:Print the HTML to PDF}" _n			///
 							"$setpath --footer-center [page] " 					///
-							" --footer-font-size 10 --margin-right 30mm "		///
-							"--margin-left 30mm --margin-top 35mm "				///
+							" --footer-font-size 10 --margin-right 15mm "		///
+							"--margin-left 15mm --margin-top 35mm "				///
 							"--no-stop-slow-scripts --javascript-delay 2000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							///"`in'.html `output'"
@@ -3085,8 +3083,8 @@ program markdoc
 						
 						`quietly' shell "$setpath" 								///
 						--footer-center [page] --footer-font-size 10 			///
-						--margin-right 30mm 									///
-						--margin-left 30mm 										///
+						--margin-right 15mm 									///
+						--margin-left 15mm 										///
 						--margin-top 35mm										///
 						--no-stop-slow-scripts --javascript-delay 2000 			///
 						--enable-javascript  									///
@@ -3112,8 +3110,8 @@ program markdoc
 						if !missing("`noisily'") {
 							di _n(2) "{title:Print the HTML to PDF}" _n			///
 							"$setpath --footer-center \[page\] " 				///
-							" --footer-font-size 10 --margin-right 30mm "		///
-							"--margin-left 30mm --margin-top 35mm "				///
+							" --footer-font-size 10 --margin-right 15mm "		///
+							"--margin-left 15mm --margin-top 35mm "				///
 							"--no-stop-slow-scripts --javascript-delay 2000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`html' `convert'"' 
@@ -3123,8 +3121,8 @@ program markdoc
 						
 						`quietly' shell "$setpath" 						        ///
 						--footer-center \[page\] --footer-font-size 10 			///
-						--margin-right 30mm 									///
-						--margin-left 30mm 										///
+						--margin-right 15mm 									///
+						--margin-left 15mm 										///
 						--margin-top 35mm										///
 						--no-stop-slow-scripts --javascript-delay 2000 			///
 						--enable-javascript  									///
@@ -3150,8 +3148,8 @@ program markdoc
 						if !missing("`noisily'") {
 							di _n(2) "{title:Print the HTML to PDF}" _n			///
 							"$setpath --footer-center \[page\] " 				///
-							" --footer-font-size 10 --margin-right 30mm "		///
-							"--margin-left 30mm --margin-top 35mm "				///
+							" --footer-font-size 10 --margin-right 15mm "		///
+							"--margin-left 15mm --margin-top 35mm "				///
 							"--no-stop-slow-scripts --javascript-delay 3000 "	///
 							"--enable-javascript `toc' --debug-javascript "		///
 							`"`html'" "`convert'"' 
@@ -3161,8 +3159,8 @@ program markdoc
 						
 						`quietly' shell "$setpath" 								///
 						--footer-center \[page\] --footer-font-size 10 			///
-						--margin-right 30mm 									///
-						--margin-left 30mm 										///
+						--margin-right 15mm 									///
+						--margin-left 15mm 										///
 						--margin-top 35mm										///
 						--no-stop-slow-scripts --javascript-delay 3000 			///
 						--enable-javascript  									///

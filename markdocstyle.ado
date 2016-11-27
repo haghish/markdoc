@@ -254,7 +254,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		qui cap file open `knot' using "`tmp1'", write replace
 		
 		
-		if !missing("`master'") | "`markup'" == "" | "`markup'" == "markdown" {
+		if !missing("`master'") & "`markup'" == "" | !missing("`master'") & "`markup'" == "markdown" {
 			file write `knot' "<!doctype html>" _n									///
 			"<html>" _n																/// 
 			"<head>" _n 															///
@@ -276,7 +276,25 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			file write `knot' _n "<!-- SYNTAX HIGHLIGHTING CLASSES  -->" _n(2) 		///
 			`"<style type="text/css">"' _n	
 				
-			file write `knot' ".author {display:block;text-align:center;"			///
+			file write `knot' 													///
+			"body {" _n 												///
+				/// _skip(8) "margin:10px 30px 10px 30px;" _newline /// 
+				_skip(4) `"font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;"' _n ///
+				_skip(4) "text-align:justify;" _n								///
+				_skip(4) "margin: 0 8%;" _n 									///
+				_skip(4) "font-size: 16px;" _n 									///
+			"}" _newline(2)														///
+			"h1, h2, h3, h4, h5, h6, p {" _n 									///
+				_skip(4) "line-height: 1.5;" _n 								///
+			"}" _n(2) 															///
+			"a {" _n 																///
+				"   color: #1e6bb8;" _n 											///
+				"	text-decoration: none;" _n 										///
+			"}" _n 																	///
+			"a:hover {" _n 															///
+				"	text-decoration: underline;" _n 								///
+			"}" _n(2) 																	///																///		
+			".author {display:block;text-align:center;"								///
 			"font-size:16px;margin-bottom:3px;}" _newline
 			file write `knot' ".date {display:block;text-align:center;"				///
 			"font-size:12px;margin-bottom:3px;}" _newline
@@ -362,23 +380,111 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			"td {" _n 															///
 			_skip(8) "padding-right:20px;" _n 									///
 			"}" _n(2)															///
-			"body {" _n															///
-			_skip(8) "text-align:justify" _n									///
+			
+			// PRE CODE
+			// -----------------------------------------------------------------
+			file write `knot' "pre code {" _n 									///
+			"	font-size: 10px;" _n 											///
+			"	padding-top: 0;" _n 											///
+			"	padding-bottom: 0;" _n 											///
+			"	margin-top: 0;" _n 												///
+			"	margin-bottom: 0;" _n 											///
+			`"	font-family: "menlo-regular","Consolas", "Liberation Mono", "'  /// 
+			`"Menlo, Courier, monospace;"' _n									///
 			"}" _n(2)
 			
+			// Statax
+			// -----------------------------------------------------------------
+			if !missing("`statax'") {
+				file write `knot' 												///
+				".sh_stata {" _n 												///
+				"   font-size: 0.7rem;" _n 										///
+				"	padding-top: 0;" _n 										///
+				"	padding-bottom: 0;" _n 										///
+				"	margin-top: 0;" _n 											///
+				"	margin-bottom: 0;" _n 										///
+				"   display: block;" _n											///
+				"   line-height: 1.5;" _n 										///
+			    "}" _newline(2)													///
+				"pre > code {" _n 												///
+				"   padding: 0;" _n 											///
+				"	margin: 0;" _n 												///
+				"	color: #567482;" _n 										///
+				"	word-break: normal;" _n 									///
+				"   display: block;" _n 										///
+			    "}" _n(2)
+			}
+			else {
+				file write `knot' 												///
+				"code {" _n 													///
+				"   padding: 2px 4px;" _n 										///
+				`"	font-family: Consolas, "Liberation Mono", Menlo, "'			///
+					`"Courier, monospace;"' _n 									///
+				"	font-size: 0.9rem;" _n 										///
+				"	color: #383e41;" _n 										///
+				"	background-color: #f3f6fa;" _n 								///
+				"   border-radius: 0.3rem; " _n									///
+				"   display: block;" _n 										///
+			    "}" _n(2)														///
+				"pre {" _n 														///
+				"   padding: 0.8rem ;" _n 									///
+				`"	font: 1rem Consolas, "Liberation Mono", Menlo,  "'			///
+					`"Courier, monospace;"' _n 									///
+				"	margin-top: 0;" _n 											///
+				"	margin-bottom: 1rem;" _n 									///
+				"	color: #567482;" _n 										///
+				"   word-wrap: normal;" _n										///
+				"   background-color: #f3f6fa;" _n 								///
+				"   border: solid 1px #dce6f0;" _n 								///
+				"   border-radius: 0.3rem; " _n									///
+			    "}" _n(2)														///
+				"pre > code {" _n 												///
+				"   padding: 0;" _n 											///
+				"	margin: 0;" _n 												///
+				"	color: #567482;" _n 										///
+				"	word-break: normal;" _n 									///
+			    "}" _n(2)
+			}
+			
+			// QUOTE BLOCK
+			// -----------------------------------------------------------------
+			file write `knot' 													///
+			"blockquote {" _n 													///
+			"	padding: 0 1rem;" _n 											///
+			"	margin-left: 0;" _n 											///
+			"	color: #819198;" _n 											///
+			"	border-left: 0.3rem solid #dce6f0;" _n 							///	
+			"}" _n(2)
+			
+			// HR
+			// -----------------------------------------------------------------
+			file write `knot' 													///
+			"hr {" _n 															///
+			"	height: 2px;" _n 												///
+			"	margin: 1rem 0;" _n 											///
+			"	background-color: #eff0f1;" _n 									///
+			"	border: 0; " _n 												///	
+			"}" _n(2)
+			
+			// UL LI
+			// -----------------------------------------------------------------
+			file write `knot' 													///
+			"ul li {" _n 														///
+			"	font-size:14px;" _n 											///											///	
+			"}" _n(2)
+			
+
 			file write `knot' "</style>" _n(4)
 			
-					
+			
+			 
+		
 			
 			// Stata (DEFAULT) STYLE
 			//======================	
 			if "`style'" == "stata" {
 				file write `knot' _n(2) "<!-- Stata Style  -->" _newline(2) ///
 				`"<style type="text/css">"' _newline ///
-				"body {" _newline(2) ///
-				_skip(8) "margin:10px 30px 10px 30px;" _newline /// 
-				_skip(8) "font-family: `font';" _newline ///
-				_skip(8) "}" _newline(2) ///
 				"@page {" _newline ///
 				_skip(8) "size: auto;" _newline ///
 				_skip(8) "margin: 10mm 20px 15mm 20px;" _newline ///
@@ -408,7 +514,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				_skip(8) "text-align:center;" _newline ///
 				_skip(8) "display:block;" _newline ///
 				_skip(8) "}" _newline(2) ///
-				"ul {"	_skip(8) "list-style:circle;" _newline ///
+				/*"ul {"	_skip(8) "list-style:circle;" _newline ///
 				_skip(8) "margin-top:0;" _newline ///				
 				_skip(8) "margin-bottom:0;" _newline ///
 				_skip(8) "}" _newline(2) ///
@@ -440,7 +546,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				_skip(8) "font-style:italic;" _newline ///
 				_skip(8) "margin-top:5px;" _newline ///
 				_skip(8) "}" _newline(2) ///		
-				"img {" _newline ///
+			  */"img {" _newline ///
 				_skip(8) "margin: 5px 0 5px 0;" _newline ///
 				_skip(8) "padding: 0px;" _newline ///
 				_skip(8) "cursor:-webkit-zoom-in;" _newline ///
@@ -450,11 +556,11 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				_skip(8) "clear: both;" _newline ///
 				_skip(8) "}" _newline(2) ///		
 				"h1, h1 > a, h1 > a:link {" _newline ///
-				_skip(8) "margin:24px 0px 2px 0px;" _newline ///
+				_skip(8) "margin:0.67em 0;" _newline ///
 				_skip(8) "padding: 0;" _newline ///
 				_skip(8) "font-family: `font';" _newline ///
 				_skip(8) "color:#17365D;" _newline ///
-				_skip(8) "font-size: 22px;" _newline ///
+				_skip(8) "font-size: 26px;" _newline ///
 				_skip(8) "}" _newline(2) ///
 				"h1 > a:hover, h1 > a:hover{" _newline ///
 				"color:#345A8A;" _newline ///
@@ -549,14 +655,16 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				file write `knot' "</style>" _newline(4)	
 			}	
 					
-
+			
 			if !missing("`statax'") {
 				file write `knot' `"<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>"' _n
 			}
 			
+
 			if !missing("`template'") {	
 				file write `knot' `"<link rel="stylesheet" type="text/css" href="`template'">"' _n
 			}
+			
 			
 			
 			file write `knot' "</head>" _n ///
