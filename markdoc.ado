@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.9.0
+Version: 3.9.1
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -904,7 +904,7 @@ program markdoc
 	// -------------------------------------------------------------------------
 	if !missing("`style'") | !missing("`statax'") | "`export'" == "pdf" {
 		if "`export'" == "pdf" | "`export'" == "html" | "`export'" == "tex" {
-			local master master
+			local master master		
 		}
 	}
 	
@@ -1094,7 +1094,7 @@ program markdoc
 		
 	//Styles should be "simple" or "stata"
 	if "`style'" != "" & "`style'" != "stata" & "`style'" != "simple" 			///
-		& "`style'" != "empty" {
+		& "`style'" != "formal" & "`style'" != "empty" {
 		di as err "{p}{bf:style} option not recognized."
 		error 198
 	}
@@ -1728,17 +1728,10 @@ program markdoc
 			****************************************************************
 			* 3) Add an empty line after long commands (also in braces)
 			****************************************************************
-			if substr(`"`macval(pre1)'"',1,7) == "{com}. " |				///
+			if substr(`"`macval(pre1)'"',1,7) == "{com}. " |					///
 			substr(`"`macval(pre1)'"',9,7) == "{com}. " {
-				
-				//if "`statax'" == "statax" file write `knot' `"><pre class="sh_stata">"' _n
-				//local a : di substr(`"`macval(line)'"',1,7) 
-				//local b : di substr(`"`macval(line)'"',8,.) 
-				//local a : di ///
-				//	`"<pre class="sh_stata">"'`"`macval(a)'"'`".  </span>"'
-				//	local line `"`macval(a)'"'`"`macval(b)'"'
 					
-				if substr(`"`macval(pre1)'"',-4,.) == " ///" | 				///
+				if substr(`"`macval(pre1)'"',-4,.) == " ///" | 					///
 				substr(`"`macval(pre1)'"',-3,.) == " /*" |						///
 				substr(`"`macval(pre1)'"',-3,.) == "/* " {
 
@@ -1765,20 +1758,14 @@ program markdoc
 				****************************************************************
 				if substr(`"`macval(word1)'"',1,1) == ">" {
 					while substr(`"`macval(word1)'"',1,1) == ">" & r(eof) == 0 {
-						//di as txt "1 : " `"`macval(line)'"'
 						file write `knot' `"`macval(line)'"' _n
 						file read `hitch' line							
 						local word1 : word 1 of `"`macval(line)'"'
 					}
 					if `"`macval(line)'"' != "" {
-						//if "`statax'" == "statax" file write `knot' `"></pre>"' _n
 						file write `knot' _n
 					}
-					//if `"`macval(line)'"' == "" {
-					//	if "`statax'" == "statax" file write `knot' `"></pre>"' _n
-					//}
 				}
-				//else if "`statax'" == "statax" file write `knot' `"></pre>"' _n
 			}
 			
 			
@@ -2021,30 +2008,6 @@ program markdoc
 					local word1 : word 1 of `"`macval(line)'"'
 				}
 			
-			
-					
-				/*
-				if "`statax'" == "statax" {
-					file write `knot' `"><pre class="sh_stata">"'
-					file write `knot' `"`macval(line)'"' _n
-					file read `hitch' line							
-					local word1 : word 1 of `"`macval(line)'"'				
-					while substr(`"`macval(word1)'"',1,6) != ": end " & 		///
-					r(eof) == 0 {
-						if substr(`"`macval(word1)'"',1,1) == ">" & 			///
-						substr(`"`macval(word1)'"',1,3) != ">//" {
-							local line : subinstr local line ">" " "
-						}
-						if substr(`"`macval(word1)'"',1,3) == ">//" {
-							local line : subinstr local line ">//" " //"
-						}						
-						file write `knot' `"`macval(line)'"' _n
-						file read `hitch' line							
-						local word1 : word 1 of `"`macval(line)'"'
-					}
-					file write `knot' "></pre>"
-				}
-				*/
 			}
 			
 			//COPY THE CURRENT LINE. It is used in the next round
@@ -2249,22 +2212,7 @@ program markdoc
 						}
 							
 						file write `knot' `"</pre>"' _n
-							
-						/*
-						if substr(`"`macval(word1)'"',1,5) == "{txt}" |	///
-						substr(`"`macval(word1)'"',1,7) == "{com}. " {
-							file write `knot' _n			// add new line
-								
-							while substr(`"`macval(word1)'"',1,5) == "{txt}" | ///
-							substr(`"`macval(word1)'"',1,7) == "{com}. "	{
-								file write `knot' `"`macval(line)'"' _n
-								file read `hitch' line							
-								local word1 : word 1 of `"`macval(line)'"'
-							}
-							file write `knot' `"></pre>"' _n
-						}
-						else file write `knot' `"</pre>"' _n
-						*/
+
 					}
 						
 				
@@ -2358,11 +2306,6 @@ program markdoc
 						else file write `knot' `"</pre>"' _n
 					}
 					 
-					//local a : di substr(`"`macval(line)'"',1,7) 
-					//local b : di substr(`"`macval(line)'"',8,.) 
-					//local a : di ///
-					//	`"<pre class="sh_stata">"'`"`macval(a)'"'`".  </span>"'
-					//	local line `"`macval(a)'"'`"`macval(b)'"'
 				}
 
 				file write `knot' `"`macval(line)'"' _n

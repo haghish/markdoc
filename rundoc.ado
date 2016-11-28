@@ -75,24 +75,27 @@ program define rundoc
 	quietly log using "`input'.smcl", replace smcl name(rundoc)
 	
 	
-	tempfile tmp documentation objects
+	tempfile  documentation objects
 	tempname hitch knot doc obj
 	qui file open `hitch' using "`input'.do", read 
 	qui file read `hitch' line
 	while r(eof) == 0 {
 		
+	
 		// save the code in a file
 		// -------------------------------------------------------------------
+		tempfile tmp
 		qui file open `knot' using "`tmp'", write replace
 		while `"`macval(line)'"' != "/***" & r(eof) == 0 {
 			file write `knot' `"`macval(line)'"' _n
 			file read `hitch' line
 		}
 		
+
+		
 		// make a list of the objects from documentation
 		// -------------------------------------------------------------------
-		if r(eof) == 0 & `"`macval(line)'"' == "/***" {
-			local jump 1
+		if `"`macval(line)'"' == "/***" {
 			qui file open `obj' using "`objects'", write replace
 			qui file open `doc' using "`documentation'", write replace
 			file write `doc' "/***" _n
@@ -206,10 +209,10 @@ program define rundoc
 			qui gen obj = ""
 			qui gen val = ""
 			qui file open `objlist' using "`results2'", read
-			file read `objlist' line
+			file read `objlist' line2
 			local nn 1
 			while r(eof) == 0 {
-				tokenize `"`macval(line)'"'
+				tokenize `"`macval(line2)'"'
 				if !missing(`"`macval(1)'"') {
 					qui replace obj = `"`macval(1)'"' in `nn' 
 					macro shift
@@ -217,7 +220,7 @@ program define rundoc
 					local nn `++nn'
 					qui set obs `nn'
 				}
-				file read `objlist' line
+				file read `objlist' line2
 			}	
 			file close `objlist'
 			
@@ -230,25 +233,26 @@ program define rundoc
 			tempname corread corwrite 
 			qui file open `corwrite' using "`correction'", write replace
 			qui file open `corread' using "`documentation'", read
-			file read `corread' line
-			while `"`macval(line)'"' != "***/" & r(eof) == 0 {
-				while strpos(`"`macval(line)'"', "!>") > 3 {
-					local start = strpos(`"`macval(line)'"', "<!") 
-					local end = strpos(`"`macval(line)'"', "!>") 
+			file read `corread' line2
+			while `"`macval(line2)'"' != "***/" & r(eof) == 0 {
+				while strpos(`"`macval(line2)'"', "!>") > 3 {
+					local start = strpos(`"`macval(line2)'"', "<!") 
+					local end = strpos(`"`macval(line2)'"', "!>") 
 					local l = `end' - `start'
-					local macro = substr(`"`macval(line)'"', `start', `l')
-					local val =  substr(`"`macval(line)'"', `start'+2, `l'-2)
+					local macro = substr(`"`macval(line2)'"', `start', `l')
+					local val =  substr(`"`macval(line2)'"', `start'+2, `l'-2)
 					if `"`macval(val)'"' != "" {
 						forval i = 1(1)`c(N)' {
 							if `"`macval(val)'"' == obj[`i'] {
 								local rep : di val[`i']
-								local line : subinstr local line `"<!`macval(val)'!>"' "`rep'"
+								local line2 : subinstr local line2 `"<!`macval(val)'!>"' "`rep'"
 							}
 						}
 					}					
 				}
-				file write `corwrite' `"`macval(line)'"' _n
-				file read `corread' line
+				file write `corwrite' `"`macval(line2)'"' _n
+				file read `corread' line2
+				
 			}
 			file write `corwrite' "***/" _n
 			file close `corwrite'
@@ -263,16 +267,18 @@ program define rundoc
 			*capture erase "____results.txt"
 			
 			file read `hitch' line
+			
 		}
 		
 		// -------------------------------------------------------------------
 		// If there is no documentation just run the source code
 		// ===================================================================
-		if missing("`jump'") {
-			capture noisily do "`input'"
+		else {
+			file close `knot'
+			capture noisily do "`tmp'"
 		}
 	}
-	file close `hitch'
+	cap file close `hitch'
 	
 	*capture noisily do "`input'"
 	qui log off rundoc
@@ -320,5 +326,7 @@ program define rundoc
 	
 end
 
-
-
+/*
+cap log c
+cap erase simple20.html
+markdoc "simple20.do" , export(md) replace 
