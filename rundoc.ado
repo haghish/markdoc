@@ -119,8 +119,9 @@ program define rundoc
 				
 				while strpos(`"`macval(line)'"', "!>") > 0  {
 					local activate 1
-					local found 1
-					file write `disp' " _n ///" _n 
+					if missing("`found'") file write `disp' " _n ///" _n 
+					*else file write `disp' " ///" _n
+					
 					local start = strpos(`"`macval(line)'"', "<!") 
 					local end = strpos(`"`macval(line)'"', "!>") 
 					local l = `end' - `start'
@@ -133,22 +134,25 @@ program define rundoc
 					local part : subinstr local part " \\$$" " $$", all
 					
 					
-					file write `disp' "`" `""> `macval(part)'""' "'"			//write text parts
-					
+					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			//write text parts
+					else file write `disp' "`" `""`macval(part)'""' "'"
 					local val =  substr(`"`macval(line)'"', `start'+2, `l'-2)
 					*file write `disp' `" %10.2f `macval(val)'"'   	
 					file write `disp' `" `macval(val)'"'   
 					local line = substr(`"`macval(line)'"', `end'+2, .)
+					
+					local found 1
 				}
-				if !missing("`found'") & trim(`"`macval(line)'"') != "" {
-					
-					// SECURE PART
-					// --------------------------------------------------------
-					local line : subinstr local line " `" " \\`", all
-					local line : subinstr local line " $" " \\$", all
-					local line : subinstr local line " \\$$" " $$", all
-					
-					file write `disp' `" "`macval(line)'""'  
+				if !missing("`found'")  {
+					if trim(`"`macval(line)'"') != "" {
+						// SECURE PART
+						// --------------------------------------------------------
+						local line : subinstr local line " `" " \\`", all
+						local line : subinstr local line " $" " \\$", all
+						local line : subinstr local line " \\$$" " $$", all
+						file write `disp' `" "`macval(line)'""' 
+					}	
+					*else file write `disp' `" "' 
 				}	
 				if missing("`found'") {
 					
