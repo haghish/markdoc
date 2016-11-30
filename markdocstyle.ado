@@ -414,7 +414,6 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 						local jump2
 					}
 					local endverb //
-					di as err `"`jump2'::`macval(line)'"'
 				}
 			}
 			
@@ -450,7 +449,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		// --------------------------------------------------------------
 		if "`style'" != "stata" & !missing("`statax'") {
 			tempfile tmp
-			copy "`tmp1'" "`tmp'", replace 
+			qui copy "`tmp1'" "`tmp'", replace 
 			tempname hitch knot 
 			qui file open `hitch' using "`tmp'", read 
 			qui cap file open `knot' using "`tmp1'", write replace

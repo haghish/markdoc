@@ -42,8 +42,9 @@ END
 // Specify the Document Theme
 LIST style_list
 BEGIN
-	stata
 	simple
+	stata
+	formal
 END
 
 // Beamer Theme

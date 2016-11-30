@@ -973,7 +973,7 @@ program markdoc
 	// specified for each output format. The available styles are "simple"
 	// and "stata." The default style is "simple" 
 	// =========================================================================
-	if "`style'"  == "" local style "stata"   //??? CHANGE IT
+	if "`style'"  == "" local style "simple"   
 	if "`export'" == "pdf" & "`style'" == "" local style "stata" 
 
 	// CHECK FOR REQUIRED SOFTWARE
