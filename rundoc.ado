@@ -138,7 +138,7 @@ program define rundoc
 					else file write `disp' "`" `""`macval(part)'""' "'"
 					local val =  substr(`"`macval(line)'"', `start'+2, `l'-2)
 					*file write `disp' `" %10.2f `macval(val)'"'   	
-					file write `disp' `" `macval(val)'"'   
+					file write `disp' `" `macval(val)' "'   
 					local line = substr(`"`macval(line)'"', `end'+2, .)
 					
 					local found 1
