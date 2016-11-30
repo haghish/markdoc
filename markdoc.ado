@@ -2064,9 +2064,10 @@ program markdoc
 			if `linelength' > `c(linesize)' {
 				if `linelength' > 255 {
 					di as err _n(2) "{title:Warning}"
-					di as txt "{p}your documentation has a width of "			///
+					di as err "{p}your documentation has a width of "			///
 					"`linelength' which is beyond the limit of Stata. This " 	///
-					"can corrupt your document..." _n
+					"can corrupt your document... avoid writing very long " 	///
+					"lines in the document. " _n
 					
 					qui set linesize 255
 					*error 198
@@ -2075,9 +2076,9 @@ program markdoc
 					di as txt _n(2) "{title:Warning}"
 					di as txt "{p}your documentation has a width of "			///
 					"`linelength', while your Stata has linesize of " 			///
-					"`c(linesize)'. Since you did not specify the "				///
-					"{bf:linesize} option, MarkDoc applied the width of "		///
-					"`linelength' for your document automatically" _n
+					"`c(linesize)'. {help markdoc} automatically adjusts your "	///
+					"document width. You can avoid this warning by increasing "	///
+					"Stata's {bf:linesize} or by writing shorted lines" _n
 					
 					qui set linesize `linelength'
 				}	

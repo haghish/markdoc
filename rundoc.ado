@@ -75,209 +75,136 @@ program define rundoc
 	quietly log using "`input'.smcl", replace smcl name(rundoc)
 	
 	
-	tempfile  documentation objects
-	tempname hitch knot doc obj
+	tempfile tmp
+	tempname hitch knot
+*	tempfile documentation 
+*	tempname  doc obj
+	qui file open `knot' using "`tmp'", write replace
 	qui file open `hitch' using "`input'.do", read 
 	qui file read `hitch' line
+	
+	//preserve the code
+*	tempfile rescue 
+
+	
 	while r(eof) == 0 {
 		
-	
-		// save the code in a file
-		// -------------------------------------------------------------------
-		tempfile tmp
-		qui file open `knot' using "`tmp'", write replace
 		while `"`macval(line)'"' != "/***" & r(eof) == 0 {
 			file write `knot' `"`macval(line)'"' _n
 			file read `hitch' line
 		}
-		
 
 		
-		// make a list of the objects from documentation
 		// -------------------------------------------------------------------
+		// If there is no documentation just append the documentation
+		// ===================================================================
 		if `"`macval(line)'"' == "/***" {
-			qui file open `obj' using "`objects'", write replace
+			tempfile documentation
+			tempname doc
 			qui file open `doc' using "`documentation'", write replace
-			file write `doc' "/***" _n
-			file read `hitch' line
-			file write `doc' `"`macval(line)'"' _n
+			file write `doc' "/***" _n 
 			
-			// repeat this for successive documentation chunks ????
-			// ---------------------------------------------------------------
-
+			tempfile display
+			tempname disp
+			qui file open `disp' using "`display'", write replace
+			file write `disp' `"/**/ di as txt "> " ///"' _n
+			
+			local activate //RESET 
+			file read `hitch' line
+		
 			while `"`macval(line)'"' != "***/" & r(eof) == 0 {
+				if !missing("`found'") file write `disp' " _n ///" _n 
+				
+				local found //RESET
+				
 				while strpos(`"`macval(line)'"', "!>") > 0  {
+					local activate 1
+					local found 1
+					file write `disp' " _n ///" _n 
 					local start = strpos(`"`macval(line)'"', "<!") 
 					local end = strpos(`"`macval(line)'"', "!>") 
 					local l = `end' - `start'
-					local macro = substr(`"`macval(line)'"', `start', `l')
+					local part = substr(`"`macval(line)'"', 1, `start'-1)
+					
+					// SECURE PART
+					// --------------------------------------------------------
+					local part : subinstr local part " `" " \\`", all
+					local part : subinstr local part " $" " \\$", all
+					local part : subinstr local part " \\$$" " $$", all
+					
+					
+					file write `disp' "`" `""> `macval(part)'""' "'"			//write text parts
+					
 					local val =  substr(`"`macval(line)'"', `start'+2, `l'-2)
-					file write `obj' `"`macval(val)'"' _n
+					*file write `disp' `" %10.2f `macval(val)'"'   	
+					file write `disp' `" `macval(val)'"'   
 					local line = substr(`"`macval(line)'"', `end'+2, .)
 				}
+				if !missing("`found'") & trim(`"`macval(line)'"') != "" {
+					
+					// SECURE PART
+					// --------------------------------------------------------
+					local line : subinstr local line " `" " \\`", all
+					local line : subinstr local line " $" " \\$", all
+					local line : subinstr local line " \\$$" " $$", all
+					
+					file write `disp' `" "`macval(line)'""'  
+				}	
+				if missing("`found'") {
+					
+					// SECURE PART
+					// --------------------------------------------------------
+					local line : subinstr local line " `" " \\`", all
+					local line : subinstr local line " $" " \\$", all
+					local line : subinstr local line " \\$$" " $$", all
+
+					
+					
+					file write `disp' "`" `""> `macval(line)'""' "'" " _n ///" _n
+				}	
+				if missing("`activate'") {					
+					file write `doc' `"`macval(line)'"' _n 
+				}	
+						
 				file read `hitch' line
-				file write `doc' `"`macval(line)'"' _n
 			}
-			file write `doc' "***/" _n
+			if `"`macval(line)'"' == "***/" file write `doc' "***/" _n 
 			
 			
 			file close `doc'
-			file close `obj'
-			
-			// evaluate the objects
-			// ---------------------------------------------------------------
-*qui copy "`objects'" "____.txt", replace public	
-			tempfile results2
-			
-			file write `knot' "//OFF" _n 																	///
-			"tempfile results" _n 																			///
-			"tempname resread reswrite " _n																	///
-			`"file open "' "`" "reswrite" "'" `" using ""' "`" "results" "'" `"", write replace"' 	_n		///
-			`"file open "' "`" "resread" "'" `" using ""' "`objects'" `"", read"'	_n				    	///
-///`"copy "`objects'" "___.txt", replace public"'	_n		/// FOR TESTING THE LIST		    	///			
-			`"file read "' "`" "resread" "'" `" line"'	_n			                                        ///
-			"while r(eof) == 0 {" _n 																		///
-			`"  file write  "' "`" "reswrite" "'" `" "'  "`" `"""' "`" `"macval(line)"' "'" `"  ""' "'" _n  ///
-			`"  local test : display real("' `"""' "`" "line" "'" `"""' `")"' _n							///	
-			"  if " `"""' "`" "test" "'" `"""' " != " `"".""' "{" _n									    ///
-			`"      file write  "' "`" "reswrite" "' "  `"""' "`" "test" "'" `"""' _n 						///
-			"  }" _n 																						///
-			"  else {" _n 																					///
-			"    local test2 //RESET" _n																	///
-			"    local test3 //RESET" _n																	///
-			"    capture local test2 : display " "`" "line" "'" _n 											///
-			"    capture local test3 : display int(" "`" "test2" "'" ")" _n(2) 								/// 
-				 ///INTEGER
-			"    if !missing(" `"""' "`" "test2" "'" `"""' ") & " `"""' "`" "test3" "'" `"""' " == " `"""' "`" "test2" "'" `"""' " {" _n 	///
-			"        capture local m : display " "`" "line" "'" _n 											///
-			"        if _rc == 0 {" _n 																		///
-			`"           file write  "' "`" "reswrite" "' "  `"""' "`" "m" "'" `"""' _n 					///
-			"        }" _n																					///
-			"    }" _n 																						///
-				 /// REAL
-			"    else if !missing(" `"""' "`" "test3" "'" `"""' ")" " & " `"""'"`""test3""'"`"""' " != " `"""' "`" "test2" "'" `"""' " {" _n ///
-			"        capture local m : display %10.2f " "`" "line" "'" _n 									///
-			"        if _rc == 0 {" _n 																		///
-			`"           file write  "' "`" "reswrite" "' "  `"""' "`" "m" "'" `"""' _n 					///
-			"        }" _n 																					///
-			"        else {" _n 																			///
-			"        capture local m :  display " `"""' "`" "line" "'" `"""' _n 							///
-			"         file write  " "`" "reswrite" "' "  `"""' "`" "m" "'" `"""' _n 						///
-			"        }" _n 																					///
-			"    }" _n 																						///
-			"    else if !missing(" `"""' "`" "test2" "'" `"""' ")" " & " "missing(" `"""' "`" "test3" "'" `"""' ") {" _n 					///
-			"        capture local m : display %10.2f " "`" "line" "'" _n 									///
-			"        if _rc == 0 {" _n 																		///
-			`"           file write  "' "`" "reswrite" "' "  `"""' "`" "m" "'" `"""' _n 					///
-			"        }" _n 																					///
-			"    }" _n 																						///
-			/// STRING SCALARS
-			"    if missing(" `"""' "`" "test2" "'" `"""' ")  {" _n 																				///
-			"        capture local m : display  " `"""' "`" "line" "'" `"""'  _n 							///
-			`"        file write  "' "`" "reswrite" "' "  `"""' "`" "m" "'" `"""' _n 						///
-			///"        }" _n 																				///
-			"    }" _n 																						///
-			/// ELSE 
-			///"    else {" _n 																				///
-			///`"        file write  "' "`" "reswrite" "' "  `"""' "`" "line" "'" `"""' _n 					///
-			///"     }" _n 																					///
-			"}" _n 																							///
-			"  file read ""`" "resread" "'" " line" _n 														///
-			"  file write  ""`" "reswrite" "'" "   _n" _n 													///
-			"}" _n 																							///
-			"file close ""`" "resread" "'" " " _n 															///
-			"file close  ""`" "reswrite" "'" " " _n 														///
-			"quietly copy " "`" "results" "'" " `results2', public replace" _n 								///
-///"quietly copy " "`" "results" "'" " ___res.txt, public replace" _n 								///
-			"//ON" _n
-			
-			file close `knot'
-			
-			
-			// get the code
-			// ---------------------------------------------------------------
-			capture noisily do "`tmp'"
-*copy "`tmp'" "___code.txt", replace
-			
-			// create a dataset
-			// ---------------------------------------------------------------
-			preserve
-			
-			tempname objlist
-			clear
-			qui set obs 1
-			qui gen obj = ""
-			qui gen val = ""
-			qui file open `objlist' using "`results2'", read
-			file read `objlist' line2
-			local nn 1
-			while r(eof) == 0 {
-				tokenize `"`macval(line2)'"'
-				if !missing(`"`macval(1)'"') {
-					qui replace obj = `"`macval(1)'"' in `nn' 
-					macro shift
-					qui replace val = `"`*'"' in `nn' 
-					local nn `++nn'
-					qui set obs `nn'
+			file close `disp'
+			tempname add
+			if missing("`activate'") {
+				file open `add' using "`documentation'", read
+				file read `add' docline
+				while r(eof) == 0 {
+					file write `knot' `"`macval(docline)'"' _n
+					file read `add' docline
 				}
-				file read `objlist' line2
-			}	
-			file close `objlist'
-			
-			//drop the duplications
-			cap qui duplicates drop obj, force
-			
-			// changing the text
-			// ---------------------------------------------------------------
-			tempfile correction
-			tempname corread corwrite 
-			qui file open `corwrite' using "`correction'", write replace
-			qui file open `corread' using "`documentation'", read
-			file read `corread' line2
-			while `"`macval(line2)'"' != "***/" & r(eof) == 0 {
-				while strpos(`"`macval(line2)'"', "!>") > 3 {
-					local start = strpos(`"`macval(line2)'"', "<!") 
-					local end = strpos(`"`macval(line2)'"', "!>") 
-					local l = `end' - `start'
-					local macro = substr(`"`macval(line2)'"', `start', `l')
-					local val =  substr(`"`macval(line2)'"', `start'+2, `l'-2)
-					if `"`macval(val)'"' != "" {
-						forval i = 1(1)`c(N)' {
-							if `"`macval(val)'"' == obj[`i'] {
-								local rep : di val[`i']
-								local line2 : subinstr local line2 `"<!`macval(val)'!>"' "`rep'"
-							}
-						}
-					}					
-				}
-				file write `corwrite' `"`macval(line2)'"' _n
-				file read `corread' line2
-				
+				file close `add'
+				cap erase "`documentation'"
 			}
-			file write `corwrite' "***/" _n
-			file close `corwrite'
+			else {
+				file open `add' using "`display'", read
+				file read `add' docline
+				while r(eof) == 0 {
+					file write `knot' `"`macval(docline)'"' _n
+					file read `add' docline
+				}
+				file close `add'
+				cap erase "`display'"
+			}
 			
-			// run the documentation
-			// ---------------------------------------------------------------
-			capture noisily do "`correction'"
-	
-			restore
-			
-			*capture erase "____.txt"
-			*capture erase "____results.txt"
-			
-			file read `hitch' line
-			
+			file read `hitch' line	
 		}
 		
-		// -------------------------------------------------------------------
-		// If there is no documentation just run the source code
-		// ===================================================================
-		else {
-			file close `knot'
-			capture noisily do "`tmp'"
-		}
+		
 	}
+	
+	file close `knot'
+	*copy "`tmp'" "___code.txt", replace
+	noisily do "`tmp'"
+	
 	cap file close `hitch'
 	
 	*capture noisily do "`input'"
@@ -326,7 +253,4 @@ program define rundoc
 	
 end
 
-/*
-cap log c
-cap erase simple20.html
-markdoc "simple20.do" , export(md) replace 
+
