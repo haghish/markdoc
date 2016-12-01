@@ -1020,6 +1020,9 @@ program define sthlp
 	//ADD ADDITIONAL LINE
 	file write `knot' _n
 	file close `knot'
+	
+	// ALWAYS CREATE THE TEMPFILE BEFORE REPLACING AN EXISTING ONE
+	tempfile tmp1
 	quietly copy "`tmp'" "`tmp1'", replace
 	*quietly copy "`tmp'" me2.txt, replace
 	

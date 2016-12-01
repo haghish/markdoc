@@ -107,11 +107,13 @@ program define rundoc
 			tempfile display
 			tempname disp
 			qui file open `disp' using "`display'", write replace
-			file write `disp' `"/**/ di as txt "> " ///"' _n
+			file write `disp' `"/**/ di as txt "> " _n ///"' _n
 			
 			local activate //RESET 
+			local found    //RESET
+			
 			file read `hitch' line
-		
+			
 			while `"`macval(line)'"' != "***/" & r(eof) == 0 {
 				if !missing("`found'") file write `disp' " _n ///" _n 
 				
@@ -119,8 +121,6 @@ program define rundoc
 				
 				while strpos(`"`macval(line)'"', "!>") > 0  {
 					local activate 1
-					if missing("`found'") file write `disp' " _n ///" _n 
-					*else file write `disp' " ///" _n
 					
 					local start = strpos(`"`macval(line)'"', "<!") 
 					local end = strpos(`"`macval(line)'"', "!>") 
@@ -129,10 +129,12 @@ program define rundoc
 					
 					// SECURE PART
 					// --------------------------------------------------------
-					local part : subinstr local part " `" " \\`", all
-					local part : subinstr local part " $" " \\$", all
-					local part : subinstr local part " \\$$" " $$", all
+					local part : subinstr local part "`" "{c 96}", all
 					
+					*local part : subinstr local part "` " "\\{c 96} ", all
+					*local part : subinstr local part "`" "{c 96}", all
+					local part : subinstr local part " $" " \\$", all
+					local part : subinstr local part " \\$$" " $$", all				
 					
 					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			//write text parts
 					else file write `disp' "`" `""`macval(part)'""' "'"
@@ -147,7 +149,7 @@ program define rundoc
 					if trim(`"`macval(line)'"') != "" {
 						// SECURE PART
 						// --------------------------------------------------------
-						local line : subinstr local line " `" " \\`", all
+						local part : subinstr local part "`" "{c 96}", all
 						local line : subinstr local line " $" " \\$", all
 						local line : subinstr local line " \\$$" " $$", all
 						file write `disp' `" "`macval(line)'""' 
@@ -158,8 +160,8 @@ program define rundoc
 					
 					// SECURE PART
 					// --------------------------------------------------------
-					local line : subinstr local line " `" " \\`", all
-					local line : subinstr local line " $" " \\$", all
+					local part : subinstr local part "`" "{c 96}", all
+					local line : subinstr local line "$" " \\$", all  //{c 36}
 					local line : subinstr local line " \\$$" " $$", all
 
 					

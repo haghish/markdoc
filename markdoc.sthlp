@@ -147,7 +147,7 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 {synopt:{opt num:bered}}numbers Stata commands in the dynamic document.{p_end}
 
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
-The available styles are {bf:simple} and {bf:stata}. If the document is exported 
+The available styles are {bf:simple}, {bf:stata}, and {bf:formal}. If the document is exported 
 in LaTeX format, the {bf:stata} option (also if used with {cmd: master} option) 
 will produce a {browse "http://www.stata-journal.com/author/":LaTeX article in the {bf:Stata Journal} style}, 
 even if the document is written in Markdown.
