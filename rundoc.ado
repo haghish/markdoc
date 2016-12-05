@@ -237,7 +237,9 @@ program define rundoc
 	}
 	
 	file close `knot'
-	copy "`tmp'" "___code.txt", replace
+	if !missing("`debug'") {
+		copy "`tmp'" "___code.txt", replace
+	}	
 	noisily do "`tmp'"
 	
 	cap file close `hitch'
