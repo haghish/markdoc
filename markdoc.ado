@@ -2077,7 +2077,7 @@ program markdoc
 					"`linelength', while your Stata has linesize of " 			///
 					"`c(linesize)'. {help markdoc} automatically adjusts your "	///
 					"document width. You can avoid this warning by increasing "	///
-					"Stata's {bf:linesize} or by writing shorted lines" _n
+					"Stata's {bf:linesize} or by writing shorter lines" _n
 					
 					qui set linesize `linelength'
 				}	
