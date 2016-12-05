@@ -343,8 +343,8 @@ program define sthlp
 		
 		
 		local capital : di ustrupper("`title'") 
-		file write `toc' "d '`capital'': `description'" _n
-		file write `pkg' "d '`capital'': `description'" _n			
+		file write `toc' "d '" `"`capital'"' "': " `"`description'"'  _n
+		file write `pkg' "d '" `"`capital'"' "': " `"`description'"'  _n		
 		local n 1
 		while !missing(`"`description`n''"') {
 			file write `toc' `"d `description`n''"' _n
@@ -370,6 +370,8 @@ program define sthlp
 			& `"`macval(1)'"' != "params.json"  								///
 			& `"`macval(1)'"' != "index.html"  									///
 			& `"`macval(1)'"' != ".gitignore"									///
+			& `"`macval(1)'"' != ".Rhistory"									///
+			& `"`macval(1)'"' != ".RData"										///
 			{
 				file write `pkg' `"F `1'"' _n
 			}
