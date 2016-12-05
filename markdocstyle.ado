@@ -713,6 +713,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			"	margin-bottom: 0;" _n 											///
 			`"	font-family: "menlo-regular","Consolas", "Liberation Mono", "'  /// 
 			`"Menlo, Courier, monospace;"' _n									///
+			"   display: block;" _n 											///
 			"}" _n(2)
 			
 			// Statax
@@ -749,7 +750,6 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				"	color: `codecolor';" _n 										///
 				"	background-color: `codebackground';" _n 					///
 				"   border-radius: 0.3rem; " _n									///
-				"   display: block;" _n 										///
 			    "}" _n(2)														///
 				"pre {" _n 														///
 				"   padding: 0.8rem ;" _n 										///
@@ -765,8 +765,8 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			    "}" _n(2)														///
 				"pre > code {" _n 												///
 				"   padding: 0;" _n 											///
-				"	margin: 0;" _n 												///
-				"	word-break: normal;" _n 									///
+				"   margin: 0;" _n 												///
+				"   word-break: normal;" _n 									///
 			    "}" _n(2)
 			}
 			

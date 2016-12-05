@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.9.3
+Version: 3.9.4
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -3443,4 +3443,4 @@ end
 
 // create the help file
 // ====================
-*markdoc markdoc.ado, exp(sthlp) replace
+*markdoc markdoc.ado, exp(sthlp) replace build

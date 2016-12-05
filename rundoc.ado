@@ -49,6 +49,28 @@ program define rundoc
 	///
 	]
 	
+	// -------------------------------------------------------------------------
+	// NOTE:
+	// Stata 14 introduces ustrltrim() function for removing Unicode whitespace 
+	// characters and blanks. The previous trim() function cannot remove unicode 
+	// whitespace. The program is updated to function for all versions of Stata, 
+	// but yet, there is a slight chance of "unreliable" behavior from MarkDoc 
+	// in older versions of Stata, if the string has a unicode whitespace. This 
+	// can be fixed by finding a solution to avoid "ustrltrim()". Yet, most of 
+	// the torture tests have been positive. 
+	// =========================================================================
+	local version = int(`c(stata_version)')
+	if `version' <= 13 {
+		local trim trim
+		local version 11
+	}
+	if `version' > 13 {
+		local trim ustrltrim
+		local version 14
+	}
+	version `version'
+	
+	
 	
 	capture quietly display `dofile'
 	if _rc == 0 {
@@ -89,7 +111,7 @@ program define rundoc
 	
 	while r(eof) == 0 {
 		
-		while `"`macval(line)'"' != "/***" & r(eof) == 0 {
+		while `trim'(`"`macval(line)'"') != "/***" & r(eof) == 0 {
 			file write `knot' `"`macval(line)'"' _n
 			file read `hitch' line
 		}
@@ -98,7 +120,7 @@ program define rundoc
 		// -------------------------------------------------------------------
 		// If there is no documentation just append the documentation
 		// ===================================================================
-		if `"`macval(line)'"' == "/***" {
+		if `trim'(`"`macval(line)'"') == "/***" {		
 			tempfile documentation
 			tempname doc
 			qui file open `doc' using "`documentation'", write replace
@@ -113,7 +135,11 @@ program define rundoc
 			local found    //RESET
 			
 			file read `hitch' line
+<<<<<<< Updated upstream
 			
+=======
+
+>>>>>>> Stashed changes
 			while `"`macval(line)'"' != "***/" & r(eof) == 0 {
 				if !missing("`found'") file write `disp' " _n ///" _n 
 				
@@ -122,6 +148,10 @@ program define rundoc
 				while strpos(`"`macval(line)'"', "!>") > 0  {
 					local activate 1
 					
+<<<<<<< Updated upstream
+=======
+					*file write `disp' " _n ///" _n 
+>>>>>>> Stashed changes
 					local start = strpos(`"`macval(line)'"', "<!") 
 					local end = strpos(`"`macval(line)'"', "!>") 
 					local l = `end' - `start'
@@ -130,6 +160,7 @@ program define rundoc
 					// SECURE PART
 					// --------------------------------------------------------
 					local part : subinstr local part "`" "{c 96}", all
+<<<<<<< Updated upstream
 					
 					*local part : subinstr local part "` " "\\{c 96} ", all
 					*local part : subinstr local part "`" "{c 96}", all
@@ -138,10 +169,23 @@ program define rundoc
 					
 					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			//write text parts
 					else file write `disp' "`" `""`macval(part)'""' "'"
+=======
+					local part : subinstr local part " $" " \\$", all
+					local part : subinstr local part " \\$$" " $$", all
+					
+					//write text parts
+					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			
+					else file write `disp' "`" `""`macval(part)'""' "'"	
+					
+					// avoid "> " for next elements
+					local found 1
+					
+>>>>>>> Stashed changes
 					local val =  substr(`"`macval(line)'"', `start'+2, `l'-2)
 					*file write `disp' `" %10.2f `macval(val)'"'   	
 					file write `disp' `" `macval(val)' "'   
 					local line = substr(`"`macval(line)'"', `end'+2, .)
+<<<<<<< Updated upstream
 					
 					local found 1
 				}
@@ -155,13 +199,30 @@ program define rundoc
 						file write `disp' `" "`macval(line)'""' 
 					}	
 					*else file write `disp' `" "' 
+=======
+				}
+				if !missing("`found'") & `trim'(`"`macval(line)'"') != "" {
+					
+					// SECURE PART
+					// --------------------------------------------------------
+					local line : subinstr local line "`" "{c 96}", all
+					local line : subinstr local line " $" " \\$", all
+					local line : subinstr local line " \\$$" " $$", all
+					
+					file write `disp' `" "`macval(line)'""'  
+>>>>>>> Stashed changes
 				}	
 				if missing("`found'") {
 					
 					// SECURE PART
 					// --------------------------------------------------------
+<<<<<<< Updated upstream
 					local part : subinstr local part "`" "{c 96}", all
 					local line : subinstr local line "$" " \\$", all  //{c 36}
+=======
+					local line : subinstr local line "`" "{c 96}", all
+					local line : subinstr local line " $" " \\$", all
+>>>>>>> Stashed changes
 					local line : subinstr local line " \\$$" " $$", all
 
 					
@@ -177,10 +238,11 @@ program define rundoc
 			if `"`macval(line)'"' == "***/" file write `doc' "***/" _n 
 			
 			
+			
 			file close `doc'
 			file close `disp'
 			tempname add
-			if missing("`activate'") {
+			if missing("`activate'") {			
 				file open `add' using "`documentation'", read
 				file read `add' docline
 				while r(eof) == 0 {
@@ -200,7 +262,6 @@ program define rundoc
 				file close `add'
 				cap erase "`display'"
 			}
-			
 			file read `hitch' line	
 		}
 		
@@ -208,7 +269,7 @@ program define rundoc
 	}
 	
 	file close `knot'
-	*copy "`tmp'" "___code.txt", replace
+	copy "`tmp'" "___code.txt", replace
 	noisily do "`tmp'"
 	
 	cap file close `hitch'
@@ -258,5 +319,3 @@ program define rundoc
 	capture quietly erase "`input'.smcl"
 	
 end
-
-
