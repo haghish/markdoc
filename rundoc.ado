@@ -1,6 +1,6 @@
 // CREATES A LOG AND CALLS MARKDOC! 
   
-*cap prog drop rundoc
+
 program define rundoc
 
 	syntax [anything(name=dofile id="The do file name is")]  				/// 
@@ -135,11 +135,7 @@ program define rundoc
 			local found    //RESET
 			
 			file read `hitch' line
-<<<<<<< Updated upstream
-			
-=======
 
->>>>>>> Stashed changes
 			while `"`macval(line)'"' != "***/" & r(eof) == 0 {
 				if !missing("`found'") file write `disp' " _n ///" _n 
 				
@@ -148,10 +144,7 @@ program define rundoc
 				while strpos(`"`macval(line)'"', "!>") > 0  {
 					local activate 1
 					
-<<<<<<< Updated upstream
-=======
 					*file write `disp' " _n ///" _n 
->>>>>>> Stashed changes
 					local start = strpos(`"`macval(line)'"', "<!") 
 					local end = strpos(`"`macval(line)'"', "!>") 
 					local l = `end' - `start'
@@ -160,47 +153,29 @@ program define rundoc
 					// SECURE PART
 					// --------------------------------------------------------
 					local part : subinstr local part "`" "{c 96}", all
-<<<<<<< Updated upstream
+
 					
 					*local part : subinstr local part "` " "\\{c 96} ", all
 					*local part : subinstr local part "`" "{c 96}", all
 					local part : subinstr local part " $" " \\$", all
 					local part : subinstr local part " \\$$" " $$", all				
-					
-					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			//write text parts
-					else file write `disp' "`" `""`macval(part)'""' "'"
-=======
-					local part : subinstr local part " $" " \\$", all
-					local part : subinstr local part " \\$$" " $$", all
-					
+			
 					//write text parts
 					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			
 					else file write `disp' "`" `""`macval(part)'""' "'"	
 					
-					// avoid "> " for next elements
-					local found 1
 					
->>>>>>> Stashed changes
+
 					local val =  substr(`"`macval(line)'"', `start'+2, `l'-2)
 					*file write `disp' `" %10.2f `macval(val)'"'   	
 					file write `disp' `" `macval(val)' "'   
 					local line = substr(`"`macval(line)'"', `end'+2, .)
-<<<<<<< Updated upstream
+
 					
+					// avoid "> " for next elements
 					local found 1
 				}
-				if !missing("`found'")  {
-					if trim(`"`macval(line)'"') != "" {
-						// SECURE PART
-						// --------------------------------------------------------
-						local part : subinstr local part "`" "{c 96}", all
-						local line : subinstr local line " $" " \\$", all
-						local line : subinstr local line " \\$$" " $$", all
-						file write `disp' `" "`macval(line)'""' 
-					}	
-					*else file write `disp' `" "' 
-=======
-				}
+
 				if !missing("`found'") & `trim'(`"`macval(line)'"') != "" {
 					
 					// SECURE PART
@@ -210,25 +185,18 @@ program define rundoc
 					local line : subinstr local line " \\$$" " $$", all
 					
 					file write `disp' `" "`macval(line)'""'  
->>>>>>> Stashed changes
+
 				}	
 				if missing("`found'") {
 					
-					// SECURE PART
+					// SECURE LINE
 					// --------------------------------------------------------
-<<<<<<< Updated upstream
-					local part : subinstr local part "`" "{c 96}", all
-					local line : subinstr local line "$" " \\$", all  //{c 36}
-=======
 					local line : subinstr local line "`" "{c 96}", all
-					local line : subinstr local line " $" " \\$", all
->>>>>>> Stashed changes
+					local line : subinstr local line "$" " \\$", all  //{c 36}
 					local line : subinstr local line " \\$$" " $$", all
-
-					
-					
 					file write `disp' "`" `""> `macval(line)'""' "'" " _n ///" _n
 				}	
+				
 				if missing("`activate'") {					
 					file write `doc' `"`macval(line)'"' _n 
 				}	
