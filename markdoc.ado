@@ -973,7 +973,7 @@ program markdoc
 	// and "stata." The default style is "simple" 
 	// =========================================================================
 	if "`style'"  == "" local style "simple"   
-	if "`export'" == "pdf" & "`style'" == "" local style "stata" 
+	if "`export'" == "pdf" & "`style'" == "" local style "simple" 
 
 	// CHECK FOR REQUIRED SOFTWARE
 	// -------------------------------------------------------------------------
@@ -3131,12 +3131,7 @@ program markdoc
 				}
 				
 				if missing("`template'") & "`export'" == "docx" {
-					if "`style'" == "stata" {
-						qui findfile markdoc_stata.docx
-					}	
-					if "`style'" == "simple" {
-						qui findfile markdoc_simple.docx
-					}
+					qui findfile markdoc_`style'.docx	
 					
 					if !missing("`r(fn)'") {
 						local d : pwd
