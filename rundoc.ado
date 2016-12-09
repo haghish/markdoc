@@ -203,6 +203,10 @@ program define rundoc
 						
 				file read `hitch' line
 			}
+			
+			// Add an empty line in the `disp' file
+			file write `disp' _n
+			
 			if `"`macval(line)'"' == "***/" file write `doc' "***/" _n 
 			
 			
