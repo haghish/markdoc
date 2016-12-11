@@ -343,10 +343,11 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 					local linenumber 0
 				}
 				
+				
 				if !missing("`codeverb'") {
 					if "`linenumber'" > "1" {
 						local line : subinstr local line 					///
-						"\" "\\"
+						"\" "\\", all
 					}	
 					local linenumber `++linenumber'
 				}
