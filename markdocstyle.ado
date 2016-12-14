@@ -16,7 +16,6 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 	// =========================================================================
 	if "`export'" == "html" {
 		
-		
 		if "`style'" == "simple" {
 			
 			// FONT
@@ -254,12 +253,12 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			if "`address'"     != "" local address "\\\`address'"
 			if "`date'" != "" local date "\\\`c(current_date)'"
 						
-			file write `knot' 											///
-			"\usepackage[article,notstatapress]{sj}" _n					///
-			"\usepackage{stata}" _n										///
-			"\usepackage{shadow}" _n									///
-			"\usepackage{natbib}" _n									///
-			"\usepackage{chapterbib}" _n								///
+			file write `knot' 													///
+			"\usepackage[article,notstatapress]{sj}" _n							///
+			"\usepackage{stata}" _n												///
+			"\usepackage{shadow}" _n											///
+			"\usepackage{natbib}" _n											///
+			"\usepackage{chapterbib}" _n										///
 			"\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}" ///
 			"\bibpunct{(}{)}{;}{a}{}{,}" _n(2)
 					
@@ -269,7 +268,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				tempname latexstyle
 				file open `latexstyle' using "`template'", read
 				file read `latexstyle' line
-				while r(eof)==0 & substr(trim(`"`macval(line)'"'),1,16) != 	///
+				while r(eof)==0 & substr(trim(`"`macval(line)'"'),1,16) != 		///
 					"\begin{document}"{
 					cap file write `knot' `"`macval(line)'"' _n
 					cap file read `latexstyle' line
@@ -279,22 +278,22 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 					
 			file write `knot' "\begin{document}" _n
 			if !missing("`toc'") {
-				file write  `knot' "\clearpage" _n						///
-				"\tableofcontents" _n									///
+				file write  `knot' "\clearpage" _n								///
+				"\tableofcontents" _n											///
 				"\clearpage" _n(2)		
 			}
 			file write `knot' "\inserttype[st0001]{article}" _n
-			file write `knot' "\author{Short article author list}"		///
+			file write `knot' "\author{Short article author list}"				///
 			"{`author' `affiliation' `address' `date' \and}" _n
 			file write `knot' "\title[Short toc article title]{`title'}" _n
 			//if "`date'" != "" file write `knot' "\date{\today}" _n
 			file write `knot' "\maketitle" _n(2)
 						
 			if "`summary'" != "" {
-				file write `knot' "\begin{abstract}" _n					///
-				"`summary'" _n											///
-				"%\keywords{\inserttag, command name(s), "				///
-				"keyword(s)} %Add keywords" _n							///
+				file write `knot' "\begin{abstract}" _n							///
+				"`summary'" _n													///
+				"%\keywords{\inserttag, command name(s), "						///
+				"keyword(s)} %Add keywords" _n									///
 				"\end{abstract}" _n(2)
 			}
 		}
@@ -308,7 +307,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			tempname latexstyle
 			file open `latexstyle' using "`template'", read
 			file read `latexstyle' line
-			while r(eof)==0 & substr(trim(`"`macval(line)'"'),1,16) != 	///
+			while r(eof)==0 & substr(trim(`"`macval(line)'"'),1,16) != 			///
 			"\begin{document}"{
 				cap file write `knot' `"`macval(line)'"' _n
 				cap file read `latexstyle' line
@@ -326,18 +325,18 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			if "`style'" == "stata" {
 				
 
-				if substr(trim(`"`macval(line)'"'),1,16) == 			///
+				if substr(trim(`"`macval(line)'"'),1,16) == 					///
 					"\begin{verbatim}" {
-					local line : subinstr local line 					///
+					local line : subinstr local line 							///
 					"\begin{verbatim}" "\begin{stlog}"
 					local codeverb 1
 					local jump 1
 					local linenumber 0
 				}
 				
-				if substr(trim(`"`macval(line)'"'),1,14) == 			///
+				if substr(trim(`"`macval(line)'"'),1,14) == 					///
 					"\end{verbatim}" {
-					local line : subinstr local line 					///
+					local line : subinstr local line 							///
 					"\end{verbatim}" "\end{stlog}"
 					local codeverb 
 					local linenumber 0
@@ -346,7 +345,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				
 				if !missing("`codeverb'") {
 					if "`linenumber'" > "1" {
-						local line : subinstr local line 					///
+						local line : subinstr local line 						///
 						"\" "\\", all
 					}	
 					local linenumber `++linenumber'
@@ -362,7 +361,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			// -----------------------------------------------------------------
 			else if "`style'" != "stata" & !missing("`statax'") {
 				
-				if substr(trim(`"`macval(line)'"'),1,16) == 			///
+				if substr(trim(`"`macval(line)'"'),1,16) == 					///
 					"\begin{verbatim}" {
 					file read `hitch' line
 					local activate 1
@@ -432,11 +431,11 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		// END THE DOCUMENT
 		//--------------------------------------------------------------
 		if !missing("`master'") & "`style'" == "stata" {
-			file write `knot' "\bibliographystyle{sj}" _n				///
-			"\bibliography{sj}" _n										///
-			"%\begin{aboutauthors}" _n									///
-			"%% Write some background "									///
-			"information about the author(s)." _n						///
+			file write `knot' "\bibliographystyle{sj}" _n						///
+			"\bibliography{sj}" _n												///
+			"%\begin{aboutauthors}" _n											///
+			"%% Write some background "											///
+			"information about the author(s)." _n								///
 			"%\end{aboutauthors}" _n
 		}	
 		
@@ -514,44 +513,44 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		
 		
 		if !missing("`master'") & "`markup'" == "" | !missing("`master'") & "`markup'" == "markdown" {
-			file write `knot' "<!doctype html>" _n									///
-			"<html>" _n																/// 
-			"<head>" _n 															///
-			`"<meta http-equiv="Content-Type" "'									///
+			file write `knot' "<!doctype html>" _n								///
+			"<html>" _n															/// 
+			"<head>" _n 														///
+			`"<meta http-equiv="Content-Type" "'								///
 			`"content="text/html; charset=utf-8" />"' _n
 				
 			if !missing("`mathjax'") {
-				file write `knot' `"<script type="text/javascript" async "' _n 		///
-				`"src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?"'			///
-				`"config=TeX-MML-AM_CHTML">"' _n									///
+				file write `knot' `"<script type="text/javascript" async "' _n 	///
+				`"src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?"'		///
+				`"config=TeX-MML-AM_CHTML">"' _n								///
 				`"</script>"' _n(3)
 			}
 				
-			if !missing("`figure'") 												///
-			file write `knot' _n `"<script type="text/javascript" "' _n 			///
-			`"src="http://www.haghish.com/software/viz.js">"' _n					///	
+			if !missing("`figure'") 											///
+			file write `knot' _n `"<script type="text/javascript" "' _n 		///
+			`"src="http://www.haghish.com/software/viz.js">"' _n				///	
 			`"</script>"' _n(3)
 					
-			file write `knot' _n "<!-- SYNTAX HIGHLIGHTING CLASSES  -->" _n(2) 		///
+			file write `knot' _n "<!-- SYNTAX HIGHLIGHTING CLASSES  -->" _n(2) 	///
 			`"<style type="text/css">"' _n	
 			
 			
 			// BODY, HEADINGS, A, 
 			// -----------------------------------------------------------------
 			file write `knot' 													///
-			"body {" _n 												///
-				_skip(4) `"font-family: `fontfamily';"' _n ///
+			"body {" _n 														///
+				_skip(4) `"font-family: `fontfamily';"' _n 						///
 				_skip(4) "text-align:justify;" _n								///
 				_skip(4) "margin: 0 8%;" _n 									///
-				_skip(4) "font-size: 14px;" _n 							///
-				_skip(8) "background-color:`pgbackground'; " _newline 			    	///
+				_skip(4) "font-size: 14px;" _n 									///
+				_skip(8) "background-color:`pgbackground'; " _newline 			///
 			"}" _newline(2)														///	 						
-			"a {" _n 																///
-				"   color: `linkcolor';" _n 											///
-				"	text-decoration: none;" _n 										///
-			"}" _n 																	///
-			"a:hover {" _n 															///
-				"	text-decoration: underline;" _n 								///
+			"a {" _n 															///
+				"   color: `linkcolor';" _n 									///
+				"	text-decoration: none;" _n 									///
+			"}" _n 																///
+			"a:hover {" _n 														///
+				"	text-decoration: underline;" _n 							///
 			"}" _n(2) 															
 			
 			// BODY, HEADINGS, A, 
@@ -560,95 +559,94 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			"h1, h2, h3, h4, h5, h6 {" _n 										///
 				_skip(4) "line-height: 1.5;" _n 								///
 			"}" _n(2)															///
-			"h1, h1 > a, h1 > a:link {" _newline ///
-			_skip(8) "margin:0.67em 0;" _newline ///
-			_skip(8) "padding: 0;" _newline ///
-			_skip(8) "font-family: `font';" _newline ///
-			_skip(8) "color:`h1color';" _newline ///
-			_skip(8) "font-size: 22px;" _newline ///
-			_skip(8) "}" _newline(2) ///
-			"h1 > a:hover, h1 > a:hover{" _newline ///
-			"color:#345A8A;" _newline ///
-			"} " _newline(2) ///
-			"h2, h2 > a, h2 > a, h2 > a:link {" _newline ///
-			_skip(8) "margin:14px 0px 2px 0px;" _newline ///
-			_skip(8) "padding: 0;" _newline ///
-			_skip(8) "color:`h2color';" _newline ///
-			_skip(8) "font-size: 18px;" _newline ///
-			_skip(8) "font-weight:bold;" _newline ///
-			_skip(8) "}" _newline(2) ///	
-			"h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {" _newline ///
-			_skip(8) "margin:14px 0px 0px 0px;" _newline ///
-			_skip(8) "padding: 0;" _newline ///
-			_skip(8) "color:`h3color';" _newline ///
-			_skip(8) "font-size: 16px;" _newline ///
-			_skip(8) "font-weight:bold;" _newline ///
-			_skip(8) "}" _newline(2) ///
-			"h4 {" _newline ///
-			_skip(8) "margin:10px 0px 0px 0px;" _newline ///
-			_skip(8) "padding: 0;" _newline ///
-			_skip(8) "font-family: `font';" _newline ///
-			_skip(8) "font-size: 16px;" _newline ///
-			_skip(8) "color:`h4color';" _newline ///
-			_skip(8) "font-weight:bold;" _newline ///
-			_skip(8) "font-style:italic;" _newline ///
-			_skip(8) "}" _newline(2) ///
-			"h5  {" _newline ///
-			_skip(8) "font-size: 14px;" _newline ///
-			_skip(8) "font-weight:normal;" _newline ///
-			_skip(8) "color:#4F81BD;" _newline ///
-			_skip(8) "}" _newline(2) ///			
-			"h6  {"  _newline ///
-			_skip(8) "font-size:14px;" _newline ///
-			_skip(8) "font-weight:normal;" _newline ///
-			_skip(8) "font-style:italic;" _newline ///
-			_skip(8) "color:#4F81BD;" _newline ///
+			"h1, h1 > a, h1 > a:link {" _newline 								///
+			_skip(8) "margin:0.67em 0;" _newline 								///
+			_skip(8) "padding: 0;" _newline 									///
+			_skip(8) "font-family: `font';" _newline 							///
+			_skip(8) "color:`h1color';" _newline 								///
+			_skip(8) "font-size: 22px;" _newline 								///
 			_skip(8) "}" _newline(2) 											///
-			"p {" _newline ///
-			_skip(8) "font-weight:normal;" _newline ///
-			_skip(8) "font-size:14px;" _newline ///
-			_skip(8) "line-height: 16px;" _newline ///
-			_skip(8) "text-align:justify;" _n  ///
-			_skip(8) "text-align: left;" _newline ///
-			_skip(8) "text-justify:inter-word;" _n ///
-			_skip(8) "margin:0 0 14px 0;" _n ///
+			"h1 > a:hover, h1 > a:hover{" _newline 								///
+			"color:#345A8A;" _newline 											///
+			"} " _newline(2) 													///
+			"h2, h2 > a, h2 > a, h2 > a:link {" _newline 						///
+			_skip(8) "margin:14px 0px 2px 0px;" _newline 						///
+			_skip(8) "padding: 0;" _newline 									///
+			_skip(8) "color:`h2color';" _newline 								///
+			_skip(8) "font-size: 18px;" _newline 								///
+			_skip(8) "font-weight:bold;" _newline 								///
+			_skip(8) "}" _newline(2) 											///	
+			"h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {" _newline 			///
+			_skip(8) "margin:14px 0px 0px 0px;" _newline 						///
+			_skip(8) "padding: 0;" _newline 									///
+			_skip(8) "color:`h3color';" _newline 								///
+			_skip(8) "font-size: 16px;" _newline 								///
+			_skip(8) "font-weight:bold;" _newline 								///
+			_skip(8) "}" _newline(2) 											///
+			"h4 {" _newline 													///
+			_skip(8) "margin:10px 0px 0px 0px;" _newline 						///
+			_skip(8) "padding: 0;" _newline 									///
+			_skip(8) "font-family: `font';" _newline 							///
+			_skip(8) "font-size: 16px;" _newline 								///
+			_skip(8) "color:`h4color';" _newline 								///
+			_skip(8) "font-weight:bold;" _newline 								///
+			_skip(8) "font-style:italic;" _newline 								///
+			_skip(8) "}" _newline(2) 											///
+			"h5  {" _newline 													///
+			_skip(8) "font-size: 14px;" _newline 								///
+			_skip(8) "font-weight:normal;" _newline 							///
+			_skip(8) "color:#4F81BD;" _newline 									///
+			_skip(8) "}" _newline(2) 											///			
+			"h6  {"  _newline 													///
+			_skip(8) "font-size:14px;" _newline 								///
+			_skip(8) "font-weight:normal;" _newline 							///
+			_skip(8) "font-style:italic;" _newline 								///
+			_skip(8) "color:#4F81BD;" _newline 									///
+			_skip(8) "}" _newline(2) 											///
+			"p {" _newline 														///
+			_skip(8) "font-weight:normal;" _newline 							///
+			_skip(8) "font-size:14px;" _newline 								///
+			_skip(8) "line-height: 16px;" _newline 								///
+			_skip(8) "text-align:justify;" _n  									///
+			_skip(8) "text-justify:inter-word;" _n 								///
+			_skip(8) "margin:0 0 14px 0;" _n 									///
 			_skip(8) "}" _newline(2) 
 				
 			// Author, Date, and Center CLASSES
 			// -----------------------------------------------------------------
 			file write `knot' 													///		
-			".author {display:block;text-align:center;"								///
+			".author {display:block;text-align:center;"							///
 			"font-size:16px;margin-bottom:3px;}" _newline
-			file write `knot' ".date {display:block;text-align:center;"				///
+			file write `knot' ".date {display:block;text-align:center;"			///
 			"font-size:12px;margin-bottom:3px;}" _newline
-			file write `knot' ".center, #center {" _newline 						///
-			_skip(4) "display: block;" _newline 									///
-			_skip(4) "margin-left: auto;" _newline 					    			///
-			_skip(4) "margin-right: auto;" _newline 				    			///
-			_skip(4) "-webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );" _n 	///
-			_skip(4) "-moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );" _n 		///
-			_skip(4) "box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );" _n(2) 			///
-			_skip(4) "padding: 0px;" _newline 						    			///
-			_skip(4) "border-width: 0px;" _newline 					    			///
-			_skip(4) "border-style: solid;" _newline 				    			///
-			_skip(4) "cursor:-webkit-zoom-in;" _newline 			    			///
-			_skip(4) "cursor:-moz-zoom-in;" _newline 				    			///
+			file write `knot' ".center, #center {" _newline 					///
+			_skip(4) "display: block;" _newline 								///
+			_skip(4) "margin-left: auto;" _newline 					    		///
+			_skip(4) "margin-right: auto;" _newline 				    		///
+			_skip(4) "-webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );" _n ///
+			_skip(4) "-moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );" _n 	///
+			_skip(4) "box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );" _n(2) 		///
+			_skip(4) "padding: 0px;" _newline 						    		///
+			_skip(4) "border-width: 0px;" _newline 					    		///
+			_skip(4) "border-style: solid;" _newline 				    		///
+			_skip(4) "cursor:-webkit-zoom-in;" _newline 			    		///
+			_skip(4) "cursor:-moz-zoom-in;" _newline 				    		///
 			_skip(4) "}" _newline(2) 								    			
 			
 			file write `knot' "td > p {padding:0; margin:0;}" _newline
 					
 			// HEADER
 			// -----------------------------------------------------------------
-			file write `knot' _n(2) 								    			///
-			"header {" _newline 									    			///
-			_skip(8) "font-size:`headerfontsize';" _newline 					    ///
-			_skip(8) "padding-bottom:5px; " _newline 				    			///
-			_skip(8) "margin:0;" _newline 							    			///
-			_skip(8) "padding-top:150px; " _newline 				    			///
-			_skip(8) `"font-family: `fontfamily';"' _newline 				    	///
-			_skip(8) "text-align:center;" _newline 					    			///
-			_skip(8) "display:block;" _newline 						    			///
-			_skip(8) "font-weight:bold;" _newline ///
+			file write `knot' _n(2) 								    		///
+			"header {" _newline 									    		///
+			_skip(8) "font-size:`headerfontsize';" _newline 					///
+			_skip(8) "padding-bottom:5px; " _newline 				    		///
+			_skip(8) "margin:0;" _newline 							    		///
+			_skip(8) "padding-top:150px; " _newline 				    		///
+			_skip(8) `"font-family: `fontfamily';"' _newline 				    ///
+			_skip(8) "text-align:center;" _newline 					    		///
+			_skip(8) "display:block;" _newline 						    		///
+			_skip(8) "font-weight:bold;" _newline 								///
 			_skip(8) "}" _newline(2) 								    			
 			
 			// TABLE
@@ -684,7 +682,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			// FIGURE STYLW
 			// -----------------------------------------------------------------
 			file write `knot' 													///
-			".figure, .caption {" _n														///
+			".figure, .caption {" _n											///
 				_skip(8)"text-align: center" _n									///
 			"}" _n(2)
 	
@@ -749,7 +747,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				`"	font-family: Consolas, "Liberation Mono", Menlo, "'			///
 					`"Courier, monospace;"' _n 									///
 				"	font-size: 0.9rem;" _n 										///
-				"	color: `codecolor';" _n 										///
+				"	color: `codecolor';" _n 									///
 				"	background-color: `codebackground';" _n 					///
 				"   border-radius: 0.3rem; " _n									///
 			    "}" _n(2)														///
@@ -761,8 +759,8 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				"	margin-bottom: 1rem;" _n 									///
 				"	color: `precolor';" _n 										///
 				"   word-wrap: normal;" _n										///
-				"   background-color: `prebackground';" _n 								///
-				"   border: solid 1px `prebordercolor';" _n 								///
+				"   background-color: `prebackground';" _n 						///
+				"   border: solid 1px `prebordercolor';" _n 					///
 				"   border-radius: 0.3rem; " _n									///
 			    "}" _n(2)														///
 				"pre > code {" _n 												///
@@ -785,14 +783,13 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			// img ???
 			// -----------------------------------------------------------------
 			file write `knot' 													///
-			"img {" _newline ///
-				_skip(8) "margin: 5px 0 5px 0;" _newline ///
-				_skip(8) "padding: 0px;" _newline ///
-				_skip(8) "cursor:-webkit-zoom-in;" _newline ///
-				_skip(8) "cursor:-moz-zoom-in;" _newline ///
-				_skip(8) "display:inline-block;" _newline ///
-				_skip(8) "text-align: left;" _newline ///
-				_skip(8) "clear: both;" _newline ///
+			"img {" _newline 													///
+				_skip(8) "margin: 5px 0 5px 0;" _newline 						///
+				_skip(8) "padding: 0px;" _newline 								///
+				_skip(8) "cursor:-webkit-zoom-in;" _newline 					///
+				_skip(8) "cursor:-moz-zoom-in;" _newline 						///
+				_skip(8) "display:inline-block;" _newline 						///
+				_skip(8) "clear: both;" _newline 								///
 				_skip(8) "}" _newline(2) 
 			
 			// HR
@@ -801,7 +798,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			"hr {" _n 															///
 			"	height: 2px;" _n 												///
 			"	margin: 1rem 0;" _n 											///
-			"	background-color: `hrcolor';" _n 									///
+			"	background-color: `hrcolor';" _n 								///
 			"	border: 0; " _n 												///	
 			"}" _n(2)
 			
@@ -809,7 +806,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			// -----------------------------------------------------------------
 			file write `knot' 													///
 			"ul li {" _n 														///
-			"	font-size:14px;" _n 											///											///	
+			"	font-size:14px;" _n 											///				
 			"}" _n(2)
 			
 
@@ -910,11 +907,3 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 		
 end
 
-
-/*
-markdoc example, exp(tex) replace style(formal) ///
-title("Hello World") author("E. F. Haghish") date summary("This is the document " ///
-"summary. This is the document summary. This is the document summary. "			///
-"This is the document summary. This is the document summary. "					///
-"This is the document summary. This is the document summary. ") statax
-*/
