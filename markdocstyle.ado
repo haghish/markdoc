@@ -653,28 +653,29 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			
 			// TABLE
 			// -----------------------------------------------------------------
-			file write `knot' _n(2) 								    			///
-			"table {" _n 											    			///
-			_skip(8) "border-collapse: collapse;" _n 				    			///
-			_skip(8)"border-bottom:1px solid black;" _n 			    			///
-			_skip(8)"padding:5px;" _n 								    			///
-			_skip(8)"margin-top:5px;" _n(2) 						    			///
-			"}" _n 													    			///
-			".tble {" _n 											    			///
-			_skip(8)"display:block;" _n 							    			///
-			_skip(8)"margin-top: 10px;" _n 							    			///
-			_skip(8)"margin-bottom: 0px;" _n 						    			///
-			_skip(8)"margin-bottom: 0px;" _n 						    			///
-			"}" _n(2) 												    			///
-			".tblecenter {" _n 										    			///
-			_skip(8)"display:block;" _n 							    			///
-			_skip(8)"margin-top: 10px;" _n 							    			///
-			_skip(8)"margin-bottom: 0px;" _n 						    			///
-			_skip(8)"margin-bottom: 0px;" _n 						    			///
-			_skip(8)"text-align:center;" _n 						    			///
-			"}" _n(2) 												    			///
-			"span.tblecenter + table, span.tble + table, span.tble + img {" _n 		///
-			_skip(8)"margin-top: 2px;" _n ///
+			file write `knot' _n(2) 								    		///
+			"table {" _n 											    		///
+			_skip(8) "border-collapse: collapse;" _n 				    		///
+			_skip(8)"border-bottom:1px solid black;" _n 			    		///
+			_skip(8)"padding:5px;" _n 								    		///
+			_skip(8)"margin-top:5px;" _n						    	    	///
+			_skip(8)"margin-bottom: 16px;" _n(2) 					    		///
+			"}" _n 													    		///
+			".tble {" _n 											    		///
+			_skip(8)"display:block;" _n 							    		///
+			_skip(8)"margin-top: 10px;" _n 							    		///
+			_skip(8)"margin-bottom: 0px;" _n 						    		///
+			_skip(8)"margin-bottom: 0px;" _n 						    		///
+			"}" _n(2) 												    		///
+			".tblecenter {" _n 										    		///
+			_skip(8)"display:block;" _n 							    		///
+			_skip(8)"margin-top: 10px;" _n 							    		///
+			_skip(8)"margin-bottom: 0px;" _n 						    		///
+			_skip(8)"margin-bottom: 0px;" _n 						    		///
+			_skip(8)"text-align:center;" _n 						    		///
+			"}" _n(2) 												    		///
+			"span.tblecenter + table, span.tble + table, span.tble + img {" _n 	///
+			_skip(8)"margin-top: 2px;" _n 										///
 			"}" _n(2)
 			
 				
@@ -683,7 +684,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			// FIGURE STYLW
 			// -----------------------------------------------------------------
 			file write `knot' 													///
-			".figure {" _n														///
+			".figure, .caption {" _n														///
 				_skip(8)"text-align: center" _n									///
 			"}" _n(2)
 	
