@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.9.5
+Version: 3.9.6
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -1344,8 +1344,7 @@ program markdoc
 			
 			exit
 		}
-		
-
+	
 	****************************************************************************
 	*DO NOT PRINT ANYTHING ON THE LOG
 	****************************************************************************
@@ -3421,6 +3420,7 @@ program markdoc
 	// -------------------------------------------------------------------------
 	// this kills the live-preview. NOT A GOOD IDEA
 	// if missing("$weaver") macro drop currentFigure
+	macro drop CurrentMarkDocDofile                    
 	
 	// check for MarkDoc updates
 	markdocversion

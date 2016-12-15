@@ -1,6 +1,5 @@
 // CREATES A LOG AND CALLS MARKDOC! 
-  
-
+ 
 program define rundoc
 
 	syntax [anything(name=dofile id="The do file name is")]  				/// 
@@ -70,14 +69,22 @@ program define rundoc
 	}
 	version `version'
 	
-	
-	
 	capture quietly display `dofile'
 	if _rc == 0 {
 		local input `dofile'
 	}
 	else {
 		local input "`dofile'"
+	}
+	
+	// Avoid Markdoc to re-execute itself in a do-file
+	if !missing(`"$CurrentMarkDocDofile"') {
+		if `"$CurrentMarkDocDofile"' == `"`dofile'"' {
+			exit
+		}
+	}
+	else {
+		global CurrentMarkDocDofile "`dofile'"
 	}
 
 	// -------------------------------------------------------------------------
