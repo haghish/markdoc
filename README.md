@@ -7,7 +7,7 @@
 ## Resources
 
 * [Homepage](http://haghish.com/markdoc)
-* [Journal Article](http://haghish.com/resources/pdf/Haghish_MarkDoc.pdf)
+* [Journal Article](http://www.stata-journal.com/article.html?article=pr0064)
 * [Manual](https://github.com/haghish/MarkDoc/wiki)
 * [Release Notes](https://github.com/haghish/MarkDoc/releases)
 * [Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)
