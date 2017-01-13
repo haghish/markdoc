@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.9.7
+Version: 3.9.6
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -1471,12 +1471,12 @@ program markdoc
 					file write `knot' _n
 					file read `hitch' line
 			
-					while substr(`"`macval(line)' "',1,1) == ">" {
+					while substr(`"`macval(line)'"',1,1) == ">" {
 						local preline `"`macval(line)'"'
 						local preline : subinstr local preline ">" ""
 						ocal preline : subinstr local preline "	" "    ", all //convert tab to 4 spaces
 *						local preline = trim(`"`macval(preline)'"')  //THIS WILL RUIN MARKDOWN
-						file write `knot' `">`macval(preline)' "' _n 
+						file write `knot' `">`macval(preline)'"' _n 
 						file read `hitch' line
 					}
 				  	local jump2 1
@@ -1538,7 +1538,7 @@ program markdoc
 						
 						qui file open `fig' using "`f`figure''", write replace
 						
-						while substr(`"`macval(line)' "',1,1) == ">" {
+						while substr(`"`macval(line)'"',1,1) == ">" {
 							local preline `"`macval(line)'"'
 							local preline : subinstr local preline ">" ""
 							local preline = trim(`"`macval(preline)'"')
@@ -1553,7 +1553,7 @@ program markdoc
 						
 						file read `hitch' line
 						
-						while substr(`"`macval(line)' "',1,1) == ">" {
+						while substr(`"`macval(line)'"',1,1) == ">" {
 							local preline `"`macval(line)'"'
 							local preline : subinstr local preline ">" ""
 							local preline = trim(`"`macval(preline)'"')
@@ -1588,12 +1588,12 @@ program markdoc
 					file write `knot' _n 
 					file read `hitch' line
 			
-					while substr(`"`macval(line)' "',1,1) == ">" {
+					while substr(`"`macval(line)'"',1,1) == ">" {
 						local preline `"`macval(line)'"'
 						local preline : subinstr local preline ">" ""
 						local preline : subinstr local preline "	" "    ", all //convert tab to 4 spaces
 *						local preline = trim(`"`macval(preline)'"')
-						file write `knot' `">`macval(preline)' "' _n 
+						file write `knot' `">`macval(preline)'"' _n 
 						file read `hitch' line
 					}
 					local jump2 1
@@ -1966,7 +1966,7 @@ program markdoc
 				|  substr(trim(`"`macval(ln)'"'),1,4) == "img," {
 					
 					file read `hitch' line
-					while substr(`"`macval(line)' "',1,1) == ">" & r(eof) == 0 &	///
+					while substr(`"`macval(line)'"',1,1) == ">" & r(eof) == 0 &	///
 					substr(`"`macval(line)'"',1,3) != ">//" {
 						file read `hitch' line							
 					}
@@ -1975,7 +1975,7 @@ program markdoc
 				if substr(trim(`"`macval(ln)'"'),1,4) == "tbl "  				///
 				|  substr(trim(`"`macval(ln)'"'),1,5) == "tble " {
 					file read `hitch' line
-					while substr(`"`macval(line)' "',1,1) == ">" & r(eof) == 0 &	///
+					while substr(`"`macval(line)'"',1,1) == ">" & r(eof) == 0 &	///
 					substr(`"`macval(line)'"',1,3) != ">//" {
 						file read `hitch' line							
 					}
@@ -2699,7 +2699,7 @@ program markdoc
 			!= "dzslide" {
 				local clue
 				capture local clue : di trim(`"`macval(line)'"')	
-				if `"`macval(clue)' "' == "*** " & substr(`"`macval(line)' "',1,4) != "    " {
+				if `"`macval(clue)'"' == "***" & substr(`"`macval(line)'"',1,4) != "    " {
 					local line : subinstr local line "***" ""
 				}
 			}

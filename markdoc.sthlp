@@ -1,5 +1,5 @@
 {smcl}
-{right:version 3.9.7}
+{right:version 3.9.5}
 {title:Title}
 
 {phang}
@@ -292,8 +292,8 @@ OpenOffice and LibreOffice {bf:odt}, and {bf:html}.
 {p 4 4 2}
 Mathematical notations can be inline a text paragraph or on a separate line. 
 For writing inline notations, place the notation between single dollar signs 
-(e.g. ^2 + b^2 = c^2$). For including notation on a separate line, place the 
-notations between double dollar signs (e.g. $^2 + b^2 = c^2$$). The example 
+(e.g. 10^2 + b^2 = c^2$). For including notation on a separate line, place the 
+notations between double dollar signs (e.g. $10^2 + b^2 = c^2$$). The example 
 below demonstrates how to export a PDF presentation slides with notations:
 
     . qui log using example, replace
