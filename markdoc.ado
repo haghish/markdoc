@@ -761,7 +761,11 @@ program markdoc
 	///Font(name)	 /// specifies the document font (ONLY HTML)
 	]
 	
-
+	
+	// =========================================================================
+	// AVOID CRASHES by removing the working log from previous execution
+	// =========================================================================
+	cap macro drop CurrentMarkDocDofile
 	
 	// =========================================================================
 	// CHANGED SYNTAX
