@@ -808,9 +808,9 @@ program markdoc
 			github install haghish/weaver
 		}
 		else {
-			capture findfile Statax.js
+			capture findfile statax.js
 			if _rc != 0 {
-				display as err "Weaver & Statax packages are required: " _n 	///
+				display as err "weaver & statax packages are required: " _n 	///
 				"{c 149} {ul:{stata github install haghish/weaver:github install haghish/weaver}}" _n ///
 				"{c 149} {ul:{stata github install haghish/statax:github install haghish/statax}}"  	///
 				_n(2)
@@ -824,13 +824,13 @@ program markdoc
 		}	
 	}
 
-	capture findfile Statax.js
+	capture findfile statax.js
 	if _rc != 0 {
 		if !missing("`install'") {
 			github install haghish/statax
 		}
 		else {
-			display as err "Statax package is required: "						///
+			display as err "statax package is required: "						///
 			"{ul:{stata github install haghish/statax:github install haghish/statax}}" _n(2)
 			error 601
 		}	
