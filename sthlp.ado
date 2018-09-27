@@ -308,14 +308,14 @@ program define sthlp
 				local line : subinstr local line "Description:" ""
 				local description = `trim'("`line'")
 				if !missing(`"`macval(description)'"') {
-					qui markdown `"`macval(description)'"'
+					qui md2smcl `"`macval(description)'"'
 					local description `r(md)'
 					file read `hitch' line
 					
 					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
 					& r(eof) == 0 {
 						local line2 = `"`macval(line)'"'
-						qui markdown `"`macval(line2)'"'
+						qui md2smcl `"`macval(line2)'"'
 						local description`i' `"`r(md)'"'
 						file read `hitch' line
 						local i `++i'
@@ -487,7 +487,7 @@ program define sthlp
 				local preline `"`macval(line)'"'
 				if !missing(`trim'(`"`macval(line)'"')) & 						///
 				substr(`"`macval(line)'"',1,4) != "    " {
-					qui markdown `"`macval(line)'"'
+					qui md2smcl `"`macval(line)'"'
 					*local preline `r(md)'
 					local preline `"`r(md)'"'
 				}	
@@ -702,10 +702,10 @@ program define sthlp
 							// Run Markdown
 							// ---------------------------------------------
 							di as err `"p2:`preline'"'
-							qui markdown `"`macval(preline)'"'
+							qui md2smcl `"`macval(preline)'"'
 							if _rc == 0 local preline `r(md)'
 							else {
-								di as err "markdown.ado engine failed on "	///
+								di as err "md2smcl.ado engine failed on "	///
 								"the following line:" _n(2)
 								di as txt `"`macval(preline)'"'
 							}

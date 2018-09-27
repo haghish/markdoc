@@ -145,7 +145,7 @@ program define markup
 				if !missing(`"`macval(description)'"') {
 					
 	
-					markdown `"`macval(description)'"'
+					md2smcl `"`macval(description)'"'
 					local description `r(md)'	
 					file write `knot' "`description'" _n
 					file read `hitch' line
@@ -154,7 +154,7 @@ program define markup
 					& r(eof) == 0 {
 						*local line2 = `trim'(`"`macval(line)'"')
 						local line2 = `"`macval(line)'"'
-						markdown `"`macval(line2)'"'
+						md2smcl `"`macval(line2)'"'
 						file write `knot' `"`r(md)'"' _n
 						file read `hitch' line
 					}
