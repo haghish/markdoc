@@ -521,7 +521,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				
 			if !missing("`mathjax'") {
 				file write `knot' `"<script type="text/javascript" async "' _n 	///
-				`"src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?"'		///
+				`"src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?"'		///
 				`"config=TeX-MML-AM_CHTML">"' _n								///
 				`"</script>"' _n(3)
 			}

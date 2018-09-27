@@ -146,6 +146,8 @@ which are {bf:pdf}, {bf:slide} (i.e. pdf slides), {bf:docx}, {bf:odt}, {bf:tex},
 
 {synopt:{opt num:bered}}numbers Stata commands in the dynamic document.{p_end}
 
+{synopt:{opt unc}}specify that markdoc is being accessed from a Windows server with UNC file paths{p_end}
+
 {synopt:{opt sty:le(name)}}specify the style of the document for HTML, PDF, Docx, and LaTeX documents. 
 The available styles are {bf:simple}, {bf:stata}, and {bf:formal}. If the document is exported 
 in LaTeX format, the {bf:stata} option (also if used with {cmd: master} option) 
@@ -299,13 +301,11 @@ below demonstrates how to export a PDF presentation slides with notations:
     . qui log using example, replace
 	
         /***
-
-{title:        Writing mathematical notations}
-
         Mathematical notations can be inline a text paragraph e.g. $a^2 + b^2 = c^2$
         or on a separate line such as:
 	
         $$a^2 + b^2 = c^2$$
+		***/
 	
     . qui log c
     . markdoc example, export(slide) printer("/usr/texbin/pdflatex") 
