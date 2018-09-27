@@ -164,8 +164,8 @@ program define rundoc
 					
 					*local part : subinstr local part "` " "\\{c 96} ", all
 					*local part : subinstr local part "`" "{c 96}", all
-					local part : subinstr local part " $" " \\$", all
-					local part : subinstr local part " \\$$" " $$", all				
+					*local part : subinstr local part " $" " \\$", all
+					*local part : subinstr local part " \\$$" " $$", all				
 			
 					//write text parts
 					if missing("`found'") file write `disp' "`" `""> `macval(part)'""' "'"			
@@ -188,8 +188,8 @@ program define rundoc
 					// SECURE PART
 					// --------------------------------------------------------
 					local line : subinstr local line "`" "{c 96}", all
-					local line : subinstr local line " $" " \\$", all
-					local line : subinstr local line " \\$$" " $$", all
+					*local line : subinstr local line " $" " \\$", all
+					*local line : subinstr local line " \\$$" " $$", all
 					
 					file write `disp' `" "`macval(line)'""'  
 
@@ -199,8 +199,8 @@ program define rundoc
 					// SECURE LINE
 					// --------------------------------------------------------
 					local line : subinstr local line "`" "{c 96}", all
-					local line : subinstr local line "$" " \\$", all  //{c 36}
-					local line : subinstr local line " \\$$" " $$", all
+					*local line : subinstr local line "$" " \\$", all  //{c 36}
+					*local line : subinstr local line " \\$$" " $$", all
 					file write `disp' "`" `""> `macval(line)'""' "'" " _n ///" _n
 				}	
 				
