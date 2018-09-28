@@ -238,7 +238,7 @@ All of these markup languages can also include an image in the document, support
 writing dynamic text, and creating dynamic table. MarkDoc can export documents 
 in various file formats including {bf:pdf} document and {bf:slide}, Microsoft Office {bf:docx}, 
 Open Office and LibreOffice {bf:odt}, LaTeX {bf:tex}, {bf:html}, {bf:epub}, 
-Markdown {bf:md}, {bf:slidy} and {bf:dzslide} HTML-based slides, and also 
+Markdown {bf:md}, {bf:slidy} HTML-based slide, and also 
 {bf:sthlp} and {bf:smcl} for Stata documentation. If file format is not specified, MarkDoc creates a 
 markdown {bf:md} file. MarkDoc {help weaver:requires the Weaver package} for 
 making use of the {help txt}, {help tbl}, and {help img} commands which are used for writing 
@@ -3477,3 +3477,4 @@ end
 // create the help file
 // ====================
 *markdoc markdoc.ado, exp(sthlp) replace build
+
