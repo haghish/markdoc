@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 3.9.6
+Version: 4.0.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
