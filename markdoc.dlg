@@ -377,7 +377,7 @@ BEGIN
 	TEXT tx_format   +120 -20  200  .  , label("Presentation slide format")
 	RADIO r1         @    +20   100 .  , first  label("pdf") onclickon("program subtest") //option(nociforeground)
     RADIO r2         +50    @   @  ., middle label("slidy") onclickon("program subtest")
-//    RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program subtest") //onclickon("script TeXoptions")
+    RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program subtest") //onclickon("script TeXoptions")
 	
 	
 //	BUTTON bu_facvars @ +50 @ ., label("my Button") onpush("program bu_facvars_getOpts")
@@ -990,10 +990,9 @@ BEGIN
 		if sub.r2 {
 			put "export(slidy) "
 		}
-/*      if sub.r3 {
+		if sub.r3 {
 			put "export(dzslide) "
 		}
-*/
 		
 		option sub.replace						// replace
 		option sub.install						// install 
