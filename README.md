@@ -61,6 +61,8 @@ To use the dialog box, type:
 Author
 ------
   **E. F. Haghish, Ph.D.**
+  Department of Medical Psychology and Medical Sociology,
+  University of Göttingen, Germany
   
   _http://www.haghish.com/contact.php_   
   _[@Haghish](https://twitter.com/Haghish)_   
