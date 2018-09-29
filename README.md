@@ -13,9 +13,9 @@
 * [Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)
 * [Torture tests](https://github.com/haghish/MarkDoc/tree/master/Torture_test)
 
-<p>
-<a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" style="background:none; box-shadow:none; display:inline; margin:0;vertical-align:-100%; margin-right:5px; width:50px; height:50px;" />Manual</a>
-</p>
+
+<a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Manual</a>
+
 
 
 Installing
