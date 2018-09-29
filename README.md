@@ -6,16 +6,18 @@
 
 ## Resources
 
-* [Homepage](http://haghish.com/markdoc)
-* [Journal Article](http://www.stata-journal.com/article.html?article=pr0064)
-* [Manual](https://github.com/haghish/MarkDoc/wiki)
-* [Release Notes](https://github.com/haghish/MarkDoc/releases)
-* [Examples](https://github.com/haghish/MarkDoc/tree/master/Examples)
-* [Torture tests](https://github.com/haghish/MarkDoc/tree/master/Torture_test)
-
 
 <a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Manual</a>
 
+<a href="http://www.stata-journal.com/article.html?article=pr0064"><img src="./Resources/images/pdf.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Journal Article</a>
+
+<a href="https://github.com/haghish/MarkDoc/tree/master/Examples"><img src="./Resources/images/walk.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Examples</a>
+
+<a href="https://github.com/haghish/MarkDoc/tree/master/Examples"><img src="./Resources/images/test.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Torture tests</a>
+
+<a href="http://www.statalist.org"><img src="./Resources/images/idea.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need help? Ask your questions on statalist.org</a>
+
+<a href="http://www.haghish.com/contact.php"><img src="./Resources/images/professor.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need <b>more help</b>? Contact the author to plan a workshop in your department or company</a>
 
 
 Installing
