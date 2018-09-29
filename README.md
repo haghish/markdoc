@@ -4,6 +4,8 @@
 
 **MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp*, *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*. The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting. [**Continue to MarkDoc documentation**...](https://github.com/haghish/MarkDoc/wiki)
 
+<a><img src="./Resources/images/attention.png" width="30px" height="30px"  align="left" hspace="10" vspace="6"></a> MarkDoc receives constant updates on GitHub and users are recommended to __Watch__ the updates from GitHub. 
+
 ## Resources
 
 
@@ -23,7 +25,7 @@
 Installation
 ------------
 
-MarkDoc requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install MarkDoc and all of its dependencies as shown below:
+MarkDoc requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install MarkDoc and all of its dependencies as shown below. If you don't have the [__`github package`__](https://github.com/haghish/github) installed, type __`net install github, from("https://haghish.github.io/github/")`__ to install it. 
 
 ```js
 github install haghish/markdoc
