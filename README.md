@@ -43,16 +43,19 @@ The __pdfLaTeX__ is optional, but required for generating PDF slides and typeset
 Dialog box
 ----------
 
-<center>
-<a href="https://github.com/haghish/MarkDoc/wiki/GUI"><img src="https://raw.githubusercontent.com/wiki/haghish/MarkDoc/images/gui_markdoc.png"  width="300" hspace="10" vspace="6"></a>
-</center>
-
-To further facilitate using __MarkDoc__ in classrooms, a dialog box was written for Stata, which also shows the options and features of MarkDoc. The dialog box supports all three engines of MarkDOc for creating 
+To further facilitate using MarkDoc for beginners, a dialog box was written for Stata, which covers all features and most of the important options of MarkDoc. The dialog box supports all three engines of MarkDOc for creating 
 _dynamic document_, _dynamic presentation slides_, and _package vignette (e.g. Stata help files, package manual, etc)_. 
 
 To use the dialog box, type:
 
     db markdoc
+    
+<center>
+<a href="https://github.com/haghish/MarkDoc/wiki/GUI"><img src="https://raw.githubusercontent.com/wiki/haghish/MarkDoc/images/gui_markdoc.png"  width="300" hspace="10" vspace="6"></a>
+</center>
+
+[The dialog box is documented in details in the manual](https://github.com/haghish/MarkDoc/wiki/GUI). Stata users that are new to MarkDoc are encouraged to have a look at the dialog box to get an idea of what they can do with MarkDoc. 
+
 
 
 Author
