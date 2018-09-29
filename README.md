@@ -13,7 +13,7 @@
 
 <a href="https://github.com/haghish/MarkDoc/tree/master/Examples"><img src="./Resources/images/walk.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Examples</a>
 
-<a href="https://github.com/haghish/MarkDoc/tree/master/Examples"><img src="./Resources/images/test.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Torture tests</a>
+<a href="https://github.com/haghish/markdoc/tree/master/Torture_test"><img src="./Resources/images/test.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Torture tests</a>
 
 <a href="http://www.statalist.org"><img src="./Resources/images/idea.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need help? Ask your questions on statalist.org</a>
 
