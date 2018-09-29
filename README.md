@@ -60,15 +60,9 @@ To use the dialog box, type:
 
 Author
 ------
-  **E. F. Haghish**    
-  Center for Medical Biometry and Medical Informatics    
-  University of Freiburg, Germany       
-  _and_   
-  Department of Mathematics and Computer Science   
-  Univesity of Southern Denmark, Odense, Denmark    
-
-  _haghish@imbi.uni-freiburg.de_  
-  _http://www.haghish.com/markdoc_  
+  **E. F. Haghish, Ph.D.**
+  
+  _http://www.haghish.com/contact.php_   
   _[@Haghish](https://twitter.com/Haghish)_   
   
   
