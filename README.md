@@ -25,7 +25,7 @@
 Installation
 ------------
 
-MarkDoc requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install MarkDoc and all of its dependencies as shown below. If you don't have the [__`github package`__](https://github.com/haghish/github) installed, type __`net install github, from("https://haghish.github.io/github/")`__ to install it. 
+MarkDoc requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install MarkDoc and all of its dependencies as shown below. Using `github` package is highly recommended.  
 
 ```js
 github install haghish/markdoc
