@@ -45,7 +45,7 @@ The __pdfLaTeX__ is optional, but required for generating PDF slides and typeset
 Dialog box
 ----------
 
-To further facilitate using MarkDoc for beginners, a dialog box was written for Stata, which covers all features and most of the important options of MarkDoc. The dialog box supports all three engines of MarkDOc for creating 
+To further facilitate using MarkDoc for beginners, a dialog box was written for Stata, which covers all features and most of the important options of MarkDoc. The dialog box supports all three engines of MarkDoc for creating 
 _dynamic document_, _dynamic presentation slides_, and _package vignette (e.g. Stata help files, package manual, etc)_. 
 
 To use the dialog box, type:
