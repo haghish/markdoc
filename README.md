@@ -17,27 +17,17 @@
 
 <a href="http://www.statalist.org"><img src="./Resources/images/idea.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need help? Ask your questions on statalist.org</a>
 
-<a href="http://www.haghish.com/contact.php"><img src="./Resources/images/professor.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need <b>more help</b>? Contact the author to plan a workshop in your department or company</a>
+<a href="http://www.haghish.com/contact.php"><img src="./Resources/images/professor.png" width="30px" height="30px"  align="left" hspace="10" vspace="6"><b>Need more help</b>? Contact the author to plan a workshop in your department or company</a>
 
 
-Installing
-----------
+Installation
+------------
 
-__MarkDoc__ requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install __MarkDoc__ and all of its dependencies as shown below:
+MarkDoc requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install MarkDoc and all of its dependencies as shown below:
 
 ```js
 github install haghish/markdoc
 ```
-
- 
-
-<!--
-The major releases of __MarkDoc__ are also hosted on SSC server. However, installing from SSC is not recommended because the SSC package is only updated occasionly on SSC. 
-
-```js
-ssc install markdoc
-```
--->
 
 
 
@@ -47,7 +37,7 @@ MarkDoc also requires 3 third-party software, which are:
 - [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
 - [__pdfLaTeX__](https://www.latex-project.org/get/)
 
-The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. 
+The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. The __wkhtmltopdf__ is only required for generating PDF documents from Markdown. MarkDoc provides optional automatic installation of __pandoc__ and __wkhtmltopdf__ if the `install` argument is specified. [You can read more about the installation in the manual...](https://github.com/haghish/markdoc/wiki/Installation)
 
 
 Dialog box
