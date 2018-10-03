@@ -13,13 +13,15 @@
 
 <a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Manual</a>
 
+<a href="https://github.com/haghish/markdoc/raw/master/Help/Help.pdf"><img src="./Resources/images/help4.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">MarkDoc package vignette (PDF)</a>
+
 <a href="http://www.stata-journal.com/article.html?article=pr0064"><img src="./Resources/images/pdf.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Journal Article</a>
 
 <a href="https://github.com/haghish/MarkDoc/tree/master/Examples"><img src="./Resources/images/walk.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Examples</a>
 
 <a href="https://github.com/haghish/markdoc/tree/master/Torture_test"><img src="./Resources/images/test.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Torture tests</a>
 
-<a href="http://www.statalist.org"><img src="./Resources/images/idea.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need help? Ask your questions on statalist.org</a>
+<a href="http://www.statalist.org"><img src="./Resources/images/help2.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Need help? Ask your questions on statalist.org</a>
 
 <a href="http://www.haghish.com/contact.php"><img src="./Resources/images/professor.png" width="30px" height="30px"  align="left" hspace="10" vspace="6"><b>Need more help</b>? Contact the author to plan a workshop in your department or company</a>
 
