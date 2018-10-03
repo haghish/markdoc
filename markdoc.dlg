@@ -1,4 +1,4 @@
-VERSION 12 
+VERSION 12
 POSITION . . 440 420
 
 
@@ -163,8 +163,8 @@ BEGIN
 	*main.sourceFile.disable
 	*main.sourceFile.setvalue ""
 	*main.markup.setvalue ""
-	sub.sourceFile.setvalue ""
-	vignette.sourceFile.setvalue ""
+	*sub.sourceFile.setvalue ""
+	*vignette.sourceFile.setvalue ""
 END
 
 // Reset Values of the Slides Tab
@@ -174,69 +174,18 @@ SCRIPT subReset
 BEGIN	
 	
 	
-	main.sourceFile.setvalue ""
+	*main.sourceFile.setvalue ""
 	*main.markup.setvalue ""
-	vignette.sourceFile.setvalue ""
+	*vignette.sourceFile.setvalue ""
 	
 END
 
 SCRIPT vignetteReset
 BEGIN	
-	sub.sourceFile.setvalue ""
-	main.sourceFile.setvalue ""
+	*sub.sourceFile.setvalue ""
+	*main.sourceFile.setvalue ""
 END
 
-
-		// Unused Scripts
-		// ------------------------------------
-		/*
-		// Hide LaTeX options
-		SCRIPT TeXoptions
-		BEGIN
-			main.master.enable
-			main.statax.disable
-		END
-
-		SCRIPT main_ck_vlab_on
-		BEGIN
-		   main.cb_vlab.enable
-		END
-
-		SCRIPT main_ck_vlab_off
-		BEGIN
-		   main.cb_vlab.disable
-		END
-
-		SCRIPT disablethem
-		BEGIN
-		  
-			if main.format.isneq("tex") {
-				main.master.disable
-			}
-		  *main.master.disable
-		  *main.vars.disable
-		  *options.detail.disable
-		  *options.status.disable
-		END
-		
-		SCRIPT sub_inon
-		BEGIN
-		  sub.sp_from.enable
-		  sub.sp_to.enable
-		END
-
-		SCRIPT sub_inoff
-		BEGIN
-		  sub.sp_from.disable
-		  sub.sp_to.disable
-		END
-
-
-		*/
-
-// -----------------------------------------------------------------------------
-// DYNAMIC DOCUMENT TAB
-// =============================================================================
 
 SCRIPT main_POSTINIT
 BEGIN
@@ -246,15 +195,26 @@ BEGIN
 END
 
 
+
+// -----------------------------------------------------------------------------
+// DYNAMIC DOCUMENT TAB
+// =============================================================================
+
+
+
+
 DIALOG main, label("MarkDoc") tabtitle("Dynamic Document")
 BEGIN
+	
+	//define the source value
+	
 	
 	//FRAME box        10   72   310    30
 	
 	// Browse SMCL or DO file
 	// -------------------------------------------------------------------------
 	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
-	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...) ///
+	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...)  ///
 	filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.") ///
 	onchange("script mainReset")
 	
@@ -376,8 +336,9 @@ BEGIN
 	
 	TEXT tx_format   +120 -20  200  .  , label("Presentation slide format")
 	RADIO r1         @    +20   100 .  , first  label("pdf") onclickon("program subtest") //option(nociforeground)
-    RADIO r2         +50    @   @  ., middle label("slidy") onclickon("program subtest")
-    RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program subtest") //onclickon("script TeXoptions")
+    RADIO r2         +50    @   @  ., last label("slidy") onclickon("program subtest")
+	//RADIO r2         +50    @   @  ., middle label("slidy") onclickon("program subtest")
+    //RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program subtest") //onclickon("script TeXoptions")
 	
 	
 //	BUTTON bu_facvars @ +50 @ ., label("my Button") onpush("program bu_facvars_getOpts")
@@ -591,26 +552,11 @@ BEGIN
 END
 
 
-/*
-
-// -----------------------------------------------------------------------------
-// CONVERT FILES TAB
-// =============================================================================	
-DIALOG convert, tabtitle("Convert Formats") 
-BEGIN
-	
- 
-		   
-END
-
-
-*/
-
 
 
 
 // -----------------------------------------------------------------------------
-// PROGRAMS
+// TEST PROGRAMS
 // =============================================================================
 
 // test for the main tab
@@ -757,7 +703,7 @@ BEGIN
 	if sub.markup.iseq("markdown") & sub.r1.iseq(1) {
 		call sub.r1.enable
 		call sub.r2.enable
-		call sub.r3.enable
+		//call sub.r3.enable
 		call sub.master.disable
 		call sub.theme.enable
 		call sub.color.enable
@@ -770,7 +716,7 @@ BEGIN
 	// else if the markup is LaTeX
 	else {
 		call sub.r2.disable
-		call sub.r3.disable
+		*call sub.r3.disable
 		*call sub.yamlgenerator.disable
 		
 		if sub.r1.iseq(1)    {
@@ -898,16 +844,26 @@ END
 // =============================================================================	
 PROGRAM command
 BEGIN
-	put "markdoc "
+	
     
 	// You must load a file!
 	if ! main.sourceFile & ! sub.sourceFile & ! vignette.sourceFile {
 		require main.sourceFile
 	}
 	
+	if ((main.sourceFile & sub.sourceFile) |  (main.sourceFile & vignette.sourceFile) | (sub.sourceFile & vignette.sourceFile)) {
+		stopbox stop "multiple source files are selected in different tabs."   ///
+		"Reset the dialogbox or remove the source files in other tabs."
+	}
+	
+	put "markdoc "
+	
 	// Main Tab
 	// -------------------------------------------------------------------------
 	if main.sourceFile {
+		
+		//call sub.sourceFile.setvalue ""
+		
 		put `"""'
 		require main.sourceFile
 		put main.sourceFile
@@ -974,6 +930,8 @@ BEGIN
 		*}
 	}
 	
+	
+	
 	// SLIDE TAB
 	// -------------------------------------------------------------------------
 	if sub.sourceFile {
@@ -990,9 +948,9 @@ BEGIN
 		if sub.r2 {
 			put "export(slidy) "
 		}
-		if sub.r3 {
-			put "export(dzslide) "
-		}
+		//if sub.r3 {
+		//	put "export(dzslide) "
+		//}
 		
 		option sub.replace						// replace
 		option sub.install						// install 
@@ -1133,30 +1091,3 @@ BEGIN
 END
 
 
-
-
-
-/*** EXAMPLES
-
-/*
-  CHECKBOX ck_numbers   @     +25   @       .,                 ///
-           option(numbers)                                     ///
-           label("Present variable number along with name")    ///
-           onclickon(main.ck_fullnames.disable)                ///
-           onclickoff(main.ck_fullnames.enable)
-*/
-  
-  
-  
-  
-  
-		   
-/*		   
-  CHECKBOX ck_vlab     215 -20  185  .,                            ///
-           label("Attach value label:")                            ///
-           onclickon(script main_ck_vlab_on)                       ///
-           onclickoff(script main_ck_vlab_off)
-  COMBOBOX cb_vlab     @   +20  @    .,                            ///
-           contents(valuelabels) dropdown
-*/
-	
