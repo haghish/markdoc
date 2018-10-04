@@ -490,10 +490,10 @@ BEGIN
 		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
 		
 		// append template
-		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Append help-file template") default(1) 
+		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Append help-file template") default(0) 
 		
 		// build
-		CHECKBOX build    @    +17   @   .  , option(build) label("Build the toc & pkg files") default(1) tooltip("Check this button to make MarkDoc automatically generate the Stata.toc and packagename.pkg files for you. These files are required for making your package installable, if you host it on GitHub or your personal website") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX build    @    +17   @   .  , option(build) label("Build the toc & pkg files") default(0) tooltip("Check this button to make MarkDoc automatically generate the Stata.toc and packagename.pkg files for you. These files are required for making your package installable, if you host it on GitHub or your personal website") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 		
 		// master
 		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
