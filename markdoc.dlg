@@ -225,12 +225,14 @@ BEGIN
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
 	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
-	RADIO r1         @    +20   100 .  , first  label("html") onclickon("program test") //option(nociforeground)
+	RADIO r6         @    +20   100 ., first   label("md") onclickon("program test")
+	RADIO r1         +50    @   @ .  , middle  label("html") onclickon("program test") //option(nociforeground)
     RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program test") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
-    RADIO r3         +50    @   @ ., middle label("tex") onclickon("program test") //onclickon("script TeXoptions")
+    
     RADIO r4         +50    @   @ ., middle   label("docx") onclickon("program test")
 	RADIO r5         +50    @   @ ., middle   label("odt") onclickon("program test")
-	RADIO r6         +50    @   @ ., last   label("md") onclickon("program test")
+	RADIO r3         +50    @   @ ., last label("tex") onclickon("program test") //onclickon("script TeXoptions")
+	
 	
 
 	// GROUPBOX
@@ -336,7 +338,7 @@ BEGIN
 	
 	TEXT tx_format   +120 -20  200  .  , label("Presentation slide format")
 	RADIO r1         @    +20   100 .  , first  label("pdf") onclickon("program subtest") //option(nociforeground)
-    RADIO r2         +50    @   @  ., last label("slidy") onclickon("program subtest")
+    RADIO r2         +50    @   @  ., last label("html") onclickon("program subtest")
 	//RADIO r2         +50    @   @  ., middle label("slidy") onclickon("program subtest")
     //RADIO r3         +50    @   @ ., last label("dzslide") onclickon("program subtest") //onclickon("script TeXoptions")
 	
