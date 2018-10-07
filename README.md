@@ -69,7 +69,7 @@ Wish to develop handouts or presentation slides within Stata? MarkDoc has a buil
 
 <img src="./Resources/images/Wrangler.png" align="center" width="450">
 
-Much effort was put to develop a syntax highlighter for Stata, which was not available before. This just shows how caring MarkDoc is, when it comes to teaching statistics! 
+Much effort was put to develop a syntax highlighter for Stata, which was not available before. This just shows how caring MarkDoc is, when it comes to teaching statistics! MarkDoc was intended to be used in daily routine, as early as introductory statistics course, to help students document their code and read it with more care. 
 
 
 Author
