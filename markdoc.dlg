@@ -28,8 +28,9 @@ END
 // Specify the Markup langugae for Stata documentation
 LIST helpfile_list
 BEGIN
-	markdown & smcl
-	//smcl
+    markdown
+	markdown+smcl
+	smcl
 END
 
 // Specify the Markup langugae
@@ -465,12 +466,12 @@ BEGIN
 	// Specify Markup, Format, Style
 	// -------------------------------------------------------------------------
 	TEXT tx_markup   10   +30  200  .  , label("Markup language")
-	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
+	COMBOBOX markup  @    +20  115  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
 	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
-	RADIO r1         @    +20   100 .  , first  label("sthlp") onclickon("program vintest") //option(nociforeground)
-    RADIO r2         +50    @   @  ., middle label("pdf") onclickon("program vintest") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
+	RADIO r1         @    +20   100 .  , first  label("sthlp") onclickon("program vintest") tooltip(`"Stata help file"') //option(nociforeground)
+    RADIO r2         +47    @   @  ., middle label("pdf") onclickon("program vintest") tooltip(`"producing PDF document requires wkhtmltopdf software, which you can install manually or by using the "install" option"')
     RADIO r3         +42    @   @ ., middle label("html") onclickon("program vintest") //onclickon("script TeXoptions")
     RADIO r4         +47    @   @ ., middle   label("docx") onclickon("program vintest")
 	RADIO r5         +48    @   @ ., middle   label("odt") onclickon("program vintest")
@@ -762,7 +763,7 @@ BEGIN
 	*}
 	
 	// else if the markup is Markdown
-	if vignette.markup.iseq("markdown & smcl") {
+	if vignette.markup.iseq("markdown+smcl") | vignette.markup.iseq("markdown") {
 		call vignette.r1.enable
 		call vignette.r2.enable
 		call vignette.r3.enable
