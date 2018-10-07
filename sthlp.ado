@@ -98,6 +98,13 @@ program define sthlp
 		exit 198
 	}
 	
+	// check the markup language used for documenting the help files
+	if "`markup'" != "markdown" & "`markup'" != "markdown+smcl" &               ///
+	   "`markup'" != "smcl" & "`markup'" != "" {
+		di as err "{p}`markup' is not a supported markup format"
+		exit 198
+	}
+	
 	confirm file "`script'"
 	
 	// If the template is not "empty", then make sure other locals are ""
@@ -108,6 +115,16 @@ program define sthlp
 		local title
 		local summary
 	}
+	
+	//if helplayout is specified, the default markup is markdown. otherwise, markdown+smcl
+	/*
+	if "`markup'" == "" {
+		if !missing("`helplayout'") {
+			markup = "markdown"
+		}
+		else markup = "markdown+smcl"
+	}
+	*/
 	
 	************************************************************************	
 	*
@@ -153,7 +170,73 @@ program define sthlp
 		"             syntax to make text _italic_, __bold__, or ___underscored___ or " _n 	///
 		"             add [hyperlink](http://www.haghish.com/markdoc) " _n 		///
 		"Export: //seperate filenames by ; or leave it empty to export all files" _n  /// 
+		_n(2)                                                                   ///
 		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(3) 
+		
+		if "`markup'" == "markdown" | "`markup'" == ""  {
+			file write `knot' 														///
+			"/***" _n 																///
+			"Syntax" _n 															///
+			"====== " _n(2)	 														///
+			"> __XXX__ _varlist_ =_exp_ [_if_] [_in_] [_weight_] using _filename_ [, _options_]" _n(2) 	///
+			"_options_" _n(2) ///
+			"- - -" _n(2) 										///
+			"__ ___min___abbrev__: description of what option " _n 														///
+			"__ ___min___abbrev(_arg_)__: description of another option" _n 		///
+			"" _n 														///
+			"- - -" _n(2) 		///
+			"__by__ is allowed; see __[[D] by](help by)__  " _n ///
+			"__fweight__ is allowed; [weight](help weight)  " _n 				///
+			"" _n(2) 												///
+			"Description" _n 														///
+			"===========" _n(2) 													///
+			"__XXX__ does ... (now put in a one-short-paragraph description " _n 	///
+			"of the purpose of the command)" _n(2) 									///
+			"Options" _n 															///
+			"=======" _n(2) 														///
+			"__whatever__ does yak yak" _n(2) 										///
+			">Use __>__ for additional paragraphs within and option " _n 			///
+			"description to indent the paragraph." _n(2) 							///
+			"__2nd option__ etc." _n(2) 											///
+			"Remarks" _n 															///
+			"=======" _n(2) 														///
+			"The remarks are the detailed description of the command and its " _n 	///
+			"nuances. Official documented Stata commands don't have much for " _n	///
+			"remarks, because the remarks go in the documentation." _n(2) 			///
+			"Example(s)" _n															///
+			"=================" _n(2)												///
+			"    explain what it does" _n											///
+			"        . example command" _n(2)										///
+			"    second explanation" _n												///
+			"        . example command" _n(2)										///
+			"Stored results" _n														///
+			"=================" _n(2)												///
+			"__commandname__ stores the following in __r()__ or __e()__:" _n(2) 	///
+			"Scalars" _n(2) 										///
+			"> __r(N)__: number of observations " _n(2) 									///
+			"Macros" _n(2) 				///
+			"Matrices" _n(2) 								///
+			"Functions" _n(2) 										///
+			"Acknowledgements" _n 													///
+			"================" _n(2) 												///
+			"If you have thanks specific to this command, put them here." _n(2) 	///
+			"Author" _n 															///
+			"======" _n(2) 															///
+			"Author information here; nothing for official Stata commands" _n 		///
+			"leave 2 white spaces in the end of each line for line break. "			///
+			"For example:" _n(2) 													///
+			"Your Name   " _n 														///
+			"Your affiliation    " _n 												///
+			"Your email address, etc.    " _n(2) 									///
+			"References" _n 														///
+			"==========" _n(2) 														///
+			"Author Name (year), "	 												///
+			"[title & external link](http://www.haghish.com/markdoc/)" _n(2) 		///
+			"- - -" _n(2)													///
+			"This help file was dynamically produced by " _n						///
+			"[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/) " _n ///
+			"***/" _n(4)
+		}
 		
 		if "`markup'" == "markdown+smcl" {
 			file write `knot' 														///
@@ -231,70 +314,6 @@ program define sthlp
 			"***/" _n(4)
 		}
 		
-		if "`markup'" == "markdown" | "`markup'" == ""  {
-			file write `knot' 														///
-			"/***" _n 																///
-			"Syntax" _n 															///
-			"====== " _n(2)	 														///
-			"> __XXX__ _varlist_ =_exp_ [_if_] [_in_] [_weight_] using _filename_ [, _options_]" _n(2) 	///
-			"_options_" _n(2) ///
-			"- - -" _n(2) 										///
-			"__ ___min___abbrev__: description of what option " _n 														///
-			"__ ___min___abbrev(_arg_)__: description of another option" _n 		///
-			"" _n 														///
-			"- - -" _n(2) 		///
-			"__by__ is allowed; see __[[D] by](help by)__  " _n ///
-			"__fweight__ is allowed; [weight](help weight)  " _n 				///
-			"" _n(2) 												///
-			"Description" _n 														///
-			"===========" _n(2) 													///
-			"__XXX__ does ... (now put in a one-short-paragraph description " _n 	///
-			"of the purpose of the command)" _n(2) 									///
-			"Options" _n 															///
-			"=======" _n(2) 														///
-			"__whatever__ does yak yak" _n(2) 										///
-			">Use __>__ for additional paragraphs within and option " _n 			///
-			"description to indent the paragraph." _n(2) 							///
-			"__2nd option__ etc." _n(2) 											///
-			"Remarks" _n 															///
-			"=======" _n(2) 														///
-			"The remarks are the detailed description of the command and its " _n 	///
-			"nuances. Official documented Stata commands don't have much for " _n	///
-			"remarks, because the remarks go in the documentation." _n(2) 			///
-			"Example(s)" _n															///
-			"=================" _n(2)												///
-			"    explain what it does" _n											///
-			"        . example command" _n(2)										///
-			"    second explanation" _n												///
-			"        . example command" _n(2)										///
-			"Stored results" _n														///
-			"=================" _n(2)												///
-			"__commandname__ stores the following in __r()__ or __e()__:" _n(2) 	///
-			"Scalars" _n(2) 										///
-			"> __r(N)__: number of observations " _n(2) 									///
-			"Macros" _n(2) 				///
-			"Matrices" _n(2) 								///
-			"Functions" _n(2) 										///
-			"Acknowledgements" _n 													///
-			"================" _n(2) 												///
-			"If you have thanks specific to this command, put them here." _n(2) 	///
-			"Author" _n 															///
-			"======" _n(2) 															///
-			"Author information here; nothing for official Stata commands" _n 		///
-			"leave 2 white spaces in the end of each line for line break. "			///
-			"For example:" _n(2) 													///
-			"Your Name   " _n 														///
-			"Your affiliation    " _n 												///
-			"Your email address, etc.    " _n(2) 									///
-			"References" _n 														///
-			"==========" _n(2) 														///
-			"Author Name (year), "	 												///
-			"[title & external link](http://www.haghish.com/markdoc/)" _n(2) 		///
-			"- - -" _n(2)													///
-			"This help file was dynamically produced by " _n						///
-			"[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/) " _n ///
-			"***/" _n(4)
-		}
 		
 		if "`markup'" == "smcl" {
 			file write `knot' 														///
