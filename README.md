@@ -62,6 +62,14 @@ To use the dialog box, type:
 
 [The dialog box is documented in details in the manual](https://github.com/haghish/MarkDoc/wiki/GUI). Stata users that are new to MarkDoc are encouraged to have a look at the dialog box to get an idea of what they can do with MarkDoc. 
 
+Built-in syntax highlighter
+---------------------------
+
+Wish to develop handouts or presentation slides within Stata? MarkDoc has a built-in syntax highlighter for Stata code in HTML, LaTeX, and PDF formats, including presentation slides! You can also add the syntax highlighter to your blog! [Read how...](https://github.com/haghish/statax)
+
+<img src="./Resources/images/Wrangler.png" align="center" width="450">
+
+Much effort was put to develop a syntax highlighter for Stata, which was not available before. This just shows how caring MarkDoc is, when it comes to teaching statistics! 
 
 
 Author
