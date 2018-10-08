@@ -466,7 +466,7 @@ BEGIN
 	// Specify Markup, Format, Style
 	// -------------------------------------------------------------------------
 	TEXT tx_markup   10   +30  200  .  , label("Markup language")
-	COMBOBOX markup  @    +20  115  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
 	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
