@@ -167,8 +167,8 @@ program define sthlp
 		"Version: 1.0.0" _n														///
 		"Title: commandname" _n													///
 		"Description: explain your command briefly. You can use simplified " _n	///
-		"             syntax to make text _italic_, __bold__, or ___underscored___ or " _n 	///
-		"             add [hyperlink](http://www.haghish.com/markdoc) " _n 		///
+		"    syntax to make text _italic_, __bold__, or ***underscored*** or " _n 	///
+		"    add [hyperlink](http://www.haghish.com/markdoc) " _n 		///
 		"Export: //seperate filenames by ; or leave it empty to export all files" _n  /// 
 		_n(2)                                                                   ///
 		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(3) 
@@ -181,8 +181,8 @@ program define sthlp
 			"> __XXX__ _varlist_ =_exp_ [_if_] [_in_] [_weight_] using _filename_ [, _options_]" _n(2) 	///
 			"_options_" _n(2) ///
 			"- - -" _n(2) 										///
-			"__ ___min___abbrev__: description of what option " _n 														///
-			"__ ___min___abbrev(_arg_)__: description of another option" _n 		///
+			"***min***abbrev: description of what option " _n 														///
+			"***min***abbrev(_arg_): description of another option" _n 		///
 			"" _n 														///
 			"- - -" _n(2) 		///
 			"__by__ is allowed; see __[[D] by](help by)__  " _n ///
