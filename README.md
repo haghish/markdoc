@@ -11,7 +11,7 @@
 ## Resources
 
 
-<a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Manual</a>
+<a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Manual (website) </a>, also is <a href="https://github.com/haghish/markdoc/raw/master/Help/MarkDoc_Wiki_Manual.pdf">available in PDF</a>
 
 <a href="https://github.com/haghish/markdoc/raw/master/Help/Help.pdf"><img src="./Resources/images/help4.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">MarkDoc package vignette (PDF)</a>
 
