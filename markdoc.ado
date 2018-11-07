@@ -1418,6 +1418,8 @@ program markdoc
           file read `hitch' line
 				}
 				
+				file write `knot' `"`macval(line)'"' _n
+				
 				file close `hitch'
 				file close `knot'
         if !missing("`debug'") {
@@ -2684,6 +2686,12 @@ program markdoc
                 tempname read 
                 qui file open `read' using "`importedFile'", read 
                 while r(eof) == 0 {
+								    capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+					          else local graveaccent ""
+										if "`graveaccent'" == "1" {
+											local line "`macval(line)' " 
+											local graveaccent ""
+										}
                     file write `knot' `"`macval(line)'"' _n
                     file read `read' line
                 }
