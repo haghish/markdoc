@@ -1387,41 +1387,40 @@ program markdoc
         * Part 5- Exporting dynamic document
         ****************************************************   
         
-				****************************************************
+		****************************************************
         * PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
         *         - the grave accents are common markdown
-				*           syntax. If the accents appear as the last
+		*           syntax. If the accents appear as the last
         *           character of the line, they crash Stata
         *           with an error of "too few quotes". I have 
-				*           found a workaround, but is not 100% secure
-				*           If you have better suggestions, please 
-				*           go ahead and submit your code on GitHub
+		*           found a workaround, but is not 100% secure
+		*           If you have better suggestions, please 
+		*           go ahead and submit your code on GitHub
         ****************************************************
-				tempfile tmp00 //DEFINE tmp00 FOR THE FIRST TIME
+		tempfile tmp00                     //DEFINE tmp00 FOR THE FIRST TIME
         tempname hitch knot 
         qui file open `hitch' using `"`input'"', read
         qui file open `knot' using `"`tmp00'"', write replace
         file read `hitch' line
 				
-				while r(eof) == 0 { 
-					capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
-					else local graveaccent ""
-					
-					if "`graveaccent'" == "1" {
-						local line "`macval(line)' " 
-						local graveaccent ""
-					}
-					
-					*local line : subinstr local line "`" "\`", all
-					
-					file write `knot' `"`macval(line)'"' _n
-          file read `hitch' line
-				}
+		while r(eof) == 0 { 
+			capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+			else local graveaccent ""
+			
+			if "`graveaccent'" == "1" {
+				local line "`macval(line)' " 
+				local graveaccent ""
+			}
+			
+			local line : subinstr local line "``" "\`", all
+			
+			file write `knot' `"`macval(line)'"' _n
+			file read `hitch' line
+		}
 				
-				file write `knot' `"`macval(line)'"' _n
-				
-				file close `hitch'
-				file close `knot'
+		file write `knot' `"`macval(line)'"' _n
+		file close `hitch'
+		file close `knot'
         if !missing("`debug'") {
             capture erase 0process0.smcl
             copy "`tmp00'" 0process0.smcl , replace         //For debugging
