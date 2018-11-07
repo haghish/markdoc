@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 4.0.0
+Version: 4.0.1
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -1360,16 +1360,24 @@ program markdoc
     //  }   
     //}
     
+		
+		
+		
+		
+		
+		
+		
     // -------------------------------------------------------------------------
     // RUN THE ENGINE FOR LOG FILES
     // =========================================================================
     if missing("`scriptfile'") {
+	
     
-        ************************************************************************    
+        **************************************************** 
         *
         * MAIN ENGINE : Log to Document
         * -----------
-        *
+        * Part 0- Correcting grave accents in the end of the line
         * Part 1- Correcting the SMCL file
         * Part 2- Processing the SMCL file
         * Part 3- Converting the SMCL file
@@ -1377,18 +1385,57 @@ program markdoc
         *   B: Process the TXT file
         * Part 4- Converting TXT to Markdown / HTML / LaTeX
         * Part 5- Exporting dynamic document
-        ************************************************************************    
+        ****************************************************   
         
+				****************************************************
+        * PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
+        *         - the grave accents are common markdown
+				*           syntax. If the accents appear as the last
+        *           character of the line, they crash Stata
+        *           with an error of "too few quotes". I have 
+				*           found a workaround, but is not 100% secure
+				*           If you have better suggestions, please 
+				*           go ahead and submit your code on GitHub
+        ****************************************************
+				tempfile tmp00 //DEFINE tmp00 FOR THE FIRST TIME
+        tempname hitch knot 
+        qui file open `hitch' using `"`input'"', read
+        qui file open `knot' using `"`tmp00'"', write replace
+        file read `hitch' line
+				
+				while r(eof) == 0 { 
+					capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+					else local graveaccent ""
+					
+					if "`graveaccent'" == "1" {
+						local line "`macval(line)' " 
+						local graveaccent ""
+					}
+					
+					*local line : subinstr local line "`" "\`", all
+					
+					file write `knot' `"`macval(line)'"' _n
+          file read `hitch' line
+				}
+				
+				file close `hitch'
+				file close `knot'
+        if !missing("`debug'") {
+            capture erase 0process0.smcl
+            copy "`tmp00'" 0process0.smcl , replace         //For debugging
+        }
+				
         
-        ************************************************************************
+        ****************************************************
         * PART 1. CORRECTING THE SMCL FILE 
         *         - Removing indents before special notations
         *         - Loop correction
         *         - Changing "." to "{com}."
-        ************************************************************************
+        ****************************************************
         tempfile tmp //DEFINE tmp FOR THE FIRST TIME
         tempname hitch knot 
-        qui file open `hitch' using `"`input'"', read
+				*qui file open `hitch' using `"`input'"', read
+        qui file open `hitch' using `"`tmp00'"', read
         qui file open `knot' using `"`tmp'"', write replace
         *file write `knot'  _newline 
         file read `hitch' line
@@ -2702,10 +2749,15 @@ program markdoc
             if "`export'" != "slide" & "`export'" != "slidy" & "`export'"       ///
             != "dzslide" {
                 local clue
-                capture local clue : di trim(`"`macval(line)'"')    
-                if `"`macval(clue)'"' == "***" & substr(`"`macval(line)'"',1,4) != "    " {
+                capture local clue : di trim(`"`macval(line)'"')  
+								local graveaccent ""
+								capture if substr("`macval(line)'",-2,.) == "` " local graveaccent 1
+								if missing("`graveaccent'") {
+								*if !missing(`"`macval(clue)'"') {
+								  if `"`macval(clue)'"' == "***" & substr(`"`macval(line)'"',1,4) != "    " {
                     local line : subinstr local line "***" ""
-                }
+									}
+								}
             }
                                     
             //TABLES FOR MARKDOWN
