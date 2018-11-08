@@ -19,7 +19,6 @@
  
 	3.7.0  February,  2016
 */
-
 *capture program drop markup
 program define markup
 	
@@ -48,6 +47,7 @@ program define markup
 	replace 	 	 /// replaces the current sthlp file, if it already exists
 	Export(name) 	 /// specifies the exported format 
 	localfile(str)	 /// save the output in a local file, if available
+	debug            ///
 	]
 	
 	
@@ -216,6 +216,9 @@ program define markup
 
 	file close `knot'
 	
+	if !missing("`debug'") {
+		quietly copy "`tmp'" 0markup.txt, replace
+	}
 	quietly copy "`tmp'" "$localfile", `replace'		
 		
 	
