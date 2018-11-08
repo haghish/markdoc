@@ -167,8 +167,8 @@ program define sthlp
 		"Version: 1.0.0" _n														///
 		"Title: commandname" _n													///
 		"Description: explain your command briefly. You can use simplified " _n	///
-		"    syntax to make text _italic_, __bold__, or ***underscored*** or " _n 	///
-		"    add [hyperlink](http://www.haghish.com/markdoc) " _n ///
+		"syntax to make text _italic_, __bold__, or ***underscored*** or " _n 	///
+		"add [hyperlink](http://www.haghish.com/markdoc) " _n ///
 		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(3) 
 		
 		if "`markup'" == "markdown" | "`markup'" == ""  {
