@@ -175,7 +175,7 @@ program define sthlp
       "add [hyperlink](http://www.haghish.com/markdoc)" _n  ///
 			"" _n                                                 ///
 			"Syntax" _n                                           ///
-			"====== " _n(2)                                       ///
+			"------ " _n(2)                                       ///
 			"> __XXX__ _varlist_ =_exp_ [_if_] [_in_] " _n        ///
 			"[_weight_] using _filename_ [, _options_]" _n(2)   	///
 			"_options_" _n(2)                                     ///
@@ -191,30 +191,30 @@ program define sthlp
 			"__fweight__ is allowed; [weight](help weight)  " _n 	///
 			"" _n(2) 												                      ///
 			"Description" _n 														          ///
-			"===========" _n(2) 													        ///
+			"-----------" _n(2) 													        ///
 			"__XXX__ does ... (now put in a "                     ///
 			         "one-short-paragraph description " _n 	      ///
 			"of the purpose of the command)" _n(2) 								///
 			"Options" _n 															            ///
-			"=======" _n(2) 														          ///
+			"-------" _n(2) 														          ///
 			"__whatever__ does yak yak" _n(2) 										///
 			"> Use __>__ for additional paragraphs within "       ///
 			     "and option " _n 			                          ///
 			"description to indent the paragraph." _n(2) 					///
 			"__2nd option__ etc." _n(2) 											    ///
 			"Remarks" _n 															            ///
-			"=======" _n(2) 													          	///
+			"-------" _n(2) 													          	///
 			"The remarks are the detailed description of the command and its " _n 	///
 			"nuances. Official documented Stata commands don't have much for " _n	///
 			"remarks, because the remarks go in the documentation." _n(2) 			///
 			"Example(s)" _n															          ///
-			"=================" _n(2)												      ///
+			"----------" _n(2)												      ///
 			"    explain what it does" _n										    	///
 			"        . example command" _n(2)										  ///
 			"    second explanation" _n											    	///
 			"        . example command" _n(2)									   	///
 			"Stored results" _n														        ///
-			"=================" _n(2)												      ///
+			"--------------" _n(2)												      ///
 			"__commandname__ stores the following in __r()__ or __e()__:" _n(2) 	///
 			"Scalars" _n(2) 										                  ///
 			"> __r(N)__: number of observations " _n(2) 					///
@@ -222,10 +222,10 @@ program define sthlp
 			"Matrices" _n(2) 								                      ///
 			"Functions" _n(2) 										                ///
 			"Acknowledgements" _n 													      ///
-			"================" _n(2) 												      ///
+			"----------------" _n(2) 												      ///
 			"If you have thanks specific to this command, put them here." _n(2) 	///
 			"Author" _n 															            ///
-			"======" _n(2) 															          ///
+			"------" _n(2) 															          ///
 			"Author information here; nothing for official Stata commands" _n 		///
 			"leave 2 white spaces in the end of each line for line break. "			///
 			"For example:" _n(2) 													        ///
@@ -233,7 +233,7 @@ program define sthlp
 			"Your affiliation    " _n 												    ///
 			"Your email address, etc.    " _n(2) 									///
 			"References" _n 														          ///
-			"==========" _n(2) 														        ///
+			"----------" _n(2) 														        ///
 			"Author Name (year), "	 												      ///
 			"[title & external link](http://www.haghish.com/markdoc/)" _n(2) 		///
 			"- - -" _n(2)													                ///
