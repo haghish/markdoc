@@ -784,8 +784,8 @@ BEGIN
 		}
 	}
 	
-	// else if the markup is LaTeX
-	else {
+	// else 
+	if vignette.markup.iseq("smcl") {
 		call vignette.r2.disable
 		call vignette.r3.disable
 		call vignette.r4.disable
@@ -796,6 +796,7 @@ BEGIN
 		*call vignette.yamlgenerator.disable
 	}
 	
+	/*
 	if vignette.r1.iseq(1)    {
 		call vignette.build.enable
 		
@@ -808,7 +809,7 @@ BEGIN
 		call vignette.address.disable
 		call vignette.summary.disable
 	}
-	else {
+	if vignette.r1.iseq(0) {
 		call vignette.toc.enable
 		call vignette.style.enable
 		call vignette.template.enable
@@ -820,6 +821,8 @@ BEGIN
 		
 		call vignette.build.disable
 	}
+	*/
+	
 	
 END
 
