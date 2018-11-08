@@ -168,7 +168,7 @@ program define sthlp
 		"Title: commandname" _n													///
 		"Description: explain your command briefly. You can use simplified " _n	///
 		"syntax to make text _italic_, __bold__, or ***underscored*** or " _n 	///
-		"add [hyperlink](http://www.haghish.com/markdoc) " _n ///
+		"add [hyperlink](http://www.haghish.com/markdoc) " _n(2) ///
 		"----------------------------------------------------- DO NOT EDIT THIS LINE ***/" _n(3) 
 		
 		if "`markup'" == "markdown" | "`markup'" == ""  {
@@ -180,7 +180,7 @@ program define sthlp
 			"_options_" _n(2) ///
 			"- - -" _n(2) 										                                    ///
 			"***min***abbrev: description of what option  " _n 										///
-			"***break***line: break each line with adding 2 space barrs  " _n 		///
+			"***break***line: break each line by adding 2 space barrs  " _n 		///
 			"***min***abbrev(_arg_): description of another option  " _n 		      ///
 			"" _n 														                                    ///
 			"- - -" _n(2) 		                                                    ///
