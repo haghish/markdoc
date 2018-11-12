@@ -1,6 +1,10 @@
+//!!!CHANGE THIS PATH ON YOUR COMPUTER!!!
+cd "/Users/haghish/Documents/Packages/markdoc/Examples/Workshops/2018/passive"
+
+
+
 
 set linesize 80 
-
 capture quietly log close
 qui log using example, replace
 
@@ -107,4 +111,4 @@ _haghish@imbi.uni-freiburg.de_
 
 qui log c 
 
-//markdoc example, replace export(html) statax linesize(120)				//Running MarkDoc command
+markdoc example, replace export(html) statax linesize(120)				//Running MarkDoc command
