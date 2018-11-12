@@ -106,7 +106,7 @@ summarize
 ***/
 
 histogram price
-graph export price_hist.png, replace width(300) 
+graph export ./price_hist.png, replace width(300) 
 
 /***
 Including a figure
@@ -117,14 +117,13 @@ the `histogram` command and the `price` variable.
 
 ---
 
-![Figure 1. Histogram of the `price` variable](price_hist.png)
+![Figure 1. Histogram of the `price` variable](./price_hist.png)
 
 ***/
 
 
 // reloading the same image using `img` command:
-
-*img using "price_hist.png", title("explain your graph") 
+img using "./price_hist.png", title("using the img command to include exported figure") 
 
 
 histogram mpg
@@ -165,7 +164,7 @@ creating table
 | center      | aligns the table to the center of the document in HTML and LaTeX |
 | left        | aligns the table to the left of the document                     |
 
---
+---
 
 size  material      color
 ----  ------------  ------------
@@ -175,14 +174,14 @@ size  material      color
 
 
 Mathematical notations
-======================+
+======================
 
 You can use markdoc to:
 
 1. write inline notations (i.e. in the text paragraphs)
 2. on a separate line
 
-For example, $\sum $ will appear inline whereas $$\sum$$ willbe on another line.
+For example, $\sum$ will appear inline whereas $$\sum$$ will be on another line.
 ***/
 
 

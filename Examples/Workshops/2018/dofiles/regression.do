@@ -1,4 +1,7 @@
 
+clear
+sysuse auto
+
 /***
 Dealining with the returned values
 -----------------------------------

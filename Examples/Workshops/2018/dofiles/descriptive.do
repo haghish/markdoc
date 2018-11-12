@@ -6,6 +6,7 @@ Summarize the data
 
 ***/
 
+sysuse auto, clear
 summarize
 
 histogram price
