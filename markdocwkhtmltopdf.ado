@@ -47,16 +47,16 @@ program define markdocwkhtmltopdf
 			
 		*DOWNLOAD WKHTMLTOPDF AND UNZIP IT
 		cap qui copy "http://www.haghish.com/software/wkhtmltopdf_0.12.1.txt" 	///
-		"wkhtmltopdf_0.12.1.txt", replace
+		"wkhtmltopdf_0.12.1.txt", replace public 
 			
 		if "`c(bit)'" == "32" {
 			cap qui copy "http://www.haghish.com/software/Win/32bit/wkhtmltopdf.zip" ///
-			"wkhtmltopdf.zip", replace
+			"wkhtmltopdf.zip", replace public 
 		}
 			
 		if "`c(bit)'" == "64" {
 			cap qui copy "http://www.haghish.com/software/Win/64bit/wkhtmltopdf.zip" ///
-			"wkhtmltopdf.zip", replace
+			"wkhtmltopdf.zip", replace public 
 		}
 			
 		cap qui unzipfile wkhtmltopdf, replace
@@ -108,10 +108,10 @@ program define markdocwkhtmltopdf
 			
 		*DOWNLOAD WKHTMLTOPDF AND UNZIP IT
 		cap qui copy "http://www.haghish.com/software/wkhtmltopdf_0.12.1.txt" 	///
-		"wkhtmltopdf_0.12.1.txt", replace
+		"wkhtmltopdf_0.12.1.txt", replace public 
 			
 		cap qui copy "http://www.haghish.com/software/Mac/wkhtmltopdf.zip" 		///
-		"wkhtmltopdf.zip", replace
+		"wkhtmltopdf.zip", replace public 
 			
 		cap qui unzipfile wkhtmltopdf, replace
 		cap qui erase wkhtmltopdf.zip
@@ -160,16 +160,16 @@ program define markdocwkhtmltopdf
 			
 		*DOWNLOAD WKHTMLTOPDF AND UNZIP IT
 		cap qui copy "http://www.haghish.com/software/wkhtmltopdf_0.12.1.txt" 	///
-		"wkhtmltopdf_0.12.1.txt", replace
+		"wkhtmltopdf_0.12.1.txt", replace public 
 			
 		if "`c(bit)'" == "32" {
 			cap qui copy "http://www.haghish.com/software/Unix/32bit/wkhtmltopdf.zip" ///
-			"wkhtmltopdf.zip", replace
+			"wkhtmltopdf.zip", replace public 
 		}
 			
 		if "`c(bit)'" == "64" {
 			cap qui copy "http://www.haghish.com/software/Unix/64bit/wkhtmltopdf.zip" ///
-			"wkhtmltopdf.zip", replace
+			"wkhtmltopdf.zip", replace public 
 		}
 			
 		cap qui unzipfile wkhtmltopdf, replace

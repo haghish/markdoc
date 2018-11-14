@@ -73,13 +73,13 @@
 			
 			*DOWNLOAD PANDOC AND UNZIP IT
 			cap qui copy "http://www.haghish.com/software/pandoc_1.13.1.txt" ///
-			"pandoc_1.13.1.txt", replace
+			"pandoc_1.13.1.txt", replace public 
 			
 			cap qui copy "http://www.haghish.com/software/Win/Pandoc.zip" ///
-			"Pandoc.zip", replace
+			"Pandoc.zip", replace public 
 			
 			cap qui copy "http://www.haghish.com/software/supplementary.zip" ///
-			"supplementary.zip", replace
+			"supplementary.zip", replace public 
 			
 			cap qui unzipfile Pandoc, replace
 			cap qui erase Pandoc.zip
@@ -141,12 +141,12 @@
 			
 			*DOWNLOAD PANDOC AND UNZIP IT
 			cap qui copy "http://www.haghish.com/software/pandoc_1.13.1.txt" ///
-			"pandoc_1.13.1.txt", replace
+			"pandoc_1.13.1.txt", replace public 
 			cap qui copy "http://www.haghish.com/software/Mac/Pandoc.zip" ///
-			"Pandoc.zip", replace
+			"Pandoc.zip", replace public 
 			
 			cap qui copy "http://www.haghish.com/software/supplementary.zip" ///
-			"supplementary.zip", replace
+			"supplementary.zip", replace public 
 			
 			cap qui unzipfile Pandoc, replace
 			cap qui erase Pandoc.zip
@@ -213,16 +213,16 @@
 		
 			*DOWNLOAD PANDOC AND UNZIP IT
 			cap qui copy "http://www.haghish.com/software/pandoc_1.13.1.txt" ///
-			"pandoc_1.13.1.txt", replace
+			"pandoc_1.13.1.txt", replace public 
 			
 			if "`c(bit)'" == "32" {
 					cap qui copy "http://www.haghish.com/software/Unix/32bit/Pandoc.zip" ///
-					"Pandoc.zip", replace
+					"Pandoc.zip", replace public 
 					}
 			
 			if "`c(bit)'" == "64" {
 					cap qui copy "http://www.haghish.com/software/Unix/64bit/Pandoc.zip" ///
-					"Pandoc.zip", replace
+					"Pandoc.zip", replace public 
 					}
 					
 			
