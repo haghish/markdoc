@@ -3,7 +3,7 @@ d produces dynamic analysis documents in various formats, such as {bf:pdf}, {bf:
 d {bf:odt}, {bf:html}, {bf:epub}, {bf:markdown}, presentation slides in {bf:pdf} or 
 d {bf:html}, as well as dynamic Stata package help files {bf:sthlp}. 
 d
-d Distribution-Date: 20181111
+d Distribution-Date: 20181121
 d
 F abspath.ado
 F markdoc.ado

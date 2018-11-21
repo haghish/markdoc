@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 4.0.2
+Version: 4.0.3
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -124,6 +124,8 @@ convert html files to pdf using __wkhtmltopdf__ software
 {synopthdr:MarkDoc options}
 {synoptline}
 {syntab:}
+{synopt:{opt mini}}runs markdoc independent of Pandoc and wkhtmltopdf{p_end}
+
 {synopt:{opt pan:doc(str)}}specify the path to Pandoc software on the operating system{p_end}
 
 {synopt:{opt print:er(str)}}specify the path to PDF driver on the operating system{p_end}
@@ -712,6 +714,7 @@ program markdoc
     syntax [anything(name=smclfile id="The smcl file name is")]                 /// 
     [,               ///
     replace          /// replaces the exported file
+		mini             /// runs markdoc independent of Pandoc and wkhtmltopdf
     MARKup(name)     /// specifies the markup language used in the document
     Export(name)     /// specifies the exported format
     INSTALl          /// Installs the required software automatically
@@ -859,6 +862,26 @@ program markdoc
     if "`export'" == "STHLP" local export sthlp
     if "`export'" == "latex" local export tex
     
+		// =========================================================================
+		// MINI MODE
+		//
+		// mini mode is used to avoid depending on third-party software. It currently 
+		// only allows generating markdown documents and html documents in Stata 15. 
+		// later on supports for docx and pdf will be provided
+		// -------------------------------------------------------------------------
+		if !missing("`mini'") {
+			if `c(stata_version)' < 15 {
+				di as err "the {bf:mini} option requires Stata 15 or above"
+				err 1
+			}
+			
+			if "`export'" != "md" & "`export'" != "html" {
+				di as err "the {bf:mini} option currently only supports " ///
+				          "{bf:html} and {bf:md} formats"
+				err 198
+			}
+		}
+		
     // =========================================================================
     // Markup Language: 
     // check the markup language and the exported document format. If the 
@@ -1314,6 +1337,7 @@ program markdoc
             
             rundoc "`name'",                                                    ///
             `replace'                                                           ///
+						`mini'                                                              ///
             markup(`markup')                                                    ///
             export(`export')                                                    ///
             `install'                                                           ///
@@ -1349,20 +1373,7 @@ program markdoc
             exit
         }
     
-    ****************************************************************************
-    *DO NOT PRINT ANYTHING ON THE LOG
-    ****************************************************************************
-    //quietly log query    
-    //if `"`r(filename)'"' != "" {
-    //  if `"`r(status)'"' == "on" {
-    //      local status `"`r(status)'"'        // status of the log
-    //      qui log off
-    //  }   
-    //}
-    
-		
-		
-		
+
 		
 		
 		
@@ -1388,15 +1399,15 @@ program markdoc
         ****************************************************   
         
 		****************************************************
-        * PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
-        *         - the grave accents are common markdown
+    * PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
+    *         - the grave accents are common markdown
 		*           syntax. If the accents appear as the last
-        *           character of the line, they crash Stata
-        *           with an error of "too few quotes". I have 
+    *           character of the line, they crash Stata
+    *           with an error of "too few quotes". I have 
 		*           found a workaround, but is not 100% secure
 		*           If you have better suggestions, please 
 		*           go ahead and submit your code on GitHub
-        ****************************************************
+    ****************************************************
 		tempfile tmp00                     //DEFINE tmp00 FOR THE FIRST TIME
         tempname hitch knot 
         qui file open `hitch' using `"`input'"', read
@@ -3242,7 +3253,7 @@ program markdoc
                         local reference -S --reference-docx="`template'"
                     }       
                 }
-                
+              
                 // ======================================================
                 // RUNNING PANDOC
                 // ------------------------------------------------------
@@ -3314,17 +3325,34 @@ program markdoc
                     
                     if "`export'" == "dzslide" local mathjax -s --mathjax -i -t dzslides
                     if "`export'" == "slidy" local mathjax -s --mathjax -i -t slidy
-
-                    if "`noisily'" == "noisily" {
+										
+                    if missing("`mini'") & "`noisily'" == "noisily" {
                         di _n(2) "{title:Executing Pandoc Command}" _n
                         di `""$pandoc" `mathjax' `toc' "'               ///
                         `"`reference' "`md'" -o "`output'""'
                     }
                     
-                    shell "$pandoc" `mathjax' `toc'         ///
+										// rendering the markdown with pandoc or mini mode
+										// ---------------------------------------------------------
+										if missing("`mini'") {
+											shell "$pandoc" `mathjax' `toc'         ///
                     `reference' "`md'" -o "`output'"            
-            
                     quietly copy "`output'" "`convert'", replace
+										
+										} 
+										else {
+											if "`noisily'" == "noisily" di _n(2) "{title:Applying mini mode}" _n
+											if "`export'" == "md" {
+												quietly copy "`md'" "`output'", replace
+												quietly copy "`md'" "`convert'", replace
+											}
+											else if "`export'" == "html" {
+												quietly markdown "`md'", saving("`output'") replace
+												quietly copy "`output'" "`convert'", replace
+											}
+											
+										}
+                    
                     
                     if !missing("`debug'") {
                         copy "`md'" 0md2.md, replace
@@ -3535,5 +3563,5 @@ end
 
 // create the help file
 // ====================
-*markdoc markdoc.ado, exp(sthlp) replace build
+*markdoc markdoc.ado, exp(sthlp) replace 
 

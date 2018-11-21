@@ -2,49 +2,50 @@
  
 program define rundoc
 
-	syntax [anything(name=dofile id="The do file name is")]  				/// 
-	[, 				 ///
-	replace 	 	 /// replaces the exported file
-	MARKup(name)  	 /// specifies the markup language used in the document
-	Export(name) 	 /// specifies the exported format
-	INSTALl 	 	 /// Installs the required software automatically
-	Test 		 	 /// tests the required software to make sure they're running correctly 
-	PANdoc(str)  	 /// specifies the path to Pandoc software on the machine
+	syntax [anything(name=dofile id="The do file name is")]  				              /// 
+	[, 				       ///
+	replace 	 	     /// replaces the exported file
+	mini             /// run in mini mode, independent of Pandoc and wkhtmltopdf
+	MARKup(name)     /// specifies the markup language used in the document
+	Export(name)     /// specifies the exported format
+	INSTALl 	 	     /// Installs the required software automatically
+	Test 		 	       /// tests the required software to make sure they're running correctly 
+	PANdoc(str)      /// specifies the path to Pandoc software on the machine
 	PRINTer(str)     /// the path to the PDF printer on the machine
-	TEXmaster 	 	 /// creates a "Main" LaTeX file which is executable 
-	master 	 	 	 /// creates a "Main" LaTeX & HTML layout 
-	statax			 /// Activate the syntax highlighter
+	TEXmaster 	 	   /// creates a "Main" LaTeX file which is executable 
+	master 	 	 	     /// creates a "Main" LaTeX & HTML layout 
+	statax			     /// Activate the syntax highlighter
 	TEMPlate(str) 	 /// template docx, CSS, ODT, or LaTeX heading
-	TITle(str)   	 /// specifies the title of the document (for styling)
-	AUthor(str)  	 /// specifies the author of mthe document (for styling)
+	TITle(str)   	   /// specifies the title of the document (for styling)
+	AUthor(str)  	   /// specifies the author of mthe document (for styling)
 	AFFiliation(str) /// specifies author affiliation (for styling)
-	ADDress(str) 	 /// specifies author contact information (for styling)
-	Date			 /// Add the current date to the document
+	ADDress(str) 	   /// specifies author contact information (for styling)
+	Date			       /// Add the current date to the document
 	SUMmary(str)     /// writing the summary or abstract of the report
 	VERsion(str)     /// add version to dynamic help file
 	linesize(numlist max=1 int >=80 <=255) /// line size of the document and translator
-	toc				 /// Creates table of content
-	NOIsily			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
-	debug			 /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
-	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
-	NUMbered	 	 /// number Stata commands
-	MATHjax 		 /// Interprets mathematics using MathJax
+	toc				       /// Creates table of content
+	NOIsily			     /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
+	debug			       /// Debugging Pandoc, pdfLaTeX, and wkhtmltopdf
+	ASCIItable		   /// convert ASCII tables to SMCL in dynamic help files
+	NUMbered	 	     /// number Stata commands
+	MATHjax 		     /// Interprets mathematics using MathJax
 	STYle(name)      /// specifies the style of the document
 	/// Slide options
 	/// ========================================================================
-	btheme(str) 	 ///
-	bcolor(str) 	 ///
-	bfont(str)  	 ///
+	btheme(str) 	   ///
+	bcolor(str) 	   ///
+	bfont(str)  	   ///
 	bfontsize(str)   ///
 	bcodesize(str)	 ///
-	bwidth(str)	 	 ///
-	bheight(str)	 ///
+	bwidth(str)	 	   ///
+	bheight(str)	   ///
 	///SETpath(str)  /// the path to the PDF printer on the machine
 	///Printer(name) /// the printer name (for PDF only) 
-	///TABle	     /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
+	///TABle	       /// changes the formats of the table and creates publication ready tables (UNDER DEVELOPMENT AND UNDOCUMENTED)
 	///RUNhead(str)  /// running head for the document (for styling) 
-	///PDFlatex(str) ///this command is discontinued in version 3.0 and replaced by setpath()
-	///Font(name)	 /// specifies the document font (ONLY HTML)
+	///PDFlatex(str) /// this command is discontinued in version 3.0 and replaced by setpath()
+	///Font(name)	   /// specifies the document font (ONLY HTML)
 	///
 	]
 	
@@ -106,16 +107,10 @@ program define rundoc
 	
 	tempfile tmp
 	tempname hitch knot
-*	tempfile documentation 
-*	tempname  doc obj
 	qui file open `knot' using "`tmp'", write replace
 	qui file open `hitch' using "`input'.do", read 
 	qui file read `hitch' line
-	
-	//preserve the code
-*	tempfile rescue 
 
-	
 	while r(eof) == 0 {
 		
 		while `trim'(`"`macval(line)'"') != "/***" & r(eof) == 0 {
@@ -216,8 +211,7 @@ program define rundoc
 			
 			if `"`macval(line)'"' == "***/" file write `doc' "***/" _n 
 			
-			
-			
+
 			file close `doc'
 			file close `disp'
 			tempname add
@@ -263,38 +257,39 @@ program define rundoc
 	
 	
 	markdoc "`input'.smcl",														///
-	`replace' 																	///
-	markup(`markup') 															///
-	export(`export') 															///
-	`install' 																	///
-	`test' 																		///	
-	pandoc("`pandoc'")															///
-	printer("`printer'")														///
-	`master'																	///
-	`statax'																	///
-	template(`template')														///
-	title("`title'")															///
-	author("`author'")															///
-	affiliation("`affiliation'")												///
-	address("`address'")														///
-	`date'  																	///
-	summary("`summary'")														///
-	version("`version'")														///
-	style("`style'")															///
-	linesize(`linesize')														///
-	`toc'																		///
-	`noisily'																	///
-	`debug'																		///
-	`asciitable'																///
-	`numbered'																	///
-	`mathjax'																	///
-	btheme(`btheme')															///
-	bcolor(`bcolor')															///
-	bfont(`bfont')																///
-	bfontsize(`bfontsize')   													///
-	bcodesize(`bcodesize')	 													///
-	bwidth(`bwidth')	 														///
-	bheight(`bheight')															
+		`mini'                                          ///
+		`replace' 																	    ///
+		markup(`markup') 															  ///
+		export(`export') 															  ///
+		`install' 																	    ///
+		`test' 																		      ///	
+		pandoc("`pandoc'")															///
+		printer("`printer'")														///
+		`master'																	      ///
+		`statax'																	      ///
+		template(`template')														///
+		title("`title'")															  ///
+		author("`author'")															///
+		affiliation("`affiliation'")										///
+		address("`address'")														///
+		`date'  																	      ///
+		summary("`summary'")														///
+		version("`version'")														///
+		style("`style'")														  	///
+		linesize(`linesize')														///
+		`toc'																		        ///
+		`noisily'																        ///
+		`debug'																		      ///
+		`asciitable'																    ///
+		`numbered'																	    ///
+		`mathjax'																	      ///
+		btheme(`btheme')															  ///
+		bcolor(`bcolor')															  ///
+		bfont(`bfont')																  ///
+		bfontsize(`bfontsize')   											  ///
+		bcodesize(`bcodesize')	 												///
+		bwidth(`bwidth')	 														  ///
+		bheight(`bheight')															
 	
 	capture qui log close rundoc
 	capture quietly erase "`input'.smcl"
