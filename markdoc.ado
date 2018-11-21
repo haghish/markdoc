@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 4.0.3
+Version: 4.0.4
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -774,6 +774,8 @@ program markdoc
     // CHANGED SYNTAX
     // =========================================================================    
     local mathjax mathjax
+		
+		if "`style'"  == "" local style "simple" 
                     
     if !missing("`texmaster'") {
         di "The {bf:texmaster} option was renamed to {bf:master}, although it " ///
@@ -855,6 +857,7 @@ program markdoc
     if "`markup'" == "HTML" local markup html
     if "`markup'" == "LATEX" local markup latex
     if "`markup'" == "Markdown" local markup markdown
+		if "`export'" == "markdown" local export md
     if "`export'" == "PDF" local export pdf
     if "`export'" == "HTML" local export html
     if "`export'" == "LATEX" | "`export'" == "latex" local export tex
@@ -875,9 +878,9 @@ program markdoc
 				err 1
 			}
 			
-			if "`export'" != "md" & "`export'" != "html" {
+			if "`export'" != "md" & "`export'" != "html" & "`export'" != "docx" {
 				di as err "the {bf:mini} option currently only supports " ///
-				          "{bf:html} and {bf:md} formats"
+				          "{bf:html}, {bf:docx}, and {bf:md} formats"
 				err 198
 			}
 		}
@@ -1025,8 +1028,11 @@ program markdoc
     
     // checkes the required software
     // -------------------------------------------------------------------------
-    markdoccheck , `install' `test' export(`export') style(`style')             ///
-    markup(`markup') pandoc("$pandoc") printer("`printer'")
+    if missing("`mini'") {
+			markdoccheck , `install' `test' export(`export') style(`style')           ///
+           markup(`markup') pandoc("$pandoc") printer("`printer'")
+		}
+		
         
     // -------------------------------------------------------------------------
     // TEST MARKDOC
@@ -2593,7 +2599,7 @@ program markdoc
                     file read `hitch' line
                 }
         
-                if "`export'" == "docx" | "`export'" == "odt" {
+                if missing("`mini'") & "`export'" == "docx" | "`export'" == "odt" {
                     file write `knot'                                           ///
                     "---" _n                                                    ///
                     `"title: "`title'""' _n                                     
@@ -3332,6 +3338,7 @@ program markdoc
                         `"`reference' "`md'" -o "`output'""'
                     }
                     
+										// ---------------------------------------------------------
 										// rendering the markdown with pandoc or mini mode
 										// ---------------------------------------------------------
 										if missing("`mini'") {
@@ -3348,6 +3355,10 @@ program markdoc
 											}
 											else if "`export'" == "html" {
 												quietly markdown "`md'", saving("`output'") replace
+												quietly copy "`output'" "`convert'", replace
+											}
+											else if "`export'" == "docx" {
+												quietly md2doc using "`md'", export(docx) name("`output'") replace
 												quietly copy "`output'" "`convert'", replace
 											}
 											
@@ -3531,15 +3542,19 @@ program markdoc
         }
     }
     
-    if "`smclfile'" != "" & "`test'" == "" & "`export'" == "sthlp" |            ///
-    "`smclfile'" != "" & "`test'" == "" & "`export'" == "smcl" {
-
-        sthlp `smclfile', markup("`markup'") export("`export'")                 ///
+		// =========================================================================
+		// Generate Stata Help Files 
+		// =========================================================================
+		if "`export'" == "sthlp" | "`export'" == "smcl" {
+			if "`smclfile'" != "" & "`test'" == "" {
+				sthlp `smclfile', markup("`markup'") export("`export'")                 ///
         template("`template'") `replace' `date' title("`title'")                ///
         author("`author'") affiliation("`affiliation'") address("`address'")    ///
-        summary("`summary'") `asciitable' version("`version'") `helplayout' `build'
-    }   
-    
+        summary("`summary'") `asciitable' version("`version'")                  ///
+				`helplayout' `build'
+			}
+		}
+
     
     // Drop the global macros
     // -------------------------------------------------------------------------
@@ -3549,19 +3564,9 @@ program markdoc
     
     // check for MarkDoc updates
     markdocversion
-    
-    
-    ****************************************************************************
-    *REOPEN THE LOG
-    ****************************************************************************
-    //quietly log query    
-    //if !missing("`status'")  {
-    //  qui log on  
-    //}
-        
+  
 end
 
 // create the help file
-// ====================
 *markdoc markdoc.ado, exp(sthlp) replace 
 
