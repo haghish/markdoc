@@ -37,7 +37,7 @@ MarkDoc requires a few other Stata packages. The [__`github package`__](https://
 github install haghish/markdoc
 ```
 
-<img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: From MarkDoc v. _4.1.0_, You can apply the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to run MarkDoc in *mini mode*, independent of third-party software that are mentioned below. Then, you could avoid the following installation entirely! [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
+<img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 > NEWS: You can apply the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to run **MarkDoc** in *mini mode*, independent of third-party software. Then, you could avoid the following installation entirely. [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
