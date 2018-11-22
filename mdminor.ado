@@ -79,6 +79,11 @@ program define mdminor
 		err 198
 	}
 	
+	local anything : subinstr local anything "``" "\\||", all
+	local anything : subinstr local anything "`" "|\", all
+	local anything : subinstr local anything "|\" "`" //fix the first BLOODY occurance 
+
+	
 	// specifying the document format
 	if missing("`export'") local export docx
 	if "`export'" == "docx" | "`export'" == "Docx" | "`export'" == "doc" {
@@ -100,21 +105,15 @@ program define mdminor
 		`command' paragraph
 	}
 	
-	
-    *syntax anything
 	local bold    
 	local italic
-	local mono
+	local font
+	local accent
 	local linebreak 
-	
-	
-	//First break it based on hyperlink and then take the parts for styling them
-	//accordingly
-	
-	
 	
 	tokenize `anything'
 	
+
 	// If the first work looks like a numbered or unordered list, add a paragraph!
 	local first = substr(`trim'(`"`macval(1)'"'),1,1)
 	local ending = substr(`"`macval(anything)'"',-4,2)
@@ -245,10 +244,52 @@ program define mdminor
 			local enditalic 1
 		}
 		
+		// monospace fonts
+		// -----------------------------------------------------
+		else if substr(`"`macval(1)'"',1,2) == "|\" {
+			local 1 : subinstr local 1 "|\" "" 
+			local font "courier"
+		}
+		else if substr(`"`macval(1)'"',2,3) == "|\" {
+			local 1 : subinstr local 1 "|\" "" 
+			local font "courier"
+		}
+		if substr(`"`macval(1)'"',-2,.) == "|\" {
+			local 1 : subinstr local 1 "|\" "" 
+			local endmono 1
+		}
+		else if substr(`"`macval(1)'"',-3,2) == "|\" {
+			local 1 : subinstr local 1 "|\" "" 
+			local endmono 1
+		}
+		
+		// grave accent
+		// -----------------------------------------------------
+		else if substr(`"`macval(1)'"',1,4) == "\\||" {
+			local 1 : subinstr local 1 "\\||" "" 
+			local addaccent 1
+		}
+		else if substr(`"`macval(1)'"',2,5) == "\\||" {
+			local 1 : subinstr local 1 "\\||" "" 
+			local addaccent 1
+		}
+		if substr(`"`macval(1)'"',-4,.) == "\\||" {
+			local 1 : subinstr local 1 "\\||" "" 
+			local endaccent 1
+		}
+		else if substr(`"`macval(1)'"',-5,4) == "\\||" {
+			local 1 : subinstr local 1 "\\||" "" 
+			local endaccent 1
+		}
 		
 		*di as err `"`macval(1)' enditalic:`enditalic'   endbold:`endbold'"' _n
 		
-		`command' text (`"`macval(1)' "'), `bold' `italic' font(`mono')
+		if !missing("`addaccent'") {
+			`command' text ("'"), font(`font')
+			local addaccent ""
+		}
+		
+		`command' text (`"`macval(1)' "'), `bold' `italic' font(`font')
 		
 		if !missing("`enditalic'") {
 			local italic ""
@@ -259,8 +300,12 @@ program define mdminor
 			local endbold ""
 		}
 		if !missing("`endmono'") {
-			local mono ""
+			local font ""
 			local endmono ""
+		}
+		if !missing("`endaccent'") {
+			`command' text ("'"), font(`font')
+			local endaccent ""
 		}
 		
 		macro shift
@@ -279,6 +324,5 @@ program define mdminor
 end
 
 // markdoc "mdminor.ado" , export(sthlp) replace
-
 
 

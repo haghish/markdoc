@@ -1,5 +1,5 @@
 /***
-_v. 1.0.1_ 
+_v. 1.0.2_ 
 
 Title
 ====== 
@@ -73,7 +73,6 @@ The command is hosted on [GitHub](http://github.com/haghish/markdoc)
 This help file was dynamically produced by 
 [MarkDoc Literate Programming package](http://www.haghish.com/markdoc/) 
 ***/
-
 
 
 
@@ -221,6 +220,14 @@ program define mdconvert
 		local preline `"`macval(line)'"'
 		file read `hitch' line
 		
+		//fix the problem of graveaccent in the end of the line
+		capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+		else local graveaccent ""
+		if "`graveaccent'" == "1" {
+				local line `"`macval(line)' "' 
+				local graveaccent ""
+		}
+
 		if "`PARAGRAPH'" == "CODE" & `trim'(`"`macval(preline)'"') == "" & ///
 			substr(`"`macval(line)'"',1,4) == "    " {
 			*`command' paragraph, indent(left, 0) shading(whitesmoke)

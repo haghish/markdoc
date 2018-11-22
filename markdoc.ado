@@ -1100,7 +1100,7 @@ program markdoc
     // ==============
     // Create a local for processing the PDF. Then change the export to HTML
     // and later, change it to PDF using the "pdfhtml" local
-    if "`export'" == "pdf" & "`markup'" != "latex" {
+    if missing("`mini'") & "`export'" == "pdf" & "`markup'" != "latex" {
         local pdfhtml "pdfhtml" 
         local export "html"
     }
@@ -1342,6 +1342,7 @@ program markdoc
         if !missing("`rundoc'") {
             
             if !missing("`pdfhtml'") local export "pdf"
+						if !missing("`pdfmd'")   local export "pdf"
             
             rundoc "`name'",                                                    ///
             `replace'                                                           ///
@@ -3576,4 +3577,3 @@ end
 
 // create the help file
 *markdoc markdoc.ado, exp(sthlp) replace 
-
