@@ -714,7 +714,7 @@ program markdoc
     syntax [anything(name=smclfile id="The smcl file name is")]                 /// 
     [,               ///
     replace          /// replaces the exported file
-		mini             /// runs markdoc independent of Pandoc and wkhtmltopdf
+        mini             /// runs markdoc independent of Pandoc and wkhtmltopdf
     MARKup(name)     /// specifies the markup language used in the document
     Export(name)     /// specifies the exported format
     INSTALl          /// Installs the required software automatically
@@ -774,8 +774,8 @@ program markdoc
     // CHANGED SYNTAX
     // =========================================================================    
     local mathjax mathjax
-		
-		if "`style'"  == "" & local style "simple" 
+        
+        if "`style'"  == "" local style "simple" 
                     
     if !missing("`texmaster'") {
         di "The {bf:texmaster} option was renamed to {bf:master}, although it " ///
@@ -857,7 +857,7 @@ program markdoc
     if "`markup'" == "HTML" local markup html
     if "`markup'" == "LATEX" local markup latex
     if "`markup'" == "Markdown" local markup markdown
-		if "`export'" == "markdown" local export md
+        if "`export'" == "markdown" local export md
     if "`export'" == "PDF" local export pdf
     if "`export'" == "HTML" local export html
     if "`export'" == "LATEX" | "`export'" == "latex" local export tex
@@ -865,28 +865,28 @@ program markdoc
     if "`export'" == "STHLP" local export sthlp
     if "`export'" == "latex" local export tex
     
-		// =========================================================================
-		// MINI MODE
-		//
-		// mini mode is used to avoid depending on third-party software. It currently 
-		// only allows generating markdown documents and html documents in Stata 15. 
-		// later on supports for docx and pdf will be provided
-		// -------------------------------------------------------------------------
-		if !missing("`mini'") {
-			if `c(stata_version)' < 15 {
-				di as err "the {bf:mini} option requires Stata 15 or above"
-				err 1
-			}
-			
-			if "`export'" != "md" & "`export'" != "html"          ///
-			   & "`export'" != "docx" & "`export'" != "pdf"       ///
-				 & "`export'" != "sthlp" {
-				di as err "the {bf:mini} option currently only supports " ///
-				          "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, and {bf:sthlp} formats"
-				err 198
-			}
-		}
-		
+        // =========================================================================
+        // MINI MODE
+        //
+        // mini mode is used to avoid depending on third-party software. It currently 
+        // only allows generating markdown documents and html documents in Stata 15. 
+        // later on supports for docx and pdf will be provided
+        // -------------------------------------------------------------------------
+        if !missing("`mini'") {
+            if `c(stata_version)' < 15 {
+                di as err "the {bf:mini} option requires Stata 15 or above"
+                err 1
+            }
+            
+            if "`export'" != "md" & "`export'" != "html"          ///
+               & "`export'" != "docx" & "`export'" != "pdf"       ///
+                 & "`export'" != "sthlp" {
+                di as err "the {bf:mini} option currently only supports " ///
+                          "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, and {bf:sthlp} formats"
+                err 198
+            }
+        }
+        
     // =========================================================================
     // Markup Language: 
     // check the markup language and the exported document format. If the 
@@ -1031,10 +1031,10 @@ program markdoc
     // checkes the required software
     // -------------------------------------------------------------------------
     if missing("`mini'") {
-			markdoccheck , `install' `test' export(`export') style(`style')           ///
+            markdoccheck , `install' `test' export(`export') style(`style')           ///
            markup(`markup') pandoc("$pandoc") printer("`printer'")
-		}
-		
+        }
+        
         
     // -------------------------------------------------------------------------
     // TEST MARKDOC
@@ -1345,7 +1345,7 @@ program markdoc
             
             rundoc "`name'",                                                    ///
             `replace'                                                           ///
-						`mini'                                                              ///
+                        `mini'                                                              ///
             markup(`markup')                                                    ///
             export(`export')                                                    ///
             `install'                                                           ///
@@ -1382,15 +1382,15 @@ program markdoc
         }
     
 
-		
-		
-		
-		
+        
+        
+        
+        
     // -------------------------------------------------------------------------
     // RUN THE ENGINE FOR LOG FILES
     // =========================================================================
     if missing("`scriptfile'") {
-	
+    
     
         **************************************************** 
         *
@@ -1406,45 +1406,45 @@ program markdoc
         * Part 5- Exporting dynamic document
         ****************************************************   
         
-		****************************************************
+        ****************************************************
     * PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
     *         - the grave accents are common markdown
-		*           syntax. If the accents appear as the last
+        *           syntax. If the accents appear as the last
     *           character of the line, they crash Stata
     *           with an error of "too few quotes". I have 
-		*           found a workaround, but is not 100% secure
-		*           If you have better suggestions, please 
-		*           go ahead and submit your code on GitHub
+        *           found a workaround, but is not 100% secure
+        *           If you have better suggestions, please 
+        *           go ahead and submit your code on GitHub
     ****************************************************
-		tempfile tmp00                     //DEFINE tmp00 FOR THE FIRST TIME
+        tempfile tmp00                     //DEFINE tmp00 FOR THE FIRST TIME
         tempname hitch knot 
         qui file open `hitch' using `"`input'"', read
         qui file open `knot' using `"`tmp00'"', write replace
         file read `hitch' line
-				
-		while r(eof) == 0 { 
-			capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
-			else local graveaccent ""
-			
-			if "`graveaccent'" == "1" {
-				local line "`macval(line)' " 
-				local graveaccent ""
-			}
-			
-			local line : subinstr local line "``" "\`", all
-			
-			file write `knot' `"`macval(line)'"' _n
-			file read `hitch' line
-		}
-				
-		file write `knot' `"`macval(line)'"' _n
-		file close `hitch'
-		file close `knot'
+                
+        while r(eof) == 0 { 
+            capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+            else local graveaccent ""
+            
+            if "`graveaccent'" == "1" {
+                local line "`macval(line)' " 
+                local graveaccent ""
+            }
+            
+            local line : subinstr local line "``" "\`", all
+            
+            file write `knot' `"`macval(line)'"' _n
+            file read `hitch' line
+        }
+                
+        file write `knot' `"`macval(line)'"' _n
+        file close `hitch'
+        file close `knot'
         if !missing("`debug'") {
             capture erase 0process0.smcl
             copy "`tmp00'" 0process0.smcl , replace         //For debugging
         }
-				
+                
         
         ****************************************************
         * PART 1. CORRECTING THE SMCL FILE 
@@ -1454,7 +1454,7 @@ program markdoc
         ****************************************************
         tempfile tmp //DEFINE tmp FOR THE FIRST TIME
         tempname hitch knot 
-				*qui file open `hitch' using `"`input'"', read
+                *qui file open `hitch' using `"`input'"', read
         qui file open `hitch' using `"`tmp00'"', read
         qui file open `knot' using `"`tmp'"', write replace
         *file write `knot'  _newline 
@@ -2704,12 +2704,12 @@ program markdoc
                 tempname read 
                 qui file open `read' using "`importedFile'", read 
                 while r(eof) == 0 {
-								    capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
-					          else local graveaccent ""
-										if "`graveaccent'" == "1" {
-											local line "`macval(line)' " 
-											local graveaccent ""
-										}
+                                    capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+                              else local graveaccent ""
+                                        if "`graveaccent'" == "1" {
+                                            local line "`macval(line)' " 
+                                            local graveaccent ""
+                                        }
                     file write `knot' `"`macval(line)'"' _n
                     file read `read' line
                 }
@@ -2776,14 +2776,14 @@ program markdoc
             != "dzslide" {
                 local clue
                 capture local clue : di trim(`"`macval(line)'"')  
-								local graveaccent ""
-								capture if substr("`macval(line)'",-2,.) == "` " local graveaccent 1
-								if missing("`graveaccent'") {
-								*if !missing(`"`macval(clue)'"') {
-								  if `"`macval(clue)'"' == "***" & substr(`"`macval(line)'"',1,4) != "    " {
+                                local graveaccent ""
+                                capture if substr("`macval(line)'",-2,.) == "` " local graveaccent 1
+                                if missing("`graveaccent'") {
+                                *if !missing(`"`macval(clue)'"') {
+                                  if `"`macval(clue)'"' == "***" & substr(`"`macval(line)'"',1,4) != "    " {
                     local line : subinstr local line "***" ""
-									}
-								}
+                                    }
+                                }
             }
                                     
             //TABLES FOR MARKDOWN
@@ -3333,42 +3333,42 @@ program markdoc
                     
                     if "`export'" == "dzslide" local mathjax -s --mathjax -i -t dzslides
                     if "`export'" == "slidy" local mathjax -s --mathjax -i -t slidy
-										
+                                        
                     if missing("`mini'") & "`noisily'" == "noisily" {
                         di _n(2) "{title:Executing Pandoc Command}" _n
                         di `""$pandoc" `mathjax' `toc' "'               ///
                         `"`reference' "`md'" -o "`output'""'
                     }
                     
-										// ---------------------------------------------------------
-										// rendering the markdown with pandoc or mini mode
-										// ---------------------------------------------------------
-										if missing("`mini'") {
-											shell "$pandoc" `mathjax' `toc'         ///
+                                        // ---------------------------------------------------------
+                                        // rendering the markdown with pandoc or mini mode
+                                        // ---------------------------------------------------------
+                                        if missing("`mini'") {
+                                            shell "$pandoc" `mathjax' `toc'         ///
                     `reference' "`md'" -o "`output'"            
                     quietly copy "`output'" "`convert'", replace
-										
-										} 
-										else {
-											if "`noisily'" == "noisily" di _n(2) "{title:Applying mini mode}" _n
-											if "`export'" == "md" {
-												quietly copy "`md'" "`output'", replace
-												quietly copy "`md'" "`convert'", replace
-											}
-											else if "`export'" == "html" {
-												quietly markdown "`md'", saving("`output'") replace
-												quietly copy "`output'" "`convert'", replace
-											}
-											else if "`export'" == "docx" {
-												quietly mdconvert using "`md'", export(docx) name("`output'") replace
-												quietly copy "`output'" "`convert'", replace
-											}
-											else if "`export'" == "pdf" {
-												quietly mdconvert using "`md'", export(pdf) name("`output'") replace
-												quietly copy "`output'" "`convert'", replace
-											}
-											
-										}
+                                        
+                                        } 
+                                        else {
+                                            if "`noisily'" == "noisily" di _n(2) "{title:Applying mini mode}" _n
+                                            if "`export'" == "md" {
+                                                quietly copy "`md'" "`output'", replace
+                                                quietly copy "`md'" "`convert'", replace
+                                            }
+                                            else if "`export'" == "html" {
+                                                quietly markdown "`md'", saving("`output'") replace
+                                                quietly copy "`output'" "`convert'", replace
+                                            }
+                                            else if "`export'" == "docx" {
+                                                quietly mdconvert using "`md'", export(docx) name("`output'") replace
+                                                quietly copy "`output'" "`convert'", replace
+                                            }
+                                            else if "`export'" == "pdf" {
+                                                quietly mdconvert using "`md'", export(pdf) name("`output'") replace
+                                                quietly copy "`output'" "`convert'", replace
+                                            }
+                                            
+                                        }
                     
                     
                     if !missing("`debug'") {
@@ -3548,19 +3548,19 @@ program markdoc
         }
     }
     
-		// =========================================================================
-		// Generate Stata Help Files 
-		// =========================================================================
-		if "`export'" == "sthlp" | "`export'" == "smcl" {
-			if "`smclfile'" != "" & "`test'" == "" {
+        // =========================================================================
+        // Generate Stata Help Files 
+        // =========================================================================
+        if "`export'" == "sthlp" | "`export'" == "smcl" {
+            if "`smclfile'" != "" & "`test'" == "" {
 
-				sthlp `smclfile', markup("`markup'") export("`export'")                 ///
+                sthlp `smclfile', markup("`markup'") export("`export'")                 ///
         template("`template'") `replace' `date' title("`title'")                ///
         author("`author'") affiliation("`affiliation'") address("`address'")    ///
         summary("`summary'") `asciitable' version("`version'")                  ///
-				`helplayout' `build'
-			}
-		}
+                `helplayout' `build'
+            }
+        }
 
     
     // Drop the global macros
