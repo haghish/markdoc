@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 4.0.5
+Version: 4.1.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -878,10 +878,11 @@ program markdoc
 				err 1
 			}
 			
-			if "`export'" != "md" & "`export'" != "html" ///
-			   & "`export'" != "docx" & "`export'" != "sthlp" {
+			if "`export'" != "md" & "`export'" != "html"          ///
+			   & "`export'" != "docx" & "`export'" != "pdf"       ///
+				 & "`export'" != "sthlp" {
 				di as err "the {bf:mini} option currently only supports " ///
-				          "{bf:md}, {bf:html}, {bf:docx}, and {bf:sthlp} formats"
+				          "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, and {bf:sthlp} formats"
 				err 198
 			}
 		}
@@ -3360,6 +3361,10 @@ program markdoc
 											}
 											else if "`export'" == "docx" {
 												quietly mdconvert using "`md'", export(docx) name("`output'") replace
+												quietly copy "`output'" "`convert'", replace
+											}
+											else if "`export'" == "pdf" {
+												quietly mdconvert using "`md'", export(pdf) name("`output'") replace
 												quietly copy "`output'" "`convert'", replace
 											}
 											

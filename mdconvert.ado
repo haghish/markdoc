@@ -1,5 +1,5 @@
 /***
-_v. 1.0.0_ 
+_v. 1.0.1_ 
 
 Title
 ====== 
@@ -56,7 +56,7 @@ Example(s)
     convert Markdown file to docx
         . mdconvert using path/to/markdown.md, name(mydoc) export(docx) replace
 
-    convert Markdown file to pdf (NOT DEVELOPED YET)
+    convert Markdown file to pdf
         . mdconvert using path/to/markdown.md, name(mydoc) export(pdf) replace
 
 Author
@@ -150,12 +150,27 @@ program define mdconvert
 	`command' begin
 	
 	if !missing("`title'") {
-		`command' paragraph, style("Title")
-		`command' text ("`title'"),  linebreak
+		if "`export'" == "docx" {
+			`command' paragraph, style("Title")
+		}
+		else {
+			`command' paragraph, font("", 26, navy) 
+		}
+		`command' text ("`title'")
 	}
+	
+	
 
 	if !missing("`author'") {
-		`command' paragraph, style("Subtitle")
+		if "`export'" == "docx" {
+			`command' paragraph, style("Subtitle")
+		}
+		else {
+			`command' paragraph, font("", 12, lightskyblue) 
+		}
+			
+		
+		if !missing("`title'") `command' text (""),  linebreak
 		`command' text ("`author', "), font("", 8, gray) linebreak
 	}
 	
@@ -225,7 +240,13 @@ program define mdconvert
 		// Headings type 1
 		// -------------------------------------------------------------
 		if missing("`JUMP'") & substr(`"`macval(line)'"',1,3) == "===" {
-			`command' paragraph, style("Heading1")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading1")
+			}
+			else {
+				`command' paragraph, font("", 14, royalblue) 
+			}
+			
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			file read `hitch' line 
 			if `trim'(`"`macval(line)'"') == "" {
@@ -237,7 +258,12 @@ program define mdconvert
 		
 		//??? CAN BE PROBLEMATIC WITH TABLES?
 		if missing("`JUMP'") & substr(`"`macval(line)'"',1,3) == "---" {
-			`command' paragraph, style("Heading2")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading2")
+			}
+			else {
+				`command' paragraph, font("", 13, dodgerblue) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			file read `hitch' line
 			if `trim'(`"`macval(line)'"') == "" {
@@ -252,43 +278,73 @@ program define mdconvert
 		// Headings type 2
 		// -------------------------------------------------------------
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,7) == "###### " {
-			local preline : subinstr local preline "##### " ""
-			`command' paragraph, style("Heading6")
+			local preline : subinstr local preline "###### " ""
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading6")
+			}
+			else {
+				`command' paragraph, font("", 11, black) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			local PARAGRAPH "HEADING6"
 			local JUMP 1
 		}
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,6) == "##### " {
 			local preline : subinstr local preline "##### " ""
-			`command' paragraph, style("Heading5")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading5")
+			}
+			else {
+				`command' paragraph, font("", 11, lightsteelblue) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			local PARAGRAPH "HEADING5"
 			local JUMP 1
 		}
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,5) == "#### " {
 			local preline : subinstr local preline "#### " ""
-			`command' paragraph, style("Heading4")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading4")
+			}
+			else {
+				`command' paragraph, font("", 11, skyblue) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			local PARAGRAPH "HEADING4"
 			local JUMP 1
 		}
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,4) == "### " {
 			local preline : subinstr local preline "### " ""
-			`command' paragraph, style("Heading3")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading3")
+			}
+			else {
+				`command' paragraph, font("", 11, lightskyblue) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			local PARAGRAPH "HEADING3"
 			local JUMP 1
 		}
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,3) == "## " {
 			local preline : subinstr local preline "## " ""
-			`command' paragraph, style("Heading2")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading2")
+			}
+			else {
+				`command' paragraph, font("", 13, dodgerblue) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			local PARAGRAPH "HEADING2"
 			local JUMP 1
 		}
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,2) == "# " {
 			local preline : subinstr local preline "# " ""
-			`command' paragraph, style("Heading1")
+			if "`export'" == "docx" {
+				`command' paragraph, style("Heading1")
+			}
+			else {
+				`command' paragraph, font("", 14, royalblue) 
+			}
 			mdminor `"`macval(preline)'"', continue export(`export') 
 			local PARAGRAPH "HEADING1"
 			local JUMP 1
@@ -334,7 +390,7 @@ program define mdconvert
 			local columns = length(`trim'("`columns'")) + 1
 			
 			// initiate a table with 2 rows
-			putdocx table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white)  //   width(4)
+			`command' table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white)  //   width(4)
 			
 			
 			// add the first row
@@ -343,7 +399,7 @@ program define mdconvert
 			while `"`macval(1)'"' != "" {
 				if `"`macval(1)'"' != "|" {
 					local col = `col'+1
-					putdocx table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black, .5) border(bottom, "", black, 1)
+					`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black, .5) border(bottom, "", black, 1)
 				}
 				macro shift
 			}
@@ -360,15 +416,15 @@ program define mdconvert
 					file read `hitch' line
 					if `trim'(`"`macval(line)'"') == "" local endtable 1
 					
-					putdocx table table`tablenum'(`row',.), addrows(1)
+					`command' table table`tablenum'(`row',.), addrows(1)
 					local row = `row'+1
 					tokenize `"`macval(preline)'"', parse("|")
 					local col = 0
 					while `"`macval(1)'"' != "" {
 						if `"`macval(1)'"' != "|" {
 							local col = `col'+1
-							if missing("`endtable'") putdocx table table`tablenum'(`row',`col') = (`"`macval(1)'"') 
-							else putdocx table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black, 1)
+							if missing("`endtable'") `command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') 
+							else `command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black, 1)
 						}
 						macro shift
 					}
@@ -376,14 +432,14 @@ program define mdconvert
 				}
 			}
 			else {
-				putdocx table table`tablenum'(`row',.), addrows(1)
+				`command' table table`tablenum'(`row',.), addrows(1)
 					local row = `row'+1
 					tokenize `"`macval(preline)'"', parse("|")
 					local col = 0
 					while `"`macval(1)'"' != "" {
 						if `"`macval(1)'"' != "|" {
 							local col = `col'+1
-							putdocx table table`tablenum'(`row',`col') = (`"`macval(1)'"') //, border(insideV, , white)
+							`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') //, border(insideV, , white)
 						}
 						macro shift
 					}

@@ -277,7 +277,7 @@ BEGIN
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
+		TEXT tx_affiliation 20 +20 55 ., label(Affiliation)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
@@ -411,7 +411,7 @@ BEGIN
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 50 ., label(Date/Aff)
+		TEXT tx_affiliation 20 +20 55 ., label(Date/Aff)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
@@ -520,7 +520,7 @@ BEGIN
 		EDIT author 80 @ 340 18  
 	 
 		// Affiliation
-		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
+		TEXT tx_affiliation 20 +20 55 ., label(Affiliation)
 		EDIT affiliation 80 @ 340 18   
 	 
 		// Address
