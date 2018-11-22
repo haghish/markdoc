@@ -39,15 +39,14 @@ github install haghish/markdoc
 
 <img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
-> NEWS: You can apply the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to run **MarkDoc** in *mini mode*, independent of third-party software. Then, you could avoid the following installation entirely. [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
-MarkDoc also requires 3 third-party software, which are:
+MarkDoc - if not executed in [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode - requires 3 third-party software, which are:
 
 - [__Pandoc__](http://pandoc.org/installing.html)
 - [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
 - [__pdfLaTeX__](https://www.latex-project.org/get/)
 
-The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. The __wkhtmltopdf__ is only required for generating PDF documents from Markdown. MarkDoc provides optional automatic installation of __pandoc__ and __wkhtmltopdf__ if the `install` argument is specified. [You can read more about the installation in the manual...](https://github.com/haghish/markdoc/wiki/Installation)
+The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. The __wkhtmltopdf__ is only required for generating stylish PDF documents (you can create PDF documents in the [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode as well). MarkDoc provides optional automatic installation of __pandoc__ and __wkhtmltopdf__ if the `install` argument is specified. [You can read more about the installation in the manual...](https://github.com/haghish/markdoc/wiki/Installation)
 
 
 Dialog box
@@ -65,6 +64,17 @@ To use the dialog box, type:
 </center>
 
 [The dialog box is documented in details in the manual](https://github.com/haghish/MarkDoc/wiki/GUI). Stata users that are new to MarkDoc are encouraged to have a look at the dialog box to get an idea of what they can do with MarkDoc. 
+
+The dialog box mentioned above is for the fully installed MarkDoc, that generates dynamic documents, presentation slides, and package vignettes in various document formats, which require installation of Pandoc and wkhtmltopdf. However, as said earlier, MarkDoc also has a light weight [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode that allows generating dynamic documents without requiring third-party software. This mode also has its own GUI that makes learning MarkDoc much easier. To run the GUI, type:
+
+    db mini
+
+<center>
+<a href="https://github.com/haghish/markdoc/raw/master/Resources/images/mini.png"><img src="https://github.com/haghish/markdoc/raw/master/Resources/images/mini.png"  width="400" hspace="10" vspace="6"></a>
+</center>
+
+As you see, the [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode supports producing most of the formats, yet it is all written within Stata! 
+
 
 Built-in syntax highlighter
 ---------------------------
