@@ -638,6 +638,14 @@ program define sthlp
 				local line ""
 			}
 			
+			//fix the problem of graveaccent in the end of the line
+			capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+			else local graveaccent ""
+			if "`graveaccent'" == "1" {
+					local line `"`macval(line)' "' 
+					local graveaccent ""
+			}
+			
 			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
 				
 *				local line : subinstr local line "`" "{c 96}", all
@@ -665,6 +673,13 @@ program define sthlp
 					local preline `"`r(md)'"'
 				}	
 				file read `hitch' line
+				//fix the problem of graveaccent in the end of the line
+				capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+				else local graveaccent ""
+				if "`graveaccent'" == "1" {
+						local line `"`macval(line)' "' 
+						local graveaccent ""
+				}
 				
 				//remove white space in old-fashion way!
 				*cap local m : display "`line'"
@@ -811,6 +826,13 @@ program define sthlp
 				while missing(`"`macval(line)'"') & r(eof) == 0 {
 					file write `knot' `"`macval(line)'"' _n
 					file read `hitch' line
+					//fix the problem of graveaccent in the end of the line
+					capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+					else local graveaccent ""
+					if "`graveaccent'" == "1" {
+							local line `"`macval(line)' "' 
+							local graveaccent ""
+					}
 				}
 				
 				//procede when a line is found

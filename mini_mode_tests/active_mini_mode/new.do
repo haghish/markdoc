@@ -9,7 +9,9 @@ matrix Mat = (`r(min)', `r(max)')
 //ON
 
 /***
-###<!c!> text
+### <!c!> `text`
+
+
 
 The 24^th^ observation in the data is `<!make[24]!>` with a `price` of 
 <!price[24]!>. The values of the `foreign` variable range between <!`min'!> to 

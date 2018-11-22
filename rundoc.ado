@@ -1,5 +1,6 @@
 // CREATES A LOG AND CALLS MARKDOC! 
- 
+
+*capture prog drop rundoc
 program define rundoc
 
 	syntax [anything(name=dofile id="The do file name is")]  				              /// 
@@ -110,10 +111,20 @@ program define rundoc
 	qui file open `knot' using "`tmp'", write replace
 	qui file open `hitch' using "`input'.do", read 
 	qui file read `hitch' line
-
+	
+	if !missing("`debug'") di "{title:Rundoc 1}"
+	
 	while r(eof) == 0 {
 		
 		while `trim'(`"`macval(line)'"') != "/***" & r(eof) == 0 {
+			//fix the problem of graveaccent in the end of the line
+			capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+			else local graveaccent ""
+			if "`graveaccent'" == "1" {
+					local line `"`macval(line)' "' 
+					local graveaccent ""
+			}
+			
 			file write `knot' `"`macval(line)'"' _n
 			file read `hitch' line
 		}
@@ -137,10 +148,18 @@ program define rundoc
 			local found    //RESET
 			
 			file read `hitch' line
+			//fix the problem of graveaccent in the end of the line
+			capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+			else local graveaccent ""
+			if "`graveaccent'" == "1" {
+					local line `"`macval(line)' "' 
+					local graveaccent ""
+			}
+				
 
 			while `"`macval(line)'"' != "***/" & r(eof) == 0 {
 				if !missing("`found'") file write `disp' " _n ///" _n 
-				
+
 				local found //RESET
 				
 				while strpos(`"`macval(line)'"', "!>") > 0  {
@@ -204,6 +223,13 @@ program define rundoc
 				}	
 						
 				file read `hitch' line
+				//fix the problem of graveaccent in the end of the line
+				capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
+				else local graveaccent ""
+				if "`graveaccent'" == "1" {
+						local line `"`macval(line)' "' 
+						local graveaccent ""
+				}
 			}
 			
 			// Add an empty line in the `disp' file
@@ -295,3 +321,4 @@ program define rundoc
 	capture quietly erase "`input'.smcl"
 	
 end
+

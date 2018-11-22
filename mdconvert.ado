@@ -388,8 +388,6 @@ program define mdconvert
 			
 			local tablenum = `tablenum'+1
 			
-			di as err length(`"`macval(line)'"')
-			
 			//there should be a nicer way to count occerances of "|" in Stata! suggestions?!
 			local columns = subinstr(`"`macval(line)'"', "-", "", .)
 			local columns = subinstr(`"`macval(columns)'"', ":", "", .)
@@ -397,8 +395,13 @@ program define mdconvert
 			local columns = length(`trim'("`columns'")) + 1
 			
 			// initiate a table with 2 rows
-			`command' table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white)  //   width(4)
 			
+			if "`export'" == "docx" {
+				`command' table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white)  //   width(4)
+			}
+			else {
+				`command' table table`tablenum' = (1, `columns') , border(all, "", white)  //   width(4)
+			}
 			
 			// add the first row
 			tokenize `"`macval(preline)'"', parse("|")
@@ -406,7 +409,13 @@ program define mdconvert
 			while `"`macval(1)'"' != "" {
 				if `"`macval(1)'"' != "|" {
 					local col = `col'+1
-					`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black, .5) border(bottom, "", black, 1)
+					
+					if "`export'" == "docx" {
+						`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black, .5) border(bottom, "", black, 1)
+					}
+					else {
+						`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black) border(bottom, "", black)
+					}
 				}
 				macro shift
 			}
@@ -431,7 +440,14 @@ program define mdconvert
 						if `"`macval(1)'"' != "|" {
 							local col = `col'+1
 							if missing("`endtable'") `command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') 
-							else `command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black, 1)
+							else {
+								if "`export'" == "docx" {
+									`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black, 1)
+								}
+								else {
+									`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black)
+								}
+							}	
 						}
 						macro shift
 					}
@@ -577,4 +593,3 @@ program define mdconvert
 	`command' save `name', `replace'
 
 end
-
