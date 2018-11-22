@@ -696,5 +696,5 @@ Package Updates on  {browse "http://www.twitter.com/Haghish":Twitter}    {break}
     {hline}
 
 {p 4 4 2}
-This help file was dynamically produced by {help markdoc:MarkDoc Literate Programming package}
+This help file was dynamically produced by {browse "https://github.com/haghish/markdoc":MarkDoc Literate Programming package}
 
