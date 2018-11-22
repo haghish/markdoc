@@ -202,7 +202,7 @@ BEGIN
 		if main.r4 {
 			put "export(pdf) "
 		}
-		if main.r4 {
+		if main.r5 {
 			put "export(sthlp) "
 		}
 

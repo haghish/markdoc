@@ -1,5 +1,5 @@
 /***
-Just display "Hellow World" for now!
+Just display "Hello World" for now!
 ***/
 
 di "Hello World"
