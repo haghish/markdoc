@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 4.0.4
+Version: 4.0.5
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -775,7 +775,7 @@ program markdoc
     // =========================================================================    
     local mathjax mathjax
 		
-		if "`style'"  == "" local style "simple" 
+		if "`style'"  == "" & local style "simple" 
                     
     if !missing("`texmaster'") {
         di "The {bf:texmaster} option was renamed to {bf:master}, although it " ///
@@ -878,9 +878,10 @@ program markdoc
 				err 1
 			}
 			
-			if "`export'" != "md" & "`export'" != "html" & "`export'" != "docx" {
+			if "`export'" != "md" & "`export'" != "html" ///
+			   & "`export'" != "docx" & "`export'" != "sthlp" {
 				di as err "the {bf:mini} option currently only supports " ///
-				          "{bf:html}, {bf:docx}, and {bf:md} formats"
+				          "{bf:md}, {bf:html}, {bf:docx}, and {bf:sthlp} formats"
 				err 198
 			}
 		}
@@ -3358,7 +3359,7 @@ program markdoc
 												quietly copy "`output'" "`convert'", replace
 											}
 											else if "`export'" == "docx" {
-												quietly md2doc using "`md'", export(docx) name("`output'") replace
+												quietly mdconvert using "`md'", export(docx) name("`output'") replace
 												quietly copy "`output'" "`convert'", replace
 											}
 											
@@ -3547,6 +3548,7 @@ program markdoc
 		// =========================================================================
 		if "`export'" == "sthlp" | "`export'" == "smcl" {
 			if "`smclfile'" != "" & "`test'" == "" {
+
 				sthlp `smclfile', markup("`markup'") export("`export'")                 ///
         template("`template'") `replace' `date' title("`title'")                ///
         author("`author'") affiliation("`affiliation'") address("`address'")    ///

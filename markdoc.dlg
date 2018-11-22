@@ -266,7 +266,7 @@ BEGIN
 		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
 		// mini
-		CHECKBOX mini  @    +17   @   .  , option(mini) label("Avoid using Pandoc or wkhtmltopdf (mini mdoe)") tooltip("the mini mode runs markdoc without calling third-party software such as Pandoc or wkhtmltopdf. this mode is limited and does not fully support Markdown syntax, but it can produce a document on a machine that does not have thse software installed.") //onclickon(main.mini.disable) //onclickoff(main.mini.enable)
+		CHECKBOX mini  @    +17   @   .  , option(mini) label("Avoid using Pandoc or wkhtmltopdf (mini mode)") tooltip("the mini mode runs markdoc without calling third-party software such as Pandoc or wkhtmltopdf. this mode is limited and does not fully support Markdown syntax, but it can produce a document on a machine that does not have thse software installed.") //onclickon(main.mini.disable) //onclickoff(main.mini.enable)
 
 		// title of the document
 		TEXT tx_title @ +30 50 ., label(Title)

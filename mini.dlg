@@ -1,0 +1,238 @@
+VERSION 15
+POSITION . . 347 380
+
+
+// ---------------------------------------------------------
+// LISTS
+// =========================================================
+
+
+// Specify the Document Theme
+LIST style_list
+BEGIN
+	simple
+	stata
+	formal
+END
+
+
+
+// -----------------------------------------------------------------------------
+// MAIN PAGE BUTTONS
+// =============================================================================
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+HELP hlp1,   view("help markdoc")  //"browse https://github.com/haghish/MarkDoc/wiki"
+RESET res1
+COPY copy1
+
+
+
+
+// -----------------------------------------------------------------------------
+// DYNAMIC DOCUMENT TAB
+// =============================================================================
+
+DIALOG main, label("MarkDoc Mini") tabtitle("Dynamic Document")
+BEGIN
+	
+	//define the source value
+	
+	
+	//FRAME box        10   72   310    30
+	
+	// Browse SMCL or DO file
+	// -------------------------------------------------------------------------
+	TEXT txt_file	     10    5   380  .  , ///
+	     label(`"Select a file (smcl, do, ado, or mata) with Markdown notation"')
+	FILE sourceFile	     10   +20  325  .  , error("Open file")  label(Browse...)  ///
+	     /// filter("smcl file|*.smcl|do file|*.do|ado file|*.ado|mata file|*.mata") ///
+			 tooltip("MarkDoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document. It can also extract the documentation from the source file to create Stata help files") ///
+	     onchange("script mainReset")
+	
+	// Specify Markup, Format, Style
+	// -------------------------------------------------------------------------
+	TEXT tx_markup   10   +30  200  .  , label("Document format")
+	
+	
+	//TEXT tx_format   +120 -20  200  .  , label("Document format")
+	RADIO r1  @    +20   100 ., first   label("md") onclickon("program test")
+	RADIO r2  +60    @   @ .  , middle label("html") onclickon("program test")
+	RADIO r3  +60    @   @ ., middle   label("docx") onclickon("program test")
+  RADIO r4  +60    @   @  ., last label("sthlp") onclickon("program test") ///
+	      tooltip(`"generates Stata help file from script files"')
+
+	// GROUPBOX
+	// -------------------------------------------------------------------------
+	GROUPBOX gb_opts 10   +35  325  255, label("Options")
+
+		// replace
+		CHECKBOX replace  +10  +25  -20   .  , option(replace) ///
+		         label("Replace the existing document") default(1)
+	    
+		// master
+		CHECKBOX master @   +17   @   .  , option(master)       ///
+		         onclickon("program test") default(1)           ///
+		         label("Create HTML template")                  ///
+						 tooltip("MarkDoc provides this option to improve your HTML file")
+	  
+		// syntax highlighter
+		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1)
+		
+
+			   
+		// current date
+		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
+			   
+		// numbered
+		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
+
+		// title of the document
+		TEXT tx_title @ +30 50 ., label(Title)
+		EDIT title 80 @ 245 18   //EDIT ed_title +30 @ 340 .
+	 
+		// Author of the document
+		TEXT tx_author 20 +20 50 ., label(Author)
+		EDIT author 80 @ 245 18  
+	 
+		// Affiliation
+		TEXT tx_affiliation 20 +20 50 ., label(Affiliation)
+		EDIT affiliation 80 @ 245 18   
+	 
+		// Address
+		TEXT tx_address 20 +20 50 ., label(Address)
+		EDIT address 80 @ 245 18  
+	 
+		// Summary
+		TEXT tx_summary  20   +20  60    ., label(Summary)
+		EDIT summary     80   @    245  36   
+		
+		// LEFT COLUMN
+		// ---------------------------------------------------------------------
+	
+		// layout
+		TEXT tx_style     220  135  100  .  , label("Layout style")
+		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
+
+		
+END
+
+
+
+// -----------------------------------------------------------------------------
+// TEST PROGRAMS
+// =============================================================================
+
+// test for the main tab
+// -----------------------------------------------------------------------------
+PROGRAM test
+BEGIN
+	
+	// activate the linesize
+	// ----------------------
+	*call main.linesize.disable
+	*if main.activate.iseq(0) {
+	*	call main.linesize.disable
+	*}
+	
+	// Statax defaults
+	// ----------------------------------------------------------
+	if main.r2.iseq(1) {
+		call main.statax.enable
+	}
+	if main.r1.iseq(1) | main.r3.iseq(1) | main.r4.iseq(1)  {
+		call main.statax.disable
+	}
+	else {
+		call main.statax.enable
+	}
+	
+	// master defaults
+	// ----------------------------------------------------------
+	if main.r1.iseq(1) | main.r3.iseq(1) | main.r4.iseq(1)  {
+		call main.master.disable
+	}
+	if main.r2.iseq(1) {
+		call main.master.enable
+	}
+	else {
+		call main.master.disable
+	}
+
+	
+END
+
+
+// -----------------------------------------------------------------------------
+// FINAL MARKDOC COMMAND
+// =============================================================================	
+PROGRAM command
+BEGIN
+	
+    
+	// You must load a file!
+	if ! main.sourceFile {
+		require main.sourceFile
+	}
+	
+	put "markdoc "
+	
+	// Main Tab
+	// -------------------------------------------------------------------------
+	if main.sourceFile {
+		
+		//call sub.sourceFile.setvalue ""
+		
+		put `"""'
+		require main.sourceFile
+		put main.sourceFile
+		put `"" , mini "'
+		
+		if main.r1 {
+			put "export(md) "
+		}
+		if main.r2 {
+			put "export(html) "
+		}
+		if main.r3 {
+			put "export(docx) "
+		}
+		if main.r4 {
+			put "export(sthlp) "
+		}
+
+		option main.replace						// replace
+		option main.statax						// Statax syntax highlighter
+		option main.date              // table of date
+		option main.numbered					// numbered 
+		option main.master            // master
+		
+		if main.style {
+			put "style(" `"""' main.style `"""' ") "
+		}
+		
+
+		if main.title {
+			put "title(" `"""' main.title `"""' ") "
+		}	
+		if main.author {
+			put "author(" `"""' main.author `"""' ") "
+		}	
+		if main.affiliation {
+			put "affiliation(" `"""' main.affiliation  `"""' ") "
+		}	
+		if main.address {
+			put "address(" `"""' main.address `"""' ") "
+		}	
+		if main.summary {
+			put "summary(" `"""' main.summary  `"""' ") "
+		}
+		
+	}
+	
+
+
+END
+
+
