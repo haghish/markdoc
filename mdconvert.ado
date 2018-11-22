@@ -454,7 +454,13 @@ program define mdconvert
 		// codeblock
 		// -------------------------------------------------------------
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,3) == "~~~" {
-			`command' paragraph, indent(left, 0) shading(whitesmoke) //spacing(before, .1)
+			if "`export'" == "docx" {
+				`command' paragraph, indent(left, 0) shading(whitesmoke) //spacing(before, .1)
+			}
+			else {
+				`command' paragraph, indent(left, 0) 
+			}
+			
 			`command' text (""), font("courier", 7, navy) linebreak
 			`command' text (`"`macval(line)'"'), font("courier", 6, navy)
 			`command' text (""), linebreak
@@ -520,7 +526,12 @@ program define mdconvert
 		   substr(`"`macval(preline)'"',1,5) != "    -" & ///  //nested lists with space
 			 substr(`"`macval(preline)'"',1,5) != "    +" {
 			if "`PARAGRAPH'" != "CODE" {
+				if "`export'" == "docx" {
 				`command' paragraph, indent(left, 0) shading(whitesmoke) //spacing(before, .1)
+				}
+				else {
+					`command' paragraph, indent(left, 0) 
+				}
 				`command' text (""), font("courier", 7, navy) linebreak
 			}
 			

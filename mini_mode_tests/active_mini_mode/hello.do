@@ -1,6 +1,9 @@
 /***
+Hello World!
+============
+
 Just display "Hello World" for now!
 ***/
 
-di "Hello World"
+display "Hello World"
 
