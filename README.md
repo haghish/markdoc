@@ -6,7 +6,7 @@
 
 <br>
 
-<a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="100" hspace="30" vspace="6"></a>
+<a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="90" hspace="35" vspace="6"></a>
 
 **NEWS**: `markdoc` has a new option - [`mini`](https://github.com/haghish/markdoc/wiki/mini) - that allows Generating *HTML*, *Docx*, and *PDF* documents *without requiring Pandoc and wkhtmltopdf*. It also offers a new GUI for the engine (type `db mini`). The `mini` option allows markdoc to run without checking Pandoc or wkhtmltopdf and produce the document within Stata 15. [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
