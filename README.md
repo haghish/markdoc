@@ -4,9 +4,11 @@
 
 **MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp*, *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*. The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting. [**Continue to MarkDoc documentation**...](https://github.com/haghish/MarkDoc/wiki)
 
-<!--
-<a><img src="./Resources/images/attention.png" width="30px" height="30px"  align="left" hspace="10" vspace="6"></a> MarkDoc receives constant updates on GitHub and users are recommended to __Watch__ the package updates from GitHub.
--->
+<br>
+
+<a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="100" hspace="30" vspace="6"></a>
+
+**NEWS**: `markdoc` has a new option - `mini` - that allows Generating *HTML*, *Docx*, and *PDF* documents *without requiring Pandoc and wkhtmltopdf*. It also offers a new GUI for the engine (type `db mini`). The `mini` option allows markdoc to run without checking Pandoc or wkhtmltopdf and produce the document within Stata 15. [**Read mode about the `mini` option**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 ## Resources
 
