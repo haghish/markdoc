@@ -60,7 +60,7 @@ To use the dialog box, type:
     db markdoc
     
 <center>
-<a href="https://github.com/haghish/MarkDoc/wiki/GUI"><img src="https://raw.githubusercontent.com/wiki/haghish/MarkDoc/images/gui_markdoc.png"  width="300" hspace="10" vspace="6"></a>
+<a href="https://github.com/haghish/MarkDoc/wiki/GUI"><img src="https://raw.githubusercontent.com/wiki/haghish/MarkDoc/images/gui_markdoc.png"  width="350" hspace="10" vspace="6"></a>
 </center>
 
 [The dialog box is documented in details in the manual](https://github.com/haghish/MarkDoc/wiki/GUI). Stata users that are new to MarkDoc are encouraged to have a look at the dialog box to get an idea of what they can do with MarkDoc. 
@@ -70,7 +70,7 @@ The dialog box mentioned above is for the fully installed MarkDoc, that generate
     db mini
 
 <center>
-<a href="https://github.com/haghish/markdoc/raw/master/Resources/images/mini.png"><img src="https://github.com/haghish/markdoc/raw/master/Resources/images/mini.png"  width="400" hspace="10" vspace="6"></a>
+<a href="https://github.com/haghish/markdoc/raw/master/Resources/images/mini.png"><img src="https://github.com/haghish/markdoc/raw/master/Resources/images/mini.png"  width="350" hspace="10" vspace="6"></a>
 </center>
 
 As you see, the [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode supports producing most of the formats, yet it is all written within Stata! 
