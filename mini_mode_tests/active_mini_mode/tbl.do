@@ -17,4 +17,4 @@ tbl ("Variable Name", "Mean", "SD" \              ///
     , title("Table 1. Summary of __weight__, __price__, and __mpg__ variables")
 	
 qui log c
-markdoc tbl, export(docx) replace style(formal)
+markdoc tbl, mini export(docx) replace 

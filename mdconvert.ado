@@ -397,7 +397,7 @@ program define mdconvert
 			// initiate a table with 2 rows
 			
 			if "`export'" == "docx" {
-				`command' table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white)  //   width(4)
+				`command' table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white) layout(autofitcontents) 
 			}
 			else {
 				`command' table table`tablenum' = (1, `columns') , border(all, "", white)  //   width(4)
@@ -438,18 +438,49 @@ program define mdconvert
 					local col = 0
 					while `"`macval(1)'"' != "" {
 						if `"`macval(1)'"' != "|" {
+							
+							if substr(`"`macval(1)'"',1,3) == "***" {
+								local 1 : subinstr local 1 "***" "" , all
+								local bold "bold"
+								local italic "italic"
+							}
+							else if substr(`"`macval(1)'"',1,2) == "**" {
+								local 1 : subinstr local 1 "**" "" , all
+								local bold "bold"
+							}
+							else if substr(`"`macval(1)'"',1,1) == "*" {
+								local 1 : subinstr local 1 "*" "" , all
+								local italic "italic"
+							}
+							
+							if substr(`"`macval(1)'"',1,3) == "___" {
+								local 1 : subinstr local 1 "___" "", all
+								local bold "bold"
+								local italic "italic"
+							}
+							else if substr(`"`macval(1)'"',1,2) == "__" {
+								local 1 : subinstr local 1 "__" "", all
+								local bold "bold"
+							}
+							else if substr(`"`macval(1)'"',1,1) == "_" {
+								local 1 : subinstr local 1 "_" "" , all
+								local italic "italic"
+							}
+		
 							local col = `col'+1
-							if missing("`endtable'") `command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') 
+							if missing("`endtable'") `command' table table`tablenum'(`row',`col') = (`"`macval(1)'"'), `bold' `italic'
 							else {
 								if "`export'" == "docx" {
-									`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black, 1)
+									`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black, 1) `bold' `italic'
 								}
 								else {
-									`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black)
+									`command' table table`tablenum'(`row',`col') = (`"`macval(1)'"') , border(bottom, "", black) `bold' `italic'
 								}
 							}	
 						}
 						macro shift
+						local bold 
+						local italic
 					}
 					
 				}
@@ -478,10 +509,10 @@ program define mdconvert
 		// -------------------------------------------------------------
 		if missing("`JUMP'") & substr(`trim'(`"`macval(preline)'"'),1,3) == "~~~" {
 			if "`export'" == "docx" {
-				`command' paragraph, indent(left, 0) shading(whitesmoke) //spacing(before, .1)
+				`command' paragraph, indent(left, 0) font("courier", 6, "") shading(whitesmoke) //spacing(before, .1)
 			}
 			else {
-				`command' paragraph, indent(left, 0) 
+				`command' paragraph, indent(left, 0) font("courier", 6, "")
 			}
 			
 			`command' text (""), font("courier", 7, navy) linebreak
@@ -550,10 +581,10 @@ program define mdconvert
 			 substr(`"`macval(preline)'"',1,5) != "    +" {
 			if "`PARAGRAPH'" != "CODE" {
 				if "`export'" == "docx" {
-				`command' paragraph, indent(left, 0) shading(whitesmoke) //spacing(before, .1)
+				`command' paragraph, indent(left, 0) font("courier", 6, "") shading(whitesmoke) //spacing(before, .1)
 				}
 				else {
-					`command' paragraph, indent(left, 0) 
+					`command' paragraph, indent(left, 0) font("courier", 6, "")
 				}
 				`command' text (""), font("courier", 7, navy) linebreak
 			}
