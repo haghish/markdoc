@@ -384,7 +384,8 @@ program define mdconvert
 		// -------------------------------------------------------------------------
 		// Table  (needs much more work, currently only the default tbl is recognized)
 		// -------------------------------------------------------------------------
-		if substr(`trim'(`"`macval(line)'"'),1,5) == ":----" {
+		if substr(`trim'(`"`macval(line)'"'),1,5) == ":----" |  ///
+		   substr(`trim'(`"`macval(line)'"'),1,5) == "|----" & substr(`trim'(`"`macval(line)'"'),-5,.) == "----|" {
 			
 			local tablenum = `tablenum'+1
 			
@@ -395,7 +396,6 @@ program define mdconvert
 			local columns = length(`trim'("`columns'")) + 1
 			
 			// initiate a table with 2 rows
-			
 			if "`export'" == "docx" {
 				`command' table table`tablenum' = (1, `columns'), headerrow(1) border(all, "", white) layout(autofitcontents) 
 			}
@@ -410,18 +410,48 @@ program define mdconvert
 				if `"`macval(1)'"' != "|" {
 					local col = `col'+1
 					
+					if substr(`"`macval(1)'"',1,3) == "***" {
+						local 1 : subinstr local 1 "***" "" , all
+						local bold "bold"
+						local italic "italic"
+					}
+					else if substr(`"`macval(1)'"',1,2) == "**" {
+						local 1 : subinstr local 1 "**" "" , all
+						local bold "bold"
+					}
+					else if substr(`"`macval(1)'"',1,1) == "*" {
+						local 1 : subinstr local 1 "*" "" , all
+						local italic "italic"
+					}
+					
+					if substr(`"`macval(1)'"',1,3) == "___" {
+						local 1 : subinstr local 1 "___" "", all
+						local bold "bold"
+						local italic "italic"
+					}
+					else if substr(`"`macval(1)'"',1,2) == "__" {
+						local 1 : subinstr local 1 "__" "", all
+						local bold "bold"
+					}
+					else if substr(`"`macval(1)'"',1,1) == "_" {
+						local 1 : subinstr local 1 "_" "" , all
+						local italic "italic"
+					}
+							
 					if "`export'" == "docx" {
-						`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black, .5) border(bottom, "", black, 1)
+						`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold `italic' border(top, "", black, .5) border(bottom, "", black, 1)
 					}
 					else {
-						`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold border(top, "", black) border(bottom, "", black)
+						`command' table table`tablenum'(1,`col') = (`"`macval(1)'"'), bold `italic' border(top, "", black) border(bottom, "", black)
 					}
 				}
 				macro shift
+				local bold 
+				local italic
 			}
 			
 			// add the next rows
-			file read `hitch' line
+			*file read `hitch' line
 			local preline `"`macval(line)'"'
 			file read `hitch' line
 			local row = 1
@@ -515,8 +545,8 @@ program define mdconvert
 				`command' paragraph, indent(left, 0) font("courier", 6, "")
 			}
 			
-			`command' text (""), font("courier", 7, navy) linebreak
-			`command' text (`"`macval(line)'"'), font("courier", 6, navy)
+			`command' text (""), font("courier", 7, black) linebreak
+			`command' text (`"`macval(line)'"'), font("courier", 6, black)
 			`command' text (""), linebreak
 			
 			while missing("`break'") {	
@@ -527,7 +557,7 @@ program define mdconvert
 					local JUMP 1
 				}
 				else {
-					`command' text (`"`macval(line)'"'), font("courier", 6, navy)
+					`command' text (`"`macval(line)'"'), font("courier", 6, black)
 					`command' text (""), linebreak
 				}
 			}
@@ -566,7 +596,16 @@ program define mdconvert
 				 `"`macval(preline)'"' == "---"   | ///
 				 `"`macval(preline)'"' == "***" {
 				if `trim'(`"`macval(line)'"') == "" {
-					`command' text (""), linebreak(2)  //hr still unsupported by Stata 15 
+					local tablenum = `tablenum'+1
+					*`command' text (""), linebreak(2)  //hr still unsupported by Stata 15 
+					if "`export'" == "docx" {
+						`command' table table`tablenum' = (1, 1), border(all, single, white) 
+					}
+					else {
+						`command' table table`tablenum' = (1, 1), border(all, single, white) spacing(before,0)
+					}
+					
+					`command' table table`tablenum'(1,1) = ("") , border(bottom, "", gainsboro) font("", 1, black) //margin(top,0) margin(bottom,0) 
 					local PARAGRAPH 
 				}
 				local JUMP 1
@@ -581,12 +620,12 @@ program define mdconvert
 			 substr(`"`macval(preline)'"',1,5) != "    +" {
 			if "`PARAGRAPH'" != "CODE" {
 				if "`export'" == "docx" {
-				`command' paragraph, indent(left, 0) font("courier", 6, "") shading(whitesmoke) //spacing(before, .1)
+					`command' paragraph, indent(left, 0) font("courier", 6, "") shading(whitesmoke) //spacing(before, .1)
 				}
 				else {
 					`command' paragraph, indent(left, 0) font("courier", 6, "")
 				}
-				`command' text (""), font("courier", 7, navy) linebreak
+				`command' text (""), linebreak
 			}
 			
 			if substr(`trim'(`"`macval(preline)'"'),1,2) == ". " {
