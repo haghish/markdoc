@@ -8,7 +8,7 @@
 
 <a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="90" hspace="35" vspace="6"></a>
 
-`markdoc` has a new option - [`mini`](https://github.com/haghish/markdoc/wiki/mini) - that allows Generating *HTML*, *Docx*, and *PDF* documents *without requiring Pandoc and wkhtmltopdf* or any third-party software. It also offers a new GUI for the engine (type `db mini`). [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
+`markdoc` has a new option - [**`mini`**](https://github.com/haghish/markdoc/wiki/mini) - that allows Generating *HTML*, *Docx*, and *PDF* documents *without requiring Pandoc and wkhtmltopdf* or any third-party software. It also offers a new GUI for the engine (type `db mini`). [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 ## Resources
 
