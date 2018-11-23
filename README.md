@@ -40,7 +40,7 @@ github install haghish/markdoc
 <img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 
-MarkDoc - if not executed in [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode - requires 3 third-party software, which are:
+MarkDoc - if not executed in [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode - requires 3 third-party software based on the document format you wish to create. These software are:
 
 - [__Pandoc__](http://pandoc.org/installing.html)
 - [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
