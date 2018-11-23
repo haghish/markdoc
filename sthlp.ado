@@ -686,18 +686,28 @@ program define sthlp
 				*if _rc == 0 & missing(trim("`m'")) {
 				*	local line ""
 				*}
-					
+				
 				// -------------------------------------------------------------
 				// If heading syntax is found, create the heading
 				// -------------------------------------------------------------
 				
 				//NOTE: MAKE SURE "---" IS NOT A TABLE. MAKE SURE "|" IS NOT USED
 				
-				if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |			///
-				substr(`trim'(`"`macval(line)'"'),1,3) == "---" & 				///
-				strpos(`"`macval(line)'"', "|") == 0 {
-					file write `knot' _n `"{title:`macval(preline)'}"' _n 
-					file read `hitch' line
+				if substr(`trim'(`"`macval(line)'"'),1,3) == "~~~" {
+						file write `knot' _n "{asis}" _n 
+						file read `hitch' line
+						while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,3) != "~~~" {
+							file write `knot' `"        `macval(line)'"' _n 
+							file read `hitch' line
+						}
+						file write `knot' "{smcl}" _n 
+						file read `hitch' line
+				}
+				else if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |			///
+					substr(`trim'(`"`macval(line)'"'),1,3) == "---" & 				///
+					strpos(`"`macval(line)'"', "|") == 0 {
+						file write `knot' _n `"{title:`macval(preline)'}"' _n 
+						file read `hitch' line
 				}
 				
 				// -------------------------------------------------------------
