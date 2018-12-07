@@ -77,11 +77,22 @@ program define markdoccheck
 							
 					di as txt `"{browse "http://www.haghish.com/packages/pandoc.php":    {c 149} Learn How To Installing Pandoc Manually}"'  
 							
-					di as txt "{stata markdocpandoc:    {c 149} Install Pandoc {bf:Automatically}}"		
+					di as txt "{stata markdocpandoc:    {c 149} Install Pandoc {bf:Automatically}}"	
+					
+					if "`export'" == "html" | "`export'" == "pdf"     ///
+					   | "`export'" == "docx" | "`export'" == "md"      ///
+						 | "`export'" == "sthlp" {
+						 
+						 di as txt _n "{p}Alternatively, you can add the "      ///
+						 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} "' ///
+						 "option to markdoc, which runs the engine in " ///
+						 "light mode, independent of third-party software. " ///
+						 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:read more about the mini option here...}} "' _n
+					}
 							
 					di as txt "{hline}"	_n
 					
-					quietly error 601
+					quietly error 1
 				}
 			}		
 		}
@@ -121,8 +132,18 @@ program define markdoccheck
 							
 					di as txt `"{browse "http://www.haghish.com/packages/pdf_printer.php":    {c 149} Learn How To Install wkhtmltopdf PDF drivers Manually}"'  
 					di as txt "{stata markdocwkhtmltopdf:    {c 149} Install wkhtmltopdf {bf:Automatically}}"		
+					
+
+					 di as txt _n "{p}Alternatively, you can add the "      ///
+					 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} "' ///
+					 "option to markdoc, which runs the engine in " ///
+					 "light mode, independent of third-party software. " ///
+					 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:read more about the mini option here...}} "' _n
+					
+							
 					di as txt "{hline}"	_n
-					quietly error 601
+					
+					quietly error 1
 				}
 			}
 		}
@@ -194,10 +215,22 @@ program define markdoccheck
 					di as txt `"{browse "http://www.haghish.com/packages/pandoc.php":    {c 149} Learn How To Installing Pandoc Manually}"'  
 							
 					di as txt "{stata markdocpandoc:    {c 149} Install Pandoc {bf:Automatically}}"		
+					
+					if "`export'" == "html"   | "`export'" == "pdf"     ///
+					   | "`export'" == "docx" | "`export'" == "md"      ///
+						 | "`export'" == "sthlp" {
+						 
+						 di as txt _n "{p}Alternatively, you can add the "      ///
+						 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} "' ///
+						 "option to markdoc, which runs the engine in " ///
+						 "light mode, independent of third-party software. " ///
+						 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:read more about the mini option here...}} "' _n
+					}
 							
 					di as txt "{hline}"	_n
 					
-					quietly error 601
+					quietly error 1
+							
 				}
 			}			
 		}
@@ -238,9 +271,16 @@ program define markdoccheck
 					di as txt `"{browse "http://www.haghish.com/packages/pdf_printer.php":    {c 149} Learn How To Installing PDF drivers Manually}"'  
 					di as txt "{stata markdocwkhtmltopdf:    {c 149} Install wkhtmltopdf {bf:Automatically}}"		
 		
+					di as txt _n "{p}Alternatively, you can add the "      ///
+					 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} "' ///
+					 "option to markdoc, which runs the engine in " ///
+					 "light mode, independent of third-party software. " ///
+					 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:read more about the mini option here...}} "' _n
+					
+							
 					di as txt "{hline}"	_n
 					
-					quietly error 601
+					quietly error 1
 				}
 			}
 		}
@@ -311,9 +351,21 @@ program define markdoccheck
 							
 					di as txt `"{browse "http://www.haghish.com/packages/pandoc.php":    {c 149} Learn How To Installing Pandoc Manually}"'  
 					di as txt "{stata markdocpandoc:    {c 149} Install Pandoc {bf:Automatically}}"		
+					
+					if "`export'" == "html"   | "`export'" == "pdf"     ///
+					   | "`export'" == "docx" | "`export'" == "md"      ///
+						 | "`export'" == "sthlp" {
+						 
+						 di as txt _n "{p}Alternatively, you can add the "      ///
+						 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} "' ///
+						 "option to markdoc, which runs the engine in " ///
+						 "light mode, independent of third-party software. " ///
+						 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:read more about the mini option here...}} "' _n
+					}
+							
 					di as txt "{hline}"	_n
 					
-					quietly error 601
+					quietly error 1
 				}
 			}	
 		}
@@ -354,8 +406,17 @@ program define markdoccheck
 							
 					di as txt `"{browse "http://www.haghish.com/packages/pdf_printer.php":    {c 149} Learn How To Installing PDF drivers Manually}"'  
 					di as txt "{stata markdocwkhtmltopdf:    {c 149} Install wkhtmltopdf {bf:Automatically}}"		
+					
+					di as txt _n "{p}Alternatively, you can add the "      ///
+					 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} "' ///
+					 "option to markdoc, which runs the engine in " ///
+					 "light mode, independent of third-party software. " ///
+					 `"{browse "https://github.com/haghish/markdoc/wiki/mini":{bf:read more about the mini option here...}} "' _n
+					
+							
 					di as txt "{hline}"	_n
-					quietly error 601
+					
+					quietly error 1
 				}
 			}
 		}
