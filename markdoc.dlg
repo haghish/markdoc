@@ -509,8 +509,10 @@ BEGIN
 		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
 			   
 		// noisily
-		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX minimode  @    +17   @   .  , option(mini) label("Avoid using Pandoc or wkhtmltopdf (mini mode)") tooltip("the mini mode runs markdoc without calling third-party software such as Pandoc or wkhtmltopdf. this mode is limited and does not fully support Markdown syntax, but it can produce a document on a machine that does not have thse software installed.") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
+	
+		
 		// title of the document
 		TEXT tx_title @ +30 50 ., label(Title)
 		EDIT title    80 @ 340 18   //EDIT ed_title +30 @ 340 .
@@ -1059,7 +1061,7 @@ BEGIN
 		option vignette.toc							// table of content
 		option vignette.date						// table of date
 		option vignette.master					// master
-		option vignette.noisily						// noisily
+		option vignette.minimode						// noisily
 		
 		*put "export(" vignette.format ") "
 		
