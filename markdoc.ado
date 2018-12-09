@@ -1030,7 +1030,7 @@ program markdoc
     
     // checkes the required software
     // -------------------------------------------------------------------------
-    if missing("`mini'") {
+    if missing("`mini'") & "`export'" != "sthlp" {
             markdoccheck , `install' `test' export(`export') style(`style')           ///
            markup(`markup') pandoc("$pandoc") printer("`printer'")
         }
