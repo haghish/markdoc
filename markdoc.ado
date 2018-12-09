@@ -873,8 +873,9 @@ program markdoc
         // later on supports for docx and pdf will be provided
         // -------------------------------------------------------------------------
         if !missing("`mini'") {
-            if `c(stata_version)' < 15 {
+            if `c(stata_version)' < 15 & "`export'" != "sthlp"  {
                 di as err "the {bf:mini} option requires Stata 15 or above"
+				di as txt "you could remove the {bf:mini} option and run MarkDoc in the full-version mode"
                 err 1
             }
             
