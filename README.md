@@ -36,7 +36,7 @@ __`markdoc`__ requires a few other Stata packages. The [__`github package`__](ht
 gitget markdoc
 ```
 
-_or use the older syntax__
+_or use the older syntax_
 
 ```js
 github install haghish/markdoc
