@@ -1,5 +1,5 @@
 VERSION 15
-POSITION . . 347 380
+POSITION . . 377 397
 
 
 // ---------------------------------------------------------
@@ -46,7 +46,7 @@ BEGIN
 	// -------------------------------------------------------------------------
 	TEXT txt_file	     10    5   380  .  , ///
 	     label(`"Select a file (smcl, do, ado, or mata) with Markdown notation"')
-	FILE sourceFile	     10   +20  325  .  , error("Open file")  label(Browse...)  ///
+	FILE sourceFile	     10   +20  355  .  , error("Open file")  label(Browse...)  ///
 	     /// filter("smcl file|*.smcl|do file|*.do|ado file|*.ado|mata file|*.mata") ///
 			 tooltip("MarkDoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document. It can also extract the documentation from the source file to create Stata help files") ///
 	     onchange("script mainReset")
@@ -66,7 +66,7 @@ BEGIN
 
 	// GROUPBOX
 	// -------------------------------------------------------------------------
-	GROUPBOX gb_opts 10   +35  325  255, label("Options")
+	GROUPBOX gb_opts 10   +35  355  272, label("Options")
 
 		// replace
 		CHECKBOX replace  +10  +25  -20   .  , option(replace) ///
@@ -79,41 +79,42 @@ BEGIN
 						 tooltip("MarkDoc provides this option to improve your HTML file")
 	  
 		// syntax highlighter
-		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1)
+		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1) 
 		
-
-			   
 		// current date
 		CHECKBOX date     @    +17   @   .  , option(date) label("Add the current date") 
 			   
 		// numbered
 		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
-
+		
+		// append template
+		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Add Markdown help-file template to a ado or mata file") default(0) tooltip("Check this button to append the template help-file to your ado or mata file")
+		
 		// title of the document
 		TEXT tx_title @ +30 50 ., label(Title)
-		EDIT title 80 @ 245 18   //EDIT ed_title +30 @ 340 .
+		EDIT title 80 @ 275 18   //EDIT ed_title +30 @ 340 .
 	 
 		// Author of the document
 		TEXT tx_author 20 +20 50 ., label(Author)
-		EDIT author 80 @ 245 18  
+		EDIT author 80 @ 275 18  
 	 
 		// Affiliation
 		TEXT tx_affiliation 20 +20 55 ., label(Affiliation)
-		EDIT affiliation 80 @ 245 18   
+		EDIT affiliation 80 @ 275 18   
 	 
 		// Address
 		TEXT tx_address 20 +20 50 ., label(Address)
-		EDIT address 80 @ 245 18  
+		EDIT address 80 @ 275 18  
 	 
 		// Summary
 		TEXT tx_summary  20   +20  60    ., label(Summary)
-		EDIT summary     80   @    245  36   
+		EDIT summary     80   @    275  36   
 		
 		// LEFT COLUMN
 		// ---------------------------------------------------------------------
 	
 		// layout
-		TEXT tx_style     220  135  100  .  , label("Layout style")
+		TEXT tx_style     250  135  100  .  , label("Layout style")
 		COMBOBOX style    @    +20  100   .  , dropdownlist contents(style_list)
 
 		
@@ -205,7 +206,8 @@ BEGIN
 		if main.r5 {
 			put "export(sthlp) "
 		}
-
+		
+		option main.helplayout				// temp layout
 		option main.replace						// replace
 		option main.statax						// Statax syntax highlighter
 		option main.date              // table of date
