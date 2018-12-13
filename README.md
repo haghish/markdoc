@@ -36,6 +36,12 @@ __`markdoc`__ requires a few other Stata packages. The [__`github package`__](ht
 gitget markdoc
 ```
 
+_or use the older syntax__
+
+```js
+github install haghish/markdoc
+```
+
 <img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 
