@@ -28,13 +28,12 @@
 <a href="http://www.haghish.com/contact.php"><img src="./Resources/images/professor.png" width="30px" height="30px"  align="left" hspace="10" vspace="6"><b>Need more help</b>? Contact the author to plan a workshop in your department or company</a>
 
 
-Installation
-------------
+# 1. Installation
 
-MarkDoc requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install MarkDoc and all of its dependencies as shown below. Using `github` package is highly recommended.  
+__`markdoc`__ requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install __`markdoc`__ and all of its dependencies automatically. Once [__`github`__](https://github.com/haghish/github) is installed, type the following command to install __`markdoc`__:
 
 ```js
-github install haghish/markdoc
+gitget markdoc
 ```
 
 <img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
@@ -49,8 +48,7 @@ MarkDoc - if not executed in [`mini`](https://github.com/haghish/markdoc/wiki/mi
 The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. The __wkhtmltopdf__ is only required for generating stylish PDF documents (you can create PDF documents in the [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode as well). MarkDoc provides optional automatic installation of __pandoc__ and __wkhtmltopdf__ if the `install` argument is specified. [You can read more about the installation in the manual...](https://github.com/haghish/markdoc/wiki/Installation)
 
 
-Dialog box
-----------
+# 2. Dialog box
 
 To further facilitate using MarkDoc for beginners, a dialog box was written for Stata, which covers all features and most of the important options of MarkDoc. The dialog box supports all three engines of MarkDoc for creating 
 _dynamic document_, _dynamic presentation slides_, and _package vignette (e.g. Stata help files, package manual, etc)_. 
@@ -76,8 +74,7 @@ The dialog box mentioned above is for the fully installed MarkDoc, that generate
 As you see, the [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode supports producing most of the formats, yet it is all written within Stata! 
 
 
-Built-in syntax highlighter
----------------------------
+# 3. Built-in syntax highlighter
 
 Wish to develop handouts or presentation slides within Stata? MarkDoc has a built-in syntax highlighter for Stata code in HTML, LaTeX, and PDF formats, including presentation slides! You can also add the syntax highlighter to your blog! [Read how...](https://github.com/haghish/statax)
 
