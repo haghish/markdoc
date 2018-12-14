@@ -46,7 +46,6 @@ program define sthlp
 	replace 	 	 /// replaces the current sthlp file, if it already exists
 	TEMPlate(str)	 /// If template(empty), avoid appending the template
 	Export(name) 	 /// specifies the exported format 
-	ASCIItable		 /// convert ASCII tables to SMCL in dynamic help files
 	TITle(str)   	 /// specifies the title of the document (for styling)
 	AUthor(str)  	 /// specifies the author of mthe document (for styling)
 	AFFiliation(str) /// specifies author affiliation (for styling)
@@ -57,12 +56,15 @@ program define sthlp
 	build		 	 /// creates the toc and pkg files
 	markup(str)		 /// specify markup language used for documentation
 	helplayout		 ///
+	debug          ///
 	]
 	
 	
 	// -------------------------------------------------------------------------
 	// Syntax Processing
 	// =========================================================================
+	if !missing("`build'") di as err "{bf:build} option is no longer supported"
+	
 	if missing("`export'") local export sthlp
 	
 	local input `script'
@@ -116,16 +118,7 @@ program define sthlp
 		local summary
 	}
 	
-	//if helplayout is specified, the default markup is markdown. otherwise, markdown+smcl
-	/*
-	if "`markup'" == "" {
-		if !missing("`helplayout'") {
-			markup = "markdown"
-		}
-		else markup = "markdown+smcl"
-	}
-	*/
-	
+
 	************************************************************************	
 	*
 	* MAIN ENGINE 
@@ -145,48 +138,31 @@ program define sthlp
 	qui file open `hitch' using `"`script'"', read
 	qui file open `knot' using `"`tmp'"', write replace
 	file read `hitch' line
-	
-	/*
-	"The remarks are the detailed description of the command and its nuances." _n ///
-		"Official documented Stata commands don't have much for remarks, because the remarks go in the documentation." _n ///
-		"Similarly, you can write remarks that do not appear in the Stata help file, " _n ///
-		"but appear in the __package vignette__ instead. To do so, use the " _n ///
-		"/{c 42}{c 42}{c 42}{c 36} sign instead of /{c 42}{c 42}{c 42} sign (by adding a dollar sign) " _n ///
-		"to indicate this part of the documentation should be avoided in the " _n ///
-		"help file. The remark section can include graphics and mathematical " _n ///
-		"notations." _n(2) ///
-		"    /{c 42}{c 42}{c 42}$" _n ///
-		"    ..." _n ///
-		"    {c 42}{c 42}{c 42}/" _n(2) ///
-	*/
-	
-	if !missing("`helplayout'") & substr(`trim'(`"`macval(line)'"'),1,26) != 	///
-	"/*** DO NOT EDIT THIS LINE" {
-		
+
+
+	if !missing("`helplayout'") {
+
 		if "`markup'" == "markdown" | "`markup'" == ""  {
 			file write `knot' 														        ///
 			"/***" _n 																            ///
 			"_v. 1.0.0_ " _n(2)                            ///
 			"Title" _n                                            ///
 			"====== " _n(2)                                       ///
-			"__commandname__ -- explain your command briefly." _n /// 
-      " You can use simplified syntax to make text " _n     ///
-      "_italic_, __bold__, ***emphasized***, or " _n        ///
+			"__commandname__ - explain your command briefly." _n /// 
+      "You can use simplified syntax to make text" _n       ///
+      "_italic_, __bold__, **emphasized**, or" _n           ///
       "add [hyperlink](http://www.haghish.com/markdoc)" _n  ///
 			"" _n                                                 ///
 			"Syntax" _n                                           ///
 			"------ " _n(2)                                       ///
 			"> __XXX__ _varlist_ =_exp_ [_if_] [_in_] " _n        ///
 			"[_weight_] using _filename_ [, _options_]" _n(2)   	///
-			"_options_" _n(2)                                     ///
-			"- - -" _n(2) 										                    ///
-			"***min***abbrev: description of what option  " _n 		///
-			"***break***line: break each line with adding 2 "     /// 
-			    "space barrs  " _n 		                            ///
-			"***min***abbrev(_arg_): description of another "     ///
-			    "option  " _n 		                                ///
-			"" _n 														                    ///
-			"- - -" _n(2) 		                                    ///
+			"| _option_          |  _Description_          |" _n 	///
+			"|:------------------|:------------------------|" _n 	///
+			"| **min**abbrev     | whatever does _yak yak_ |" _n 	///
+			"| **break**line     | whatever does _yak yak_ |" _n 	///
+			"| **exp**ort(_arg_) | whatever does _yak yak_ |" _n 	///
+			"" _n(2)      		                                    ///
 			"__by__ is allowed; see __[[D] by](help by)__  " _n   ///
 			"__fweight__ is allowed; [weight](help weight)  " _n 	///
 			"" _n(2) 												                      ///
@@ -226,8 +202,7 @@ program define sthlp
 			"If you have thanks specific to this command, put them here." _n(2) 	///
 			"Author" _n 															            ///
 			"------" _n(2) 															          ///
-			"Author information here; nothing for official Stata commands" _n 		///
-			"leave 2 white spaces in the end of each line for line break. "			///
+			"leave 2 white spaces at the end of each line for line break. "			///
 			"For example:" _n(2) 													        ///
 			"Your Name   " _n 														        ///
 			"Your affiliation    " _n 												    ///
@@ -398,7 +373,6 @@ program define sthlp
 		}
 		
 		
-		
 		file write `knot' `"`macval(line)'"' _n 
 		
 		while r(eof) == 0 {
@@ -410,7 +384,6 @@ program define sthlp
 		capture copy "`tmp'" "`script'", replace public
 		
 		if _rc != 0 {
-		
 			local k 1
 			local oldname
 			while missing("`oldname'") {
@@ -436,9 +409,8 @@ program define sthlp
 	}
 
 	
-	
 	// -------------------------------------------------------------------------
-	// Part 2: Reading the template and the ado-file documentation! 
+	// Part 2: Reading the documentation!
 	// =========================================================================
 	tempfile tmp 
 	tempname hitch knot 
@@ -447,189 +419,16 @@ program define sthlp
 	file write `knot'  "{smcl}" _n 
 	file read `hitch' line
 	
-	local i  1
-	local i2 0
-	
-	//Reading the header, if the HEADER EXISTS and the TEMPLATE IS NOT EMPTY
-	// -------------------------------------------------------------------------
-	if substr(`trim'(`"`macval(line)'"'),1,26) == "/*** DO NOT EDIT THIS LINE" {
-		
-		file read `hitch' line
-		
-		while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
-		& r(eof) == 0 & missing("`exitloop'") {
-
-			// Get the package version
-			// ---------------------------------------------------------------
-			if substr(`trim'(`"`macval(line)'"'),1,8) == "Version:" {
-				local line : subinstr local line "Version:" ""
-				local v = `trim'("`line'")
-				if !missing("`v'") local version "`v'"				
-			}
-			
-			// Get the package title
-			// ---------------------------------------------------------------
-			if substr(`trim'(`"`macval(line)'"'),1,6) == "Title:" {
-				local line : subinstr local line "Title:" ""
-				local t = `trim'("`line'")
-				if !missing("`t'") local title "`t'"
-			}
-			
-			// Description
-			// ---------------------------------------------------------------
-			if substr(`trim'(`"`macval(line)'"'),1,12) == "Description:" {
-				local line : subinstr local line "Description:" ""
-				local description = `trim'("`line'")
-				if !missing(`"`macval(description)'"') {
-					qui md2smcl `"`macval(description)'"'
-					local description `r(md)'
-					file read `hitch' line
-					
-					while substr(`trim'(`"`macval(line)'"'),55,21) != "DO NOT EDIT THIS LINE" ///
-					& r(eof) == 0 {
-						local line2 = `"`macval(line)'"'
-						qui md2smcl `"`macval(line2)'"'
-						local description`i' `"`r(md)'"'
-						file read `hitch' line
-						local i `++i'
-					}
-				}
-			}
-			if substr(`trim'(`"`macval(line)'"'),55,21) == "DO NOT EDIT THIS LINE" {
-				local exitloop 1
-			}
-			else file read `hitch' line
-		}		
-	}
-	
-	
-	// Create the toc file
-	// =======================================================================
-	if !missing("`build'") {
-		tempfile toctmp pkgtmp 
-		tempname toc pkg
-		qui file open `toc' using `"`toctmp'"', write replace
-		qui file open `pkg' using `"`pkgtmp'"', write replace
-		
-		file write `toc' "v `version'" _n
-		
-		
-		
-		local capital : di ustrupper("`title'") 
-		file write `toc' "d '" `"`capital'"' "': " `"`description'"'  _n
-		file write `pkg' "d '" `"`capital'"' "': " `"`description'"'  _n		
-		local n 1
-		while !missing(`"`description`n''"') {
-			file write `toc' `"d `description`n''"' _n
-			file write `pkg' `"d `description`n''"' _n
-			local n `++n'
-		}
-		macro drop n
-		
-		//get the date in SSC style:
-		local today : display %tdCCYYNNDD date(c(current_date), "DMY")
-		file write `pkg' "d" _n	"d Distribution-Date: `today'" _n "d" _n
-		
-		// make a list of installable files
-		
-		local list : dir . files "*" 
-		tokenize `"`list'"'
-		while `"`macval(1)'"' != "" {
-			if `"`macval(1)'"' != ".DS_Store" & 								///
-			substr(`"`macval(1)'"', -4,.) != ".pkg" &							///
-			substr(`"`macval(1)'"', -4,.) != ".toc" &							///
-			`"`macval(1)'"' != "README.md" & `"`macval(1)'"' != "readme.md"		///
-			& `"`macval(1)'"' != "dependency.do"								///
-			& `"`macval(1)'"' != "params.json"  								///
-			& `"`macval(1)'"' != "index.html"  									///
-			& `"`macval(1)'"' != ".gitignore"									///
-			& `"`macval(1)'"' != ".Rhistory"									///
-			& `"`macval(1)'"' != ".RData"										///
-			{
-				file write `pkg' `"F `1'"' _n
-			}
-			macro shift
-		}
-		
-		file write `toc' "p `title'" _n
-		file close `toc'
-		file close `pkg'
-		quietly copy "`toctmp'" "stata.toc", replace
-		quietly copy "`pkgtmp'" "`title'.pkg", replace
-	}
-	
-	// If the template is in use write the information to SMCL file
-	// ============================================================
-	
-	*if "`template'" != "empty" {
-		
-		if !missing("`date'") & !missing("`version'") {
-			local releasDate: di c(current_date)
-			file write `knot' "{right:version `version', `releasDate'}" _n
-		}
-		else if !missing("`date'") {
-			local releasDate: di c(current_date)
-			file write `knot' "{right:`releasDate'}" _n
-		}
-		else if !missing("`version'") {
-			file write `knot' "{right:version `version'}" _n
-		}
-		
-		if !missing("`title'") & !missing(`"`macval(description)'"') {
-			file write `knot' "{title:Title}" _n(2) "{phang}" _n				///
-			`"{cmd:`title'} {hline 2} `macval(description)'"' 
-			
-			forval num = 1/`i' {
-				file write `knot' `" `macval(description`num')'"' _n
-			}
-		}
-	*}	
-	
-	// If the template is NOT in use
-	// -----------------------------
-	/*
-	if missing("`helplayout'") {
-		if !missing("`date'") & !missing("`version'") {
-			local releasDate: di c(current_date)
-			file write `knot' "{right:version `version', `releasDate'}" _n
-		}
-		else if !missing("`date'") {
-			local releasDate: di c(current_date)
-			file write `knot' "{right:`releasDate'}" _n
-		}
-		else if !missing("`version'") {
-			file write `knot' "{right:version `version'}" _n
-		}
-		if !missing("`title'") | !missing("`summary'") {
-			
-			if missing("`title'") local title commandname
-			if missing("`summary'") local summary describe the comand...
-			
-			file write `knot' "{title:Title}" _n(2) "{phang}" _n				///
-			`"`title' {hline 2} `summary'"' _n(2)
-		}
-	}
-	*/
-
-	
-	
-	
-	
 	// -------------------------------------------------------------------------
 	// Part 3: Processing the source and applying Markdown
 	// =========================================================================
-	
 	while r(eof) == 0 {	
 		
-		// figure out a solution for Stata's macval() problem
+		local pass	// reset
+		capture if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" local pass 1
 		
-		local pass										// reset
-		capture if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" &					///
-		substr(`trim'(`"`macval(line)'"'),1,26) != 								///
-		"/*** DO NOT EDIT THIS LINE" & 											///
-		substr(`trim'(`"`macval(line)'"'),1,5) != "/***$" local pass 1
-	
-		
+		// if NOT MISSING `pass'
+		// =====================================================
 		if !missing("`pass'") {
 			file read `hitch' line
 			//remove white space in old-fashion way!
@@ -646,33 +445,20 @@ program define sthlp
 					local graveaccent ""
 			}
 			
+			//procede when a line is found
+			//Interpret 2 lines at the time, for Markdown headings
 			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
 				
-*				local line : subinstr local line "`" "{c 96}", all
-*				local line : subinstr local line "'" "{c 39}", all
-				//IF MISSING line, forward to the next non-missing line
-				/*
-				while missing(`trim'(`"`macval(line)'"')) & r(eof) == 0 {
-					file write `knot' `"`macval(line)'"' _n
-					file read `hitch' line
-					//remove white space in old-fashion way!
-					cap local m : display "`line'"
-					if _rc == 0 & missing(trim("`m'")) {
-						local line ""
-					}
-				}
-				*/
-				
-				//procede when a line is found
-				//Interpret 2 lines at the time, for Markdown headings
 				local preline `"`macval(line)'"'
-				if !missing(`trim'(`"`macval(line)'"')) & 						///
+				
+				if !missing(`trim'(`"`macval(line)'"')) & 					///
 				substr(`"`macval(line)'"',1,4) != "    " {
 					qui md2smcl `"`macval(line)'"'
-					*local preline `r(md)'
 					local preline `"`r(md)'"'
 				}	
+				
 				file read `hitch' line
+				
 				//fix the problem of graveaccent in the end of the line
 				capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
 				else local graveaccent ""
@@ -681,18 +467,14 @@ program define sthlp
 						local graveaccent ""
 				}
 				
-				//remove white space in old-fashion way!
-				*cap local m : display "`line'"
-				*if _rc == 0 & missing(trim("`m'")) {
-				*	local line ""
-				*}
-				
 				// -------------------------------------------------------------
 				// If heading syntax is found, create the heading
+				//
+				// NOTE: MAKE SURE "---" IS NOT A TABLE. MAKE SURE "|" IS NOT USED
 				// -------------------------------------------------------------
-				
-				//NOTE: MAKE SURE "---" IS NOT A TABLE. MAKE SURE "|" IS NOT USED
-				
+
+				// code paragraph
+				// --------------
 				if substr(`trim'(`"`macval(line)'"'),1,3) == "~~~" {
 						file write `knot' _n "{asis}" _n 
 						file read `hitch' line
@@ -703,7 +485,9 @@ program define sthlp
 						file write `knot' "{smcl}" _n 
 						file read `hitch' line
 				}
-				else if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |			///
+				// Heading
+				// -------
+				else if substr(`trim'(`"`macval(line)'"'),1,3) == "===" |		///
 					substr(`trim'(`"`macval(line)'"'),1,3) == "---" & 				///
 					strpos(`"`macval(line)'"', "|") == 0 {
 						file write `knot' _n `"{title:`macval(preline)'}"' _n 
@@ -727,85 +511,11 @@ program define sthlp
 								local preline : subinstr local preline ">" "" 
 							}			
 						}
-
-						// this part is independent of the Markdown engine
-						// Create Markdown Horizontal line
-						// =====================================================
-						
-						// CREATING THE ASCIITABLE, start with line
-						
-						local n = `c(linesize)' + 80
-						
-						if !missing("`asciitable'") {
-							
-							// Handling + in restructured text
-							// =================================================
-							if substr(`"`preline'"',1,3) == "+--" & 			///
-							substr(`"`line'"',1,1) != "|" {
-								local line : subinstr local line "+" "{c BLC}"
-								*local line : subinstr local line "+" "|", all
-							}
-							
-							if substr(`"`preline'"',1,1) == "|" & 			///
-							substr(`"`line'"',1,3) == "+==" {
-								local line : subinstr local line "+" "|", all
-								local preline "{bf:`preline'}"
-							}
-								
-							if substr(`"`preline'"',1,1) == "|" & 			///
-							substr(`"`line'"',1,3) == "+--" {
-								local line : subinstr local line "+" "|", all
-							}
-							
-							if substr(`"`preline'"',1,1) == "|" & 			///
-							substr(`"`line'"',1,1) != "|" & 					///
-							substr(`"`line'"',2,1) == "-" {
-								*local preline : subinstr local preline "|" "{c BLC}"
-							}
-						}
-						
-						
-						while `n' > 0 & !missing("`asciitable'") {
-							
-							// Handling + in the line
-							// =================================================
-							if substr(`"`preline'"',`n',3) == "-+-" {
-								
-								// full + connected from above and below
-								if substr(`"`macval(line)'"',`n'+1,1) == "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+-" "-{c +}-"
-									local preline2 : subinstr local preline2 "-+-" "-{c TT}-", all
-									local preline2 : subinstr local preline2 "-+" "-{c TRC}"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-									*local preline : subinstr local preline "+-" "{c TLC}-"
-								}
-							}	
-							
-							if substr(`"`preline'"',`n',3) == "-|-" {
-								
-								// full + connected from above and below
-								if substr(`"`macval(line)'"',`n'+1,1) != "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+-" "-{c +}-"
-									local preline2 : subinstr local preline2 "-|-" "-{c BT}-", all
-									local preline2 : subinstr local preline2 "-|" "-{c BRC}"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}
-							}
-							
-
-							local n `--n'
-						}
 						
 						file write `knot' `"`macval(preline)'"' _n
 					}
 					
-				
 					if substr(`trim'(`"`macval(line)'"'),1,4) != "***/"  {
-						
 						local preline `"`macval(line)'"'
 						
 						//remove white space in old-fashion way!
@@ -817,302 +527,7 @@ program define sthlp
 				}			
 			}
 		}
-		
-		// code line 
-		
-		// *********************************************************************
-		// *********************************************************************
-		
-		local pass										// reset
-		capture if substr(`trim'(`"`macval(line)'"'),1,5) == "/***$" local pass 1
-		
-		if !missing("`pass'") {
-			
-			file read `hitch' line
-			
-			while r(eof) == 0 & trim(`"`macval(line)'"') != "***/" {
-				
-				//IF MISSING line, forward to the next non-missing line
-				while missing(`"`macval(line)'"') & r(eof) == 0 {
-					file write `knot' `"`macval(line)'"' _n
-					file read `hitch' line
-					//fix the problem of graveaccent in the end of the line
-					capture if substr("`macval(line)'",-1,.) == "`" local graveaccent 1
-					else local graveaccent ""
-					if "`graveaccent'" == "1" {
-							local line `"`macval(line)' "' 
-							local graveaccent ""
-					}
-				}
-				
-				//procede when a line is found
-				//Interpret 2 lines at the time, for Markdown headings
-				
-				local preline `"`macval(line)'"'
-				file read `hitch' line
 
-		
-				// -------------------------------------------------------------
-				// IF MARKDOWN HEADING IS FOUND 
-				// -------------------------------------------------------------
-				if substr(`trim'(`"`macval(line)'"'),1,3) == "===" {
-					file write `knot' _n `"{title:`macval(preline)'}"' _n 
-				}
-				
-				// -------------------------------------------------------------
-				// IF HEADING NOT FOUND
-				// -------------------------------------------------------------
-				else {
-					
-					// check for Markdown paragraph syntax 
-					// ---------------------------------------------------------
-					if substr(`trim'(`"`macval(preline)'"'),1,4) != "***/" &	///
-					substr(`trim'(`"`macval(preline)'"'),1,3) != "===" {
-						
-						//Check for Paragraph code
-						if substr(`trim'(`"`macval(preline)'"'),1,1) == ":" 	///
-						| substr(`trim'(`"`macval(preline)'"'),1,1) == ">" {
-							
-							if substr(`trim'(`"`macval(preline)'"'),1,1) 	///
-							== ">" {
-								file write `knot' "{p 8 8 2}" _n
-								local preline : subinstr local preline ">" "" 
-							}
-							else if substr(`trim'(`"`macval(preline)'"'),1,1) ///
-							== ":" {
-								file write `knot' "{p 4 4 2}" _n
-								local preline : subinstr local preline ":" "" 
-							}
-
-							if !missing(`"`macval(line)'"') {
-								local preline = `"`macval(preline)' "' + 		///
-								`"`macval(line)'"'
-						
-								while !missing(`"`macval(line)'"') &			///
-								substr(`trim'(`"`macval(line)'"'),1,4) 			///
-								!= "***/" {
-									file read `hitch' line
-									
-									//remove white space in old-fashion way!
-									cap local m : display "`line'"
-									if _rc == 0 & missing(trim("`m'")) {
-										local line ""
-									}
-									
-									local preline = `"`macval(preline)' "' + 	///
-									`"`macval(line)'"'
-								}
-							}
-							
-							// Run Markdown
-							// ---------------------------------------------
-							di as err `"p2:`preline'"'
-							qui md2smcl `"`macval(preline)'"'
-							if _rc == 0 local preline `r(md)'
-							else {
-								di as err "md2smcl.ado engine failed on "	///
-								"the following line:" _n(2)
-								di as txt `"`macval(preline)'"'
-							}
-							
-						}
-						
-						
-
-						local n = `c(linesize)' + 80
-						
-						while `n' > 0 & !missing("`asciitable'") {
-							
-							// Handling + in the line
-							// =================================================
-							if substr(`"`preline'"',`n',3) == "-+-" {
-								// full + connected from above and below
-								if substr(`"`line'"',`n'+1,1) == "|" {			///
-								*substr(`"`prepreline'"',`n'+1,1) == "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+-" "-{c +}-"
-									local preline2 : subinstr local preline2 "-+-" "-|-"
-								}
-								* -|- -+- 
-								
-								// + connected above
-								if substr(`"`prepreline'"',`n'+1,1) == "|" &			///
-								substr(`"`line'"',`n'+1,1) != "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+-" "-{c BT}-"
-									local preline2 : subinstr local preline2 "-+-" "-B-"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}
-								* -B- -{c BT}- 
-								
-								
-								// + connected below
-								if substr(`"`line'"',`n'+1,1) == "|" &			///
-								substr(`"`prepreline'"',`n'+1,1) != "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+-" "-{c TT}-"
-									local preline2 : subinstr local preline2 "-+-" "-T-"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}
-								* -T- -{c TT}- 
-							}
-							
-							
-							
-							
-							// Handling + in the corners
-							// =================================================
-							if substr(`"`preline'"',`n',2) == "-+"  &			///
-							substr(`"`preline'"',`n',3) != "-+-"{
-							
-								
-								
-								if substr(`"`line'"',`n'+1,1) == "|" &			///
-								substr(`"`prepreline'"',`n'+1,1) == "|" {
-								
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+" "-{c RT}"
-									local preline2 : subinstr local preline2 "-+" "-!"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}
-								* -! -{c RT} 
-								
-								
-								// + connected above
-								if substr(`"`prepreline'"',`n'+1,1) == "|" &			///
-								substr(`"`line'"',`n'+1,1) != "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+" "-{c BRC}"
-									local preline2 : subinstr local preline2 "-+" "-;"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}
-								* -2 -{c BRC} 
-								
-								
-								// + connected below
-								if substr(`"`line'"',`n'+1,1) == "|" &			///
-								substr(`"`prepreline'"',`n'+1,1) != "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "-+" "-{c TRC}"
-									local preline2 : subinstr local preline2 "-+" "-]"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-									* -3 -{c TRC} 
-								}
-								
-								
-							}
-	
-							
-							
-							if substr(`"`preline'"',`n',2) == "+-" &			///
-							substr(`"`preline'"',`n'-1,3) != "-+-"{
-								
-								// BOTH CONNECTIONS
-								
-								if substr(`"`line'"',`n',1) == "|" &			///
-								substr(`"`prepreline'"',`n',1) == "|" {
-								
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "+" "{c LT}"
-									local preline2 : subinstr local preline2 "+" "!"
-									
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-									* ! {c LT}
-								}
-								
-								
-								
-								// + connected above
-								if substr(`"`prepreline'"',`n',1) == "|" &			///
-								substr(`"`line'"',`n',1) != "|" {
-								
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "+-" "{c BLC}-"
-									local preline2 : subinstr local preline2 "+-" ":-"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}
-								
-								// + connected below
-								if substr(`"`line'"',`n',1) == "|" &			///
-								substr(`"`prepreline'"',`n',1) != "|" {
-									local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-									local preline2 = substr(`"`macval(preline)'"',`n', .)
-									//local preline2 : subinstr local preline2 "+-" "{c TLC}-"
-									local preline2 : subinstr local preline2 "+-" "[-"
-									local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-								}							
-							}
-							
-							// Handling + in the corners
-							// =================================================
-							if substr(`"`line'"',`n'-1,3) == " | " &			///
-							substr(`"`preline'"',`n'-1,3) == "---" {
-								local preline1 = substr(`"`macval(preline)'"',1,`n'-1)
-								local preline2 = substr(`"`macval(preline)'"',`n', .)
-								local preline2 : subinstr local preline2 "-" "T"
-								local preline : di `"`macval(preline1)'"' `"`macval(preline2)'"'
-							}
-							
-							if substr(`"`preline'"',`n'-1,3) == " | " &			///
-							substr(`"`line'"',`n'-1,3) == "---" {
-								local line1 = substr(`"`macval(line)'"',1,`n'-1)
-								local line2 = substr(`"`macval(line)'"',`n', .)
-								local line2 : subinstr local line2 "-" "B"
-								local line : di `"`macval(line1)'"' `"`macval(line2)'"'
-							}
-							
-							
-				
-							
-							local n `--n'
-						}
-						
-						
-						file write `knot' `"`macval(preline)'"' _n
-					}
-					
-				
-					if substr(`trim'(`"`macval(line)'"'),1,4) != "***/"  {
-						
-						local preprepreline `"`macval(prepreline)'"'
-						local prepreline `"`macval(preline)'"'
-						local preline `"`macval(line)'"'
-						
-						
-						
-*						file write `knot' `"`macval(line)'"' _n
-						*file read `hitch' line
-						
-						//remove white space in old-fashion way!
-						cap local m : display "`line'"
-						if _rc == 0 & missing(trim("`m'")) {
-							local line ""
-						}
-						
-					}	
-				}
-			
-			*local preprepreline `"`macval(prepreline)'"'
-			*local prepreline `"`macval(preline)'"'
-			
-			}
-		}
-
-		// *********************************************************************
-		// *********************************************************************
-		
-		
-		// code line
-		
 		file read `hitch' line
 		
 	}
@@ -1121,14 +536,13 @@ program define sthlp
 	
 	tempfile tmp1
 	quietly copy "`tmp'" "`tmp1'", replace
-	*quietly copy "`tmp'" me.txt, replace
+	if !missing("`debug'") copy "`tmp'" tmp1.txt, replace
 	
 	
 	
 	// -----------------------------------------------------------------
-	// Create the ASCII tables
+	// Create lines and headers
 	// ================================================================= 
-	
 	tempname hitch knot 
 	qui file open `hitch' using `"`tmp1'"', read
 	qui file open `knot' using `"`tmp'"', write replace
@@ -1156,37 +570,7 @@ program define sthlp
 			}					
 		}
 
-						
-		if !missing("`asciitable'") {
-			local line : subinstr local line "+--" "{c TLC}--"
-			local line : subinstr local line "- | -" "{c -}{c -}{c +}{c -}{c -}", all
-			local line : subinstr local line "-|-" "-{c +}-"
-			local line : subinstr local line "-B-" "-{c BT}-"
-			local line : subinstr local line "-T-" "-{c TT}-", all
-			local line : subinstr local line  "!-" "{c LT}-", all
-			local line : subinstr local line "-!" "-{c RT}", all 
-			*local line : subinstr local line ":-" "{c BLC}-", all
-			local line : subinstr local line ":--" " --", all
-			local line : subinstr local line "--:" "-- ", all
-			local line : subinstr local line "-;" "-{c BRC}", all
-			local line : subinstr local line "[-" "{c TLC}-", all
-			local line : subinstr local line  "-]" "-{c TRC}", all
-			
-			local line : subinstr local line "-| " "-{c RT} ", all
-			local line : subinstr local line " |-" " {c LT}-", all
-			local line : subinstr local line "|" "{c |}", all
-			
-		}
-		
 		foreach l in line {
-							
-			// Create SMCL Tab
-			// -----------------------------------------------------
-			if `trim'(`"`macval(`l')'"') != "- - -" &			///
-				substr(`trim'(`"`macval(`l')'"'),1,5) == "- - -" {
-				local `l' : subinstr local `l' "- - -" "{dlgtab:" 
-				local `l' = `"`macval(`l')'"' + "}"
-			}
 							
 			// Create Markdown Horizontal line
 			// -----------------------------------------------------
@@ -1195,7 +579,6 @@ program define sthlp
 				local `l' : subinstr local `l' "- - -" "    {hline}" 
 			}
 			
-							
 			// Secondary syntax for headers
 			// -----------------------------------------------------
 			cap if substr(`trim'(`"`macval(`l')'"'),1,2) == "# " {
@@ -1206,19 +589,23 @@ program define sthlp
 				local `l' : subinstr local `l' "## " "", all
 				local `l'  "{title:`l'}"
 			}
+			
+			
 							
-							
-							//Make it nicer
-							local i 90
-							while `i' > 1 {
-								local j : display _dup(`i') "-"
-								local j2 : display _dup(`i') "="
-								local `l' : subinstr local `l' "`j'" "{hline `i'}", all
-								if substr(`trim'(`"`macval(line)'"'),1,5) != "===" {
-									local `l' : subinstr local `l' "`j2'" "{hline `i'}", all
-								}
-								local i `--i'
-							}
+			//conver ascii lines to a straight line
+			/*
+			local i 90
+			while `i' > 1 {
+				local j : display _dup(`i') "-"
+				local j2 : display _dup(`i') "="
+				local `l' : subinstr local `l' "`j'" "{hline `i'}", all
+				if substr(`trim'(`"`macval(line)'"'),1,5) != "===" {
+					local `l' : subinstr local `l' "`j2'" "{hline `i'}", all
+				}
+				local i `--i'
+			}
+			*/
+			
 			local preline `"`macval(line)'"'				
 		}		
 							
@@ -1231,9 +618,131 @@ program define sthlp
 	
 	// ALWAYS CREATE THE TEMPFILE BEFORE REPLACING AN EXISTING ONE
 	tempfile tmp1
-	quietly copy "`tmp'" "`tmp1'", replace
-	*quietly copy "`tmp'" me2.txt, replace
+	quietly copy "`tmp'" "`tmp1'", replace	
+	if !missing("`debug'") copy "`tmp'" tmp2.txt, replace
 	
+	// -----------------------------------------------------------------
+	// Create tables
+	// ================================================================= 
+	tempfile tmp
+	tempname hitch knot 
+	qui file open `hitch' using `"`tmp1'"', read
+	qui file open `knot' using `"`tmp'"', write replace
+	file read `hitch' line
+	local preline 0
+	while r(eof) == 0 {	
+		
+		if substr(`trim'(`"`macval(line)'"'),1,1) == "|" {
+			// Markdown tables
+			// -----------------------------------------------------
+			if substr(`trim'(`"`macval(line)'"'),1,5) == "|----" | ///
+				 substr(`trim'(`"`macval(line)'"'),1,5) == "|:---" {
+
+				 local firstline 1
+				 
+				 //get the number of columns, and their width (except the last one)
+				local columns = subinstr(`"`macval(line)'"', "-", "", .)
+				local columns = subinstr(`"`macval(columns)'"', ":", "", .)
+				local columns = subinstr(`"`macval(columns)'"', " ", "", .)
+				local columns = length(`trim'("`columns'")) - 1
+				local activecol = `columns' - 1
+				local tablewidth = length(`trim'(`"`macval(line)'"')) - `columns' - 1
+				
+				//Write the header row
+				// {it:Option} {col 17} {it:Description}
+				
+				local i = 0
+				tokenize `"`macval(line)'"', parse("|")
+				local col = 0
+				while `"`macval(1)'"' != "" {
+					if `"`macval(1)'"' != "|" {
+						local i = `i' + 1
+						local width`i' =  length(`"`macval(1)'"')
+					}
+					macro shift
+				}	
+				
+				// deside the width of the table
+				 
+				 
+				
+				local i = 0
+				tokenize `"`macval(preline)'"', parse("|")
+				while `"`macval(1)'"' != "" {
+					if `"`macval(1)'"' != "|" {
+
+						if "`i'" == "0" {
+							file write `knot'  `"{col 5}`macval(1)'"' 
+						}
+						else {
+							local j : di `width`i'' + 5
+							file write `knot' `"{col `j'}`macval(1)'"' 
+						}
+						local i = `i' + 1
+					}
+					macro shift
+				}
+
+				if !missing("`width`i''") {
+					file write `knot' _n
+
+					if `tablewidth' >= 80 file write `knot' "{space 4}{hline}" _n
+					else file write `knot' "{space 4}{hline `tablewidth'}" _n
+				}
+				else if !missing("`firstline'") {
+					if `tablewidth' >= 80 file write `knot' "{space 4}{hline}" _n
+					else file write `knot' "{space 4}{hline `tablewidth'}" _n
+				}
+			}
+			else if !missing("`firstline'") {
+				while r(eof) == 0 & length(`trim'(`"`macval(line)'"')) > 1 {
+					local i = 0
+					tokenize `"`macval(line)'"', parse("|")
+					while `"`macval(1)'"' != "" {
+						if `"`macval(1)'"' != "|" {
+							
+							if "`i'" == "0" {
+								file write `knot'  `"{col 5}`macval(1)'"' 
+							}
+							else {
+								local j : di `width`i'' + 5
+								file write `knot' `"{col `j'}`macval(1)'"' 
+							}
+							local i = `i' + 1
+						}
+						macro shift
+					}
+					if !missing("`width`i''") {
+						file write `knot' _n
+						*file write `knot' "{space 4}{hline}"
+					}
+					file read `hitch' line
+				}
+				
+				if `tablewidth' >= 80 {
+					file write `knot' "{space 4}{hline}" _n
+				}
+				else file write `knot' "{space 4}{hline `tablewidth'}" _n
+				
+				local firstline //reset
+			}
+		}
+		
+		else {
+			file write `knot' `"`macval(line)'"' _n
+		}
+		
+		local preline `"`macval(line)'"'	
+		file read `hitch' line
+	}
+	
+	//ADD ADDITIONAL LINE
+	file write `knot' _n
+	file close `knot'
+	
+	// ALWAYS CREATE THE TEMPFILE BEFORE REPLACING AN EXISTING ONE
+	tempfile tmp1
+	quietly copy "`tmp'" "`tmp1'", replace	
 	
 	
 	quietly copy "`tmp'" "`convert'", `replace'	
@@ -1251,4 +760,4 @@ program define sthlp
 		
 end
 
-*do ./sthlp/bugs.do
+
