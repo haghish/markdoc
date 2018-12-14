@@ -3560,7 +3560,7 @@ program markdoc
         template("`template'") `replace' `date' title("`title'")                ///
         author("`author'") affiliation("`affiliation'") address("`address'")    ///
         summary("`summary'") `asciitable' version("`version'")                  ///
-                `helplayout' `build'
+                `helplayout' `build' `debug'
             }
         }
 
