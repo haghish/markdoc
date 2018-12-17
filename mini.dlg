@@ -34,7 +34,7 @@ COPY copy1
 // DYNAMIC DOCUMENT TAB
 // =============================================================================
 
-DIALOG main, label("MarkDoc Mini") tabtitle("Dynamic Document")
+DIALOG main, label("mini") tabtitle("Dynamic Document")
 BEGIN
 	
 	//define the source value
