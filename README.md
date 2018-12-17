@@ -1,3 +1,7 @@
+<p align="center">
+  <img />
+</p>
+
 # MarkDoc : a general-purpose literate programming package for Stata
 
 <a href="http://haghish.com/markdoc"><img src="./Resources/images/MD150.png" align="left" width="140" hspace="10" vspace="6"></a>
@@ -9,6 +13,14 @@
 <a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="90" hspace="35" vspace="6"></a>
 
 `markdoc` has a new option - [**`mini`**](https://github.com/haghish/markdoc/wiki/mini) - that allows Generating *HTML*, *Docx*, and *PDF* documents *without requiring Pandoc and wkhtmltopdf* or any third-party software. It also offers a new GUI for the engine (type `db mini`). [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
+
+<br>
+
+Once you learn `markdoc`, you can take care of all types of documents you may wish to create for Stata, simply using Markdown. 
+
+<img src="./Resources/images/markdown.png" width="400px">
+
+
 
 ## Resources
 
