@@ -16,9 +16,11 @@
 
 <br>
 
-Once you learn `markdoc`, you can take care of all types of documents you may wish to create for Stata, simply using Markdown. 
 
-<img src="./Resources/images/markdown.png" width="400px">
+
+<img src="./Resources/images/markdown.png" align="right" width="325" hspace="35" vspace="6">
+
+Once you learn `markdoc`, you can take care of all types of documents you may wish to create for Stata, simply using Markdown. If you are using `markdoc` for data analysis, you can write your documentation with Markdown and generate dynamic documents in **docx**, **pdf**, or **html**, *without requiring any third-party software*. Similarly, if you are a Stata programmer and you wish to write clean and readable documentation that is easy to write and update, you can write your documentation in Markdown and export **`sthlp` Stata Help Files**. You can also generate the package documentation in other formats, for example in Markdown to put them on GitHub, or HTML to host them on your private site. The document convertors are completely written in Stata language!   
 
 
 
