@@ -1,4 +1,4 @@
-VERSION 12
+VERSION 15
 POSITION . . 377 397
 
 
@@ -144,7 +144,7 @@ BEGIN
 	if main.r2.iseq(1) {
 		call main.statax.enable
 	}
-	if main.r1.iseq(1) | main.r3.iseq(1) | main.r4.iseq(1) | main.r6.iseq(1)  {
+	if main.r1.iseq(1) | main.r3.iseq(1) | main.r4.iseq(1) | main.r5.iseq(1)  {
 		call main.statax.disable
 	}
 	else {
@@ -153,7 +153,7 @@ BEGIN
 	
 	// master defaults
 	// ----------------------------------------------------------
-	if main.r1.iseq(1) | main.r3.iseq(1) | main.r4.iseq(1) | main.r5.iseq(1) | main.r6.iseq(1) {
+	if main.r1.iseq(1) | main.r3.iseq(1) | main.r4.iseq(1) | main.r5.iseq(1)  {
 		call main.master.disable
 	}
 	if main.r2.iseq(1) {
@@ -205,9 +205,6 @@ BEGIN
 			put "export(pdf) "
 		}
 		if main.r5 {
-			put "export(slide) "
-		}
-		if main.r6 {
 			put "export(sthlp) "
 		}
 		
