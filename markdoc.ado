@@ -774,15 +774,8 @@ program markdoc
     // CHANGED SYNTAX
     // =========================================================================    
     local mathjax mathjax
-	
-    if !missing("`mini'") {
-		if !missing("`markup'") {
-			if "`markup'" != "md" | "`markup'" != "markdown" | "`markup'" != "Markdown" {
-				display as err "{bf:`markup'} markup language is not supported in MarkDoc {bf:mini}"
-			}
-		}
-	}
-    if "`style'"  == "" local style "simple" 
+        
+        if "`style'"  == "" local style "simple" 
                     
     if !missing("`texmaster'") {
         di "The {bf:texmaster} option was renamed to {bf:master}, although it " ///
@@ -858,13 +851,7 @@ program markdoc
     if "`export'" == "slide" & "`markup'" == "latex" {
         local export pdf
     }
-	
-	// Creating html slides with for he light-weight markdoc mini
-    // -------------------------------------------------------------------------
-	if !missing("`mini'") & "`export'" == "slide" {
-		local export slidehtml
-	}
- 
+    
     // Auto-correcting possible typos
     // -------------------------------------------------------------------------
     if "`markup'" == "HTML" local markup html
@@ -886,7 +873,7 @@ program markdoc
         // later on supports for docx and pdf will be provided
         // -------------------------------------------------------------------------
         if !missing("`mini'") {
-            if `c(stata_version)' < 15 & "`export'" != "sthlp" & "`export'" != "slidehtml" {
+            if `c(stata_version)' < 15 & "`export'" != "sthlp"  {
                 di as err "the {bf:mini} option requires Stata 15 or above"
 				di as txt "you could remove the {bf:mini} option and run MarkDoc in the full-version mode"
                 err 1
@@ -894,9 +881,9 @@ program markdoc
             
             if "`export'" != "md" & "`export'" != "html"          ///
                & "`export'" != "docx" & "`export'" != "pdf"       ///
-                 & "`export'" != "sthlp" & "`export'" != "slidehtml" {
+                 & "`export'" != "sthlp" {
                 di as err "the {bf:mini} option currently only supports " ///
-                          "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, {bf:slide}, and {bf:sthlp} formats"
+                          "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, and {bf:sthlp} formats"
                 err 198
             }
         }
@@ -1044,12 +1031,12 @@ program markdoc
     
     // checkes the required software
     // -------------------------------------------------------------------------
-    if missing("`mini'") & "`export'" != "sthlp" & "`export'" != "slidehtml" {
+    if missing("`mini'") & "`export'" != "sthlp" {
             markdoccheck , `install' `test' export(`export') style(`style')           ///
            markup(`markup') pandoc("$pandoc") printer("`printer'")
         }
         
-         
+        
     // -------------------------------------------------------------------------
     // TEST MARKDOC
     // =========================================================================
@@ -1105,18 +1092,11 @@ program markdoc
     // -------------------------------------------------------------------------
     if "`export'" != "html" & "`export'" != "pdf" & !missing("`statax'")        ///
     & "`export'" != "tex" {
-        if missing("`mini'") & "`export'" != "slide" {
-					display as txt "{p}(The {bf:statax} option is only used "           ///
-					 "when exporting to {bf:html}, {bf:pdf}, or {bf:tex} formats)" _n
-					 local statax                           //Erase the macro
-				}
+        display as txt "{p}(The {bf:statax} option is only used "               ///
+         "when exporting to {bf:html}, {bf:pdf}, or {bf:tex} formats)" _n
+         local statax                           //Erase the macro
     }
-		if !missing("`mini'") {
-				if "`export'" != "html" & "`export'" != "slidehtml" {
-					local statax
-				}
-		}
-   
+    
     // PDF PROCESSING
     // ==============
     // Create a local for processing the PDF. Then change the export to HTML
@@ -1153,10 +1133,9 @@ program markdoc
         di as err "{p}{bf:style} option not recognized."
         error 198
     }
-
+    
     // make sure no problem happenes if the file has double quotation sign
     capture local fname : display "`smclfile'"
-		   
     if _rc != 0 {
         capture local fname : display `smclfile'
         if _rc == 0 {
@@ -1220,46 +1199,35 @@ program markdoc
         tempfile md
         local md  "`md'.md"
         
-        local input `smclfile' 
-				
-         
+        local input `smclfile'  
+        
         if (index(lower("`input'"),".smcl")) {
-					local input : subinstr local input ".smcl" ""
-	
-					if "`export'" == "slidehtml" {
-							local convert "`input'.html"
-							local output "`output'.html"
-					}
-			
-					else if "`export'" == "slide" {
-							local convert "`input'.pdf"
-							local output "`output'.pdf"
-					}   
-					else if "`export'" == "dzslide" | "`export'" == "slidy" {
-							local convert "`input'.html"
-							local output "`output'.html"
-					}
-					else {
-							local convert "`input'.`export'"
-							local output "`output'.`export'"
-					}   
-					
-					local html "`input'_.html"
-					local pdf "`input'.pdf"
-					local name "`input'"
-					local input  "`input'.smcl"			
-					}
+            local input : subinstr local input ".smcl" ""
+            if "`export'" == "slide" {
+                local convert "`input'.pdf"
+                local output "`output'.pdf"
+            }   
+            else if "`export'" == "dzslide" | "`export'" == "slidy" {
+                local convert "`input'.html"
+                local output "`output'.html"
+            }
+            else {
+                local convert "`input'.`export'"
+                local output "`output'.`export'"
+            }   
+            
+            local html "`input'_.html"
+            local pdf "`input'.pdf"
+            local name "`input'"
+            local input  "`input'.smcl"
+        }
         else if (index(lower("`input'"),".ado")) {
             local input : subinstr local input ".ado" ""
             *if "`export'" == "slide" local convert "`input'.pdf"
             *else if "`export'" == "dzslide" local convert "`input'.html"
             *else if "`export'" == "slidy" local convert "`input'.html"
             *else local convert "`input'.`export'"
-            if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
-            }
-						else if "`export'" == "slide" {
+            if "`export'" == "slide" {
                 local convert "`input'.pdf"
                 local output "`output'.pdf"
             }   
@@ -1281,11 +1249,7 @@ program markdoc
         }
         else if (index(lower("`input'"),".mata")) {
             local input : subinstr local input ".mata" ""
-						if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
-            }
-            else if "`export'" == "slide" local convert "`input'.pdf"
+            if "`export'" == "slide" local convert "`input'.pdf"
             else if "`export'" == "dzslide" local convert "`input'.html"
             else if "`export'" == "slidy" local convert "`input'.html"
             else local convert "`input'.`export'"
@@ -1298,12 +1262,11 @@ program markdoc
         }
         else if (index(lower("`input'"),".do")) {
             local input : subinstr local input ".do" ""
-			
-						if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
-            }
-            else if "`export'" == "slide" {
+            *if "`export'" == "slide" local convert "`input'.pdf"
+            *else if "`export'" == "dzslide" local convert "`input'.html"
+            *else if "`export'" == "slidy" local convert "`input'.html"
+            *else local convert "`input'.`export'"
+            if "`export'" == "slide" {
                 local convert "`input'.pdf"
                 local output "`output'.pdf"
             }   
@@ -1328,15 +1291,8 @@ program markdoc
             //allow rundoc get nested in the file
             global rundoc "`input'"
         }
-        else if (!index(lower("`input'"),".smcl")) { 
-						
-						if !missing("`debug'") di as err "FILE TYPE UNKNOWN"
-			
-						if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
-            }
-            else if "`export'" == "slide" {
+        else if (!index(lower("`input'"),".smcl")) {
+            if "`export'" == "slide" {
                 local convert "`input'.pdf"
                 local output "`output'.pdf"
             }   
@@ -1355,9 +1311,7 @@ program markdoc
             local input  "`input'.smcl"
         }
         
-
-		
-		*confirm file "`input'"
+        *confirm file "`input'"
         cap confirm file "`input'"
         if _rc != 0 {
             cap confirm file "`smclfile'"
@@ -1380,7 +1334,7 @@ program markdoc
     
         quietly copy "`tempput'" "`output'", replace
 
-     
+        
         // =========================================================================
         // Execute rundoc for the do-files
         //
@@ -2635,7 +2589,7 @@ program markdoc
         }
         
         //Add the title page in Markdown
-        if "`export'" != "tex" & "`export'" != "pdf" & "`export'" != "html" & "`export'" != "slidehtml" {
+        if "`export'" != "tex" & "`export'" != "pdf" & "`export'" != "html" {
             if "`markup'" == "markdown" | "`markup'" == "" {        
                 tempfile tmp1
                 tempname hitch knot 
@@ -3421,15 +3375,13 @@ program markdoc
                     
                     if !missing("`debug'") {
                         copy "`md'" 0md2.md, replace
-						if "`export'" != "slidehtml" {
-							copy "`output'" 00output.txt, replace
-							copy "`convert'" 00convert.txt, replace
-						}
+                        copy "`output'" 00output.txt, replace
+                        copy "`convert'" 00convert.txt, replace
                     }
                 }   
             }
-			
-   
+            
+                
             ****************************************************
             *CREATING THE TEXMASTER FILE
             ****************************************************
@@ -3524,7 +3476,7 @@ program markdoc
                 else display as err "MarkDoc could not produce `name'.pdf" _n
             }
             
-            else if "`export'" != "slidehtml" {
+            else {
                 cap confirm file "`convert'"
                 if _rc == 0 {
                     di as txt "(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
@@ -3598,156 +3550,19 @@ program markdoc
         }
     }
     
-	// =========================================================================
-	// Generate Stata Help Files 
-	// =========================================================================
-	if "`export'" == "sthlp" | "`export'" == "smcl" {
-		if "`smclfile'" != "" & "`test'" == "" {
+        // =========================================================================
+        // Generate Stata Help Files 
+        // =========================================================================
+        if "`export'" == "sthlp" | "`export'" == "smcl" {
+            if "`smclfile'" != "" & "`test'" == "" {
 
-			sthlp `smclfile', markup("`markup'") export("`export'")                 ///
-	template("`template'") `replace' `date' title("`title'")                ///
-	author("`author'") affiliation("`affiliation'") address("`address'")    ///
-	summary("`summary'") `asciitable' version("`version'")                  ///
-			`helplayout' `build' `debug'
-		}
-	}
-	
-	// =========================================================================
-	// Generate Stata Help Files 
-	// =========================================================================
-	if "`export'" == "slidehtml" {
-		//https://github.com/gnab/remark
-		tempfile tmp
-		tempname hitch knot 
-		qui file open `hitch' using `"`md'"', read 
-		qui cap file open `knot' using "`tmp'", write replace
-		
-		file write `knot' `"<!DOCTYPE html>"' _n
-		file write `knot' `"<html>"' _n
-		file write `knot' `"  <head>"' _n
-		file write `knot' `"    <title>`title'</title>"' _n
-		file write `knot' `"    <meta charset="utf-8">"' _n
-		file write `knot' `"    <style>"' _n
-		file write `knot' `"      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);"' _n
-		file write `knot' `"      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);"' _n
-		file write `knot' `"      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);"' _n
-		file write `knot' "      body { font-family: 'Droid Serif'; }" _n
-		file write `knot' "      h1, h2, h3 {" _n
-		file write `knot' "        font-family: 'Yanone Kaffeesatz';" _n
-		file write `knot' "        font-weight: normal;" _n
-		file write `knot' "      }" _n
-		file write `knot' "      .sh_stata {font-size:60%;}" _n
-		file write `knot' "      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; font-size:60%;}" _n
-		file write `knot' "    </style>" _n
-		file write `knot' "    <script type='text/javascript' src='http://haghish.com/statax/Statax.js'></script>" _n
-		file write `knot' `"  </head>"' _n
-		file write `knot' `"  <body>"' _n
-		file write `knot' `"    <textarea id="source">"' _n
-		
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
-		file read `hitch' line  
-		
-		if substr(trim(`"`macval(line)'"'),1,8) ==  "Rundoc 1"  {
-			file read `hitch' line
-		}
-    
-		local codeblock //reset
-		
-		while r(eof) == 0 {
-			
-			local jump //reset
-			
-			if !missing("`statax'") {
-				
-				// check for code block
-				if missing("`codeblock'") & substr(`"`macval(line)'"',1,3) == "~~~" {
-					local codeblock 1
-					file write `knot' "<pre class='sh_stata'>" _n
-					file read `hitch' line
-					local jump 1
-				}
-				if !missing("`codeblock'") & substr(`"`macval(line)'"',1,3) == "~~~" {
-					local codeblock //reset
-					file write `knot' "</pre>" _n
-					file read `hitch' line
-					local jump 1
-				}
-			
-				if missing("`jump'") {
-					if substr(`"`macval(line)'"',1,12) == "          . " {
-						file write `knot' "<pre class='sh_stata'>"
-						file write `knot' `"`macval(line)'</pre>"' _n
-						
-						//make sure next line is empty
-						file read `hitch' line
-						if trim(`"`macval(line)'"') != "" {
-							file write `knot' _n
-							local jump 1
-						}
-						else {
-							file write `knot' `"`macval(line)'"' _n
-						}
-					}
-					else {
-						file write `knot' `"`macval(line)'"' _n
-					}
-				}
-				
-			}
-			else {
-				file write `knot' `"`macval(line)'"' _n
-			}
-		
-			if missing("`jump'") file read `hitch' line
-		}
-		
-		file write `knot' `"    </textarea>"' _n
-		file write `knot' `"    <script src="https://remarkjs.com/downloads/remark-latest.min.js">"' _n
-		file write `knot' `"    </script>"' _n
-		file write `knot' `"    <script>"' _n
-		file write `knot' `"      var slideshow = remark.create();"' _n
-		file write `knot' `"    </script>"' _n
-		file write `knot' `"  </body>"' _n
-		file write `knot' `"</html>"' _n
-		
-		file close `knot'
-		file close `hitch'
-
-		
-		
-		
-		if !missing("`debug'") {
-			copy "`tmp'" 05B.txt    , replace
-		}
-		
-		qui copy "`tmp'" "`convert'", `replace'
-		cap confirm file "`convert'"
-		if _rc == 0 {
-			di as txt "(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
-			if "`export'" != "md" cap qui erase "`md'"
-		}
-		else display as err "MarkDoc could not produce `convert'" _n
-	}   
-
-		
-	
+                sthlp `smclfile', markup("`markup'") export("`export'")                 ///
+        template("`template'") `replace' `date' title("`title'")                ///
+        author("`author'") affiliation("`affiliation'") address("`address'")    ///
+        summary("`summary'") `asciitable' version("`version'")                  ///
+                `helplayout' `build' `debug'
+            }
+        }
 
     
     // Drop the global macros
@@ -3763,4 +3578,3 @@ end
 
 // create the help file
 *markdoc markdoc.ado, exp(sthlp) replace 
-
