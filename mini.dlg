@@ -61,7 +61,8 @@ BEGIN
 	RADIO r2  +60    @   @ .  , middle label("html") onclickon("program test")
 	RADIO r3  +60    @   @ ., middle   label("docx") onclickon("program test")
 	RADIO r4  +60    @   @ ., middle   label("pdf") onclickon("program test")
-  RADIO r5  +60    @   @  ., last label("sthlp") onclickon("program test") ///
+	RADIO r5  +60    @   @ ., middle   label("slide") onclickon("program test")
+    RADIO r6  +60    @   @  ., last label("sthlp") onclickon("program test") ///
 	      tooltip(`"generates Stata help file from script files"')
 
 	// GROUPBOX
