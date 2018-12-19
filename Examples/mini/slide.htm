@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>this is a title</title>
+    <title></title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-      body { font-family: 'Droid Serif'; }
+      body { font-family: 'time'; }
       h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
+        font-family: 'time';
         font-weight: normal;
       }
-      .sh_stata {font-size:60%;}
+      .sh_stata {font-size:60%;font-weight: bold;}
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; font-size:60%;}
     </style>
     <script type='text/javascript' src='http://haghish.com/statax/Statax.js'></script>
@@ -22,6 +22,8 @@
 
 
 class: center, middle
+
+
 
 Title
 =====
@@ -118,6 +120,56 @@ else {
                  _cons |   11253.06   1170.813     9.61   0.000     8919.088    13587.03
           ------------------------------------------------------------------------------
 
+
+
+
+---
+
+### Listing observations
+
+
+
+<pre class='sh_stata'>          . list in 1/5</pre>
+
+               +--------------------------------------------------------------------------------------------+
+            1. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+               | AMC Concord   | 4,099 |  22 |     3 |      2.5 |    11 |  2,930 |    186 |   40 |      121 |
+               |--------------------------------------------------------------------------------------------|
+               |                  gear_r~o                   |                    foreign                   |
+               |                      3.58                   |                   Domestic                   |
+               +--------------------------------------------------------------------------------------------+
+
+               +--------------------------------------------------------------------------------------------+
+            2. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+               | AMC Pacer     | 4,749 |  17 |     3 |      3.0 |    11 |  3,350 |    173 |   40 |      258 |
+               |--------------------------------------------------------------------------------------------|
+               |                  gear_r~o                   |                    foreign                   |
+               |                      2.53                   |                   Domestic                   |
+               +--------------------------------------------------------------------------------------------+
+
+               +--------------------------------------------------------------------------------------------+
+            3. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+               | AMC Spirit    | 3,799 |  22 |     . |      3.0 |    12 |  2,640 |    168 |   35 |      121 |
+               |--------------------------------------------------------------------------------------------|
+               |                  gear_r~o                   |                    foreign                   |
+               |                      3.08                   |                   Domestic                   |
+               +--------------------------------------------------------------------------------------------+
+
+               +--------------------------------------------------------------------------------------------+
+            4. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+               | Buick Century | 4,816 |  20 |     3 |      4.5 |    16 |  3,250 |    196 |   40 |      196 |
+               |--------------------------------------------------------------------------------------------|
+               |                  gear_r~o                   |                    foreign                   |
+               |                      2.93                   |                   Domestic                   |
+               +--------------------------------------------------------------------------------------------+
+
+               +--------------------------------------------------------------------------------------------+
+            5. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+               | Buick Electra | 7,827 |  15 |     4 |      4.0 |    20 |  4,080 |    222 |   43 |      350 |
+               |--------------------------------------------------------------------------------------------|
+               |                  gear_r~o                   |                    foreign                   |
+               |                      2.41                   |                   Domestic                   |
+               +--------------------------------------------------------------------------------------------+
 
 
 

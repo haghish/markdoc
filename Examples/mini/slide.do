@@ -73,3 +73,13 @@ else {
 ***/
 
 reg price mpg
+
+/***
+
+---
+
+### Listing observations
+
+***/
+
+list in 1/5

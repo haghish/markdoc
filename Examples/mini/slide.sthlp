@@ -1,5 +1,5 @@
 {smcl}
-class: center, middle
+
 
 
 {title:Title}
@@ -14,12 +14,11 @@ class: center, middle
 {p 4 4 2}
 Your documents, slides, and help files can include tables!
 
-{col 5}Tables          {col 21}Are              {col 23}Cool    
-{space 4}{hline 44}
-{col 5}col 3 is        {col 21}right-aligned    {col 23}$1600   
-{col 5}col 2 is        {col 21}centered         {col 23}$12   
-{col 5}zebra stripes   {col 21}are neat         {col 23}$1   
-{space 4}{hline 44}
+{col 5}Tables          {col 21}style of table       {col 27}Cool    
+{space 4}{hline 48}
+{col 5}col 3 is        {col 21}right-aligned        {col 27}$1600   
+{col 5}col 2 is        {col 21}centered             {col 27}$12   
+{space 4}{hline 48}
 
 
 {p 4 4 2}
@@ -69,5 +68,10 @@ So until Stata fixes this problem, style your code with spaces rather than tabs.
 {title:}
 
 {title:Introduction}
+
+{title:}
+
+{p 4 4 2}{bf:Listing observations}
+
 
 

@@ -8,7 +8,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-
 <!-- SYNTAX HIGHLIGHTING CLASSES  -->
 <style type="text/css">
 body {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Times New Roman", Times, serif;
     text-align:justify;
     margin: 0 8%;
     font-size: 14px;
@@ -16,7 +16,7 @@ body {
 }
 
 a {
-   color: #5A727C;
+   color: ;
        text-decoration: none;
 }
 a:hover {
@@ -31,7 +31,7 @@ h1, h1 > a, h1 > a:link {
         margin:0.67em 0;
         padding: 0;
         font-family: ;
-        color:#343F44;
+        color:black;
         font-size: 22px;
         }
 
@@ -42,7 +42,7 @@ color:#345A8A;
 h2, h2 > a, h2 > a, h2 > a:link {
         margin:14px 0px 2px 0px;
         padding: 0;
-        color:#4A5A60;
+        color:black;
         font-size: 18px;
         font-weight:bold;
         }
@@ -50,7 +50,7 @@ h2, h2 > a, h2 > a, h2 > a:link {
 h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {
         margin:14px 0px 0px 0px;
         padding: 0;
-        color:#4A5A60;
+        color:black;
         font-size: 16px;
         font-weight:bold;
         }
@@ -60,7 +60,7 @@ h4 {
         padding: 0;
         font-family: ;
         font-size: 16px;
-        color:#4A5A60;
+        color:black;
         font-weight:bold;
         font-style:italic;
         }
@@ -112,7 +112,7 @@ header {
         padding-bottom:5px; 
         margin:0;
         padding-top:150px; 
-        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: "Times New Roman", Times, serif;
         text-align:center;
         display:block;
         font-weight:bold;
@@ -197,8 +197,8 @@ pre > code {
 blockquote {
        padding: 0 1rem;
        margin-left: 0;
-       color: #819198;
-       border-left: 0.3rem solid #E8F0F1;
+       color: black;
+       border-left: 0.3rem solid #eff0f1;
 }
 
 img {
@@ -224,7 +224,6 @@ ul li {
 </style>
 <script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
 </head>
-<header>this is a title</header>
 <body>
 <h1><a href="#title" id="title">Title</a></h1>
 <h2><a href="#subtitle" id="subtitle">subtitle</a></h2>
@@ -233,11 +232,11 @@ ul li {
 <p>Your documents, slides, and help files can include tables!</p>
 <table>
 <thead>
-<tr><th align="left"> Tables          </th><th align="left"> Are              </th><th align="left"> Cool    </th></tr>
+<tr><th align="left"> Tables          </th><th align="left"> style of table       </th><th align="left"> Cool    </th></tr>
 </thead>
 <tbody>
-<tr><td align="left"> col 3 is        </td><td align="left"> right-aligned    </td><td align="left"> $1600   </td></tr>
-<tr><td align="left"> col 2 is        </td><td align="left"> centered         </td><td align="left">   $12   </td></tr>
+<tr><td align="left"> col 3 is        </td><td align="left"> right-aligned        </td><td align="left"> $1600   </td></tr>
+<tr><td align="left"> col 2 is        </td><td align="left"> centered             </td><td align="left">   $12   </td></tr>
 </tbody>
 </table>
 <p>You can also create your tables online. The website mentioned below produces the format that is &ldquo;ideal&rdquo; for MarkDoc</p>
@@ -297,6 +296,49 @@ else {
                mpg |  -238.8943   53.07669    -4.50   0.000    -344.7008   -133.0879
              _cons |   11253.06   1170.813     9.61   0.000     8919.088    13587.03
       ------------------------------------------------------------------------------
+</code></pre>
+<hr />
+<h3><a href="#listing-observations" id="listing-observations">Listing observations</a></h3>
+<pre class="sh_stata">  . list in 1/5</pre>
+<pre><code>           +--------------------------------------------------------------------------------------------+
+        1. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+           | AMC Concord   | 4,099 |  22 |     3 |      2.5 |    11 |  2,930 |    186 |   40 |      121 |
+           |--------------------------------------------------------------------------------------------|
+           |                  gear_r~o                   |                    foreign                   |
+           |                      3.58                   |                   Domestic                   |
+           +--------------------------------------------------------------------------------------------+
+
+           +--------------------------------------------------------------------------------------------+
+        2. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+           | AMC Pacer     | 4,749 |  17 |     3 |      3.0 |    11 |  3,350 |    173 |   40 |      258 |
+           |--------------------------------------------------------------------------------------------|
+           |                  gear_r~o                   |                    foreign                   |
+           |                      2.53                   |                   Domestic                   |
+           +--------------------------------------------------------------------------------------------+
+
+           +--------------------------------------------------------------------------------------------+
+        3. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+           | AMC Spirit    | 3,799 |  22 |     . |      3.0 |    12 |  2,640 |    168 |   35 |      121 |
+           |--------------------------------------------------------------------------------------------|
+           |                  gear_r~o                   |                    foreign                   |
+           |                      3.08                   |                   Domestic                   |
+           +--------------------------------------------------------------------------------------------+
+
+           +--------------------------------------------------------------------------------------------+
+        4. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+           | Buick Century | 4,816 |  20 |     3 |      4.5 |    16 |  3,250 |    196 |   40 |      196 |
+           |--------------------------------------------------------------------------------------------|
+           |                  gear_r~o                   |                    foreign                   |
+           |                      2.93                   |                   Domestic                   |
+           +--------------------------------------------------------------------------------------------+
+
+           +--------------------------------------------------------------------------------------------+
+        5. | make          | price | mpg | rep78 | headroom | trunk | weight | length | turn | displa~t |
+           | Buick Electra | 7,827 |  15 |     4 |      4.0 |    20 |  4,080 |    222 |   43 |      350 |
+           |--------------------------------------------------------------------------------------------|
+           |                  gear_r~o                   |                    foreign                   |
+           |                      2.41                   |                   Domestic                   |
+           +--------------------------------------------------------------------------------------------+
 </code></pre>
 </body>
 </html>
