@@ -1,3 +1,3 @@
-github install haghish/weaver   , version(3.4.1)
+github install haghish/weaver  
 github install haghish/md2smcl 
 
