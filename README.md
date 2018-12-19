@@ -12,10 +12,9 @@
 
 <a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="90" hspace="35" vspace="6"></a>
 
-`markdoc` has a new option - [**`mini`**](https://github.com/haghish/markdoc/wiki/mini) - that allows Generating *HTML*, *Docx*, and *PDF* documents *without requiring Pandoc and wkhtmltopdf* or any third-party software. It also offers a new GUI for the engine (type `db mini`). [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
+`markdoc` has a new option - [**`mini`**](https://github.com/haghish/markdoc/wiki/mini) - a light-weight program written completely in Stata that allows Generating *HTML*, *Docx*, *PDF*, *Presenattion slides*, and *Stata Help Files (sthlp)* ***without requiring  [Pandoc](http://pandoc.org/installing.html) and [wkhtmltopdf](http://wkhtmltopdf.org/downloads.html) or any third-party software***. It also offers a new GUI for the engine (type `db mini`). [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 <br>
-
 
 
 <img src="./Resources/images/markdown.png" align="right" width="350" hspace="0" vspace="0">
