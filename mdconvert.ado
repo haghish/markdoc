@@ -384,8 +384,10 @@ program define mdconvert
 		// -------------------------------------------------------------------------
 		// Table  (needs much more work, currently only the default tbl is recognized)
 		// -------------------------------------------------------------------------
-		if substr(`trim'(`"`macval(line)'"'),1,5) == ":----" |  ///
-		   substr(`trim'(`"`macval(line)'"'),1,5) == "|----" & substr(`trim'(`"`macval(line)'"'),-5,.) == "----|" {
+		if substr(`trim'(`"`macval(line)'"'),1,5) == ":----"  |  ///
+		   substr(`trim'(`"`macval(line)'"'),1,5) == "|----"  |  ///
+			 substr(`trim'(`"`macval(line)'"'),1,6) == "| ----" |  ///
+			 substr(`trim'(`"`macval(line)'"'),1,6) == "| :---" | {
 			
 			local tablenum = `tablenum'+1
 			
