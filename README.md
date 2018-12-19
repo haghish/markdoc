@@ -6,13 +6,13 @@
 
 <a href="http://haghish.com/markdoc"><img src="./Resources/images/MD150.png" align="left" width="140" hspace="10" vspace="6"></a>
 
-**MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp*, *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*. The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting. [**Continue to MarkDoc documentation**...](https://github.com/haghish/MarkDoc/wiki)
+**MarkDoc** is a general-purpose literate programming package for Stata. **MarkDoc** is very simple and intuitive to use, yet a powerful software for creating dynamic documents interactively in a variety of formats such as *sthlp*, *pdf*, *docx*, *tex*, *html*, *odt*, *epub*, and *markdown*. The software has a considerable focus on making literate programming easy-to-learn and practice for newbies. Therefore, it can be taught to undergraduate students in introductory courses to document code and practice statistical reporting. [Continue to MarkDoc documentation...](https://github.com/haghish/MarkDoc/wiki)
 
 <br>
 
 <a href="http://haghish.com/markdoc"><img src="./Resources/images/news.png" align="left" width="90" hspace="35" vspace="6"></a>
 
-`markdoc` has a new option - [**`mini`**](https://github.com/haghish/markdoc/wiki/mini) - a light-weight program written completely in Stata that allows Generating *HTML*, *Docx*, *PDF*, *Presenattion slides*, and *Stata Help Files (sthlp)* ***without requiring  [Pandoc](http://pandoc.org/installing.html) and [wkhtmltopdf](http://wkhtmltopdf.org/downloads.html) or any third-party software***. It also offers a new GUI for the engine (type `db mini`). [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
+`markdoc` has a new option - [**`mini`**](https://github.com/haghish/markdoc/wiki/mini) - a light-weight program written completely in Stata that allows Generating *HTML*, *Docx*, *PDF*, *Presenattion slides*, and *Stata Help Files (sthlp)* ***without requiring  [Pandoc](http://pandoc.org/installing.html) and [wkhtmltopdf](http://wkhtmltopdf.org/downloads.html) or any third-party software***. It also offers a new GUI for the engine (type `db mini`). [Read more about the `mini` mode...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 <br>
 
