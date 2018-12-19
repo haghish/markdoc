@@ -69,14 +69,19 @@ program abspath, rclass
 	// get the current path
 	// --------------------------------------------------------------------
 	local path : pwd
-	
-	if "`c(os)'" == "Windows" local abspath = "`path'" + "\" + "`filename'"
-	else local abspath = "`path'" + "/" + "`filename'"
+	local pathstr `path'
 	
 	if "`c(os)'" == "Windows" {
-		local path : subinstr local abspath "/" "\", all		
 		local filename : subinstr local filename "/" "\", all	
+		local path : subinstr local path "/" "\", all	
+		local pathstr = "`path'" + "\"
+		local abspath = "`path'" + "\" + "`filename'"
 	}
+	else {
+		local abspath = "`path'" + "/" + "`filename'"
+		local pathstr = "`path'" + "/"
+	}
+	
 	
 	
 	// go the the original path and return output
@@ -84,6 +89,7 @@ program abspath, rclass
 	quietly cd "`wd'"
 	
 	display "`abspath'"
+	return local pathstr `pathstr'
 	return local path `path'
 	return local abspath `abspath'
 	return local fname `filename'
