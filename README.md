@@ -22,7 +22,6 @@
 Once you learn `markdoc`, you can take care of all types of documents you may wish to create for Stata, simply using Markdown. If you are using `markdoc` for data analysis, you can write your documentation with Markdown and generate dynamic documents in **docx**, **pdf**, or **html**, *without requiring any third-party software*. Similarly, if you are a Stata programmer and you wish to write clean and readable documentation that is easy to write and update, you can write your documentation in Markdown and export **`sthlp` Stata Help Files**. You can also generate the package documentation in other formats, for example in Markdown to put them on GitHub, or HTML to host them on your private site. The document convertors are completely written in Stata language!   
 
 
-
 ## Resources
 
 
@@ -58,7 +57,7 @@ github install haghish/markdoc
 <img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
 
 
-MarkDoc - if not executed in [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode - requires 3 third-party software based on the document format you wish to create. These software are:
+MarkDoc - if **not** executed in [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode - requires 3 third-party software based on the document format you wish to create. These software are:
 
 - [__Pandoc__](http://pandoc.org/installing.html)
 - [__wkhtmltopdf__](http://wkhtmltopdf.org/downloads.html)
@@ -66,6 +65,12 @@ MarkDoc - if not executed in [`mini`](https://github.com/haghish/markdoc/wiki/mi
 
 The __pdfLaTeX__ is optional, but required for generating PDF slides and typesetting documents written in LaTeX. The __wkhtmltopdf__ is only required for generating stylish PDF documents (you can create PDF documents in the [`mini`](https://github.com/haghish/markdoc/wiki/mini) mode as well). MarkDoc provides optional automatic installation of __pandoc__ and __wkhtmltopdf__ if the `install` argument is specified. [You can read more about the installation in the manual...](https://github.com/haghish/markdoc/wiki/Installation)
 
+
+## 1.1 MarkDoc Mini Mode
+
+As noted earlier, a new engine has been developed for MarkDoc, called `mini` mode, to make the package independent of [Pandoc](http://pandoc.org/installing.html), [wkhtmltopdf](http://wkhtmltopdf.org/downloads.html), and [pdfLaTeX](https://www.latex-project.org/get/). The `mini` mode is very enabling and offers a wide variety of document formats. 
+
+<img src="./Resources/images/markdoc5_small.png" align="center" width="750">
 
 # 2. Dialog box
 
