@@ -1,5 +1,5 @@
 /*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 4.2.1
+Version: 4.4.0
 Title: markdoc
 Description: a general-purpose literate programming package for Stata that 
 produces dynamic analysis documents in various formats, such as __pdf__, __docx__, 
@@ -3684,23 +3684,21 @@ program markdoc
 		file write `knot' `"    <textarea id="source">"' _n(3)
 		
 		
-		file write `knot' "class: center, middle"
+		file write `knot' "class: center, middle" _n(2)
 		
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		if !missing("`title'") file write `knot' "# `title'" _n(2)
+		if !missing("`author'") file write `knot' "## `author'" _n(2)
+		if !missing("`affiliation'") file write `knot' "_`affiliation'_  " _n
+		if !missing("`address'") file write `knot' "_`address'_  " _n(2)
+		
+		if !missing("`affiliation'") & missing("`address'") file write `knot' _n
+		
+		if !missing("`summary'") file write `knot' "`summary'" _n
+		
+		if !missing("`title'") | !missing("`author'") | !missing("`affiliation'") | ///
+		   !missing("`address'") | !missing("`summary'") {
+			 file write `knot' _n(2) "---" _n(2)
+		}
 
 
 		
