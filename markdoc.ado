@@ -769,14 +769,14 @@ program markdoc
     // AVOID CRASHES by removing the working log from previous execution
     // =========================================================================
     cap macro drop CurrentMarkDocDofile
-		
+    
     // =========================================================================
     // CHANGED SYNTAX
     // =========================================================================    
     local mathjax mathjax
         
         if "`style'"  == "" local style "simple" 
-
+                    
     if !missing("`texmaster'") {
         di "The {bf:texmaster} option was renamed to {bf:master}, although it " ///
        "continues to work..." _n 
@@ -1151,23 +1151,6 @@ program markdoc
             local smclfile `r(abspath)'
         }
     }
-		
-		// =========================================================================
-    // check the path: make sure the file is executed from the wd
-    // ========================================================================= 
-		if !missing("`mini'") {
-			local currentwd : pwd
-			
-			quietly abspath "`smclfile'"
-			if _rc == 0 {
-					if "`currentwd'" != "`r(path)'" {
-						di as err "{bf:WARNING}: make sure your source file is in your current working directory"
-					}
-			}
-			else {
-				di as err "{bf:WARNING}: make sure your source file is in your current working directory"
-			}			
-		}
     
 
     
