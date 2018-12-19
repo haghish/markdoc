@@ -795,7 +795,22 @@ program markdoc
        "the linesize..." _n 
        local linesize
        //DO THE CHANGES
-    }  
+    }
+		
+		// =========================================================================
+    // check the path: make sure the file is executed from the working directory
+    // ========================================================================= 
+		if !missing("`mini'") {
+			local currentwd : pwd
+
+			capture abspath "`smclfile'"
+			if _rc != 0 capture abspath `smclfile'
+			if _rc == 0 {
+				if "`currentwd'" != "`r(path)'" {
+					di as err "{bf:WARNING}: make sure your source file is in your current working directory"
+				}
+			}		
+		}
     
     // -------------------------------------------------------------------------
     // Check for Required Packages (Weaver & Statax)
@@ -862,7 +877,7 @@ program markdoc
 	// Creating html slides with for he light-weight markdoc mini
     // -------------------------------------------------------------------------
 	if !missing("`mini'") & "`export'" == "slide" {
-		local export slidehtml
+		local export slidehtm
 	}
  
     // Auto-correcting possible typos
@@ -886,7 +901,7 @@ program markdoc
         // later on supports for docx and pdf will be provided
         // -------------------------------------------------------------------------
         if !missing("`mini'") {
-            if `c(stata_version)' < 15 & "`export'" != "sthlp" & "`export'" != "slidehtml" {
+            if `c(stata_version)' < 15 & "`export'" != "sthlp" & "`export'" != "slidehtm" {
                 di as err "the {bf:mini} option requires Stata 15 or above"
 				di as txt "you could remove the {bf:mini} option and run MarkDoc in the full-version mode"
                 err 1
@@ -894,7 +909,7 @@ program markdoc
             
             if "`export'" != "md" & "`export'" != "html"          ///
                & "`export'" != "docx" & "`export'" != "pdf"       ///
-                 & "`export'" != "sthlp" & "`export'" != "slidehtml" {
+                 & "`export'" != "sthlp" & "`export'" != "slidehtm" {
                 di as err "the {bf:mini} option currently only supports " ///
                           "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, {bf:slide}, and {bf:sthlp} formats"
                 err 198
@@ -1044,7 +1059,7 @@ program markdoc
     
     // checkes the required software
     // -------------------------------------------------------------------------
-    if missing("`mini'") & "`export'" != "sthlp" & "`export'" != "slidehtml" {
+    if missing("`mini'") & "`export'" != "sthlp" & "`export'" != "slidehtm" {
             markdoccheck , `install' `test' export(`export') style(`style')           ///
            markup(`markup') pandoc("$pandoc") printer("`printer'")
         }
@@ -1112,7 +1127,7 @@ program markdoc
 				}
     }
 		if !missing("`mini'") {
-				if "`export'" != "html" & "`export'" != "slidehtml" {
+				if "`export'" != "html" & "`export'" != "slidehtm" {
 					local statax
 				}
 		}
@@ -1167,7 +1182,8 @@ program markdoc
     
     // Use Absolute Path for UNC working directory
     if c(os) == "Windows" & substr(c(pwd),1,2) =="\\\\" {
-        quietly abspath "`smclfile'"
+        capture abspath "`smclfile'"
+				if _rc != 0 capture abspath `smclfile'
         if _rc == 0 {
             local smclfile `r(abspath)'
         }
@@ -1226,9 +1242,9 @@ program markdoc
         if (index(lower("`input'"),".smcl")) {
 					local input : subinstr local input ".smcl" ""
 	
-					if "`export'" == "slidehtml" {
-							local convert "`input'.html"
-							local output "`output'.html"
+					if "`export'" == "slidehtm" {
+							local convert "`input'.htm"
+							local output "`output'.htm"
 					}
 			
 					else if "`export'" == "slide" {
@@ -1255,9 +1271,9 @@ program markdoc
             *else if "`export'" == "dzslide" local convert "`input'.html"
             *else if "`export'" == "slidy" local convert "`input'.html"
             *else local convert "`input'.`export'"
-            if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
+            if "`export'" == "slidehtm" {
+                local convert "`input'.htm"
+                local output "`output'.htm"
             }
 						else if "`export'" == "slide" {
                 local convert "`input'.pdf"
@@ -1281,9 +1297,9 @@ program markdoc
         }
         else if (index(lower("`input'"),".mata")) {
             local input : subinstr local input ".mata" ""
-						if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
+						if "`export'" == "slidehtm" {
+                local convert "`input'.htm"
+                local output "`output'.htm"
             }
             else if "`export'" == "slide" local convert "`input'.pdf"
             else if "`export'" == "dzslide" local convert "`input'.html"
@@ -1299,9 +1315,9 @@ program markdoc
         else if (index(lower("`input'"),".do")) {
             local input : subinstr local input ".do" ""
 			
-						if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
+						if "`export'" == "slidehtm" {
+                local convert "`input'.htm"
+                local output "`output'.htm"
             }
             else if "`export'" == "slide" {
                 local convert "`input'.pdf"
@@ -1332,9 +1348,9 @@ program markdoc
 						
 						if !missing("`debug'") di as err "FILE TYPE UNKNOWN"
 			
-						if "`export'" == "slidehtml" {
-                local convert "`input'.html"
-                local output "`output'.html"
+						if "`export'" == "slidehtm" {
+                local convert "`input'.htm"
+                local output "`output'.htm"
             }
             else if "`export'" == "slide" {
                 local convert "`input'.pdf"
@@ -2635,7 +2651,7 @@ program markdoc
         }
         
         //Add the title page in Markdown
-        if "`export'" != "tex" & "`export'" != "pdf" & "`export'" != "html" & "`export'" != "slidehtml" {
+        if "`export'" != "tex" & "`export'" != "pdf" & "`export'" != "html" & "`export'" != "slidehtm" {
             if "`markup'" == "markdown" | "`markup'" == "" {        
                 tempfile tmp1
                 tempname hitch knot 
@@ -3421,7 +3437,7 @@ program markdoc
                     
                     if !missing("`debug'") {
                         copy "`md'" 0md2.md, replace
-						if "`export'" != "slidehtml" {
+						if "`export'" != "slidehtm" {
 							copy "`output'" 00output.txt, replace
 							copy "`convert'" 00convert.txt, replace
 						}
@@ -3524,7 +3540,7 @@ program markdoc
                 else display as err "MarkDoc could not produce `name'.pdf" _n
             }
             
-            else if "`export'" != "slidehtml" {
+            else if "`export'" != "slidehtm" {
                 cap confirm file "`convert'"
                 if _rc == 0 {
                     di as txt "(MarkDoc created "`"{bf:{browse "`convert'"}})"' _n
@@ -3615,7 +3631,7 @@ program markdoc
 	// =========================================================================
 	// Generate Stata Help Files 
 	// =========================================================================
-	if "`export'" == "slidehtml" {
+	if "`export'" == "slidehtm" {
 		//https://github.com/gnab/remark
 		tempfile tmp
 		tempname hitch knot 
