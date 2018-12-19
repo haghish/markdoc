@@ -17,7 +17,7 @@
 	files within source code, in ".sthlp" file format. 
 */
 
-*cap prog drop sthlp
+cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
@@ -479,7 +479,8 @@ program define sthlp
 						file write `knot' _n "{asis}" _n 
 						file read `hitch' line
 						while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,3) != "~~~" {
-							file write `knot' `"        `macval(line)'"' _n 
+							local line : subinstr local line "	" "....", all // convert tab to spaces
+							file write `knot' `"     `macval(line)'"' _n 
 							file read `hitch' line
 						}
 						file write `knot' "{smcl}" _n 
@@ -635,8 +636,11 @@ program define sthlp
 		if substr(`trim'(`"`macval(line)'"'),1,1) == "|" {
 			// Markdown tables
 			// -----------------------------------------------------
-			if substr(`trim'(`"`macval(line)'"'),1,5) == "|----" | ///
-				 substr(`trim'(`"`macval(line)'"'),1,5) == "|:---" {
+			if substr(`trim'(`"`macval(line)'"'),1,5) == "|----"  | ///
+				 substr(`trim'(`"`macval(line)'"'),1,5) == "|:---"  | ///
+				 substr(`trim'(`"`macval(line)'"'),1,6) == "| ----" | ///
+				 substr(`trim'(`"`macval(line)'"'),1,6) == "| :---" {
+				 
 
 				 local firstline 1
 				 
