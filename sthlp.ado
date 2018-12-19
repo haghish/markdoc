@@ -17,7 +17,7 @@
 	files within source code, in ".sthlp" file format. 
 */
 
-cap prog drop sthlp
+*cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
