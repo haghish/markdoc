@@ -1,5 +1,5 @@
 /***
-_v. 1.0.2_ 
+_v. 1.1.0_ 
 
 Title
 ====== 
@@ -384,10 +384,10 @@ program define mdconvert
 		// -------------------------------------------------------------------------
 		// Table  (needs much more work, currently only the default tbl is recognized)
 		// -------------------------------------------------------------------------
-		if substr(`trim'(`"`macval(line)'"'),1,5) == ":----"  |  ///
-		   substr(`trim'(`"`macval(line)'"'),1,5) == "|----"  |  ///
-			 substr(`trim'(`"`macval(line)'"'),1,6) == "| ----" |  ///
-			 substr(`trim'(`"`macval(line)'"'),1,6) == "| :---" | {
+		if substr(`"`macval(line)'"',1,5) == ":----"  |  ///
+		   substr(`"`macval(line)'"',1,5) == "|----"  |  ///
+			 substr(`"`macval(line)'"',1,6) == "| ----" |  ///
+			 substr(`"`macval(line)'"',1,6) == "| :---" | {
 			
 			local tablenum = `tablenum'+1
 			
