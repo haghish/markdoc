@@ -3647,20 +3647,46 @@ program markdoc
 		file write `knot' `"      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);"' _n
 		file write `knot' `"      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);"' _n
 		file write `knot' `"      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);"' _n
-		file write `knot' "      body { font-family: 'Droid Serif'; }" _n
-		file write `knot' "      h1, h2, h3 {" _n
-		file write `knot' "        font-family: 'Yanone Kaffeesatz';" _n
-		file write `knot' "        font-weight: normal;" _n
-		file write `knot' "      }" _n
-		file write `knot' "      .sh_stata {font-size:60%;}" _n
+		
+		if "`style'" == "stata" {
+			file write `knot' "      body { font-family: 'Droid Serif'; }" _n
+			file write `knot' "      h1, h2, h3 {" _n
+			file write `knot' "        font-family: 'Yanone Kaffeesatz';" _n
+			file write `knot' "        font-weight: normal;" _n
+			file write `knot' "      }" _n
+			file write `knot' "      .sh_stata {font-size:60%;; background-color:#EAF2F3;}" _n
+		}
+		else if "`style'" == "formal" {
+			file write `knot' "      body { font-family: 'time'; }" _n
+			file write `knot' "      h1, h2, h3 {" _n
+			file write `knot' "        font-family: 'time';" _n
+			file write `knot' "        font-weight: normal;" _n
+			file write `knot' "      }" _n
+			file write `knot' "      .sh_stata {font-size:60%;font-weight: bold;}" _n
+		}
+		else {
+			file write `knot' "      body { font-family: 'Droid Serif'; }" _n
+			file write `knot' "      h1, h2, h3 {" _n
+			file write `knot' "        font-family: 'Yanone Kaffeesatz';" _n
+			file write `knot' "        font-weight: normal;" _n
+			file write `knot' "      }" _n
+			file write `knot' "      .sh_stata {font-size:60%;}" _n
+		}
+		
 		file write `knot' "      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; font-size:60%;}" _n
 		file write `knot' "    </style>" _n
 		file write `knot' "    <script type='text/javascript' src='http://haghish.com/statax/Statax.js'></script>" _n
+		
+		
+
 		file write `knot' `"  </head>"' _n
 		file write `knot' `"  <body>"' _n
-		file write `knot' `"    <textarea id="source">"' _n
+		file write `knot' `"    <textarea id="source">"' _n(3)
 		
 		
+		file write `knot' "class: center, middle"
+		
+	
 
 
 
