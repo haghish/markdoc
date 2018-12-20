@@ -674,7 +674,12 @@ program define sthlp
 				tokenize `"`macval(preline)'"', parse("|")
 				while `"`macval(1)'"' != "" {
 					if `"`macval(1)'"' != "|" {
-
+						
+						// remove white space from the table
+						capture local TRIM = trim(`"`macval(1)'"')
+						if _rc == 0 local 1 `TRIM'
+						local TRIM //RESET
+						
 						if "`i'" == "0" {
 							file write `knot'  `"{col 5}`macval(1)'"' 
 						}
@@ -704,6 +709,11 @@ program define sthlp
 					tokenize `"`macval(line)'"', parse("|")
 					while `"`macval(1)'"' != "" {
 						if `"`macval(1)'"' != "|" {
+							
+							// remove white space from the table
+							capture local TRIM = trim(`"`macval(1)'"')
+							if _rc == 0 local 1 `TRIM'
+							local TRIM //RESET
 							
 							if "`i'" == "0" {
 								file write `knot'  `"{col 5}`macval(1)'"' 
