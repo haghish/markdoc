@@ -1,0 +1,362 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. 
+. /***
+> Handling gaps in time series using business calendars
+> =====================================================
+> 
+> Author: Ashish Rajbhandari, Senior Econometrician
+> 
+> https://blog.stata.com/2016/02/04/handling-gaps-in-time-series-using-business-calendars/
+> 
+> This is a replication of a post from Stata blog to test MarkDoc package
+> 
+> ---
+> 
+> Time-series data, such as financial data, often have known 
+> gaps because there are no observations on days such as 
+> weekends or holidays. Using regular Stata datetime formats 
+> with time-series data that have gaps can result in 
+> misleading analysis. Rather than treating these gaps as 
+> missing values, we should adjust our calculations 
+> appropriately. I illustrate a convenient way to work with 
+> irregularly spaced dates by using Stata’s business calendars.
+> 
+> In nasdaq.dta, I have daily data on the NASDAQ index from 
+> February 5, 1971 to March 23, 2015 that I downloaded from 
+> the St. Louis Federal Reserve Economic Database (FRED).
+> 
+> ---
+> ***/
+. 
+. use http://www.stata.com/data/nasdaq
+{txt}
+{com}. describe
+
+{txt}Contains data from {res}http://www.stata.com/data/nasdaq.dta
+{txt}  obs:{res}        11,132                          
+{txt} vars:{res}             2                          29 Jan 2016 16:21
+{txt} size:{res}       155,848                          
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:date           }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Daily date{p_end}
+{p 0 48}{bind:index          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}NASDAQ Composite Index (1971=100){p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. 
+. /***
+> ---
+> 
+> date is the time variable in our data, which is a string 
+> format ordered as year, month, and day. I use the __date()__ 
+> function to convert the string daily date to a Stata numeric
+> date and store the values in mydate. To find out more about
+> converting string dates to numeric, you can read A tour of
+> datetime in Stata.
+> ***/
+. 
+. generate mydate = date(date,"YMD") 
+{txt}
+{com}. format %td mydate
+{txt}
+{com}. 
+. /***
+> ---
+> 
+> I tsset these data with mydate as the time variable and then list the first five observations, along with the first lag of index.
+> ***/
+. 
+. tsset mydate
+{res}{txt}{col 9}time variable:  {res}{col 25}mydate, 05feb1971 to 23mar2015, but with gaps
+{txt}{col 17}delta:  {res}1 day
+{txt}
+{com}. list date mydate index l.index in 1/5
+{txt}
+     {c TLC}{hline 12}{c -}{hline 11}{c -}{hline 8}{c -}{hline 8}{c TRC}
+     {c |} {res}                                       L.{txt}{c |}
+     {c |} {res}      date      mydate    index    index {txt}{c |}
+     {c LT}{hline 12}{c -}{hline 11}{c -}{hline 8}{c -}{hline 8}{c RT}
+  1. {c |} {res}1971-02-05   05feb1971      100        . {txt}{c |}
+  2. {c |} {res}1971-02-08   08feb1971   100.84        . {txt}{c |}
+  3. {c |} {res}1971-02-09   09feb1971   100.76   100.84 {txt}{c |}
+  4. {c |} {res}1971-02-10   10feb1971   100.69   100.76 {txt}{c |}
+  5. {c |} {res}1971-02-11   11feb1971   101.45   100.69 {txt}{c |}
+     {c BLC}{hline 12}{c -}{hline 11}{c -}{hline 8}{c -}{hline 8}{c BRC}
+
+{com}. 
+. /***
+> ---
+> 
+> The first observation on l.index is missing; I expect this 
+> because there are no observations prior to the first 
+> observation on index. However, the second observation on 
+> __l.index__ is also missing. As you may have already noticed, 
+> the dates are irregularly spaced in my dataset—the first 
+> observation corresponds to a Friday and the second 
+> observation to a Monday.
+> 
+> I get missing data in this case because mydate is a regular 
+> date, and tsset–ing by a regular date will treat all 
+> weekends and other holidays as if they are missing in the 
+> dataset instead of ignoring them in calculations. To avoid 
+> the problem of gaps inherent in business data, I can create 
+> a business calendar. Business calendars specify which dates 
+> are omitted. For daily financial data, a business calendar 
+> specifies the weekends and holidays for which the markets 
+> were closed.
+> 
+> ---
+> 
+> Creating business calendars
+> ---------------------------
+> 
+> Business calendars are defined in files named calname.stbcal. 
+> You can create your own calendars, use the ones provided by 
+> StataCorp, or obtain them directly from other users or via 
+> the SSC. Calendars can also be created automatically from 
+> the current dataset using the bcal create command.
+> 
+> Every stbcal-file requires you to specify the following 
+> four things:
+> 
+> - the version of Stata being used
+> - the range of the calendar
+> - the center date of the calendar
+> - the dates to be omitted
+> 
+> I begin by creating nasdaq.stbcal, which will omit Saturdays 
+> and Sundays of every month. I do this using the Do-file 
+> editor, but you can use any text editor.
+> 
+> ---
+> 
+> ~~~
+> version 14.1
+> purpose "Converting daily financial data into business calendar dates"
+> dateformat dmy
+> range 05feb1971 23mar2015
+> centerdate 05feb1971
+> omit dayofweek (Sa Su)
+> ~~~
+> 
+> The first line specifies the current version of Stata I am 
+> using. The second line is optional, but the text typed there 
+> will display if I type __bcal describe nasdaq__ and is good 
+> for record keeping when I have multiple calenders. Line 3 
+> specifies the display date format and is also optional. 
+> Line 4 specifies the range of dates in the dataset.
+> 
+> ---
+> 
+> Line 5 specifies the center of the date to be 05feb1971. I 
+> picked the first date in the sample, but I could have picked 
+> any date in the range specified for the business calendar. 
+> centerdate does not mean choosing a date that is in fact the 
+> center of the sample. For example, Stata’s default %td 
+> calendar uses 01jan1960 as its center.
+> 
+> The last statement specifies to omit weekends of every month. 
+> Later, I will show several variations of the omit command to 
+> omit other holidays. Once I have a business calendar, I can 
+> use this to convert regular dates to business dates, share 
+> this file with colleagues, and also make further changes to 
+> my calendar.
+> 
+> ---
+> 
+> Using a business calendar
+> -------------------------
+> 
+> ***/
+. 
+. bcal load nasdaq
+{txt}{p 0 4 2}
+loading {bf}.\nasdaq.stbcal{rm} ...
+{p_end}
+
+     1. {res}version 14.1
+{txt}     2. {res}purpose "Converting daily financial data into business calendar dates"
+{txt}     3. {res}dateformat dmy
+{txt}     4. {res}range 05feb1971 23mar2015
+{txt}     5. {res}centerdate 05feb1971
+{txt}     6. {res}omit dayofweek (Sa Su)
+{txt}     7. {res}
+{txt}     8. {res}omit dowinmonth +4 Th of Nov
+{txt}     9. {res}omit date 25dec*
+{txt}    10. {res}omit date 25dec* and (-1) if dow(Sa)
+{txt}    11. {res}omit date 25dec* and (+1) if dow(Su)
+
+{txt}(calendar loaded successfully)
+
+{com}. generate bcaldate = bofd("nasdaq",mydate)
+{txt}
+{com}. assert !missing(bcaldate) if !missing(mydate)
+{txt}
+{com}. 
+. 
+. 
+. /***
+> ---
+> 
+> To create business dates using __bofd()__, I specified two 
+> arguments: the name of the business calendar and the name of 
+> the variable containing regular dates. The assert statement 
+> verifies that all dates recorded in mydate appear in the 
+> business calendar. This is a way of checking that I created 
+> my calendar for the complete date range—the __bofd()__ function 
+> returns a missing value when mydate does not appear on the 
+> specified calendar.
+> 
+> Business dates have a specific display format, __%tbcalname__, 
+> which in my case is __%tbnasdaq__. In order to display business 
+> dates in a Stata date format I will apply this format to 
+> bcaldate just as I would for a regular date.
+> 
+> ---
+> ***/
+. 
+. format %tbnasdaq bcaldate
+{txt}
+{com}. list in 1/5
+{txt}
+     {c TLC}{hline 12}{c -}{hline 8}{c -}{hline 11}{c -}{hline 11}{c TRC}
+     {c |} {res}      date    index      mydate    bcaldate {txt}{c |}
+     {c LT}{hline 12}{c -}{hline 8}{c -}{hline 11}{c -}{hline 11}{c RT}
+  1. {c |} {res}1971-02-05      100   05feb1971   05feb1971 {txt}{c |}
+  2. {c |} {res}1971-02-08   100.84   08feb1971   08feb1971 {txt}{c |}
+  3. {c |} {res}1971-02-09   100.76   09feb1971   09feb1971 {txt}{c |}
+  4. {c |} {res}1971-02-10   100.69   10feb1971   10feb1971 {txt}{c |}
+  5. {c |} {res}1971-02-11   101.45   11feb1971   11feb1971 {txt}{c |}
+     {c BLC}{hline 12}{c -}{hline 8}{c -}{hline 11}{c -}{hline 11}{c BRC}
+
+{com}. 
+. /***
+> ---
+> 
+> Although __mydate__ and __bcaldate__ look similar, they have 
+> different encodings. Now, I can __tsset__ on the business 
+> date __bcaldate__ and list the first five observations with 
+> the lag of __index__ recalculated.
+> ***/
+. 
+. tsset bcaldate
+{res}{txt}{col 9}time variable:  {res}{col 25}bcaldate, 05feb1971 to 23mar2015, but with gaps
+{txt}{col 17}delta:  {res}1 day
+{txt}
+{com}. list bcaldate index l.index in 1/5
+{txt}
+     {c TLC}{hline 11}{c -}{hline 8}{c -}{hline 8}{c TRC}
+     {c |} {res}                          L.{txt}{c |}
+     {c |} {res} bcaldate    index    index {txt}{c |}
+     {c LT}{hline 11}{c -}{hline 8}{c -}{hline 8}{c RT}
+  1. {c |} {res}05feb1971      100        . {txt}{c |}
+  2. {c |} {res}08feb1971   100.84      100 {txt}{c |}
+  3. {c |} {res}09feb1971   100.76   100.84 {txt}{c |}
+  4. {c |} {res}10feb1971   100.69   100.76 {txt}{c |}
+  5. {c |} {res}11feb1971   101.45   100.69 {txt}{c |}
+     {c BLC}{hline 11}{c -}{hline 8}{c -}{hline 8}{c BRC}
+
+{com}. 
+. /***
+> ---
+> 
+> As expected, the issue of gaps due to weekends is now 
+> resolved. Because I have a calendar that excludes Saturdays 
+> and Sundays, __bcaldate__ skipped the weekend between 
+> __05feb1971__ and __08feb1971__ when calculating the lagged 
+> index value and will do the same for any subsequent weekends 
+> in the data.
+> 
+> Excluding specific dates
+> ------------------------
+> 
+> So far I have not excluded gaps in the data due to other 
+> major holidays, such as Thanksgiving and Christmas. Stata 
+> has several variations on the __omit__ command that let you 
+> exclude specific dates. For example, I use the __omit__ command 
+> to omit the Thanksgiving holiday (the fourth Thursday of 
+> November in the U.S.) by adding the following statement in 
+> my business calendar.
+> 
+> ---
+> 
+>      omit dowinmonth +4 Th of Nov
+> 
+> __dowinmonth__ stands for day of week in month and 
+> __+4 Th of Nov__ refers to the fourth Thursday of November. 
+> This rule is applied to every year in the data.
+> 
+> Another major holiday is Christmas, with the NASDAQ closed 
+> on the 25th of December every year. I can omit this holiday 
+> in the calendar as
+> 
+>      omit date 25dec*
+> 
+> ---
+> 
+> The __*__ in the statement above indicates that December 25 
+> should be omitted for every year in my __nasdaq__ calendar.
+> 
+> This rule is misleading since the 25th may be on a weekend, 
+> in which case the holidays are on the preceeding Friday or 
+> following Monday. To capture these cases, I add the 
+> following statements:
+> 
+>      omit date 25dec* and (-1) if dow(Sa)
+>      omit date 25dec* and (+1) if dow(Su)
+> 
+> The first statement omits December 24 if Christmas is on a 
+> Saturday, and the second statement omits December 26 if 
+> Christmas is on a Sunday.
+> 
+> Encodings
+> ---------
+> 
+> I mentioned earlier that the encodings of regular date 
+> __mydate__ and business date __bcaldate__ are different. To 
+> see the encodings of my date variables, I apply the 
+> numerical format and list the first five observations.
+> 
+> ---
+> ***/
+. 
+. format %8.0g mydate bcaldate
+{txt}
+{com}. list in 1/5
+{txt}
+     {c TLC}{hline 12}{c -}{hline 8}{c -}{hline 8}{c -}{hline 10}{c TRC}
+     {c |} {res}      date    index   mydate   bcaldate {txt}{c |}
+     {c LT}{hline 12}{c -}{hline 8}{c -}{hline 8}{c -}{hline 10}{c RT}
+  1. {c |} {res}1971-02-05      100     4053          0 {txt}{c |}
+  2. {c |} {res}1971-02-08   100.84     4056          1 {txt}{c |}
+  3. {c |} {res}1971-02-09   100.76     4057          2 {txt}{c |}
+  4. {c |} {res}1971-02-10   100.69     4058          3 {txt}{c |}
+  5. {c |} {res}1971-02-11   101.45     4059          4 {txt}{c |}
+     {c BLC}{hline 12}{c -}{hline 8}{c -}{hline 8}{c -}{hline 10}{c BRC}
+
+{com}. 
+. /***
+> The variable __bcaldate__ starts with 0 because this was the 
+> centerdate in my calendar __nasdaq.stbcal__. The business 
+> date encoding is consecutive without gaps, which is why 
+> using lags or any time-series operators will yield correct values.
+> 
+> Summary
+> =======
+> 
+> Using regular dates with time-series data instead of 
+> business dates may be misleading in case there are gaps in 
+> the data. In this post, I showed a convenient way to work 
+> with business dates by creating a business calendar. Once I 
+> loaded a calendar file into Stata, I created business dates 
+> using the __bofd()__ function. I also showed some variations 
+> of the omit command used in business calendars to 
+> accommodate specific gaps due to different holidays.
+> ***/
+. 
+. qui log c
+{smcl}
+{com}{sf}{ul off}

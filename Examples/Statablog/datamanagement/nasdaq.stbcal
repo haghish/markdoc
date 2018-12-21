@@ -1,0 +1,11 @@
+version 14.1
+purpose "Converting daily financial data into business calendar dates"
+dateformat dmy
+range 05feb1971 23mar2015
+centerdate 05feb1971
+omit dayofweek (Sa Su)
+
+omit dowinmonth +4 Th of Nov
+omit date 25dec*
+omit date 25dec* and (-1) if dow(Sa)
+omit date 25dec* and (+1) if dow(Su)

@@ -1,0 +1,391 @@
+<p><!doctype html></p>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" async 
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- SYNTAX HIGHLIGHTING CLASSES  -->
+<style type="text/css">
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align:justify;
+    margin: 0 8%;
+    font-size: 14px;
+        background-color:white; 
+}
+
+a {
+   color: #1e6bb8;
+       text-decoration: none;
+}
+a:hover {
+       text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.5;
+}
+
+h1, h1 > a, h1 > a:link {
+        margin:0.67em 0;
+        padding: 0;
+        font-family: ;
+        color:#17365D;
+        font-size: 22px;
+        }
+
+h1 > a:hover, h1 > a:hover{
+color:#345A8A;
+} 
+
+h2, h2 > a, h2 > a, h2 > a:link {
+        margin:14px 0px 2px 0px;
+        padding: 0;
+        color:#345A8A;
+        font-size: 18px;
+        font-weight:bold;
+        }
+
+h3, h3 > a,h3 > a, h3 > a:link,h3 > a:link {
+        margin:14px 0px 0px 0px;
+        padding: 0;
+        color:#4F81BD;
+        font-size: 16px;
+        font-weight:bold;
+        }
+
+h4 {
+        margin:10px 0px 0px 0px;
+        padding: 0;
+        font-family: ;
+        font-size: 16px;
+        color:#4F81BD;
+        font-weight:bold;
+        font-style:italic;
+        }
+
+h5  {
+        font-size: 14px;
+        font-weight:normal;
+        color:#4F81BD;
+        }
+
+h6  {
+        font-size:14px;
+        font-weight:normal;
+        font-style:italic;
+        color:#4F81BD;
+        }
+
+p {
+        font-weight:normal;
+        font-size:14px;
+        line-height: 16px;
+        text-align:justify;
+        text-justify:inter-word;
+        margin:0 0 14px 0;
+        }
+
+.author {display:block;text-align:center;font-size:16px;margin-bottom:3px;}
+.date {display:block;text-align:center;font-size:12px;margin-bottom:3px;}
+.center, #center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    -moz-box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+    box-shadow: 0px 0px 2px rgba( 0, 0, 0, 0.5 );
+
+    padding: 0px;
+    border-width: 0px;
+    border-style: solid;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    }
+
+td > p {padding:0; margin:0;}
+
+
+header {
+        font-size:28px;
+        padding-bottom:5px; 
+        margin:0;
+        padding-top:150px; 
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-align:center;
+        display:block;
+        font-weight:bold;
+        }
+
+
+
+table {
+        border-collapse: collapse;
+        border-bottom:1px solid black;
+        padding:5px;
+        margin-top:5px;
+        margin-bottom: 16px;
+
+}
+.tble {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+}
+
+.tblecenter {
+        display:block;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        text-align:center;
+}
+
+span.tblecenter + table, span.tble + table, span.tble + img {
+        margin-top: 2px;
+}
+
+.figure, .caption {
+        text-align: center
+}
+
+th {
+        border-bottom:1px solid black;
+        border-top:1px solid black;
+        padding-right:20px;
+}
+
+td {
+        padding-right:20px;
+}
+
+pre code {
+       color: #6D6D6D;
+       font-size: 10px;
+       padding-top: 0;
+       padding-bottom: 0;
+       margin-top: 0;
+       margin-bottom: 0;
+      font-family: "menlo-regular","Consolas", "Liberation Mono", Menlo, Courier, monospace;
+   display: block;
+}
+
+.sh_stata {
+   font-size: 0.7rem;
+       padding-top: 0;
+       padding-bottom: 0;
+       margin-top: 0;
+       margin-bottom: 0;
+   display: block;
+   line-height: 1.5;
+}
+
+pre > code {
+   padding: 0;
+       margin: 0;
+       word-break: normal;
+   display: block;
+}
+
+.sh_stata + pre code {
+    margin:-10px 0 0 -10px;
+    line-height:8px;
+}
+
+blockquote {
+       padding: 0 1rem;
+       margin-left: 0;
+       color: #819198;
+       border-left: 0.3rem solid #dce6f0;
+}
+
+img {
+        margin: 5px 0 5px 0;
+        padding: 0px;
+        cursor:-webkit-zoom-in;
+        cursor:-moz-zoom-in;
+        display:inline-block;
+        clear: both;
+        }
+
+hr {
+       height: 2px;
+       margin: 1rem 0;
+       background-color: #eff0f1;
+       border: 0; 
+}
+
+ul li {
+       font-size:14px;
+}
+
+</style>
+<script type="text/javascript" src='http://haghish.com/statax/Statax.js'></script>
+</head>
+<body>
+<h1><a href="#handling-gaps-in-time-series-using-business-calendars" id="handling-gaps-in-time-series-using-business-calendars">Handling gaps in time series using business calendars</a></h1>
+<p>Author: Ashish Rajbhandari, Senior Econometrician</p>
+<p><a href="https://blog.stata.com/2016/02/04/handling-gaps-in-time-series-using-business-calendars/">https://blog.stata.com/2016/02/04/handling-gaps-in-time-series-using-business-calendars/</a></p>
+<p>This is a replication of a post from Stata blog to test MarkDoc package</p>
+<hr />
+<p>Time-series data, such as financial data, often have known gaps because there are no observations on days such as weekends or holidays. Using regular Stata datetime formats with time-series data that have gaps can result in misleading analysis. Rather than treating these gaps as missing values, we should adjust our calculations appropriately. I illustrate a convenient way to work with irregularly spaced dates by using Stata’s business calendars.</p>
+<p>In nasdaq.dta, I have daily data on the NASDAQ index from February 5, 1971 to March 23, 2015 that I downloaded from the St. Louis Federal Reserve Economic Database (FRED).</p>
+<hr />
+<pre class="sh_stata">  . use http://www.stata.com/data/nasdaq</pre>
+<pre class="sh_stata">  . describe</pre>
+<pre><code>      Contains data from http://www.stata.com/data/nasdaq.dta
+        obs:        11,132                          
+       vars:             2                          29 Jan 2016 16:21
+       size:       155,848                          
+      -----------------------------------------------------------------------------------------------------------------------------------
+                    storage   display    value
+      variable name   type    format     label      variable label
+      -----------------------------------------------------------------------------------------------------------------------------------
+      date            str10   %10s                  Daily date
+      index           float   %9.0g                 NASDAQ Composite Index (1971=100)
+      -----------------------------------------------------------------------------------------------------------------------------------
+      Sorted by: 
+</code></pre>
+<hr />
+<p>date is the time variable in our data, which is a string format ordered as year, month, and day. I use the <strong>date()</strong> function to convert the string daily date to a Stata numeric date and store the values in mydate. To find out more about converting string dates to numeric, you can read A tour of datetime in Stata.</p>
+<pre class="sh_stata">  . generate mydate = date(date,"YMD") </pre>
+<pre class="sh_stata">  . format %td mydate</pre>
+<hr />
+<p>I tsset these data with mydate as the time variable and then list the first five observations, along with the first lag of index.</p>
+<pre class="sh_stata">  . tsset mydate</pre>
+<pre><code>              time variable:  mydate, 05feb1971 to 23mar2015, but with gaps
+                      delta:  1 day
+</code></pre>
+<pre class="sh_stata">  . list date mydate index l.index in 1/5</pre>
+<pre><code>           +------------------------------------------+
+           |                                        L.|
+           |       date      mydate    index    index |
+           |------------------------------------------|
+        1. | 1971-02-05   05feb1971      100        . |
+        2. | 1971-02-08   08feb1971   100.84        . |
+        3. | 1971-02-09   09feb1971   100.76   100.84 |
+        4. | 1971-02-10   10feb1971   100.69   100.76 |
+        5. | 1971-02-11   11feb1971   101.45   100.69 |
+           +------------------------------------------+
+</code></pre>
+<hr />
+<p>The first observation on l.index is missing; I expect this because there are no observations prior to the first observation on index. However, the second observation on <strong>l.index</strong> is also missing. As you may have already noticed, the dates are irregularly spaced in my dataset—the first observation corresponds to a Friday and the second observation to a Monday.</p>
+<p>I get missing data in this case because mydate is a regular date, and tsset–ing by a regular date will treat all weekends and other holidays as if they are missing in the dataset instead of ignoring them in calculations. To avoid the problem of gaps inherent in business data, I can create a business calendar. Business calendars specify which dates are omitted. For daily financial data, a business calendar specifies the weekends and holidays for which the markets were closed.</p>
+<hr />
+<h2><a href="#creating-business-calendars" id="creating-business-calendars">Creating business calendars</a></h2>
+<p>Business calendars are defined in files named calname.stbcal. You can create your own calendars, use the ones provided by StataCorp, or obtain them directly from other users or via the SSC. Calendars can also be created automatically from the current dataset using the bcal create command.</p>
+<p>Every stbcal-file requires you to specify the following four things:</p>
+<ul>
+<li>the version of Stata being used</li>
+<li>the range of the calendar</li>
+<li>the center date of the calendar</li>
+<li>the dates to be omitted</li>
+</ul>
+<p>I begin by creating nasdaq.stbcal, which will omit Saturdays and Sundays of every month. I do this using the Do-file editor, but you can use any text editor.</p>
+<hr />
+<pre><code>version 14.1
+purpose &quot;Converting daily financial data into business calendar dates&quot;
+dateformat dmy
+range 05feb1971 23mar2015
+centerdate 05feb1971
+omit dayofweek (Sa Su)
+</code></pre>
+<p>The first line specifies the current version of Stata I am using. The second line is optional, but the text typed there will display if I type <strong>bcal describe nasdaq</strong> and is good for record keeping when I have multiple calenders. Line 3 specifies the display date format and is also optional. Line 4 specifies the range of dates in the dataset.</p>
+<hr />
+<p>Line 5 specifies the center of the date to be 05feb1971. I picked the first date in the sample, but I could have picked any date in the range specified for the business calendar. centerdate does not mean choosing a date that is in fact the center of the sample. For example, Stata’s default %td calendar uses 01jan1960 as its center.</p>
+<p>The last statement specifies to omit weekends of every month. Later, I will show several variations of the omit command to omit other holidays. Once I have a business calendar, I can use this to convert regular dates to business dates, share this file with colleagues, and also make further changes to my calendar.</p>
+<hr />
+<h2><a href="#using-a-business-calendar" id="using-a-business-calendar">Using a business calendar</a></h2>
+<pre class="sh_stata">  . bcal load nasdaq</pre>
+<pre><code>      loading .\nasdaq.stbcal ...
+
+           1. version 14.1
+           2. purpose &quot;Converting daily financial data into business calendar dates&quot;
+           3. dateformat dmy
+           4. range 05feb1971 23mar2015
+           5. centerdate 05feb1971
+           6. omit dayofweek (Sa Su)
+           7. 
+           8. omit dowinmonth +4 Th of Nov
+           9. omit date 25dec*
+          10. omit date 25dec* and (-1) if dow(Sa)
+          11. omit date 25dec* and (+1) if dow(Su)
+
+      (calendar loaded successfully)
+</code></pre>
+<pre class="sh_stata">  . generate bcaldate = bofd("nasdaq",mydate)</pre>
+<pre class="sh_stata">  . assert !missing(bcaldate) if !missing(mydate)</pre>
+<hr />
+<p>To create business dates using <strong>bofd()</strong>, I specified two arguments: the name of the business calendar and the name of the variable containing regular dates. The assert statement verifies that all dates recorded in mydate appear in the business calendar. This is a way of checking that I created my calendar for the complete date range—the <strong>bofd()</strong> function returns a missing value when mydate does not appear on the specified calendar.</p>
+<p>Business dates have a specific display format, <strong>%tbcalname</strong>, which in my case is <strong>%tbnasdaq</strong>. In order to display business dates in a Stata date format I will apply this format to bcaldate just as I would for a regular date.</p>
+<hr />
+<pre class="sh_stata">  . format %tbnasdaq bcaldate</pre>
+<pre class="sh_stata">  . list in 1/5</pre>
+<pre><code>           +---------------------------------------------+
+           |       date    index      mydate    bcaldate |
+           |---------------------------------------------|
+        1. | 1971-02-05      100   05feb1971   05feb1971 |
+        2. | 1971-02-08   100.84   08feb1971   08feb1971 |
+        3. | 1971-02-09   100.76   09feb1971   09feb1971 |
+        4. | 1971-02-10   100.69   10feb1971   10feb1971 |
+        5. | 1971-02-11   101.45   11feb1971   11feb1971 |
+           +---------------------------------------------+
+</code></pre>
+<hr />
+<p>Although <strong>mydate</strong> and <strong>bcaldate</strong> look similar, they have different encodings. Now, I can <strong>tsset</strong> on the business date <strong>bcaldate</strong> and list the first five observations with the lag of <strong>index</strong> recalculated.</p>
+<pre class="sh_stata">  . tsset bcaldate</pre>
+<pre><code>              time variable:  bcaldate, 05feb1971 to 23mar2015, but with gaps
+                      delta:  1 day
+</code></pre>
+<pre class="sh_stata">  . list bcaldate index l.index in 1/5</pre>
+<pre><code>           +-----------------------------+
+           |                           L.|
+           |  bcaldate    index    index |
+           |-----------------------------|
+        1. | 05feb1971      100        . |
+        2. | 08feb1971   100.84      100 |
+        3. | 09feb1971   100.76   100.84 |
+        4. | 10feb1971   100.69   100.76 |
+        5. | 11feb1971   101.45   100.69 |
+           +-----------------------------+
+</code></pre>
+<hr />
+<p>As expected, the issue of gaps due to weekends is now resolved. Because I have a calendar that excludes Saturdays and Sundays, <strong>bcaldate</strong> skipped the weekend between <strong>05feb1971</strong> and <strong>08feb1971</strong> when calculating the lagged index value and will do the same for any subsequent weekends in the data.</p>
+<h2><a href="#excluding-specific-dates" id="excluding-specific-dates">Excluding specific dates</a></h2>
+<p>So far I have not excluded gaps in the data due to other major holidays, such as Thanksgiving and Christmas. Stata has several variations on the <strong>omit</strong> command that let you exclude specific dates. For example, I use the <strong>omit</strong> command to omit the Thanksgiving holiday (the fourth Thursday of November in the U.S.) by adding the following statement in my business calendar.</p>
+<hr />
+<pre><code>     omit dowinmonth +4 Th of Nov
+</code></pre>
+<p><strong>dowinmonth</strong> stands for day of week in month and <strong>+4 Th of Nov</strong> refers to the fourth Thursday of November. This rule is applied to every year in the data.</p>
+<p>Another major holiday is Christmas, with the NASDAQ closed on the 25th of December every year. I can omit this holiday in the calendar as</p>
+<pre><code>     omit date 25dec*
+</code></pre>
+<hr />
+<p>The <strong>*</strong> in the statement above indicates that December 25 should be omitted for every year in my <strong>nasdaq</strong> calendar.</p>
+<p>This rule is misleading since the 25th may be on a weekend, in which case the holidays are on the preceeding Friday or following Monday. To capture these cases, I add the following statements:</p>
+<pre><code>     omit date 25dec* and (-1) if dow(Sa)
+     omit date 25dec* and (+1) if dow(Su)
+</code></pre>
+<p>The first statement omits December 24 if Christmas is on a Saturday, and the second statement omits December 26 if Christmas is on a Sunday.</p>
+<h2><a href="#encodings" id="encodings">Encodings</a></h2>
+<p>I mentioned earlier that the encodings of regular date <strong>mydate</strong> and business date <strong>bcaldate</strong> are different. To see the encodings of my date variables, I apply the numerical format and list the first five observations.</p>
+<hr />
+<pre class="sh_stata">  . format %8.0g mydate bcaldate</pre>
+<pre class="sh_stata">  . list in 1/5</pre>
+<pre><code>           +-----------------------------------------+
+           |       date    index   mydate   bcaldate |
+           |-----------------------------------------|
+        1. | 1971-02-05      100     4053          0 |
+        2. | 1971-02-08   100.84     4056          1 |
+        3. | 1971-02-09   100.76     4057          2 |
+        4. | 1971-02-10   100.69     4058          3 |
+        5. | 1971-02-11   101.45     4059          4 |
+           +-----------------------------------------+
+</code></pre>
+<p>The variable <strong>bcaldate</strong> starts with 0 because this was the centerdate in my calendar <strong>nasdaq.stbcal</strong>. The business date encoding is consecutive without gaps, which is why using lags or any time-series operators will yield correct values.</p>
+<h1><a href="#summary" id="summary">Summary</a></h1>
+<p>Using regular dates with time-series data instead of business dates may be misleading in case there are gaps in the data. In this post, I showed a convenient way to work with business dates by creating a business calendar. Once I loaded a calendar file into Stata, I created business dates using the <strong>bofd()</strong> function. I also showed some variations of the omit command used in business calendars to accommodate specific gaps due to different holidays.</p>
+</body>
+</html>
