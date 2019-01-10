@@ -652,16 +652,21 @@ program define sthlp
 				local activecol = `columns' - 1
 				local tablewidth = length(`trim'(`"`macval(line)'"')) - `columns' - 1
 				
+				if !missing("`debug'") display "`columns' columns were found"
+				
 				//Write the header row
 				// {it:Option} {col 17} {it:Description}
 				
 				local i = 0
 				tokenize `"`macval(line)'"', parse("|")
 				local col = 0
+				local total = 0
 				while `"`macval(1)'"' != "" {
 					if `"`macval(1)'"' != "|" {
 						local i = `i' + 1
-						local width`i' =  length(`"`macval(1)'"')
+						local total = length(`"`macval(1)'"')  + `total'
+						local width`i' =  `total'
+						
 					}
 					macro shift
 				}	
