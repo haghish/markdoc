@@ -45,13 +45,13 @@ Once you learn `markdoc`, you can take care of all types of documents you may wi
 __`markdoc`__ requires a few other Stata packages. The [__`github package`__](https://github.com/haghish/github) can be used to install __`markdoc`__ and all of its dependencies automatically. Once [__`github`__](https://github.com/haghish/github) is installed, type the following command to install __`markdoc`__:
 
 ```js
-gitget markdoc
+gitget markdoc, stable
 ```
 
 _or alternatively use the `github install` syntax_
 
 ```js
-github install haghish/markdoc
+github install haghish/markdoc, stable
 ```
 
 <img src="./Resources/images/news.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">**NEWS**: MarkDoc v. _4.1.0_ introduced the [`mini`](https://github.com/haghish/markdoc/wiki/mini) option to make MarkDoc independent of third-party software that are mentioned below. If you do not wish to install the binaries, [**Read more about the `mini` mode**...](https://github.com/haghish/MarkDoc/wiki/mini)
