@@ -9,9 +9,9 @@ POSITION . . 377 397
 // Specify the Document Theme
 LIST style_list
 BEGIN
+	formal
 	simple
 	stata
-	formal
 END
 
 
