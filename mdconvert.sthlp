@@ -1,12 +1,12 @@
 {smcl}
-{it:v. 1.1.0} 
+{it:v. 1.2.0} 
 
 
 {title:Title}
 
 {p 4 4 2}
-{bf:mdconvert} {hline 2} converts  {browse "https://daringfireball.net/projects/markdown/":Markdown} to
-Microsoft Word {bf:docx} or {bf:pdf}
+{bf:mdconvert} - converts  {browse "https://daringfireball.net/projects/markdown/":Markdown} to
+Microsoft Word {bf:docx} or {bf:pdf} within Stata
 
 
 {title:Syntax}
@@ -16,20 +16,17 @@ Microsoft Word {bf:docx} or {bf:pdf}
 {p 4 4 2}
 {it:options}
 
-{space 4}{hline}
-
-{p 4 4 2}
-{ul:rep}lace: replaces the existing document    {break}
-name: name of the exported file    {break}
-{ul:e}xport(name): document format which can be {bf:docx} or {bf:pdf} 
-{ul:t}itle(str): title of the document    {break}
-{ul:au}thor(str): author of the document    {break}
-{ul:aff}iliation(str): author affiliation      {break}
-{ul:add}ress(str): author address or email     {break}
-{ul:sum}mary(str): abstract or summary of the document
-
-{space 4}{hline}
-
+{col 5}{it:option}{col 27}{it:Description}
+{space 4}{hline 75}
+{col 5}{ul:rep}lace{col 27}names of the exported file
+{col 5}name{col 27}bold face text
+{col 5}{ul:e}xport(name){col 27}document format which can be {bf:docx} or {bf:pdf}
+{col 5}{ul:t}itle(str){col 27}title of the document
+{col 5}{ul:au}thor(str){col 27}author of the document
+{col 5}{ul:aff}iliation(str){col 27}author affiliation
+{col 5}{ul:add}ress(str){col 27}author address or email
+{col 5}{ul:sum}mary(str){col 27}abstract or summary of the document
+{space 4}{hline 75}
 	
 
 {title:Description}
@@ -50,19 +47,19 @@ Generating docx and pdf files in Stata 15 is done using the {bf:putdocx} and
 {bf:putpdf} commands. Compared to Pandoc, these commands are still very limited
 and do not fully cover the Markdown syntax. For example, they do not allow:
 
-{break}1. horizontal line
-{break}2. Hyperlink
-{break}3. Nested lists
-{break}4. Mathematical notations
+{break}    1. horizontal line
+{break}    2. Hyperlink
+{break}    3. Nested lists
+{break}    4. Mathematical notations
 
 
 {title:Example(s)}
 
     convert Markdown file to docx
-        . mdconvert using path/to/markdown.md, name(mydoc) export(docx) replace
+        . mdconvert using "markdown.md", name(mydoc) export(docx) replace
 
-    convert Markdown file to pdf (NOT DEVELOPED YET)
-        . mdconvert using path/to/markdown.md, name(mydoc) export(pdf) replace
+    convert Markdown file to pdf
+        . mdconvert using "markdown.md", name(mydoc) export(pdf) replace
 
 
 {title:Author}
@@ -70,15 +67,12 @@ and do not fully cover the Markdown syntax. For example, they do not allow:
 {p 4 4 2}
 E. F. Haghish     {break}
 University of Göttingen     {break}
-info [aT] haghish [D0T] com      {break}
-
-{p 4 4 2}
-The command is hosted on
-GitHub  {browse "http://github.com/haghish/markdoc":hyperlink}
+{browse "https://github.com/haghish":https://github.com/haghish}
 
 {space 4}{hline}
 
 {p 4 4 2}
 This help file was dynamically produced by 
 {browse "http://www.haghish.com/markdoc/":MarkDoc Literate Programming package} 
+
 

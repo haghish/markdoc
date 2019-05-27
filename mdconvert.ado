@@ -1,11 +1,13 @@
+// to generate the help file, type: markdoc "mdconvert.ado", mini export(sthlp) replace
+
 /***
-_v. 1.1.0_ 
+_v. 1.2.0_ 
 
 Title
 ====== 
 
-__mdconvert__ -- converts [Markdown](https://daringfireball.net/projects/markdown/) to
-Microsoft Word __docx__ or __pdf__
+__mdconvert__ - converts [Markdown](https://daringfireball.net/projects/markdown/) to
+Microsoft Word __docx__ or __pdf__ within Stata
 
 Syntax
 ------ 
@@ -14,18 +16,16 @@ Syntax
 
 _options_
 
-- - -
-
-***rep***lace: replaces the existing document  
-name: name of the exported file  
-***e***xport(name): document format which can be __docx__ or __pdf__ 
-***t***itle(str): title of the document  
-***au***thor(str): author of the document  
-***aff***iliation(str): author affiliation    
-***add***ress(str): author address or email   
-***sum***mary(str): abstract or summary of the document
-
-- - -
+| _option_             |  _Description_                                     | 
+|:---------------------|:---------------------------------------------------| 
+| **rep**lace          | names of the exported file                         | 
+| name                 | bold face text                                     | 
+| **e**xport(name)     | document format which can be __docx__ or __pdf__   | 
+| **t**itle(str)       | title of the document                              | 
+| **au**thor(str)      | author of the document                             | 
+| **aff**iliation(str) | author affiliation                                 | 
+| **add**ress(str)     | author address or email                            | 
+| **sum**mary(str)     | abstract or summary of the document                | 
 
 	
 Description
@@ -54,19 +54,17 @@ Example(s)
 ----------
 
     convert Markdown file to docx
-        . mdconvert using path/to/markdown.md, name(mydoc) export(docx) replace
+        . mdconvert using "markdown.md", name(mydoc) export(docx) replace
 
     convert Markdown file to pdf
-        . mdconvert using path/to/markdown.md, name(mydoc) export(pdf) replace
+        . mdconvert using "markdown.md", name(mydoc) export(pdf) replace
 
 Author
 ------
 
 E. F. Haghish   
 University of Göttingen    
-info [aT] haghish [D0T] com    
-
-The command is hosted on [GitHub](http://github.com/haghish/markdoc)
+[https://github.com/haghish](https://github.com/haghish)
 
 - - -
 
@@ -386,8 +384,9 @@ program define mdconvert
 		// -------------------------------------------------------------------------
 		if substr(`"`macval(line)'"',1,5) == ":----"  |  ///
 		   substr(`"`macval(line)'"',1,5) == "|----"  |  ///
+			 substr(`"`macval(line)'"',1,6) == "|:----" |  ///
 			 substr(`"`macval(line)'"',1,6) == "| ----" |  ///
-			 substr(`"`macval(line)'"',1,6) == "| :---" | {
+			 substr(`"`macval(line)'"',1,6) == "| :---" | {		
 			
 			local tablenum = `tablenum'+1
 			
