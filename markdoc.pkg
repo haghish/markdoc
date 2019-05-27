@@ -24,7 +24,9 @@ F mdconvert.ado
 F mdconvert.sthlp
 F mdminor.ado
 F mdminor.sthlp
+F mini.ado
 F mini.dlg
+F mini.sthlp
 F pandoc.ado
 F pandoc.sthlp
 F rundoc.ado
