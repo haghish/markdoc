@@ -1,5 +1,5 @@
 /***
-_v. 1.0.0_ 
+_v. 1.1_ 
 
 Title
 ====== 
@@ -66,7 +66,7 @@ program define mdminor
 		local version 15
 	}
 	
-	syntax [anything] [, export(str) name(str) continue replace]
+	syntax [anything] [, export(str) name(str) continue replace size(numlist max=1) ]
     
 	
 	version `version'
@@ -289,7 +289,8 @@ program define mdminor
 			local addaccent ""
 		}
 		
-		`command' text (`"`macval(1)' "'), `bold' `italic' font(`font')
+		
+		`command' text (`"`macval(1)' "'), `bold' `italic' font("`font'", `size')
 		
 		if !missing("`enditalic'") {
 			local italic ""
