@@ -5,7 +5,6 @@ d {bf:html}, as well as dynamic Stata package help files {bf:sthlp}.
 d
 d Distribution-Date: 20190527
 d
-F abspath.ado
 F markdoc.ado
 F markdoc.dlg
 F markdoc.sthlp
