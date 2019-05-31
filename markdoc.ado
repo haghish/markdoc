@@ -2682,6 +2682,10 @@ program markdoc
         local savelinesize `r(linesize)'
         local savemargin `r(lmargin)'
         translator set smcl2txt linesize `c(linesize)'
+				
+				if !missing("`scriptfile'") {
+				  translator set smcl2txt linesize 255
+				}
         
         if  missing("`scriptfile'") translator set smcl2txt lmargin 6
         if !missing("`scriptfile'") translator set smcl2txt lmargin 0
@@ -3537,7 +3541,12 @@ program markdoc
                                             if "`noisily'" == "noisily" di _n(2) "{title:Applying mini mode}" _n
                                             if "`export'" == "md" {
                                                 quietly copy "`md'" "`output'", replace
-                                                quietly copy "`md'" "`convert'", replace
+                                                if missing("`mini'") {
+																								  quietly copy "`md'" "`convert'", replace
+																								}
+																								else {
+																								  local convert "`md'"
+																								}
                                             }
                                             else if "`export'" == "html" {
                                                 quietly markdown "`md'", saving("`output'") replace
