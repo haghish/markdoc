@@ -1,11 +1,11 @@
 {smcl}
-{it:v. 1.0.0} 
+{it:v. 1.3} 
 
 
-{title:Title}
+{title:mdminor}
 
 {p 4 4 2}
-{bf:mdminor} {hline 2} interprets Markdown syntax and converts it in 
+{bf:mdminor} interprets Markdown syntax and converts it in 
 Microrosoft Word{c 39}s {bf:docx} format or {bf:pdf} format
 
 
@@ -14,26 +14,26 @@ Microrosoft Word{c 39}s {bf:docx} format or {bf:pdf} format
 {p 8 8 2} {bf:mdminor} {it:text} [, {it:options}]
 
 
-{p 4 4 2}
-{it:options}
+{p 4 4 2}{bf:Options}
 
+{col 5}{it:option}{col 21}{it:Description}
+{space 4}{hline}
+{col 5}export({it:str}){col 21}specifies the file format and can be {bf:docx} (default) or {bf:pdf}
+{col 5}name({it:str}){col 21}specifies the file name
+{col 5}continue{col 21}avoids creating a new file and works on the loaded file in the memory
+{col 5}replace{col 21}replaces the existing file
 {space 4}{hline}
 
+{title:Examples}
+
 {p 4 4 2}
-export({it:str}): specifies the file format and can be {bf:docx} (default) or {bf:pdf}    {break}
-name({it:str}): specifies the file name    {break}
-continue: avoids creating a new file and works on the loaded file in the memory    {break}
-replace: replaces the existing file    {break}
+create a microsoft word file
 
-{space 4}{hline}
-
-
-{title:Example(s)}
-
-    create a microsoft word file
         . mdminor "**hello** *world*!", export(docx) name(mydoc) replace
 
-    create a pdf file
+{p 4 4 2}
+create a pdf file
+
         . mdminor "**hello** *world*!", export(pdf) name(mydoc) replace
 
 
@@ -42,14 +42,19 @@ replace: replaces the existing file    {break}
 {p 4 4 2}
 E. F. Haghish     {break}
 University of Göttingen     {break}
-info [aT] haghish [D0T] com      {break}
+{it:haghish@med.uni-goesttingen.de}    {break}
+{browse "https://github.com/haghish":https://github.com/haghish} 
+
+
+{title:License}
 
 {p 4 4 2}
-The command is hosted on  {browse "http://github.com/haghish/markdoc":GitHub}
+MIT License
 
 {space 4}{hline}
 
 {p 4 4 2}
 This help file was dynamically produced by 
 {browse "http://www.haghish.com/markdoc/":MarkDoc Literate Programming package} 
+
 
