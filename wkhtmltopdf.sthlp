@@ -1,49 +1,65 @@
 {smcl}
-{right:version 1.0.0}
-{title:Title}
+{it:v. 1.1}
 
-{phang}
-{cmd:wkhtmltopdf} {hline 2} renders {bf:html} documents to {bf:pdf} within Stata 
+
+{title:wkhtmltopdf}
+
+{p 4 4 2}
+{bf:wkhtmltopdf} renders {bf:html} documents to {bf:pdf} within Stata
+
 
 {title:Syntax}
 
-{p 8 16 2}
-{cmd: wkhtmltopdf} [{browse "http://wkhtmltopdf.org/usage/wkhtmltopdf.txt":options}]
-{it:filename.html} {it:filename.pdf} 
-{p_end}
+{p 8 8 2} {bf:wkhtmltopdf}  {browse "http://wkhtmltopdf.org/usage/wkhtmltopdf.txt":[{it:options}}] 
+{it:filename.html} {it:filename.pdf}
 
 {p 4 4 2}
-See the {browse "http://wkhtmltopdf.org/usage/wkhtmltopdf.txt":options} which 
+See the  {browse "http://wkhtmltopdf.org/usage/wkhtmltopdf.txt":{it:options}}, which 
 is a link to the {bf:wkhtmltopdf} manual, explaining the arguments you can 
 add to adjust the pdf output. 
-
 
 
 {title:Description}
 
 {p 4 4 2}
-{bf:{help MarkDoc}} requires the 
-{browse "http://wkhtmltopdf.org/downloads.html":wkhtmltopdf}
+if the {bf:mini} engine is not used, 
+{bf:markdoc} requires the  {browse "http://wkhtmltopdf.org/downloads.html":wkhtmltopdf} 
 software to convert {bf:html} to {bf:pdf} without requiring installing LaTeX. 
-Moreove, {bf:MarkDoc} provides automatic installation of wkhtmltopdf which is 
-very convenient. 
+Moreove, {bf:markdoc} provides automatic installation of wkhtmltopdf, if desired. 
 
 {p 4 4 2}
-However, {bf:MarkDoc} is not the only software that deals with documents in Stata 
+However, {bf:markdoc} is not the only software that deals with documents in Stata 
 and many users show interest to create dynamic documents in their own way. 
-To help them create {bf:pdf} documents, this command was created to convert their 
+to help them create {bf:pdf} documents, this command was created to convert their 
 {bf:html} documents to {bf:pdf}. 
-
 
 
 {title:Example}
 
-    convert html file to pdf
+{p 4 4 2}
+convert html file to pdf
+
         . wkhtmltopdf myfile.html myfile.pdf
 
-    {hline}
+
+{title:Author}
 
 {p 4 4 2}
-{it:This help file was dynamically produced by} 
-{it:{browse "http://www.haghish.com/markdoc/":MarkDoc Literate Programming package}} 
+E. F. Haghish     {break}
+University of Göttingen     {break}
+{it:haghish@med.uni-goesttingen.de}    {break}
+{browse "https://github.com/haghish":https://github.com/haghish}
+
+
+{title:License}
+
+{p 4 4 2}
+MIT License
+
+{space 4}{hline}
+
+{p 4 4 2}
+This help file was dynamically produced by 
+{browse "http://www.haghish.com/markdoc/":MarkDoc Literate Programming package} 
+
 

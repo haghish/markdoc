@@ -1,53 +1,62 @@
-/*** DO NOT EDIT THIS LINE -----------------------------------------------------
-Version: 1.0.0
-Title: wkhtmltopdf
-Description: renders __html__ documents to __pdf__ within Stata  
------------------------------------------------------ DO NOT EDIT THIS LINE ***/
-
+// documentation is written for markdoc package (github.com/haghish/markdoc) 
+// . markdoc wkhtmltopdf.ado, mini export(sthlp) replace
 
 /***
+_v. 1.1_
+
+wkhtmltopdf
+===========
+
+__wkhtmltopdf__ renders __html__ documents to __pdf__ within Stata
+
 Syntax
-======
+------
 
-{p 8 16 2}
-{cmd: wkhtmltopdf} [{browse "http://wkhtmltopdf.org/usage/wkhtmltopdf.txt":options}]
-{it:filename.html} {it:filename.pdf} 
-{p_end}
+> __wkhtmltopdf__ [[_options_](http://wkhtmltopdf.org/usage/wkhtmltopdf.txt)] 
+_filename.html_ _filename.pdf_
 
-See the {browse "http://wkhtmltopdf.org/usage/wkhtmltopdf.txt":options} which 
+See the [_options_](http://wkhtmltopdf.org/usage/wkhtmltopdf.txt), which 
 is a link to the __wkhtmltopdf__ manual, explaining the arguments you can 
 add to adjust the pdf output. 
 
-
 Description
-===========
+-----------
 
-__{help MarkDoc}__ requires the 
-[wkhtmltopdf](http://wkhtmltopdf.org/downloads.html) 
+if the __mini__ engine is not used, 
+__markdoc__ requires the [wkhtmltopdf](http://wkhtmltopdf.org/downloads.html) 
 software to convert __html__ to __pdf__ without requiring installing LaTeX. 
-Moreove, __MarkDoc__ provides automatic installation of wkhtmltopdf which is 
-very convenient. 
+Moreove, __markdoc__ provides automatic installation of wkhtmltopdf, if desired. 
 
-However, __MarkDoc__ is not the only software that deals with documents in Stata 
+However, __markdoc__ is not the only software that deals with documents in Stata 
 and many users show interest to create dynamic documents in their own way. 
-To help them create __pdf__ documents, this command was created to convert their 
+to help them create __pdf__ documents, this command was created to convert their 
 __html__ documents to __pdf__. 
 
-
 Example
-=================
+-------
 
-    convert html file to pdf
+convert html file to pdf
+
         . wkhtmltopdf myfile.html myfile.pdf
+
+Author
+------
+
+E. F. Haghish   
+University of Göttingen    
+_haghish@med.uni-goesttingen.de_  
+[https://github.com/haghish](https://github.com/haghish)
+
+License
+-------
+
+MIT License
 
 - - -
 
-_This help file was dynamically produced by_ 
-_[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/)_ 
+This help file was dynamically produced by 
+[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/) 
 ***/
-
-
-
 
 *cap prog drop wkhtmltopdf
 program wkhtmltopdf
@@ -71,6 +80,4 @@ program wkhtmltopdf
 	
 end
 
-
-*markdoc wkhtmltopdf.ado, export(sthlp) replace
 
