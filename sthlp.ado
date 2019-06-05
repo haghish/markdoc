@@ -21,7 +21,7 @@
 
 
 /***
-_v. 2.0_
+_v. 2.0.1_
 
 sthlp
 =====
@@ -431,6 +431,7 @@ program define sthlp
 			file write `knot' `"`macval(line)'"' _n 
 		}
 		
+		file close `hitch'
 		file close `knot'
 		capture copy "`tmp'" "`script'", replace public
 		
