@@ -1,11 +1,11 @@
 {smcl}
-{it:v. 1.2.0} 
+{it:v. 1.3} 
 
 
-{title:Title}
+{title:mdconvert}
 
 {p 4 4 2}
-{bf:mdconvert} - converts  {browse "https://daringfireball.net/projects/markdown/":Markdown} to
+{bf:mdconvert} converts  {browse "https://daringfireball.net/projects/markdown/":Markdown} to
 Microsoft Word {bf:docx} or {bf:pdf} within Stata
 
 
@@ -13,8 +13,7 @@ Microsoft Word {bf:docx} or {bf:pdf} within Stata
 
 {p 8 8 2} {bf:mdconvert} using {it:filename} [, {it:options}]
 
-{p 4 4 2}
-{it:options}
+{p 4 4 2}{bf:Options}
 
 {col 5}{it:option}{col 27}{it:Description}
 {space 4}{hline 75}
@@ -27,7 +26,6 @@ Microsoft Word {bf:docx} or {bf:pdf} within Stata
 {col 5}{ul:add}ress(str){col 27}author address or email
 {col 5}{ul:sum}mary(str){col 27}abstract or summary of the document
 {space 4}{hline 75}
-	
 
 {title:Description}
 
@@ -53,12 +51,16 @@ and do not fully cover the Markdown syntax. For example, they do not allow:
 {break}    4. Mathematical notations
 
 
-{title:Example(s)}
+{title:Examples}
 
-    convert Markdown file to docx
+{p 4 4 2}
+convert Markdown file to docx
+
         . mdconvert using "markdown.md", name(mydoc) export(docx) replace
 
-    convert Markdown file to pdf
+{p 4 4 2}
+convert Markdown file to pdf
+
         . mdconvert using "markdown.md", name(mydoc) export(pdf) replace
 
 
@@ -67,7 +69,14 @@ and do not fully cover the Markdown syntax. For example, they do not allow:
 {p 4 4 2}
 E. F. Haghish     {break}
 University of Göttingen     {break}
+{it:haghish@med.uni-goesttingen.de}    {break}
 {browse "https://github.com/haghish":https://github.com/haghish}
+
+
+{title:License}
+
+{p 4 4 2}
+MIT License
 
 {space 4}{hline}
 

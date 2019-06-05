@@ -203,12 +203,6 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 			}	
 					
 			file write `knot' "\begin{document}" _n
-					
-			if !missing("`toc'") {
-				file write  `knot' "\clearpage" _n						///
-				"\tableofcontents" _n									///
-				"\clearpage" _n(2)		
-			}
 				
 			if "`title'" != "" | !missing("`author'") {
 				file write `knot' "\title{`title'}" _n
@@ -234,6 +228,12 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				if "`title'" == "" local title "\hphantom"
 				file write `knot' "\maketitle" _n	
 			}	
+			
+			if !missing("`toc'") {
+				file write  `knot' "\clearpage" _n						///
+				"\tableofcontents" _n									///
+				"\clearpage" _n(2)		
+			}
 						
 			if "`summary'" != "" {
 				file write `knot' "\begin{abstract}" _n
@@ -241,7 +241,7 @@ syntax [anything] , export(str) tmp(str) tmp1(str) [master] [markup(str)]	///
 				file write `knot' "\end{abstract}" _n(2)
 			}					
 			file write `knot' "" _n
-			file write `knot' "" _n				
+			file write `knot' "" _n		
 		}
 								
 		*************

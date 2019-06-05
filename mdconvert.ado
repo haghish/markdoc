@@ -1,12 +1,13 @@
-// to generate the help file, type: markdoc "mdconvert.ado", mini export(sthlp) replace
+// documentation is written for markdoc package (github.com/haghish/markdoc) 
+// . markdoc mdconvert.ado, mini export(sthlp) replace
 
 /***
-_v. 1.2.0_ 
+_v. 1.3_ 
 
-Title
-====== 
+mdconvert
+=========
 
-__mdconvert__ - converts [Markdown](https://daringfireball.net/projects/markdown/) to
+__mdconvert__ converts [Markdown](https://daringfireball.net/projects/markdown/) to
 Microsoft Word __docx__ or __pdf__ within Stata
 
 Syntax
@@ -14,7 +15,7 @@ Syntax
 
 > __mdconvert__ using _filename_ [, _options_]
 
-_options_
+### Options
 
 | _option_             |  _Description_                                     | 
 |:---------------------|:---------------------------------------------------| 
@@ -27,7 +28,6 @@ _options_
 | **add**ress(str)     | author address or email                            | 
 | **sum**mary(str)     | abstract or summary of the document                | 
 
-	
 Description
 -----------
 
@@ -50,13 +50,15 @@ and do not fully cover the Markdown syntax. For example, they do not allow:
 3. Nested lists
 4. Mathematical notations
 
-Example(s)
-----------
+Examples
+--------
 
-    convert Markdown file to docx
+convert Markdown file to docx
+
         . mdconvert using "markdown.md", name(mydoc) export(docx) replace
 
-    convert Markdown file to pdf
+convert Markdown file to pdf
+
         . mdconvert using "markdown.md", name(mydoc) export(pdf) replace
 
 Author
@@ -64,7 +66,13 @@ Author
 
 E. F. Haghish   
 University of Göttingen    
+_haghish@med.uni-goesttingen.de_  
 [https://github.com/haghish](https://github.com/haghish)
+
+License
+-------
+
+MIT License
 
 - - -
 

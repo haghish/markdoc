@@ -1,10 +1,13 @@
+// documentation is written for markdoc package (github.com/haghish/markdoc) 
+// . markdoc mdminor.ado, mini export(sthlp) replace
+
 /***
-_v. 1.1_ 
+_v. 1.3_ 
 
-Title
-====== 
+mdminor
+======= 
 
-__mdminor__ -- interprets Markdown syntax and converts it in 
+__mdminor__ interprets Markdown syntax and converts it in 
 Microrosoft Word's __docx__ format or __pdf__ format
 
 Syntax
@@ -13,24 +16,24 @@ Syntax
 > __mdminor__ _text_ [, _options_]
 
 
-_options_
+### Options
 
-- - -
+| _option_       |  _Description_                                                        |
+|:---------------|:----------------------------------------------------------------------|
+| export(_str_)  | specifies the file format and can be __docx__ (default) or __pdf__    |
+| name(_str_)    | specifies the file name                                               |
+| continue       | avoids creating a new file and works on the loaded file in the memory |
+| replace        | replaces the existing file                                            |
 
-export(_str_): specifies the file format and can be __docx__ (default) or __pdf__  
-name(_str_): specifies the file name  
-continue: avoids creating a new file and works on the loaded file in the memory  
-replace: replaces the existing file  
+Examples
+--------
 
-- - -
+create a microsoft word file
 
-Example(s)
-----------
-
-    create a microsoft word file
         . mdminor "**hello** *world*!", export(docx) name(mydoc) replace
 
-    create a pdf file
+create a pdf file
+
         . mdminor "**hello** *world*!", export(pdf) name(mydoc) replace
 
 Author
@@ -38,9 +41,13 @@ Author
 
 E. F. Haghish   
 University of Göttingen    
-info [aT] haghish [D0T] com    
+_haghish@med.uni-goesttingen.de_  
+[https://github.com/haghish](https://github.com/haghish) 
 
-The command is hosted on [GitHub](http://github.com/haghish/markdoc)
+License
+-------
+
+MIT License
 
 - - -
 
@@ -323,7 +330,3 @@ program define mdminor
 	
 
 end
-
-// markdoc "mdminor.ado" , export(sthlp) replace
-
-
