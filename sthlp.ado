@@ -1,3 +1,5 @@
+// THIS PROGRAM NEEDS CLEANING! YOU'RE WELCOME TO FORK IT
+
 /*
 
 					   Developed by E. F. Haghish (2014)
@@ -16,6 +18,55 @@
 	This program is a part of MarkDoc package and generates dynamic Stata help 
 	files within source code, in ".sthlp" file format. 
 */
+
+
+/***
+_v. 2.0_
+
+sthlp
+=====
+
+converts Markdown to STHLP format to create Stata help files
+
+Syntax
+------
+
+> __sthlp__ _filename_ [, _replace_ _debug_ ]
+
+### Options
+
+| Option     | Description                   |
+|------------|-------------------------------|
+| _replace_  | replaces the existing file    |
+| _debug_    | runs __sthlp__ in debug mode  |
+
+Example
+-------
+
+extract the Markdown notation from a do-file and build a help file
+
+     . sthlp "filename.do" , replace 
+
+Author
+------
+
+E. F. Haghish  
+_haghish@med.uni-goesttingen.de_  
+[https://github.com/haghish/echo](https://github.com/haghish/echo)  
+
+License
+-------
+
+MIT License
+
+- - -
+
+This help file was dynamically produced by 
+[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/) 
+
+***/
+
+
 
 *cap prog drop sthlp
 program define sthlp
