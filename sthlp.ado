@@ -107,6 +107,7 @@ program define sthlp
 	build		 	 /// creates the toc and pkg files
 	markup(str)		 /// specify markup language used for documentation
 	helplayout		 ///
+	datalayout		 ///
 	debug          ///
 	]
 	
@@ -190,7 +191,28 @@ program define sthlp
 	qui file open `knot' using `"`tmp'"', write replace
 	file read `hitch' line
 
-
+	if !missing("`datalayout'") {
+	  file write `knot' 														        ///
+			"/***" _n 																            ///
+			"__data set from the XXX package_ " _n(2)             ///
+			"Title" _n                                            ///
+			"====== " _n(2)                                       ///
+			"__commandname__ - explain your command briefly." _n /// 
+      "You can use simplified syntax to make text" _n       ///
+      "_italic_, __bold__, **emphasized**, or" _n           ///
+      "add [hyperlink](http://www.haghish.com/markdoc)" _n  ///
+			"" _n                                                 ///
+			"Syntax" _n                                           ///
+			"------ " _n(2)                                       ///
+			"> __XXX__ _varlist_ =_exp_ [_if_] [_in_] " _n        ///
+			"[_weight_] using _filename_ [, _options_]" _n(2)   	///
+			"| _option_          |  _Description_          |" _n 	///
+			"|:------------------|:------------------------|" _n 	///
+			"| **min**abbrev     | whatever does _yak yak_ |" _n 	///
+			"| **break**line     | whatever does _yak yak_ |" _n 	///
+			"| **exp**ort(_arg_) | whatever does _yak yak_ |" _n 	///
+	}
+	
 	if !missing("`helplayout'") {
 
 		if "`markup'" == "markdown" | "`markup'" == ""  {
