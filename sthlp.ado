@@ -147,6 +147,11 @@ program define sthlp
 		local convert  "`name'.`export'"
 		local extension do
 	}
+	else if (index(lower("`input'"),".md")) {
+		local name : subinstr local input ".md" ""
+		local convert  "`name'.`export'"
+		local extension md
+	} 
 	
 	// assume it's an ADO file
 	capture confirm file "`script'.ado"
@@ -313,7 +318,6 @@ program define sthlp
 		file close `hitch'
 		file close `knot'
 		capture copy "`tmp'" "`script'", replace public
-		type "`script'"
 	}
 	
 	if !missing("`helplayout'") {
