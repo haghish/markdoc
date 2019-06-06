@@ -1,19 +1,21 @@
-/***
-_version 4.6_
+// documentation is written for markdoc package (github.com/haghish/markdoc) 
+// . markdoc mini.ado, mini export(sthlp) replace
 
-Title
+/***
+_version 4.8_
+
+mini
 =====
 
-mini - a simplified command to call __markdoc__ in light-weight _mini_ mode, 
+__mini__ is a simplified command to call __markdoc__ in light-weight _mini_ mode, 
 without requiring any dependencies
-
 
 Syntax
 ------
 
 > __mini__ _filename_ [, _options_ ]
 
-where _options_ can be any of the [markdoc](help markdoc) options
+where _options_ are identical to the [markdoc](help markdoc) options
 
 Description
 -----------
@@ -21,21 +23,22 @@ Description
 __mini__ is just a wrapper for __markdoc__ with the _mini_ option to run 
 __markdoc__ independent of any third-party dependencies. 
 
-Example
--------
+Examples
+--------
 
 execute a do-file and produce a word, pdf, and html files
 
-     . mini "filename.do" , export(docx) 
-     . mini "filename.do" , export(pdf) 
-     . mini "filename.do" , export(html) 
+        . mini "filename.do" , export(docx) 
+        . mini "filename.do" , export(pdf) 
+        . mini "filename.do" , export(html) 
 
 Author
 ------
 
-E. F. Haghish  
+E. F. Haghish   
+University of Göttingen    
 _haghish@med.uni-goesttingen.de_  
-[https://github.com/haghish/echo](https://github.com/haghish/echo)  
+[https://github.com/haghish](https://github.com/haghish)
 
 License
 -------

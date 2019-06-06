@@ -1,13 +1,12 @@
 {smcl}
-{it:version 4.6}
+{it:version 4.8}
 
 
-{title:Title}
+{title:mini}
 
 {p 4 4 2}
-mini - a simplified command to call {bf:markdoc} in light-weight {it:mini} mode, 
+{bf:mini} is a simplified command to call {bf:markdoc} in light-weight {it:mini} mode, 
 without requiring any dependencies
-
 
 
 {title:Syntax}
@@ -15,7 +14,7 @@ without requiring any dependencies
 {p 8 8 2} {bf:mini} {it:filename} [, {it:options} ]
 
 {p 4 4 2}
-where {it:options} can be any of the  {browse "help markdoc":markdoc} options
+where {it:options} are identical to the  {browse "help markdoc":markdoc} options
 
 
 {title:Description}
@@ -25,22 +24,23 @@ where {it:options} can be any of the  {browse "help markdoc":markdoc} options
 {bf:markdoc} independent of any third-party dependencies. 
 
 
-{title:Example}
+{title:Examples}
 
 {p 4 4 2}
 execute a do-file and produce a word, pdf, and html files
 
-     . mini "filename.do" , export(docx) 
-     . mini "filename.do" , export(pdf) 
-     . mini "filename.do" , export(html) 
+        . mini "filename.do" , export(docx) 
+        . mini "filename.do" , export(pdf) 
+        . mini "filename.do" , export(html) 
 
 
 {title:Author}
 
 {p 4 4 2}
-E. F. Haghish    {break}
+E. F. Haghish     {break}
+University of Göttingen     {break}
 {it:haghish@med.uni-goesttingen.de}    {break}
-{browse "https://github.com/haghish/echo":https://github.com/haghish/echo}    {break}
+{browse "https://github.com/haghish":https://github.com/haghish}
 
 
 {title:License}

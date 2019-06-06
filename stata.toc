@@ -1,6 +1,6 @@
-v 5.0.0
+v 4.8.0
 d Materials by E. F. Haghish
-d University of Göttingen
+d University of Goettingen
 d haghish@med.uni-goettingen.de
 d https://github.com/haghish/github
 
