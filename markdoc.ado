@@ -45,6 +45,12 @@ the main options are the following:
 | statax                 | activates the built-in [syntax highlighter](https://github.com/haghish/statax)                   |
 | replace                | replace the exported file if already exists                                                      |
 | **e**xport(_name_)     | document format; it can be __md__, __html__, __docx__, __pdf__, __slide__, __tex__, or __sthlp__ |
+
+
+the supplementary options are the following:
+
+| Option                 | Description                                                                                      |
+|-------------------|--------------------------------------------------------------------------------------------------|
 | **num**bered           | numbers Stata commands in the dynamic document                                                   |
 | date                   | adds the current date in the document                                                            |
 | **tit**le(_str_)       | specify the title of the document                                                                |
@@ -53,7 +59,14 @@ the main options are the following:
 | **add**ress(_str_)     | specify the author's contact information in the document                                         |
 | **sum**mary(_str_)     | specify the summary of the document                                                              |
 | **sty**le(_name_)      | specify the style of the document; it can be __simple__, __stata__, or __formal__                |
-|                        |                                                                                                  |
+
+
+options related to software documentation:
+
+| Option                 | Description                                                                                      |
+|-------------------|--------------------------------------------------------------------------------------------------|
+| helplayout             | appends a Markdown help documentation to a stata script file                                     |
+| datalayout             | appends/creates a Markdown help documentation to a stata script file                             |
 
 
 and the following options are for communicating with the third-party software (not required in the __mini__ mode)

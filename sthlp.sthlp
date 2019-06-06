@@ -1,5 +1,5 @@
 {smcl}
-{it:v. 2.0}
+{it:v. 2.0.1}
 
 
 {title:sthlp}
@@ -14,18 +14,31 @@ converts Markdown to STHLP format to create Stata help files
 
 {p 4 4 2}{bf:Options}
 
-{col 5}Option{col 17}Description
-{space 4}{hline 43}
-{col 5}{it:replace}{col 17}replaces the existing file
-{col 5}{it:debug}{col 17}runs {bf:sthlp} in debug mode
-{space 4}{hline 43}
+{col 5}Option{col 19}Description
+{space 4}{hline 66}
+{col 5}{it:replace}{col 19}replaces the existing file
+{col 5}{it:debug}{col 19}runs {bf:sthlp} in debug mode
+{col 5}{it:helplayout}{col 19}appends the help file template to a script file
+{col 5}{it:datalayout}{col 19}appends or creates the data documentation template
+{space 4}{hline 66}
 
 {title:Example}
 
 {p 4 4 2}
 extract the Markdown notation from a do-file and build a help file
 
-     . sthlp "filename.do" , replace 
+     . sthlp filename.ado , replace 
+
+{p 4 4 2}
+append the help layout to an ado-file
+
+     . sthlp filename.ado, helplayout
+
+{p 4 4 2}
+generate a data documentation template for {bf:auto.dta}
+
+     . sysuse auto, clear
+     . sthlp filename.do , replace datalayout
 
 
 {title:Author}

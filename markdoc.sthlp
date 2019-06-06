@@ -46,6 +46,13 @@ the main options are the following:
 {col 5}statax{col 24}activates the built-in  {browse "https://github.com/haghish/statax":syntax highlighter}
 {col 5}replace{col 24}replace the exported file if already exists
 {col 5}{ul:e}xport({it:name}){col 24}document format; it can be {bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, {bf:slide}, {bf:tex}, or {bf:sthlp}
+{space 4}{hline}
+
+{p 4 4 2}
+the supplementary options are the following:
+
+{col 5}Option{col 24}Description
+{space 4}{hline}
 {col 5}{ul:num}bered{col 24}numbers Stata commands in the dynamic document
 {col 5}date{col 24}adds the current date in the document
 {col 5}{ul:tit}le({it:str}){col 24}specify the title of the document
@@ -54,6 +61,15 @@ the main options are the following:
 {col 5}{ul:add}ress({it:str}){col 24}specify the author{c 39}s contact information in the document
 {col 5}{ul:sum}mary({it:str}){col 24}specify the summary of the document
 {col 5}{ul:sty}le({it:name}){col 24}specify the style of the document; it can be {bf:simple}, {bf:stata}, or {bf:formal}
+{space 4}{hline}
+
+{p 4 4 2}
+options related to software documentation:
+
+{col 5}Option{col 24}Description
+{space 4}{hline}
+{col 5}helplayout{col 24}appends a Markdown help documentation to a stata script file
+{col 5}datalayout{col 24}appends/creates a Markdown help documentation to a stata script file
 {space 4}{hline}
 
 {p 4 4 2}
