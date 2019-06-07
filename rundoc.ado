@@ -320,5 +320,6 @@ program define rundoc
 	capture qui log close rundoc
 	capture quietly erase "`input'.smcl"
 	
+	macro drop CurrentmarkdocDofile  
 end
 
