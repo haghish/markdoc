@@ -80,13 +80,13 @@ program define rundoc
 	}
 	
 	// Avoid Markdoc to re-execute itself in a do-file
-	if !missing(`"$CurrentMarkDocDofile"') {
-		if `"$CurrentMarkDocDofile"' == `"`dofile'"' {
+	if !missing(`"$currentmarkdocdofile"') {
+		if `"$currentmarkdocdofile"' == `"`dofile'"' {
 			exit
 		}
 	}
 	else {
-		global CurrentMarkDocDofile "`dofile'"
+		global currentmarkdocdofile "`dofile'"
 	}
 
 	// -------------------------------------------------------------------------
@@ -320,6 +320,6 @@ program define rundoc
 	capture qui log close rundoc
 	capture quietly erase "`input'.smcl"
 	
-	macro drop CurrentmarkdocDofile  
+	macro drop currentmarkdocdofile  
 end
 

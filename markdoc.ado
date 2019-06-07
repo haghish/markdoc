@@ -555,7 +555,7 @@ program markdoc
     // =========================================================================
     // AVOID CRASHES by removing the working log from previous execution
     // =========================================================================
-    cap macro drop CurrentmarkdocDofile
+    macro drop currentmarkdocdofile
     
     // =========================================================================
     // CHANGED SYNTAX
@@ -1194,6 +1194,8 @@ program markdoc
         // =========================================================================
         if !missing("`rundoc'") {
             
+						if !missing("`noisily'") di as err "{title:INITIATING RUNDOC.ado}"
+						
             if !missing("`pdfhtml'") local export "pdf"
 						if !missing("`pdfmd'")   local export "pdf"
             
@@ -1232,6 +1234,7 @@ program markdoc
             bwidth(`bwidth')                                                    ///
             bheight(`bheight')                      
             
+						macro drop currentmarkdocdofile  
             exit
         }
     
@@ -3212,10 +3215,11 @@ program markdoc
                                             if "`export'" == "md" {
                                                 quietly copy "`md'" "`output'", replace
                                                 if missing("`mini'") {
-																								  quietly copy "`md'" "`convert'", replace
+																								  quietly copy "`md'" "`convert'", replace 
 																								}
 																								else {
-																								  local convert "`md'"
+																									capture quietly copy "`md'" "`convert'", replace public  // this was a bug on Windows
+																									if _rc local convert "`md'"
 																								}
                                             }
                                             else if "`export'" == "html" {
@@ -3593,9 +3597,14 @@ program markdoc
     // -------------------------------------------------------------------------
     // this kills the live-preview. NOT A GOOD IDEA
     // if missing("$weaver") macro drop currentFigure
-    macro drop CurrentmarkdocDofile                    
+		
+		if !missing("`noisily'") {
+		  di as err "removing global macros in markdoc.ado"
+		}          
     
     // check for markdoc updates
-    markdocversion
+    *markdocversion
+		
+		macro drop currentmarkdocdofile  
   
 end
