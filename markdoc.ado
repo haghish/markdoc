@@ -1031,6 +1031,7 @@ program markdoc
          
         if (index(lower("`input'"),".smcl")) {
 					local input : subinstr local input ".smcl" ""
+					local extension smcl
 	
 					if "`export'" == "slidehtm" {
 							local convert "`input'.htm"
@@ -1057,6 +1058,7 @@ program markdoc
 					}
         else if (index(lower("`input'"),".ado")) {
             local input : subinstr local input ".ado" ""
+						local extension ado
             *if "`export'" == "slide" local convert "`input'.pdf"
             *else if "`export'" == "dzslide" local convert "`input'.html"
             *else if "`export'" == "slidy" local convert "`input'.html"
@@ -1087,6 +1089,7 @@ program markdoc
         }
         else if (index(lower("`input'"),".mata")) {
             local input : subinstr local input ".mata" ""
+						local extension mata
 						if "`export'" == "slidehtm" {
                 local convert "`input'.htm"
                 local output "`output'.htm"
@@ -1104,6 +1107,7 @@ program markdoc
         }
         else if (index(lower("`input'"),".do")) {
             local input : subinstr local input ".do" ""
+						local extension do
 			
 						if "`export'" == "slidehtm" {
                 local convert "`input'.htm"
@@ -1130,9 +1134,36 @@ program markdoc
             local input  "`input'.do"
             *local scriptfile 1                     //define a scriptfile
             local rundoc 1                          //run rundoc
+            global rundoc "`input'"                 //allow rundoc get nested in the file
+        }
+				else if (index(lower("`input'"),".md")) {
+				    local extension md
+            local input : subinstr local input ".md" ""
+			
+						if "`export'" == "slidehtm" {
+                local convert "`input'.htm"
+                local output "`output'.htm"
+            }
+            else if "`export'" == "slide" {
+                local convert "`input'.pdf"
+                local output "`output'.pdf"
+            }   
+            else if "`export'" == "dzslide" | "`export'" == "slidy" {
+                local convert "`input'.html"
+                local output "`output'.html"
+            }
+            else {
+                local convert "`input'.`export'"
+                local output "`output'.`export'"
+            }
             
-            //allow rundoc get nested in the file
-            global rundoc "`input'"
+            local md  "`input'_.md"
+            local html "`input'_.html"
+            local pdf "`input'.pdf"
+            local name "`input'"
+            local input  "`input'.md"
+            local scriptfile 1                     //define a scriptfile
+            
         }
         else if (!index(lower("`input'"),".smcl")) { 
 						
@@ -2666,6 +2697,13 @@ program markdoc
         if !missing("`debug'") {
             copy "`tmp1'" 0process5.txt , replace
         }
+				
+				
+				// If a Markdown file was given, replace the processed file
+				// -----------------------------------------------------------------
+				if "`extension'" == "md" {
+				  quietly copy "`input'" "`tmp1'" , replace public
+				}
         
         
         
@@ -3348,6 +3386,7 @@ program markdoc
                 if _rc == 0 {
                     di as txt "(markdoc created "`"{bf:{browse "`convert'"}})"' _n
                     if "`export'" != "md" cap qui erase "`md'"
+										if "`extension'" == "md" cap qui erase "`md'"
                 }
                 else display as err "markdoc could not produce `convert'" _n
             }
@@ -3585,6 +3624,7 @@ program markdoc
 		if _rc == 0 {
 			di as txt "(markdoc created "`"{bf:{browse "`convert'"}})"' _n
 			if "`export'" != "md" cap qui erase "`md'"
+			if "`extension'" == "md" cap qui erase "`md'"
 		}
 		else display as err "markdoc could not produce `convert'" _n
 	}   

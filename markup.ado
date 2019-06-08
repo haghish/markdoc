@@ -75,6 +75,11 @@ program define markup
 		local convert  "`name'.`export'"
 		local extension do
 	}
+	else if (index(lower("`input'"),".md")) {
+		local name : subinstr local input ".md" ""
+		local convert  "`name'.`export'"
+		local extension md
+	}
 	
 	// assume it's an ADO file
 	capture confirm file "`script'.ado"

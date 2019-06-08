@@ -7,8 +7,8 @@ _version 4.8_
 mini
 =====
 
-__mini__ is a simplified command to call __markdoc__ in light-weight _mini_ mode, 
-without requiring any dependencies
+__mini__ is a simplified command to call the _mini_ engine from the __markdoc__ 
+package 
 
 Syntax
 ------
@@ -20,13 +20,23 @@ where _options_ are identical to the [markdoc](help markdoc) options
 Description
 -----------
 
-__mini__ is just a wrapper for __markdoc__ with the _mini_ option to run 
-__markdoc__ independent of any third-party dependencies. 
+__mini__ is a simplified command to call the light-weight _mini_ engine forom 
+the __markdoc__ command. it can be called to convert a Markdown file to any 
+file format supported by the mini engine (html, docx, pdf, sthlp, slide). the 
+command also can execute a do-file to produce a dynamic document.  
 
 Examples
 --------
 
-execute a do-file and produce a word, pdf, and html files
+convert a Markdown file to a word, pdf, html, sthlp, and slides files
+
+        . mini "filename.md" , export(docx) 
+        . mini "filename.md" , export(pdf) 
+        . mini "filename.md" , export(html) 
+        . mini "filename.md" , export(sthlp) 
+        . mini "filename.md" , export(slide) 
+
+execute a do-file and produce a word, pdf, and html files...
 
         . mini "filename.do" , export(docx) 
         . mini "filename.do" , export(pdf) 
