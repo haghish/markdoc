@@ -2,7 +2,7 @@
 // . markdoc markdoc.ado, mini export(sthlp) replace
 
 /***
-_version 4.8.0_
+_version 5.0.0_
 
 markdoc
 =======
@@ -10,14 +10,22 @@ markdoc
 __markdoc__ is a general-purpose literate programming package for Stata that
 produces _dynamic analysis documents_, _presentation slides_, as well as Stata
 package help files and package vignettes in various formats such as __pdf__, 
-__docx__, __html__, and __sthlp__. for further information see:
+__docx__, __html__, and __sthlp__. 
+
+for further information see:
 
 - [markdoc homepage](http://haghish.com/markdoc)
-- [journal article](http://haghish.com/resources/pdf/Haghish_markdoc.pdf)
+- [journal article](https://journals.sagepub.com/doi/abs/10.1177/1536867X1601600409)
 - [manual on Github wiki](https://github.com/haghish/markdoc/wiki)
+- [package vignette (pdf)](https://github.com/haghish/markdoc/blob/master/vignette.pdf)
 - [release notes on Github](https://github.com/haghish/markdoc/releases)
 - [examples on GitHub](https://github.com/haghish/markdoc/tree/master/Examples)
 - [please ask your questions on statalist.org](http://www.statalist.org/forums/forum/general-stata-discussion/general)
+
+> from version _5.0_ forth, __markdoc__ is 
+{err}fully functional without any third-party software{txt}, due to its new 
+light-weight [mini engine](https://github.com/haghish/markdoc/wiki/mini). Yet, 
+a full installation of __markdoc__ and its dependencies is recommended.
 
 Syntax
 ------
@@ -66,7 +74,6 @@ options related to software documentation:
 | Option                 | Description                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------|
 | helplayout             | appends a Markdown help documentation to a stata script file                                     |
-| datalayout             | appends/creates a Markdown help documentation to a stata script file                             |
 
 
 and the following options are for communicating with the third-party software (not required in the __mini__ mode)
@@ -127,7 +134,7 @@ packages hosted on GitHub. you can install __github__ by typing:
 next, install the latest stable __markdoc__ release along with its Stata 
 dependencies by typing:
 
-        . github install haghish/markdoc
+        . github install haghish/markdoc, stable
 
 Description
 -----------
@@ -151,10 +158,6 @@ producing educational materials within Stata Do-file editor. For example:
 
 Software Installation
 ---------------------
-
-{err}
-REMEMBER, __markdoc__ v. 4.2 forth can run without any software dependencies, 
-using the [__mini__](https://github.com/haghish/markdoc/wiki/mini) engine. {txt}
 
 Without applying the __mini__ option, which uses the light-weight engine, 
 the markdoc package requires additional software which can be installed manually or 
@@ -501,7 +504,7 @@ program markdoc
     syntax [anything(name=smclfile id="The smcl file name is")]                 /// 
     [,               ///
     replace          /// replaces the exported file
-        mini             /// runs markdoc independent of Pandoc and wkhtmltopdf
+    mini             /// runs markdoc independent of Pandoc and wkhtmltopdf
     MARKup(name)     /// specifies the markup language used in the document
     Export(name)     /// specifies the exported format
     INSTALl          /// Installs the required software automatically

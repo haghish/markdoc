@@ -1,5 +1,5 @@
 {smcl}
-{it:version 4.8.0}
+{it:version 5.0.0}
 
 
 {title:markdoc}
@@ -8,14 +8,23 @@
 {bf:markdoc} is a general-purpose literate programming package for Stata that
 produces {it:dynamic analysis documents}, {it:presentation slides}, as well as Stata
 package help files and package vignettes in various formats such as {bf:pdf}, 
-{bf:docx}, {bf:html}, and {bf:sthlp}. for further information see:
+{bf:docx}, {bf:html}, and {bf:sthlp}. 
+
+{p 4 4 2}
+for further information see:
 
 {break}    -  {browse "http://haghish.com/markdoc":markdoc homepage}
-{break}    -  {browse "http://haghish.com/resources/pdf/Haghish_markdoc.pdf":journal article}
+{break}    -  {browse "https://journals.sagepub.com/doi/abs/10.1177/1536867X1601600409":journal article}
 {break}    -  {browse "https://github.com/haghish/markdoc/wiki":manual on Github wiki}
+{break}    -  {browse "https://github.com/haghish/markdoc/blob/master/vignette.pdf":package vignette (pdf)}
 {break}    -  {browse "https://github.com/haghish/markdoc/releases":release notes on Github}
 {break}    -  {browse "https://github.com/haghish/markdoc/tree/master/Examples":examples on GitHub}
 {break}    -  {browse "http://www.statalist.org/forums/forum/general-stata-discussion/general":please ask your questions on statalist.org}
+
+{p 8 8 2} from version {it:5.0} forth, {bf:markdoc} is 
+{err}fully functional without any third-party software{txt}, due to its new 
+light-weight  {browse "https://github.com/haghish/markdoc/wiki/mini":mini engine}. Yet, 
+a full installation of {bf:markdoc} and its dependencies is recommended.
 
 
 {title:Syntax}
@@ -69,7 +78,6 @@ options related to software documentation:
 {col 5}Option{col 24}Description
 {space 4}{hline}
 {col 5}helplayout{col 24}appends a Markdown help documentation to a stata script file
-{col 5}datalayout{col 24}appends/creates a Markdown help documentation to a stata script file
 {space 4}{hline}
 
 {p 4 4 2}
@@ -135,7 +143,7 @@ packages hosted on GitHub. you can install {bf:github} by typing:
 next, install the latest stable {bf:markdoc} release along with its Stata 
 dependencies by typing:
 
-        . github install haghish/markdoc
+        . github install haghish/markdoc, stable
 
 
 {title:Description}
@@ -160,10 +168,6 @@ producing educational materials within Stata Do-file editor. For example:
 
 
 {title:Software Installation}
-
-{err}
-REMEMBER, {bf:markdoc} v. 4.2 forth can run without any software dependencies, 
-using the  {browse "https://github.com/haghish/markdoc/wiki/mini":{bf:mini}} engine. {txt}
 
 {p 4 4 2}
 Without applying the {bf:mini} option, which uses the light-weight engine, 

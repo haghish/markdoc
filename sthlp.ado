@@ -79,7 +79,7 @@ This help file was dynamically produced by
 
 
 
-*cap prog drop sthlp
+cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
@@ -118,7 +118,6 @@ program define sthlp
 	build		 	 /// creates the toc and pkg files
 	markup(str)		 /// specify markup language used for documentation
 	helplayout		 /// appends the help layout
-	datalayout		 /// append/builds the data documentation layout
 	debug          ///
 	]
 	
@@ -207,131 +206,18 @@ program define sthlp
 	qui file open `knot' using `"`tmp'"', write replace
 	file read `hitch' line
 
-	if !missing("`datalayout'") {
-	  capture abspath "`c(filename)'"
-    local dataname "`r(fname)'"
-    if "`dataname'" == "" local dataname "YYY"
-    local nvar "`c(k)'"
-    if "`nvar'" == "" local nvar "???"
-    local nobs "`c(N)'"
-    if "`nobs'" == "" local nobs "???"
-		
-		local len = length("`dataname'") + 8
-		
-	  file write `knot' 														          ///
-			"/***" _n 																            ///
-			"__dataset from the XXX package_ " _n(2)              ///
-			"`dataname' dataset" _n                               ///
-			_dup(`len') "=" _n(2)                                 ///
-			"Description" _n                                      ///
-			"----------- " _n(2)                                  ///
-			"The __`dataname'__ dataset is about ..." _n(2)       ///
-			"Format" _n                                           ///
-			"------ " _n(2)                              ///
-			"__`dataname'__ data set includes _`nobs'_ observations and _`nvar'_ variables." _n(2) /// 
-      "### Summary of the variables" _n(2)                     
-			
-	  if "`c(filedate)'" == "" {
-			file write `knot'                                     ///
-			"| _Variable_  |  _Type_  | _Description_          |" _n ///
-      "|:------------|:---------|:-----------------------|" _n ///
-      "| __var1__    | numeric  | explain var1           |" _n ///
-      "| __var2__    | string   | explain var2           |" _n(2) 
-		}
-		else {
-		  // 15 character for varname, 5 character for type, 60 for description
-			
-			// get the longest label
-			local maxlength 0
-			foreach var of varlist _all {
-			  local lab: variable label `var'
-				local lablen = length("`lab'")
-				if `lablen' > `maxlength' local maxlength `lablen'
-			}
-			
-			file write `knot'                                     ///
-			"| Variable      | Type | Description "                                             
-			
-			if `maxlength' > 58 {
-			  file write `knot' _dup(45) " " "|" _n
-			}
-			else if `maxlength' > 25  {
-			  local endpoint1 = `maxlength'-12 
-			  file write `knot' _dup(`endpoint1') " " "|" _n
-			}
-			else {
-			   file write `knot' _dup(13) " " "|" _n
-			}
-			
-			
-			file write `knot' "|:--------------|:-----|:" 
-			
-			if `maxlength' > 58 {
-			  file write `knot' "---------------------------------------------------------|" _n 
-			}
-			else if `maxlength' > 25  {
-			  file write `knot' _dup(`maxlength') "-" "|" _n
-			}
-			else {
-			   file write `knot' _dup(25) "-" "|" _n
-			}
-			
-			
-			
-			foreach var of varlist _all {
-				local vartype: type `var'
-				local lab: variable label `var'
-				local lab = substr("`lab'",1,57) 
-				if substr("`vartype'",1,3)=="str" local vartype "str"
-				else if substr("`vartype'",1,5)=="float" local vartype "flt"
-				else if substr("`vartype'",1,4)=="byte" local vartype "byt"
-				local varname = abbrev("`var'",12) 
-				file write `knot' "| `varname'" _col(16) " | `vartype'" _col(23) " | `lab'" //_col(83) "|" _n
-				if `maxlength' > 58 {
-			    file write `knot' _col(83) "|" _n
-				}
-				else if `maxlength' > 25  {
-				  local endpoint = `maxlength'+26
-					file write `knot' _col(`endpoint') "|" _n
-				}
-				else {
-					 file write `knot' _col(51) "|" _n
-				}
-			}
-			file write `knot' _n
-		}
-		
-		file write `knot' 														          ///
-			"Source" _n                                           ///
-			"--------------- " _n(2)                              ///
-			"cite the source ..." _n(2)                           ///
-			"References" _n                                       ///
-			"--------------- " _n(2)                              ///
-			"cite the references ..." _n                          ///
-			"***/" _n(2)
-			
-    while r(eof) == 0 {
-			file read `hitch' line
-			file write `knot' `"`macval(line)'"' _n 
-		}
-		
-		file close `hitch'
-		file close `knot'
-		capture copy "`tmp'" "`script'", replace public
-	}
-	
 	if !missing("`helplayout'") {
 
 		if "`markup'" == "markdown" | "`markup'" == ""  {
 			file write `knot' 														        ///
 			"/***" _n 																            ///
-			"_v. 1.0.0_ " _n(2)                            ///
-			"Title" _n                                            ///
-			"====== " _n(2)                                       ///
-			"__commandname__ - explain your command briefly." _n /// 
-      "You can use simplified syntax to make text" _n       ///
-      "_italic_, __bold__, **emphasized**, or" _n           ///
-      "add [hyperlink](http://www.haghish.com/markdoc)" _n  ///
+			"_version 1.0_ " _n(2)                            ///
+			"XXX" _n                                            ///
+			"===== " _n(2)                                       ///
+			"explain the XXX command briefly..." _n /// 
+      ///"You can use simplified syntax to make text" _n       ///
+      ///"_italic_, __bold__, **emphasized**, or" _n           ///
+      ///"add [hyperlink](http://www.haghish.com/markdoc)" _n  ///
 			"" _n                                                 ///
 			"Syntax" _n                                           ///
 			"------ " _n(2)                                       ///
@@ -339,43 +225,38 @@ program define sthlp
 			"[_weight_] using _filename_ [, _options_]" _n(2)   	///
 			"| _option_          |  _Description_          |" _n 	///
 			"|:------------------|:------------------------|" _n 	///
-			"| **min**abbrev     | whatever does _yak yak_ |" _n 	///
-			"| **break**line     | whatever does _yak yak_ |" _n 	///
-			"| **exp**ort(_arg_) | whatever does _yak yak_ |" _n 	///
-			"" _n(2)      		                                    ///
-			"__by__ is allowed; see __[[D] by](help by)__  " _n   ///
-			"__fweight__ is allowed; [weight](help weight)  " _n 	///
+			"| **em**phasize     | explain whatever does   |" _n 	///
+			"| **opt**ion(_arg_) | explain whatever does   |" _n 	///
+			///"" _n(2)      		                                     ///
+			///"__by__ is allowed; see __[[D] by](help by)__  " _n   ///
+			///"__fweight__ is allowed; [weight](help weight)  " _n  ///
 			"" _n(2) 												                      ///
 			"Description" _n 														          ///
 			"-----------" _n(2) 													        ///
-			"__XXX__ does ... (now put in a "                     ///
-			         "one-short-paragraph description " _n 	      ///
-			"of the purpose of the command)" _n(2) 								///
+			"describe __XXX__ in more details ..." _n(2) 					///
 			"Options" _n 															            ///
 			"-------" _n(2) 														          ///
-			"__whatever__ does yak yak" _n(2) 										///
-			"> Use __>__ for additional paragraphs within "       ///
-			     "and option " _n 			                          ///
-			"description to indent the paragraph." _n(2) 					///
-			"__2nd option__ etc." _n(2) 											    ///
+			"describe the options in details, if the options table is not enough" _n(2) 										///
+			///"> Use __>__ for additional paragraphs within "       ///
+			///     "and option " _n 			                          ///
+			///"description to indent the paragraph." _n(2) 					///
+			///"__2nd option__ etc." _n(2) 											    ///
 			"Remarks" _n 															            ///
 			"-------" _n(2) 													          	///
-			"The remarks are the detailed description of the command and its " _n 	///
-			"nuances. Official documented Stata commands don't have much for " _n	///
-			"remarks, because the remarks go in the documentation." _n(2) 			///
+			"discuss the technical details about __XXX__, if there is any" _n(2) 			///
 			"Example(s)" _n															          ///
 			"----------" _n(2)												      ///
-			"    explain what it does" _n										    	///
-			"        . example command" _n(2)										  ///
-			"    second explanation" _n											    	///
-			"        . example command" _n(2)									   	///
+			"    explain what it does" _n(2)										  ///
+			"        . XXX example command" _n(2)										  ///
+			"    second explanation" _n(2)											    	///
+			"        . XXX example command" _n(2)									   	///
 			"Stored results" _n														        ///
 			"--------------" _n(2)												      ///
-			"__commandname__ stores the following in __r()__ or __e()__:" _n(2) 	///
-			"Scalars" _n(2) 										                  ///
-			"> __r(N)__: number of observations " _n(2) 					///
-			"Macros" _n(2) 				                                ///
-			"Matrices" _n(2) 								                      ///
+			"describe the Scalars, Matrices, Macros, stored by __XXX__, for example:" _n(2) 	///
+			"### Scalars" _n(2) 										                  ///
+			"> __r(level)__: explain what the scalar does " _n(2) 					///
+			"### Matrices" _n(2) 				                                ///
+			"> __r(table)__: explain what it includes" _n(2) 								                      ///
 			"Functions" _n(2) 										                ///
 			"Acknowledgements" _n 													      ///
 			"----------------" _n(2) 												      ///
@@ -387,10 +268,13 @@ program define sthlp
 			"Your Name   " _n 														        ///
 			"Your affiliation    " _n 												    ///
 			"Your email address, etc.    " _n(2) 									///
+			"License" _n 														              ///
+			"-------" _n(2)                                       ///
+			"Specify the license of the software" _n(2)           ///
 			"References" _n 														          ///
 			"----------" _n(2) 														        ///
 			"Author Name (year), "	 												      ///
-			"[title & external link](http://www.haghish.com/markdoc/)" _n(2) 		///
+			"[title & external link](https://github.com/haghish/markdoc/)" _n(2) 		///
 			"- - -" _n(2)													                ///
 			"This help file was dynamically produced by " _n			///
 			"[MarkDoc Literate Programming package](http://www.haghish.com/markdoc/) " _n ///

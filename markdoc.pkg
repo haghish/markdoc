@@ -1,9 +1,9 @@
 v 5.0.0
 d 'MARKDOC': a general-purpose literate programming package
 d 
-d generate dynamic document, slides, stata help files, and package vignette in various formats
+d generate dynamic document, slides, stata help files,  and package vignette in various formats
 d 
-d Distribution-Date:   20190605
+d Distribution-Date:   20190610
 d License: MIT
 d 
 F markdoc.ado

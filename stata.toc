@@ -1,9 +1,9 @@
-v 4.8.0
+v 5.0.0
 d Materials by E. F. Haghish
 d University of Goettingen
 d haghish@med.uni-goettingen.de
 d https://github.com/haghish/github
 
-d 'markdoc': generate dynamic document, slides, stata help files, and package vignette in various formats
+d 'markdoc': generate dynamic document, slides, stata help files,  and package vignette in various formats
 
 p markdoc
