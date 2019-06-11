@@ -6,9 +6,7 @@
 
 {p 4 4 2}
 {bf:mini} is a simplified command to call the {it:mini} engine from the {bf:markdoc} 
-package to convert a Markdown file to any file format supported by the 
-mini engine (html, docx, pdf, sthlp, slide). the command also can execute a 
-do-file to produce a dynamic document. 
+package 
 
 
 {title:Syntax}
@@ -22,8 +20,10 @@ where {it:options} are identical to the  {browse "help markdoc":markdoc} options
 {title:Description}
 
 {p 4 4 2}
-{bf:mini} is just a wrapper for {bf:markdoc} with the {it:mini} option to run 
-{bf:markdoc} independent of any third-party dependencies. 
+{bf:mini} is a simplified command to call the light-weight {it:mini} engine forom 
+the {bf:markdoc} command. it can be called to convert a Markdown file to any 
+file format supported by the mini engine (html, docx, pdf, sthlp, slide). the 
+command also can execute a do-file to produce a dynamic document.    {break}
 
 
 {title:Examples}

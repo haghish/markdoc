@@ -55,7 +55,3 @@ markdoc "wkhtmltopdf.ado", mini export(md) replace
 markdoc "vignette.do", export(tex) toc replace master                        ///
         title("markdoc v. 5.0 package vignette")                             ///
 				author("E. F. Haghish")
-
-markdoc "vignette2.do", export(tex) toc replace master                        ///
-title("markdoc v. 5.0 package vignette")                             ///
-author("E. F. Haghish")
