@@ -27,7 +27,7 @@ Once you learn `markdoc`, you can take care of all types of documents you may wi
 
 <a href="https://github.com/haghish/markdoc/wiki"><img src="./Resources/images/manual.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Manual (Wiki) </a>
 
-<a href="https://github.com/haghish/markdoc/raw/master/Help/Help.pdf"><img src="./Resources/images/help4.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">MarkDoc package vignette (PDF)</a>
+<a href="https://github.com/haghish/markdoc/raw/master/vignette.pdf"><img src="./Resources/images/help4.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">MarkDoc package vignette (PDF)</a>
 
 <a href="http://www.stata-journal.com/article.html?article=pr0064"><img src="./Resources/images/pdf.png" width="30px" height="30px"  align="left" hspace="10" vspace="6">Journal Article</a>
 
