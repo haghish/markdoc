@@ -52,9 +52,9 @@ the main options are the following:
 {col 5}Option{col 24}Description
 {space 4}{hline}
 {col 5}mini{col 24}runs markdoc independent of any third-party software
-{col 5}statax{col 24}activates the built-in  {browse "https://github.com/haghish/statax":syntax highlighter}
-{col 5}replace{col 24}replace the exported file if already exists
-{col 5}{ul:e}xport({it:name}){col 24}document format; it can be {bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, {bf:slide}, {bf:tex}, or {bf:sthlp}
+{col 5}statax{col 24}activates  {browse "https://github.com/haghish/statax":statax} syntax highlighter
+{col 5}replace{col 24}replaces exported document, if exists
+{col 5}{ul:e}xport({it:name}){col 24}format; it can be {bf:docx}, {bf:pdf}, {bf:html}, {bf:sthlp}, {bf:slide}, {bf:md}, or {bf:tex}
 {space 4}{hline}
 
 {p 4 4 2}
@@ -77,7 +77,7 @@ options related to software documentation:
 
 {col 5}Option{col 24}Description
 {space 4}{hline}
-{col 5}helplayout{col 24}appends a Markdown help documentation to a stata script file
+{col 5}helplayout{col 24}appends a Markdown help layout template to a script file
 {space 4}{hline}
 
 {p 4 4 2}

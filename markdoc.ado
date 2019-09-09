@@ -50,9 +50,9 @@ the main options are the following:
 | Option                 | Description                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------|
 | mini                   | runs markdoc independent of any third-party software                                             |
-| statax                 | activates the built-in [syntax highlighter](https://github.com/haghish/statax)                   |
-| replace                | replace the exported file if already exists                                                      |
-| **e**xport(_name_)     | document format; it can be __md__, __html__, __docx__, __pdf__, __slide__, __tex__, or __sthlp__ |
+| statax                 | activates [statax](https://github.com/haghish/statax) syntax highlighter                         |
+| replace                | replaces exported document, if exists                                                            |
+| **e**xport(_name_)     | format; it can be __docx__, __pdf__, __html__, __sthlp__, __slide__, __md__, or __tex__ |
 
 
 the supplementary options are the following:
@@ -73,7 +73,7 @@ options related to software documentation:
 
 | Option                 | Description                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------|
-| helplayout             | appends a Markdown help documentation to a stata script file                                     |
+| helplayout             | appends a Markdown help layout template to a script file                                         |
 
 
 and the following options are for communicating with the third-party software (not required in the __mini__ mode)
@@ -1022,7 +1022,15 @@ program markdoc
         tempname knot
         file open `knot' using "`tempput'", write
         file close `knot'       
-        confirm file "`tempput'"        
+        confirm file "`tempput'"     
+		
+		// For Stata 16 and above, use a new output to implement the 'markdown'
+		// command
+		tempfile tempput2
+        tempname knot
+        file open `knot' using "`tempput2'", write
+        file close `knot'       
+        confirm file "`tempput2'" 
 
 
     
@@ -2033,8 +2041,8 @@ program markdoc
                     *error 198
                 }
                 else {
-                    di as txt _n(2) "{title:Warning}"
-                    di as txt "{p}your documentation has a width of "           ///
+                    di as err _n(2) "{title:Warning}"
+                    di as err "{p}your documentation has a width of "           ///
                     "`linelength', while your Stata has linesize of "           ///
                     "`c(linesize)'. {help markdoc} automatically adjusts your " ///
                     "document width. You can avoid this warning by increasing " ///
@@ -3256,20 +3264,30 @@ program markdoc
                                             if "`export'" == "md" {
                                                 quietly copy "`md'" "`output'", replace
                                                 if missing("`mini'") {
-																								  quietly copy "`md'" "`convert'", replace 
-																								}
-																								else {
-																									capture quietly copy "`md'" "`convert'", replace public  // this was a bug on Windows
-																									if _rc local convert "`md'"
-																								}
+												  quietly copy "`md'" "`convert'", replace 
+												}
+												else {
+													capture quietly copy "`md'" "`convert'", replace public  // this was a bug on Windows
+													if _rc local convert "`md'"
+												}
                                             }
                                             else if "`export'" == "html" {
                                                 quietly markdown "`md'", saving("`output'") replace
                                                 quietly copy "`output'" "`convert'", replace
                                             }
                                             else if "`export'" == "docx" {
-                                                quietly mdconvert using "`md'", export(docx) name("`output'") replace
-                                                quietly copy "`output'" "`convert'", replace
+												if `version' < 16  {
+												  quietly mdconvert using "`md'", export(docx) name("`output'") replace
+                                                  quietly copy "`output'" "`convert'", replace
+												}
+												
+												// on Stata 16, first export a styled HTML file and then 
+												// call the html2docx command to ceate the Docx file
+												else {
+												  quietly markdown "`md'", saving("`tempput2'") replace
+												  html2docx "`tempput2'", saving("`output'") replace
+												  quietly copy "`output'" "`convert'", replace
+												}
                                             }
                                             else if "`export'" == "pdf" {
                                                 quietly mdconvert using "`md'", export(pdf) name("`output'") replace
