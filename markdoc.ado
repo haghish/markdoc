@@ -492,6 +492,7 @@ program markdoc
         local version 14
     }
     version `version'
+	
     
     // -------------------------------------------------------------------------
     // WARNING  
@@ -564,7 +565,6 @@ program markdoc
     // CHANGED SYNTAX
     // =========================================================================    
     local mathjax mathjax
-	
     if !missing("`mini'") {
 		if !missing("`markup'") {
 			if "`markup'" != "md" | "`markup'" != "markdown" | "`markup'" != "Markdown" {
@@ -584,28 +584,25 @@ program markdoc
         di "The {bf:linesize} option is discontinued. {bf:markdoc} auto-detects "   ///
        "the linesize..." _n 
        local linesize
-       //DO THE CHANGES
     }
 		
-		// =========================================================================
+	// =========================================================================
     // check the path: make sure the file is executed from the working directory
     // ========================================================================= 
-		if !missing("`mini'") {
-			local currentwd : pwd
-
-			capture abspath "`smclfile'"
-			if _rc != 0 capture abspath `smclfile'
-			if _rc == 0 {
-				if "`currentwd'" != "`r(path)'" {
-					di as err "{bf:WARNING}: make sure your source file is in your current working directory"
-				}
-			}		
-		}
+	if !missing("`mini'") {
+		local currentwd : pwd
+		capture abspath "`smclfile'"
+		if _rc != 0 capture abspath `smclfile'
+		if _rc == 0 {
+			if "`currentwd'" != "`r(path)'" {
+				di as err "{bf:WARNING}: make sure your source file is in your current working directory"
+			}
+		}		
+	}
     
     // -------------------------------------------------------------------------
     // Check for Required Packages (Weaver & Statax)
     // =========================================================================
-    
     capture findfile github.ado
     if _rc != 0 {
         if !missing("`install'") {
@@ -675,7 +672,7 @@ program markdoc
     if "`markup'" == "HTML" local markup html
     if "`markup'" == "LATEX" local markup latex
     if "`markup'" == "Markdown" local markup markdown
-        if "`export'" == "markdown" local export md
+    if "`export'" == "markdown" local export md
     if "`export'" == "PDF" local export pdf
     if "`export'" == "HTML" local export html
     if "`export'" == "LATEX" | "`export'" == "latex" local export tex
@@ -683,28 +680,28 @@ program markdoc
     if "`export'" == "STHLP" local export sthlp
     if "`export'" == "latex" local export tex
     
-        // =========================================================================
-        // MINI MODE
-        //
-        // mini mode is used to avoid depending on third-party software. It currently 
-        // only allows generating markdown documents and html documents in Stata 15. 
-        // later on supports for docx and pdf will be provided
-        // -------------------------------------------------------------------------
-        if !missing("`mini'") {
-            if `c(stata_version)' < 15 & "`export'" != "sthlp" & "`export'" != "slidehtm" {
-                di as err "the {bf:mini} option requires Stata 15 or above"
-				di as txt "you could remove the {bf:mini} option and run markdoc in the full-version mode"
-                err 1
-            }
-            
-            if "`export'" != "md" & "`export'" != "html"          ///
-               & "`export'" != "docx" & "`export'" != "pdf"       ///
-                 & "`export'" != "sthlp" & "`export'" != "slidehtm" {
-                di as err "the {bf:mini} option currently only supports " ///
-                          "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, {bf:slide}, and {bf:sthlp} formats"
-                err 198
-            }
-        }
+	// =========================================================================
+	// MINI MODE
+	//
+	// mini mode is used to avoid depending on third-party software. It currently 
+	// only allows generating markdown documents and html documents in Stata 15. 
+	// later on supports for docx and pdf will be provided
+	// -------------------------------------------------------------------------
+	if !missing("`mini'") {
+		if `c(stata_version)' < 15 & "`export'" != "sthlp" & "`export'" != "slidehtm" {
+			di as err "the {bf:mini} option requires Stata 15 or above"
+			di as txt "you could remove the {bf:mini} option and run markdoc in the full-version mode"
+			err 1
+		}
+		
+		if "`export'" != "md" & "`export'" != "html"          ///
+		   & "`export'" != "docx" & "`export'" != "pdf"       ///
+			 & "`export'" != "sthlp" & "`export'" != "slidehtm" {
+			di as err "the {bf:mini} option currently only supports " ///
+					  "{bf:md}, {bf:html}, {bf:docx}, {bf:pdf}, {bf:slide}, and {bf:sthlp} formats"
+			err 198
+		}
+	}
         
     // =========================================================================
     // Markup Language: 
@@ -853,11 +850,10 @@ program markdoc
     // checkes the required software
     // -------------------------------------------------------------------------
     if missing("`mini'") & "`export'" != "sthlp" & "`export'" != "slidehtm" {
-            markdoccheck , `install' `test' export(`export') style(`style')           ///
-           markup(`markup') pandoc("$pandoc") printer("`printer'")
-        }
+		markdoccheck , `install' `test' export(`export') style(`style')           ///
+		markup(`markup') pandoc("$pandoc") printer("`printer'")
+	}
         
-         
     // -------------------------------------------------------------------------
     // TEST markdoc
     // =========================================================================
@@ -914,17 +910,17 @@ program markdoc
     if "`export'" != "html" & "`export'" != "pdf" & !missing("`statax'")        ///
     & "`export'" != "tex" {
         if missing("`mini'") & "`export'" != "slide" {
-					display as txt "{p}(The {bf:statax} option is only used "           ///
-					 "when exporting to {bf:html}, {bf:pdf}, or {bf:tex} formats)" _n
-					 local statax                           //Erase the macro
-				}
-    }
-		if !missing("`mini'") {
-				if "`export'" != "html" & "`export'" != "slidehtm" {
-					local statax
-				}
+			display as txt "{p}(The {bf:statax} option is only used "           ///
+			 "when exporting to {bf:html}, {bf:pdf}, or {bf:tex} formats)" _n
+			 local statax                           //Erase the macro
 		}
-   
+    }
+	if !missing("`mini'") {
+		if "`export'" != "html" & "`export'" != "slidehtm" {
+			local statax
+		}
+	}
+
     // PDF PROCESSING
     // ==============
     // Create a local for processing the PDF. Then change the export to HTML
@@ -983,8 +979,6 @@ program markdoc
     }
     
 
-    
-
     //If there is NO SMCL FILE and INSTALL or TEST options are not given, 
     //RETURN AN ERROR that the SMCL FILE IS NEEDED
         
@@ -1041,32 +1035,32 @@ program markdoc
 				
          
         if (index(lower("`input'"),".smcl")) {
-					local input : subinstr local input ".smcl" ""
-					local extension smcl
+			local input : subinstr local input ".smcl" ""
+			local extension smcl
+
+			if "`export'" == "slidehtm" {
+				local convert "`input'.htm"
+				local output "`output'.htm"
+			}
 	
-					if "`export'" == "slidehtm" {
-							local convert "`input'.htm"
-							local output "`output'.htm"
-					}
+			else if "`export'" == "slide" {
+				local convert "`input'.pdf"
+				local output "`output'.pdf"
+			}   
+			else if "`export'" == "dzslide" | "`export'" == "slidy" {
+				local convert "`input'.html"
+				local output "`output'.html"
+			}
+			else {
+				local convert "`input'.`export'"
+				local output "`output'.`export'"
+			}   
 			
-					else if "`export'" == "slide" {
-							local convert "`input'.pdf"
-							local output "`output'.pdf"
-					}   
-					else if "`export'" == "dzslide" | "`export'" == "slidy" {
-							local convert "`input'.html"
-							local output "`output'.html"
-					}
-					else {
-							local convert "`input'.`export'"
-							local output "`output'.`export'"
-					}   
-					
-					local html "`input'_.html"
-					local pdf "`input'.pdf"
-					local name "`input'"
-					local input  "`input'.smcl"			
-					}
+			local html "`input'_.html"
+			local pdf "`input'.pdf"
+			local name "`input'"
+			local input  "`input'.smcl"			
+		}
         else if (index(lower("`input'"),".ado")) {
             local input : subinstr local input ".ado" ""
 						local extension ado
@@ -1078,7 +1072,7 @@ program markdoc
                 local convert "`input'.htm"
                 local output "`output'.htm"
             }
-						else if "`export'" == "slide" {
+			else if "`export'" == "slide" {
                 local convert "`input'.pdf"
                 local output "`output'.pdf"
             }   
@@ -1100,8 +1094,8 @@ program markdoc
         }
         else if (index(lower("`input'"),".mata")) {
             local input : subinstr local input ".mata" ""
-						local extension mata
-						if "`export'" == "slidehtm" {
+			local extension mata
+			if "`export'" == "slidehtm" {
                 local convert "`input'.htm"
                 local output "`output'.htm"
             }
@@ -1147,11 +1141,11 @@ program markdoc
             local rundoc 1                          //run rundoc
             global rundoc "`input'"                 //allow rundoc get nested in the file
         }
-				else if (index(lower("`input'"),".md")) {
-				    local extension md
+		else if (index(lower("`input'"),".md")) {
+			local extension md
             local input : subinstr local input ".md" ""
 			
-						if "`export'" == "slidehtm" {
+			if "`export'" == "slidehtm" {
                 local convert "`input'.htm"
                 local output "`output'.htm"
             }
@@ -2710,11 +2704,11 @@ program markdoc
         }
 				
 				
-				// If a Markdown file was given, replace the processed file
-				// -----------------------------------------------------------------
-				if "`extension'" == "md" {
-				  quietly copy "`input'" "`tmp1'" , replace public
-				}
+		// If a Markdown file was given, replace the processed file
+		// -----------------------------------------------------------------
+		if "`extension'" == "md" {
+		  quietly copy "`input'" "`tmp1'" , replace public
+		}
         
         
         
@@ -3250,62 +3244,62 @@ program markdoc
                         `"`reference' "`md'" -o "`output'""'
                     }
                     
-                                        // ---------------------------------------------------------
-                                        // rendering the markdown with pandoc or mini mode
-                                        // ---------------------------------------------------------
-                                        if missing("`mini'") {
-                                            shell "$pandoc" `mathjax' `toc'         ///
+				// ---------------------------------------------------------
+				// rendering the markdown with pandoc or mini mode
+				// ---------------------------------------------------------
+				if missing("`mini'") {
+					shell "$pandoc" `mathjax' `toc'         ///
                     `reference' "`md'" -o "`output'"            
-                    quietly copy "`output'" "`convert'", replace
-                                        
-                                        } 
-                                        else {
-                                            if "`noisily'" == "noisily" di _n(2) "{title:Applying mini mode}" _n
-                                            if "`export'" == "md" {
-                                                quietly copy "`md'" "`output'", replace
-                                                if missing("`mini'") {
-												  quietly copy "`md'" "`convert'", replace 
-												}
-												else {
-													capture quietly copy "`md'" "`convert'", replace public  // this was a bug on Windows
-													if _rc local convert "`md'"
-												}
-                                            }
-                                            else if "`export'" == "html" {
-                                                quietly markdown "`md'", saving("`output'") replace
-                                                quietly copy "`output'" "`convert'", replace
-                                            }
-                                            else if "`export'" == "docx" {
-												if `version' < 16  {
-												  quietly mdconvert using "`md'", export(docx) name("`output'") replace
-                                                  quietly copy "`output'" "`convert'", replace
-												}
-												
-												// on Stata 16, first export a styled HTML file and then 
-												// call the html2docx command to ceate the Docx file
-												else {
-												  quietly markdown "`md'", saving("`tempput2'") replace
-												  html2docx "`tempput2'", saving("`output'") replace
-												  quietly copy "`output'" "`convert'", replace
-												}
-                                            }
-                                            else if "`export'" == "pdf" {
-                                                quietly mdconvert using "`md'", export(pdf) name("`output'") replace
-                                                quietly copy "`output'" "`convert'", replace
-                                            }
-                                            
-                                        }
-                    
-                    
-                    if !missing("`debug'") {
-                        copy "`md'" 0md2.md, replace
-						if "`export'" != "slidehtm" {
-							copy "`output'" 00output.txt, replace
-							copy "`convert'" 00convert.txt, replace
+                    quietly copy "`output'" "`convert'", replace       
+				} 
+				else {
+					if "`noisily'" == "noisily" di _n(2) "{title:Applying mini mode}" _n
+					if "`export'" == "md" {
+						quietly copy "`md'" "`output'", replace
+						if missing("`mini'") {
+						  quietly copy "`md'" "`convert'", replace 
 						}
-                    }
-                }   
-            }
+						else {
+							capture quietly copy "`md'" "`convert'", replace public  // this was a bug on Windows
+							if _rc local convert "`md'"
+						}
+					}
+					else if "`export'" == "html" {
+						quietly markdown "`md'", saving("`output'") replace
+						quietly copy "`output'" "`convert'", replace
+					}
+					else if "`export'" == "docx" {
+						local version = int(`c(stata_version)')
+						if `version' < 16  {
+						  quietly mdconvert using "`md'", export(docx) name("`output'") replace
+						  quietly copy "`output'" "`convert'", replace
+						}
+						
+						// on Stata 16, first export a styled HTML file and then 
+						// call the html2docx command to ceate the Docx file
+						else {
+						  quietly markdown "`md'", saving("`tempput2'") replace
+						  quietly html2docx "`tempput2'", saving("`output'") replace
+						  quietly copy "`output'" "`convert'", replace
+						}
+					}
+					else if "`export'" == "pdf" {
+						quietly mdconvert using "`md'", export(pdf) name("`output'") replace
+						quietly copy "`output'" "`convert'", replace
+					}
+					
+				}
+                    
+                    
+				if !missing("`debug'") {
+					copy "`md'" 0md2.md, replace
+					if "`export'" != "slidehtm" {
+						copy "`output'" 00output.txt, replace
+						copy "`convert'" 00convert.txt, replace
+					}
+				}
+			}   
+		}
 			
    
             ****************************************************
@@ -3483,10 +3477,10 @@ program markdoc
 	if "`export'" == "sthlp" | "`export'" == "smcl" {
 		if "`smclfile'" != "" & "`test'" == "" {
 
-			sthlp `smclfile', markup("`markup'") export("`export'")                 ///
-	template("`template'") `replace' `date' title("`title'")                ///
-	author("`author'") affiliation("`affiliation'") address("`address'")    ///
-	summary("`summary'") `asciitable' version("`version'")                  ///
+		sthlp `smclfile', markup("`markup'") export("`export'")                  ///
+			template("`template'") `replace' `date' title("`title'")             ///
+			author("`author'") affiliation("`affiliation'") address("`address'") ///
+			summary("`summary'") `asciitable' version("`version'")               ///
 			`helplayout' `build' `debug'
 		}
 	}

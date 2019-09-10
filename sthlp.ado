@@ -21,7 +21,7 @@
 
 
 /***
-_v. 2.0.1_
+_v. 2.1._
 
 sthlp
 =====
@@ -79,7 +79,7 @@ This help file was dynamically produced by
 
 
 
-cap prog drop sthlp
+*cap prog drop sthlp
 program define sthlp
 
 	// NOTE:
@@ -490,12 +490,21 @@ program define sthlp
 	while r(eof) == 0 {	
 		
 		local pass	// reset
-		capture if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" local pass 1
+		
+		// if you find the "/***" sign proceed. Also proceed if the file is Markdown		
+		if "`extension'" == "md" {
+			local pass 1
+		}
+		capture if substr(`trim'(`"`macval(line)'"'),1,4) == "/***" {
+			local pass 1
+			file read `hitch' line
+		}
+		
 		
 		// if NOT MISSING `pass'
 		// =====================================================
 		if !missing("`pass'") {
-			file read `hitch' line
+			
 			//remove white space in old-fashion way!
 			cap local m : display "`line'"
 			if _rc == 0 & missing(trim("`m'")) {
@@ -544,7 +553,7 @@ program define sthlp
 						file write `knot' _n "{asis}" _n 
 						file read `hitch' line
 						while r(eof) == 0 & substr(`trim'(`"`macval(line)'"'),1,3) != "~~~" {
-							local line : subinstr local line "	" "....", all // convert tab to spaces
+							local line : subinstr local line "	" "{space 4}", all // convert tab to spaces
 							file write `knot' `"     `macval(line)'"' _n 
 							file read `hitch' line
 						}
@@ -592,6 +601,7 @@ program define sthlp
 					}	
 				}			
 			}
+			file read `hitch' line
 		}
 
 		file read `hitch' line
@@ -603,6 +613,9 @@ program define sthlp
 	tempfile tmp1
 	quietly copy "`tmp'" "`tmp1'", replace
 	if !missing("`debug'") copy "`tmp'" tmp1.txt, replace
+	
+	
+
 	
 	
 	
