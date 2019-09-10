@@ -9,6 +9,7 @@ program define rundoc
 	mini             /// run in mini mode, independent of Pandoc and wkhtmltopdf
 	MARKup(name)     /// specifies the markup language used in the document
 	Export(name)     /// specifies the exported format
+	saving(str)      /// UNDOCUMENTED
 	INSTALl 	 	     /// Installs the required software automatically
 	Test 		 	       /// tests the required software to make sure they're running correctly 
 	PANdoc(str)      /// specifies the path to Pandoc software on the machine
@@ -283,38 +284,39 @@ program define rundoc
 	
 	
 	markdoc "`input'.smcl",														///
-		`mini'                                          ///
-		`replace' 																	    ///
-		markup(`markup') 															  ///
-		export(`export') 															  ///
-		`install' 																	    ///
-		`test' 																		      ///	
-		pandoc("`pandoc'")															///
-		printer("`printer'")														///
-		`master'																	      ///
-		`statax'																	      ///
-		template(`template')														///
-		title("`title'")															  ///
-		author("`author'")															///
-		affiliation("`affiliation'")										///
-		address("`address'")														///
-		`date'  																	      ///
-		summary("`summary'")														///
-		version("`version'")														///
-		style("`style'")														  	///
-		linesize(`linesize')														///
-		`toc'																		        ///
-		`noisily'																        ///
-		`debug'																		      ///
-		`asciitable'																    ///
-		`numbered'																	    ///
-		`mathjax'																	      ///
-		btheme(`btheme')															  ///
-		bcolor(`bcolor')															  ///
-		bfont(`bfont')																  ///
-		bfontsize(`bfontsize')   											  ///
+		`mini'                                          						///
+		`replace' 																///
+		markup(`markup') 														///
+		export(`export') 														///
+		saving(`saving')              											///
+		`install' 																///
+		`test' 																	///	
+		pandoc("`pandoc'")														///
+		printer("`printer'")													///
+		`master'																///
+		`statax'																///
+		template(`template')													///
+		title("`title'")														///
+		author("`author'")														///
+		affiliation("`affiliation'")											///
+		address("`address'")													///
+		`date'  																///
+		summary("`summary'")													///
+		version("`version'")													///
+		style("`style'")														///
+		linesize(`linesize')													///
+		`toc'																	///
+		`noisily'																///
+		`debug'																	///
+		`asciitable'															///
+		`numbered'																///
+		`mathjax'																///
+		btheme(`btheme')														///
+		bcolor(`bcolor')														///
+		bfont(`bfont')															///
+		bfontsize(`bfontsize')   											  	///
 		bcodesize(`bcodesize')	 												///
-		bwidth(`bwidth')	 														  ///
+		bwidth(`bwidth')	 													///
 		bheight(`bheight')															
 	
 	capture qui log close rundoc

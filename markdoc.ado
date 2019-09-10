@@ -54,7 +54,6 @@ the main options are the following:
 | replace                | replaces exported document, if exists                                                            |
 | **e**xport(_name_)     | format; it can be __docx__, __pdf__, __html__, __sthlp__, __slide__, __md__, or __tex__ |
 
-
 the supplementary options are the following:
 
 | Option                 | Description                                                                                      |
@@ -469,7 +468,7 @@ This help file was dynamically produced by
 
 
 
-*cap prog drop markdoc
+//cap prog drop markdoc
 program markdoc
     
     // -------------------------------------------------------------------------
@@ -508,6 +507,7 @@ program markdoc
     mini             /// runs markdoc independent of Pandoc and wkhtmltopdf
     MARKup(name)     /// specifies the markup language used in the document
     Export(name)     /// specifies the exported format
+	saving(str)      /// UNDOCUMENTED 
     INSTALl          /// Installs the required software automatically
     Test             /// tests the required software to make sure they're running correctly 
     PANdoc(str)      /// specifies the path to Pandoc software on the machine
@@ -1218,6 +1218,9 @@ program markdoc
             "Use the {bf:replace} option to replace the existing file."                     
             exit 198
         }
+		
+		// ??? update this in the documentation after testing
+		if !missing("`saving'") local convert `saving'
         
     
         quietly copy "`tempput'" "`output'", replace
@@ -1230,16 +1233,16 @@ program markdoc
         // =========================================================================
         if !missing("`rundoc'") {
             
-						if !missing("`noisily'") di as err "{title:INITIATING RUNDOC.ado}"
-						
+			if !missing("`noisily'") di as err "{title:INITIATING RUNDOC.ado}"			
             if !missing("`pdfhtml'") local export "pdf"
-						if !missing("`pdfmd'")   local export "pdf"
+			if !missing("`pdfmd'")   local export "pdf"
             
             rundoc "`name'",                                                    ///
             `replace'                                                           ///
-                        `mini'                                                              ///
+            `mini'                                                              ///
             markup(`markup')                                                    ///
             export(`export')                                                    ///
+			saving(`saving')                                                  	///
             `install'                                                           ///
             `test'                                                              /// 
             pandoc("`pandoc'")                                                  ///
@@ -1258,7 +1261,7 @@ program markdoc
             linesize(`linesize')                                                ///
             `toc'                                                               ///
             `noisily'                                                           ///
-            `debug'                                                         ///
+            `debug'                                                         	///
             `asciitable'                                                        ///
             `numbered'                                                          ///
             `mathjax'                                                           ///
@@ -1270,7 +1273,7 @@ program markdoc
             bwidth(`bwidth')                                                    ///
             bheight(`bheight')                      
             
-						macro drop currentmarkdocdofile  
+			macro drop currentmarkdocdofile  
             exit
         }
     
@@ -1300,15 +1303,15 @@ program markdoc
         ****************************************************   
         
         ****************************************************
-    * PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
-    *         - the grave accents are common markdown
-        *           syntax. If the accents appear as the last
-    *           character of the line, they crash Stata
-    *           with an error of "too few quotes". I have 
-        *           found a workaround, but is not 100% secure
-        *           If you have better suggestions, please 
-        *           go ahead and submit your code on GitHub
-    ****************************************************
+		* PART 0. CORRECTING THE SMCL FILE FROM GRAVE ACCENTS
+		*         - the grave accents are common markdown
+			*           syntax. If the accents appear as the last
+		*           character of the line, they crash Stata
+		*           with an error of "too few quotes". I have 
+			*           found a workaround, but is not 100% secure
+			*           If you have better suggestions, please 
+			*           go ahead and submit your code on GitHub
+		****************************************************
         tempfile tmp00                     //DEFINE tmp00 FOR THE FIRST TIME
         tempname hitch knot 
         qui file open `hitch' using `"`input'"', read
@@ -3278,14 +3281,32 @@ program markdoc
 						// on Stata 16, first export a styled HTML file and then 
 						// call the html2docx command to ceate the Docx file
 						else {
-						  quietly markdown "`md'", saving("`tempput2'") replace
-						  quietly html2docx "`tempput2'", saving("`output'") replace
+						  *quietly markdown "`md'", saving("`tempput2'") replace embedimage 
+						  //::
+						  tempfile tempo
+						  quietly markdoc "`md'", export(html) saving("`tempo'") replace
+						  quietly html2docx "`tempo'", saving("`output'") replace //base("`currentwd'")
+						  quietly capture rm "`tempo'"
 						  quietly copy "`output'" "`convert'", replace
 						}
 					}
 					else if "`export'" == "pdf" {
-						quietly mdconvert using "`md'", export(pdf) name("`output'") replace
-						quietly copy "`output'" "`convert'", replace
+						local version = int(`c(stata_version)')
+						if `version' < 16  {
+						  quietly mdconvert using "`md'", export(pdf) name("`output'") replace
+						  quietly copy "`output'" "`convert'", replace
+						}
+						else {
+							tempfile tempo
+							tempfile tempo2
+							quietly markdoc "`md'", export(html) saving("`tempo'") replace
+							quietly html2docx "`tempo'", saving("`tempo2'") replace 
+							quietly docx2pdf "`tempo2'", saving("`output'") replace 
+							quietly capture rm "`tempo'"
+							quietly capture rm "`tempo2'"
+							quietly copy "`output'" "`convert'", replace
+						}
+
 					}
 					
 				}
@@ -3401,7 +3422,7 @@ program markdoc
                 if _rc == 0 {
                     di as txt "(markdoc created "`"{bf:{browse "`convert'"}})"' _n
                     if "`export'" != "md" cap qui erase "`md'"
-										if "`extension'" == "md" cap qui erase "`md'"
+					if "`extension'" == "md" cap qui erase "`md'"
                 }
                 else display as err "markdoc could not produce `convert'" _n
             }
@@ -3627,9 +3648,7 @@ program markdoc
 		file close `knot'
 		file close `hitch'
 
-		
-		
-		
+
 		if !missing("`debug'") {
 			copy "`tmp'" 05B.txt    , replace
 		}
@@ -3643,23 +3662,19 @@ program markdoc
 		}
 		else display as err "markdoc could not produce `convert'" _n
 	}   
-
-		
-	
-
     
     // Drop the global macros
     // -------------------------------------------------------------------------
     // this kills the live-preview. NOT A GOOD IDEA
     // if missing("$weaver") macro drop currentFigure
 		
-		if !missing("`noisily'") {
-		  di as err "removing global macros in markdoc.ado"
-		}          
+	if !missing("`noisily'") {
+	  di as err "removing global macros in markdoc.ado"
+	}          
     
     // check for markdoc updates
     *markdocversion
 		
-		macro drop currentmarkdocdofile  
+	macro drop currentmarkdocdofile  
   
 end
