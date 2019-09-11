@@ -468,7 +468,7 @@ This help file was dynamically produced by
 
 
 
-//cap prog drop markdoc
+*cap prog drop markdoc
 program markdoc
     
     // -------------------------------------------------------------------------
@@ -532,6 +532,7 @@ program markdoc
     helplayout       /// create temporary help layout
     unc              /// an option for working with markdoc on servers
     debug            /// run the debug mode and save the temporary files
+	suppress         /// UNDOCUMENTER, avoids unnecessary warnings
     ///
     /// Slide options
     /// ========================================================================
@@ -595,7 +596,7 @@ program markdoc
 		if _rc != 0 capture abspath `smclfile'
 		if _rc == 0 {
 			if "`currentwd'" != "`r(path)'" {
-				di as err "{bf:WARNING}: make sure your source file is in your current working directory"
+				if missing("`suppress'") di as err "{bf:WARNING}: make sure your source file is in your current working directory"
 			}
 		}		
 	}
@@ -1017,15 +1018,6 @@ program markdoc
         file open `knot' using "`tempput'", write
         file close `knot'       
         confirm file "`tempput'"     
-		
-		// For Stata 16 and above, use a new output to implement the 'markdown'
-		// command
-		tempfile tempput2
-        tempname knot
-        file open `knot' using "`tempput2'", write
-        file close `knot'       
-        confirm file "`tempput2'" 
-
 
     
         tempfile md
@@ -1221,6 +1213,7 @@ program markdoc
 		
 		// ??? update this in the documentation after testing
 		if !missing("`saving'") local convert `saving'
+
         
     
         quietly copy "`tempput'" "`output'", replace
@@ -1262,6 +1255,7 @@ program markdoc
             `toc'                                                               ///
             `noisily'                                                           ///
             `debug'                                                         	///
+			`suppress'                                                     		///
             `asciitable'                                                        ///
             `numbered'                                                          ///
             `mathjax'                                                           ///
@@ -1329,7 +1323,7 @@ program markdoc
             
             local line : subinstr local line "``" "\`", all
             
-            file write `knot' `"`macval(line)'"' _n
+            capture file write `knot' `"`macval(line)'"' _n
             file read `hitch' line
         }
                 
@@ -3279,15 +3273,14 @@ program markdoc
 						}
 						
 						// on Stata 16, first export a styled HTML file and then 
-						// call the html2docx command to ceate the Docx file
+						// :: call the html2docx command to ceate the Docx file
 						else {
-						  *quietly markdown "`md'", saving("`tempput2'") replace embedimage 
-						  //::
 						  tempfile tempo
-						  quietly markdoc "`md'", export(html) saving("`tempo'") replace
-						  quietly html2docx "`tempo'", saving("`output'") replace //base("`currentwd'")
-						  quietly capture rm "`tempo'"
-						  quietly copy "`output'" "`convert'", replace
+						  global tempo "`tempo'"
+						  quietly markdoc "`md'", mini export(html) saving("$tempo") replace suppress
+						  quietly html2docx "$tempo", saving("`output'") replace //base("`currentwd'")
+						  quietly capture rm "$tempo"
+						  quietly copy "`output'" "`convert'", replace public
 						}
 					}
 					else if "`export'" == "pdf" {
@@ -3299,12 +3292,14 @@ program markdoc
 						else {
 							tempfile tempo
 							tempfile tempo2
-							quietly markdoc "`md'", export(html) saving("`tempo'") replace
-							quietly html2docx "`tempo'", saving("`tempo2'") replace 
-							quietly docx2pdf "`tempo2'", saving("`output'") replace 
-							quietly capture rm "`tempo'"
-							quietly capture rm "`tempo2'"
-							quietly copy "`output'" "`convert'", replace
+							global tempo "`tempo'"
+							global tempo2 "`tempo2'"
+							quietly markdoc "`md'", mini export(html) saving("$tempo") replace suppress
+							quietly html2docx "$tempo", saving("$tempo2") replace //base("`currentwd'")
+							quietly docx2pdf "$tempo2", saving("`output'") replace 
+							quietly capture rm "$tempo"
+							quietly capture rm "$tempo2"
+							quietly copy "`output'" "`convert'", replace public
 						}
 
 					}

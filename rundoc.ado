@@ -33,6 +33,7 @@ program define rundoc
 	NUMbered	 	     /// number Stata commands
 	MATHjax 		     /// Interprets mathematics using MathJax
 	STYle(name)      /// specifies the style of the document
+	suppress         /// UNDOCUMENTER, avoids unnecessary warnings
 	/// Slide options
 	/// ========================================================================
 	btheme(str) 	   ///
@@ -308,6 +309,7 @@ program define rundoc
 		`toc'																	///
 		`noisily'																///
 		`debug'																	///
+		`suppress' 																///
 		`asciitable'															///
 		`numbered'																///
 		`mathjax'																///
