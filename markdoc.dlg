@@ -6,7 +6,7 @@ POSITION . . 440 420
 // LISTS
 // =============================================================================
 
-// Specify MarkDoc Format
+// Specify markdoc Format
 LIST format_list
 BEGIN
 	pdf
@@ -134,7 +134,7 @@ END
 OK ok1,      label("OK")
 CANCEL can1, label("Cancel")
 SUBMIT sub1, label("Submit")
-HELP hlp1,   view("help markdoc")  //"browse https://github.com/haghish/MarkDoc/wiki"
+HELP hlp1,   view("help markdoc")  //"browse https://github.com/haghish/markdoc/wiki"
 RESET res1
 COPY copy1
 
@@ -204,7 +204,7 @@ END
 
 
 
-DIALOG main, label("MarkDoc") tabtitle("Dynamic Document")
+DIALOG main, label("markdoc") tabtitle("Dynamic Document")
 BEGIN
 	
 	//define the source value
@@ -216,13 +216,13 @@ BEGIN
 	// -------------------------------------------------------------------------
 	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
 	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...)  ///
-	filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.") ///
+	filter("smcl file|*.smcl|do file|*.do") tooltip("markdoc can produce a dynamic document by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.") ///
 	onchange("script mainReset")
 	
 	// Specify Markup, Format, Style
 	// -------------------------------------------------------------------------
 	TEXT tx_markup   10   +30  200  .  , label("Markup language")
-	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(markup_list) onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(markup_list) onselchange("program test") tooltip("markdoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
 	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
@@ -244,13 +244,13 @@ BEGIN
 		// ---------------------------------------------------------------------
 		
 		// install
-		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"markdoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
 	
 		// replace
 		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
 	    
 		// master
-		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, markdoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// syntax highlighter
 		CHECKBOX statax   @    +17   @   .  , option(statax) label("Statax syntax highlighter") default(1)
@@ -330,12 +330,12 @@ BEGIN
 	// Browse SMCL or DO file
 	// -------------------------------------------------------------------------
 	TEXT txt_file	     10    5   320  .  , label(`"Select "smcl" or "do" file"')
-	FILE sourceFile	     10   +20  420  .  , error("Open file") label(Browse...) onchange("script subReset") filter("smcl file|*.smcl|do file|*.do") tooltip("MarkDoc can produce dynamic presentation slides by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.")
+	FILE sourceFile	     10   +20  420  .  , error("Open file") label(Browse...) onchange("script subReset") filter("smcl file|*.smcl|do file|*.do") tooltip("markdoc can produce dynamic presentation slides by translating a SCML log-file or actively executing a Do-file. Select a SMCL or Do-file to be used as the source of the document.")
 	
 	// Specify Markup, Format, Style
 	// -------------------------------------------------------------------------
 	TEXT tx_markup   10   +30  200  .  , label("Markup language")
-	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(slide_markup_list) onselchange("program subtest") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(slide_markup_list) onselchange("program subtest") tooltip("markdoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Presentation slide format")
 	RADIO r1         @    +20   100 .  , first  label("pdf") onclickon("program subtest") //option(nociforeground)
@@ -354,16 +354,16 @@ BEGIN
 	GROUPBOX beamer 10   +35  420  70, label("Beamer layout")
 	
 		TEXT tx_theme    +10  +20 200  50  , label("Theme")
-		COMBOBOX theme   @    +17 69   .  , dropdownlist contents(theme_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		COMBOBOX theme   @    +17 69   .  , dropdownlist contents(theme_list) //onselchange("program test") tooltip("markdoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
 		TEXT tx_color    +72 -17  200  50  , label("Color")
-		COMBOBOX color   @    +17 69   .  , dropdownlist contents(color_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		COMBOBOX color   @    +17 69   .  , dropdownlist contents(color_list) //onselchange("program test") tooltip("markdoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
 		TEXT tx_font     +72 -17  200  50  , label("Font")
-		COMBOBOX font    @    +17 69   .  , dropdownlist contents(font_list) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		COMBOBOX font    @    +17 69   .  , dropdownlist contents(font_list) //onselchange("program test") tooltip("markdoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
 		TEXT tx_codesize     +72 -17  50  .  , label("Code size")
-		COMBOBOX codesize    @    +17 69   .  , dropdownlist contents(code_list) default(scriptsize) //onselchange("program test") tooltip("MarkDoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
+		COMBOBOX codesize    @    +17 69   .  , dropdownlist contents(code_list) default(scriptsize) //onselchange("program test") tooltip("markdoc supports several markup languages that can be used for writing the documentation. Specify the markup language that you have used in your source code.")
 		
 		TEXT tx_bwidth +77 -17  50  .  , label("Width")
 		SPINNER bwidth @    +17 50   .  , min(80)  max(255) default(128) tooltip("change the font size of the slide")
@@ -381,7 +381,7 @@ BEGIN
 		// ---------------------------------------------------------------------
 		
 		// install
-		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		CHECKBOX install  +10  +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"markdoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
 	
 		// replace
 		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
@@ -393,10 +393,10 @@ BEGIN
 		CHECKBOX numbered @    +17   @   .  , option(numbered) label("Count Stata commands") tooltip("this option will number the Stata commands, 1,2,3,... ")
 	  
 		// master
-		CHECKBOX master @   +17   @   .  , option(master) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX master @   +17   @   .  , option(master) label("Create LaTeX template") default(0) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, markdoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 	  
 		// noisily
-		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute MarkDoc noisily") tooltip("Having trouble with MarkDoc? use this option to execute MarkDoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
+		CHECKBOX noisily  @    +17   @   .  , option(noisily) label("Execute markdoc noisily") tooltip("Having trouble with markdoc? use this option to execute markdoc noisily and get information about where the problem is likely to be...") //onclickon(main.noisily.disable) //onclickoff(main.noisily.enable)
 
 		// title of the document
 		TEXT tx_title @ 322 50 ., label(Title)
@@ -459,14 +459,14 @@ BEGIN
 	// -------------------------------------------------------------------------
 	TEXT txt_file	     10    5   320  .  , label(`"Select "ado" or "mata" file"')
 	FILE sourceFile	     10   +20  420  .  , error("Open file")  label(Browse...) ///
-	filter("Ado file|*.ado|Mata file|*.mata") tooltip("MarkDoc can produce Stata help file by extracting the documentation from the source code. Select a script file to be used as the source of the document.") ///
+	filter("Ado file|*.ado|Mata file|*.mata") tooltip("markdoc can produce Stata help file by extracting the documentation from the source code. Select a script file to be used as the source of the document.") ///
 	onchange("script vignetteReset")
 	
 	
 	// Specify Markup, Format, Style
 	// -------------------------------------------------------------------------
 	TEXT tx_markup   10   +30  200  .  , label("Markup language")
-	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("MarkDoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
+	COMBOBOX markup  @    +20  100  .  , dropdownlist contents(helpfile_list) onselchange("program vintest") tooltip("markdoc supports a combination of Markdown and SMCL for writing the documentation. However, you also have the choice to just use SMCL, if you want to be very strict. Using Markdown is generally recommended.")
 	
 	TEXT tx_format   +120 -20  200  .  , label("Document format")
 	//COMBOBOX format  @    +20  100  .  , dropdownlist contents(format_list)  onselchange("program test")	////onselchange("script disablethem") //onselchange("main.master.disable")    // onselchange("program test")
@@ -487,7 +487,7 @@ BEGIN
 		
 		
 		// install
-		CHECKBOX install  +10    +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"MarkDoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
+		CHECKBOX install  +10    +25  -20  .  , option(install) label("Install required software") default(0) tooltip(`"markdoc requires "Pandoc" and "wkhtmltopdf" third-party software. It also requires 2 Stata packages which are "weaver" and "statax". This option automatically installs these software, if they are not already installed on your machine."')
 		
 		// replace
 		CHECKBOX replace  @    +17   @   .  , option(replace) label("Replace the existing document") default(1)
@@ -496,7 +496,7 @@ BEGIN
 		CHECKBOX helplayout  @  +17  @  .  , option(helplayout) label("Append help-file template") default(0) tooltip("Check this button to append the template help-file to your ado or mata file")
 		
 		// master
-		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, MarkDoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
+		CHECKBOX master @   +17   @   .  , option(master) label("Create HTML or LaTeX template") default(1) tooltip("LaTeX format requires a document template. Without the template, you will not be able to typeset the document to PDF. Usually you are required to create your own template, load the packages you need, etc. However, markdoc provides this option to facilitate writing with LaTeX and automatically creates the layout if you haven't defined it in the source file.")
 		
 		
 		// table of content
