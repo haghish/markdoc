@@ -1,3 +1,6 @@
+> __Cite 1__: Haghish, E. F. (2016). markdoc: Literate programming in Stata. The Stata Journal, 16(4), 964-988.  
+> __Cite 2__: Haghish, E. F. (2020). Software documentation with markdoc 5.0. The Stata Journal, 20(2), 336-362.
+
 <p align="center">
   <img />
 </p>
